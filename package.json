@@ -1,9 +1,9 @@
 {
   "name": "gophergfx",
-  "version": "0.1.1",
+  "version": "0.1.8",
   "description": "GopherGFX",
   "author": "Evan Suma Rosenberg <suma@umn.edu>",
-  "license": "GNU GPL 3.0",
+  "license": "CC BY-NC-SA 4.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/illusioneering/GopherGfx.git"
@@ -17,6 +17,13 @@
     "tsup": "^5.12.1"
   },
   "scripts": {
-    "build": "tsup src/GopherGfx.ts"
-  }
+    "build": "tsup ./src/index.ts",
+    "prepare": "tsup ./src/index.ts"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "index.d.ts"
+  ],
+  "main": "dist"
 }

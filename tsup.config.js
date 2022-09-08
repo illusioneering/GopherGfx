@@ -2,10 +2,10 @@ import { glsl } from 'esbuild-plugin-glsl';
 import { defineConfig } from 'tsup'
 
 export default defineConfig({
-  entry: ['src/GopherGfx.ts'],
+  entry: ['src/index.ts'],
   format: ['esm'],
-  outDir: 'build',
-  ignoreWatch: ['build', 'examples', 'assignments'],
+  outDir: 'dist',
+  ignoreWatch: ['dist'],
   splitting: true,
   dts: true,
   sourcemap: true,
