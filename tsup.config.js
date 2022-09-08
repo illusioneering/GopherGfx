@@ -2,7 +2,7 @@ import { glsl } from 'esbuild-plugin-glsl';
 import { defineConfig } from 'tsup'
 
 export default defineConfig({
-  entry: ['src/index.ts'],
+  entry: ['index.ts'],
   format: ['esm'],
   outDir: 'dist',
   ignoreWatch: ['dist'],

@@ -1,6 +1,4 @@
-// @ts-ignore
 import wireframeVertexShader from '../shaders/wireframe.vert'
-// @ts-ignore
 import wireframeFragmentShader from '../shaders/wireframe.frag'
 
 import { Material3 } from './Material3';
@@ -87,7 +85,7 @@ export class WireframeMaterial extends Material3
         this.gl.getBufferSubData(this.gl.COPY_READ_BUFFER, 0, indexArray);
         const indices = [... indexArray];
 
-        const wireframeIndices = [];
+        const wireframeIndices: number[] = [];
         for(let i=0; i < mesh.triangleCount; i++)
         {
             wireframeIndices.push(indices[i*3]);

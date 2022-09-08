@@ -1,6 +1,6 @@
 {
   "name": "gophergfx",
-  "version": "0.1.8",
+  "version": "0.1.0",
   "description": "GopherGFX",
   "author": "Evan Suma Rosenberg <suma@umn.edu>",
   "license": "CC BY-NC-SA 4.0",
@@ -8,22 +8,15 @@
     "type": "git",
     "url": "https://github.com/illusioneering/GopherGfx.git"
   },
-  "devDependencies": {
-    "@types/node": "^17.0.21",
-    "@typescript-eslint/eslint-plugin": "^5.12.1",
-    "@typescript-eslint/parser": "^5.12.1",
-    "esbuild-plugin-glsl": "^1.0.5",
-    "eslint": "^8.9.0",
-    "tsup": "^5.12.1"
-  },
   "scripts": {
-    "build": "tsup ./src/index.ts",
-    "prepare": "tsup ./src/index.ts"
+    "build": "tsup ./index.ts"
   },
-  "files": [
-    "dist",
-    "README.md",
-    "index.d.ts"
-  ],
-  "main": "dist"
+  "devDependencies": {
+    "@types/node": "^18.7.16",
+    "@typescript-eslint/eslint-plugin": "^5.36.2",
+    "@typescript-eslint/parser": "^5.36.2",
+    "esbuild-plugin-glsl": "^1.1.0",
+    "eslint": "^8.23.0",
+    "tsup": "^6.2.3"
+  }
 }

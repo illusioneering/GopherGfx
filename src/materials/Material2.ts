@@ -1,6 +1,4 @@
-// @ts-ignore
 import shapeVertexShader from '../shaders/shape.vert'
-// @ts-ignore
 import shapeFragmentShader from '../shaders/shape.frag'
 
 import { GfxApp } from '../core/GfxApp';
