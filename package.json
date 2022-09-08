@@ -1,0 +1,18 @@
+{
+  "name": "gophergfx",
+  "version": "0.1.0",
+  "description": "GopherGFX",
+  "author": "Evan Suma Rosenberg <suma@umn.edu>",
+  "license": "GNU GPL 3.0",
+  "devDependencies": {
+    "@types/node": "^17.0.21",
+    "@typescript-eslint/eslint-plugin": "^5.12.1",
+    "@typescript-eslint/parser": "^5.12.1",
+    "esbuild-plugin-glsl": "^1.0.5",
+    "eslint": "^8.9.0",
+    "tsup": "^5.12.1"
+  },
+  "scripts": {
+    "build": "tsup src/GopherGfx.ts"
+  }
+}
