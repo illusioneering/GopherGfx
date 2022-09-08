@@ -1,9 +1,13 @@
 {
   "name": "gophergfx",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "GopherGFX",
   "author": "Evan Suma Rosenberg <suma@umn.edu>",
   "license": "GNU GPL 3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/illusioneering/GopherGfx.git"
+  },
   "devDependencies": {
     "@types/node": "^17.0.21",
     "@typescript-eslint/eslint-plugin": "^5.12.1",
