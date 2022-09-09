@@ -1,4 +1,6 @@
+// @ts-ignore
 import unlitVertexShader from '../shaders/unlit.vert'
+// @ts-ignore
 import unlitFragmentShader from '../shaders/unlit.frag'
 
 import { Material3 } from './Material3';

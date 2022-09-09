@@ -1,4 +1,6 @@
+// @ts-ignore
 import wireframeVertexShader from '../shaders/wireframe.vert'
+// @ts-ignore
 import wireframeFragmentShader from '../shaders/wireframe.frag'
 
 import { Material3 } from './Material3';

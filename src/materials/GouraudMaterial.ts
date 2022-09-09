@@ -1,4 +1,6 @@
+// @ts-ignore
 import gouraudVertexShader from '../shaders/gouraud.vert'
+// @ts-ignore
 import gouraudFragmentShader from '../shaders/gouraud.frag'
 
 import { Material3 } from './Material3';
