@@ -85,7 +85,7 @@ export class Vector2
 
     public static rotate(v: Vector2, angle: number): Vector2
     {
-        return new Vector2(Math.cos(angle)*v.x - Math.sin(v.y), Math.sin(angle)*v.x + Math.cos(angle)*v.y); 
+        return new Vector2(Math.cos(angle)*v.x - Math.sin(angle)*v.y, Math.sin(angle)*v.x + Math.cos(angle)*v.y); 
     }
 
     public x: number;
