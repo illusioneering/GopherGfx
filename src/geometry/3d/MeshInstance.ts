@@ -9,7 +9,7 @@ export class MeshInstance extends Transform3
     public readonly baseMesh;
     public material: Material3;
 
-    constructor(baseMesh: Mesh, copyTransform = false)
+    constructor(baseMesh: Mesh, copyTransform = true)
     {
         super();
         this.baseMesh = baseMesh;
