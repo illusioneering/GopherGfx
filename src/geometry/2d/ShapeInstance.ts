@@ -12,13 +12,13 @@ export class ShapeInstance extends Transform2
         super();
         this.baseShape = baseShape;
         this.material = baseShape.material;
-        this.layer = baseShape.layer;
-
+        
         if(copyTransform)
         {
             this.position.copy(baseShape.position);
             this.rotation = baseShape.rotation;
             this.scale.copy(baseShape.scale);
+            this.layer = baseShape.layer;
         }
     }
 
