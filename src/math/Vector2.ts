@@ -232,7 +232,7 @@ export class Vector2
     {
         const x = this.x;
         const y = this.y;
-        this.x = Math.cos(angle)*x - Math.sin(y);
+        this.x = Math.cos(angle)*x - Math.sin(angle)*y;
         this.y = Math.sin(angle)*x + Math.cos(angle)*y; 
     }
 }
