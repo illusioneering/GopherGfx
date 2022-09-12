@@ -9,11 +9,18 @@ export class MeshInstance extends Transform3
     public readonly baseMesh;
     public material: Material3;
 
-    constructor(baseMesh: Mesh)
+    constructor(baseMesh: Mesh, copyTransform = false)
     {
         super();
         this.baseMesh = baseMesh;
         this.material = baseMesh.material;
+
+        if(copyTransform)
+        {
+            this.position.copy(baseMesh.position);
+            this.rotation.copy(baseMesh.rotation);
+            this.scale.copy(baseMesh.scale);
+        }
     }
 
     getBaseMesh(): Mesh

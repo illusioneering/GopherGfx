@@ -7,12 +7,19 @@ export class ShapeInstance extends Transform2
     public readonly baseShape;
     public material: Material2;
 
-    constructor(baseShape: Shape)
+    constructor(baseShape: Shape, copyTransform = false)
     {
         super();
         this.baseShape = baseShape;
         this.material = baseShape.material;
         this.layer = baseShape.layer;
+
+        if(copyTransform)
+        {
+            this.position.copy(baseShape.position);
+            this.rotation = baseShape.rotation;
+            this.scale.copy(baseShape.scale);
+        }
     }
 
     getBaseShape(): Shape
