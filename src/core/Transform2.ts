@@ -95,20 +95,23 @@ export class Transform2
         }
     }
 
-    // translate(translation: Vector2): void
-    // {
-    //     this.position.add(this.rotation.rotate(translation));
-    // }
+    translate(translation: Vector2): void
+    {
+        const localVector = Vector2.rotate(translation, this.rotation);
+        this.position.add(localVector);
+    }
 
-    // translateX(distance: number): void
-    // {
-    //     this.position.add(this.rotation.rotate(new Vector2(distance, 0));
-    // }
+    translateX(distance: number): void
+    {
+        const localVector = Vector2.rotate(new Vector2(distance, 0), this.rotation);
+        this.position.add(localVector);
+    }
 
-    // translateY(distance: number): void
-    // {
-    //     this.position.add(this.rotation.rotate(new Vector3(0, distance, 0)));
-    // }
+    translateY(distance: number): void
+    {
+        const localVector = Vector2.rotate(new Vector2(0, distance), this.rotation);
+        this.position.add(localVector);
+    }
 
     // in local space
     lookAt(target: Vector2, lookVector = Vector2.UP): void
