@@ -55,11 +55,11 @@ export class Scene
     {
         if(child instanceof Transform3)
         {
-            this.root3d.add(child);
+            this.root3d.remove(child);
         }
         else
         {
-            this.root2d.add(child);
+            this.root2d.remove(child);
         }
 
         
