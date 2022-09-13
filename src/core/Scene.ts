@@ -48,21 +48,6 @@ export class Scene
         {
             this.root2d.add(child);
         }
-        
-    }
-
-    remove(child: Transform2 | Transform3): void
-    {
-        if(child instanceof Transform3)
-        {
-            this.root3d.remove(child);
-        }
-        else
-        {
-            this.root2d.remove(child);
-        }
-
-        
     }
 
     computeWorldTransforms(): void

@@ -82,7 +82,15 @@ export class Transform3
         child.parent = this;
     }
 
-    remove(child: Transform3): Transform3 | null
+    remove(): boolean
+    {
+        if(this.parent == null)
+            return false;
+        else
+            return this.parent.removeChild(this) != null;
+    }
+
+    removeChild(child: Transform3): Transform3 | null
     {
         const index = this.children.indexOf(child);
 
