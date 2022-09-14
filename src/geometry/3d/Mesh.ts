@@ -7,8 +7,8 @@ import { GouraudMaterial } from "../../materials/GouraudMaterial";
 import { Camera } from "../../core/Camera";
 import { LightManager } from "../../lights/LightManager";
 import { GfxApp } from "../../core/GfxApp";
-import { Box3 } from "../../math/Box3";
-import { Sphere } from "../../math/Sphere"
+import { BoundingBox3 } from "../../math/BoundingBox3";
+import { BoundingSphere } from "../../math/BoundingSphere"
 
 export class Mesh extends Transform3
 {
@@ -25,8 +25,8 @@ export class Mesh extends Transform3
 
     public material: Material3;
 
-    public boundingBox: Box3;
-    public boundingSphere: Sphere;
+    public boundingBox: BoundingBox3;
+    public boundingSphere: BoundingSphere;
     
     constructor()
     {
@@ -45,8 +45,8 @@ export class Mesh extends Transform3
         // default material
         this.material = new GouraudMaterial();
 
-        this.boundingBox = new Box3(new Vector3(), new Vector3());
-        this.boundingSphere = new Sphere(new Vector3(), 0);
+        this.boundingBox = new BoundingBox3();
+        this.boundingSphere = new BoundingSphere();
     }
 
     draw(parent: Transform3, camera: Camera, lightManager: LightManager): void

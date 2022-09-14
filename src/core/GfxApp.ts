@@ -22,7 +22,6 @@ export abstract class GfxApp
 
     private time: number;
     private paused: boolean;
-
     private previousTouches: Vector2[];
 
     constructor()
@@ -125,13 +124,28 @@ export abstract class GfxApp
 
     onFocusReceived(event: FocusEvent): void 
     {
-        this.time = Date.now();
-        this.paused = false;
+        this.resume();
     }
 
     onFocusLost(event: FocusEvent): void 
     {
+        this.pause();
+    }
+
+    pause(): void
+    {
         this.paused = true;
+    }
+
+    resume(): void
+    {
+        this.time = Date.now();
+        this.paused = false;
+    }
+
+    isPaused(): boolean
+    {
+        return this.paused;
     }
 
     getNormalizedDeviceCoordinates(mouseX: number, mouseY: number): Vector2

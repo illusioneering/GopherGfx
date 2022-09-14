@@ -15,7 +15,6 @@ export class Material2
     public visible: boolean;
     public color: Color;
     public drawMode: number;
-
     public texture: Texture | null;
 
     private readonly gl: WebGL2RenderingContext;
@@ -39,7 +38,6 @@ export class Material2
         this.visible = true;
         this.color = new Color(1, 1, 1);
         this.drawMode = this.gl.LINE_LOOP;
-
         this.texture = null;
         
         Material2.shader.initialize(this.gl);
@@ -54,6 +52,14 @@ export class Material2
         this.positionAttribute = Material2.shader.getAttribute(this.gl, 'position');
         this.colorAttribute = Material2.shader.getAttribute(this.gl, 'color');
         this.texCoordAttribute = Material2.shader.getAttribute(this.gl, 'texCoord');
+    }
+
+    copy(mat: Material2): void
+    {
+        this.visible = mat.visible;
+        this.color.copy(mat.color);
+        this.drawMode = mat.drawMode;
+        this.texture = mat.texture;
     }
 
     draw(shape: Shape, transform: Transform2): void

@@ -1,7 +1,7 @@
 import { Vector3 } from './Vector3'
 import { Plane } from './Plane'
-import { Box3 } from './Box3'
-import { Sphere } from './Sphere'
+import { BoundingBox3 } from './BoundingBox3'
+import { BoundingSphere } from './BoundingSphere'
 import { Vector2 } from './Vector2';
 import { Camera } from '../core/Camera'
 import { Mesh } from '../geometry/3d/Mesh'
@@ -57,7 +57,7 @@ export class Ray
     }
 
     // Reference: https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-sphere-intersection
-    intersectsSphere(sphere: Sphere): Vector3 | null
+    intersectsSphere(sphere: BoundingSphere): Vector3 | null
     {
 
         const l = Vector3.subtract(sphere.center, this.origin);
@@ -88,7 +88,7 @@ export class Ray
     }
 
     // Reference: https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-box-intersection
-    intersectsBox(box: Box3): Vector3 | null
+    intersectsBox(box: BoundingBox3): Vector3 | null
     {
         let tmin = (box.min.x - this.origin.x) / this.direction.x; 
         let tmax = (box.max.x - this.origin.x) / this.direction.x; 

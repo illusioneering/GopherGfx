@@ -41,16 +41,16 @@ export class Renderer
         this.gl = gl!;
 
         // depth testing
-        this.gl.enable(this.gl.DEPTH_TEST);
-        this.gl.depthFunc(this.gl.LESS);
+        gl.enable(gl.DEPTH_TEST);
+        gl.depthFunc(gl.LEQUAL);
 
         // back face culling
-        this.gl.enable(gl.CULL_FACE);
-        this.gl.cullFace(gl.BACK);
+        gl.enable(gl.CULL_FACE);
+        gl.cullFace(gl.BACK);
         
         // texturing with transparency
-        this.gl.enable(this.gl.BLEND) ;
-        this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
+        gl.enable(this.gl.BLEND) ;
+        gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
 
         this.background = new Color();
         this.viewport = Viewport.FIT;
@@ -127,14 +127,9 @@ export class Renderer
         }
 
         this.gl.clearColor(this.background.r, this.background.g, this.background.b, this.background.a);
-        //this.gl.colorMask(true, true, true, true);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT); 
         
         scene.draw(camera);
-
-        // this.gl.clearColor(1, 1, 1, 1);
-        // this.gl.colorMask(false, false, false, true);
-        // this.gl.clear(this.gl.COLOR_BUFFER_BIT);
     }
 
     getNormalizedDeviceCoordinates(mouseX: number, mouseY: number): Vector2

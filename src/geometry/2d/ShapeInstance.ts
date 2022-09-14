@@ -11,6 +11,8 @@ export class ShapeInstance extends Transform2
     {
         super();
         this.baseShape = baseShape;
+        this.boundingBox = baseShape.boundingBox;
+        this.boundingCircle = baseShape.boundingCircle;
         this.material = baseShape.material;
         
         if(copyTransform)

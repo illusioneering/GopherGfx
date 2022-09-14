@@ -1,5 +1,13 @@
 import { Matrix3 } from "../math/Matrix3";
 import { Vector2 } from "../math/Vector2";
+import { BoundingBox2 } from "../math/BoundingBox2";
+import { BoundingCircle } from "../math/BoundingCircle";
+
+export enum IntersectionMode2
+{
+    BOUNDING_CIRCLE,
+    AXIS_ALIGNED_BOUNDING_BOX
+}
 
 export class Transform2
 {
@@ -18,6 +26,9 @@ export class Transform2
     public worldMatrix: Matrix3;
     
     public visible: boolean;
+
+    public boundingBox: BoundingBox2;
+    public boundingCircle: BoundingCircle;
 
     constructor()
     {
@@ -39,6 +50,9 @@ export class Transform2
         this.visible = true;
 
         this.parent = null;
+
+        this.boundingBox = new BoundingBox2();
+        this.boundingCircle = new BoundingCircle();
     }
 
     draw(parent: Transform2): void
@@ -128,6 +142,38 @@ export class Transform2
         if(targetVector.length() > 0)
         {
             this.rotation = lookVector.angleBetweenSigned(targetVector);
+        }
+    }
+
+    intersects(other: Transform2, mode = IntersectionMode2.BOUNDING_CIRCLE): boolean
+    {
+        if(mode == IntersectionMode2.BOUNDING_CIRCLE)
+        {
+            const thisCircle = new BoundingCircle();
+            thisCircle.copy(this.boundingCircle);
+            thisCircle.transform(this.position, this.scale);
+
+            const otherCircle = new BoundingCircle();
+            otherCircle.copy(other.boundingCircle);
+            otherCircle.transform(other.position, other.scale);
+
+            return thisCircle.intersects(otherCircle);
+        }
+        else if(mode == IntersectionMode2.AXIS_ALIGNED_BOUNDING_BOX)
+        {
+            const thisBox = new BoundingBox2();
+            thisBox.copy(this.boundingBox);
+            thisBox.transform(this.position, this.rotation, this.scale);
+
+            const otherBox = new BoundingBox2();
+            otherBox.copy(other.boundingBox);
+            otherBox.transform(other.position, other.rotation, other.scale);
+
+            return thisBox.intersects(otherBox);
+        }
+        else
+        {
+            return false;
         }
     }
 }
