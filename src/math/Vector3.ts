@@ -92,6 +92,11 @@ export class Vector3
         return v1.distanceTo(v2);
     }
 
+    public static rotate(v: Vector3, q: Quaternion): Vector3
+    {
+        return q.rotateVector(v);
+    }
+
     public x: number;
     public y: number;
     public z: number;
@@ -229,7 +234,7 @@ export class Vector3
 
     rotate(q: Quaternion): void
     {
-        this.copy(q.rotate(this));
+        this.copy(q.rotateVector(this));
     }
 
     angleBetween(v: Vector3): number

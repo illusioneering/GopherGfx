@@ -21,7 +21,7 @@ export class GouraudMaterial extends Material3
     public specularColor: Color;
     public shininess: number;
 
-    private static shader = new ShaderProgram(gouraudVertexShader, gouraudFragmentShader);
+    public static shader = new ShaderProgram(gouraudVertexShader, gouraudFragmentShader);
 
     private kAmbientUniform: WebGLUniformLocation | null;
     private kDiffuseUniform: WebGLUniformLocation | null;

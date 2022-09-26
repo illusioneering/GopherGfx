@@ -17,12 +17,14 @@ export class Transform2
     public position: Vector2;
     public rotation: number;
     public scale: Vector2;
-    public matrix: Matrix3;
     public layer: number;
 
     public worldPosition: Vector2;
     public worldRotation: number;
     public worldScale: Vector2;
+
+    public autoUpdateMatrix: boolean;
+    public matrix: Matrix3;
     public worldMatrix: Matrix3;
     
     public visible: boolean;
@@ -37,11 +39,13 @@ export class Transform2
         this.position = new Vector2();
         this.rotation = 0;
         this.scale = new Vector2(1, 1);
-        this.matrix = new Matrix3();
 
         this.worldPosition = new Vector2();
         this.worldRotation = 0;
         this.worldScale = new Vector2(1, 1);
+        
+        this.autoUpdateMatrix = true;
+        this.matrix = new Matrix3();
         this.worldMatrix = new Matrix3();
 
         // default layer
@@ -67,8 +71,10 @@ export class Transform2
 
     computeWorldTransform(): void
     {
-        
-        this.matrix.makeTransform(this.position, this.rotation, this.scale);
+        if(this.autoUpdateMatrix)
+        {
+            this.matrix.makeTransform(this.position, this.rotation, this.scale);
+        }
 
         if(this.parent)
         {

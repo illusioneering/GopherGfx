@@ -3,6 +3,14 @@ import { Quaternion } from "../math/Quaternion";
 import { Vector3 } from "../math/Vector3";
 import { Camera } from "./Camera";
 import { LightManager } from "../lights/LightManager";
+import { BoundingBox3 } from "../math/BoundingBox3";
+import { BoundingSphere } from "../math/BoundingSphere"
+
+export enum IntersectionMode3
+{
+    BOUNDING_SPHERE,
+    AXIS_ALIGNED_BOUNDING_BOX
+}
 
 export class Transform3
 {
@@ -23,6 +31,9 @@ export class Transform3
 
     public parent: Transform3 | null;
 
+    public boundingBox: BoundingBox3;
+    public boundingSphere: BoundingSphere;
+
     constructor()
     {
         this.children = [];
@@ -40,6 +51,9 @@ export class Transform3
         this.worldScale = new Vector3();
 
         this.parent = null;
+
+        this.boundingBox = new BoundingBox3();
+        this.boundingSphere = new BoundingSphere();
     }
 
     draw(parent: Transform3, camera: Camera, lightManager: LightManager): void
@@ -115,22 +129,42 @@ export class Transform3
 
     translate(translation: Vector3): void
     {
-        this.position.add(this.rotation.rotate(translation));
+        this.position.add(this.rotation.rotateVector(translation));
     }
 
     translateX(distance: number): void
     {
-        this.position.add(this.rotation.rotate(new Vector3(distance, 0, 0)));
+        this.position.add(this.rotation.rotateVector(new Vector3(distance, 0, 0)));
     }
 
     translateY(distance: number): void
     {
-        this.position.add(this.rotation.rotate(new Vector3(0, distance, 0)));
+        this.position.add(this.rotation.rotateVector(new Vector3(0, distance, 0)));
     }
 
     translateZ(distance: number): void
     {
-        this.position.add(this.rotation.rotate(new Vector3(0, 0, distance)));
+        this.position.add(this.rotation.rotateVector(new Vector3(0, 0, distance)));
+    }
+
+    rotate(rotation: Vector3): void
+    {
+        this.rotation.multiply(Quaternion.makeEulerAngles(rotation.x, rotation.y, rotation.z));
+    }
+
+    rotateX(angle: number): void
+    {
+        this.rotation.multiply(Quaternion.makeRotationX(angle));
+    }
+
+    rotateY(angle: number): void
+    {
+        this.rotation.multiply(Quaternion.makeRotationY(angle));
+    }
+
+    rotateZ(angle: number): void
+    {
+        this.rotation.multiply(Quaternion.makeRotationZ(angle));
     }
 
     // in local space
@@ -138,5 +172,37 @@ export class Transform3
     {
         const rotationMatrix = Matrix4.lookAt(this.position, target, up);
         this.rotation.setMatrix(rotationMatrix);
+    }
+
+    intersects(other: Transform3, mode = IntersectionMode3.BOUNDING_SPHERE): boolean
+    {
+        if(mode == IntersectionMode3.BOUNDING_SPHERE)
+        {
+            const thisSphere = new BoundingSphere();
+            thisSphere.copy(this.boundingSphere);
+            thisSphere.transform(this.position, this.scale);
+
+            const otherSphere = new BoundingSphere();
+            otherSphere.copy(other.boundingSphere);
+            otherSphere.transform(other.position, other.scale);
+
+            return thisSphere.intersects(otherSphere);
+        }
+        else if(mode == IntersectionMode3.AXIS_ALIGNED_BOUNDING_BOX)
+        {
+            const thisBox = new BoundingBox3();
+            thisBox.copy(this.boundingBox);
+            thisBox.transform(this.position, this.rotation, this.scale);
+
+            const otherBox = new BoundingBox3();
+            otherBox.copy(other.boundingBox);
+            otherBox.transform(other.position, other.rotation, other.scale);
+
+            return thisBox.intersects(otherBox);
+        }
+        else
+        {
+            return false;
+        }
     }
 }

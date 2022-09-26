@@ -15,7 +15,7 @@ import { Matrix4 } from '../math/Matrix4'
 
 export class WireframeMaterial extends Material3
 {
-    private static shader = new ShaderProgram(wireframeVertexShader, wireframeFragmentShader);
+    public static shader = new ShaderProgram(wireframeVertexShader, wireframeFragmentShader);
 
     public color: Color;
 

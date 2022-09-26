@@ -18,7 +18,7 @@ export class Material2
     public texture: Texture | null;
 
     private readonly gl: WebGL2RenderingContext;
-    private static shader = new ShaderProgram(shapeVertexShader, shapeFragmentShader);
+    public static shader = new ShaderProgram(shapeVertexShader, shapeFragmentShader);
 
     private colorUniform: WebGLUniformLocation | null;
     private modelUniform: WebGLUniformLocation | null;

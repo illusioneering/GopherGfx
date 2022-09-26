@@ -18,7 +18,7 @@ export class UnlitMaterial extends Material3
     public texture: Texture | null;
     public color: Color;
 
-    private static shader = new ShaderProgram(unlitVertexShader, unlitFragmentShader);
+    public static shader = new ShaderProgram(unlitVertexShader, unlitFragmentShader);
     
     private colorUniform: WebGLUniformLocation | null;
     private textureUniform: WebGLUniformLocation | null;

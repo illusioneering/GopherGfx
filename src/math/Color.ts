@@ -9,6 +9,16 @@ export class Color
     public static readonly PURPLE = new Color(1, 0, 1);
     public static readonly CYAN = new Color(0, 1, 1);
 
+    static copy(color: Color): Color
+    {
+        const newColor = new Color();
+        newColor.r = color.r;
+        newColor.g = color.g;
+        newColor.b = color.b;
+        newColor.a = color.a;
+        return newColor;
+    }
+
     public r: number;
     public g: number;
     public b: number;

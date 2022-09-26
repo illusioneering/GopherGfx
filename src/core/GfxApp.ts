@@ -80,11 +80,19 @@ export abstract class GfxApp
         {
             // Update the app
             this.update((Date.now() - this.time) / 1000);
+            
+            // Compute the world transforms for all objects in the scene graph
+            this.scene.computeWorldTransforms();
+
+            // Call the late update method
+            this.lateUpdate((Date.now() - this.time) / 1000);
+
+            // Draw the graphics
+            this.renderer.render(this.scene, this.camera);
+
+            // Update the time
             this.time = Date.now();
         }
-
-        // Draw the graphics
-        this.renderer.render(this.scene, this.camera);
 
         // Run the main loop function on the next frame
         window.requestAnimationFrame(() => this.mainLoop());
@@ -225,6 +233,9 @@ export abstract class GfxApp
     // Your app should implement the following abstract methods
     abstract createScene(): void;
     abstract update(deltaTime: number): void;
+
+    // Optional late update method to be called just before drawing the scene
+    lateUpdate(deltaTime: number): void {}
 
     // Subclasses can override these methods to handle events
     onMouseDown(event: MouseEvent): void {}

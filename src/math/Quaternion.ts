@@ -1,6 +1,5 @@
 import { Vector3 } from "./Vector3";
 import { Matrix4 } from "./Matrix4";
-import { transcode } from "buffer";
 
 export class Quaternion
 {
@@ -72,6 +71,11 @@ export class Quaternion
         const dest = new Quaternion();
         dest.setMatrix(matrix);
         return dest;
+    }
+
+    public static rotateVector(q: Quaternion, v: Vector3): Vector3
+    {
+        return q.rotateVector(v);
     }
     
     public x: number;
@@ -169,11 +173,10 @@ export class Quaternion
         return new Quaternion(this.x, this.y, this.z, this.w);
     }
 
-    // Multiply by q on the LHS
     // Quaternion multiplication is not commutative
     multiply(q: Quaternion): void
     {
-        this.copy(Quaternion.multiply(q, this));
+        this.copy(Quaternion.multiply(this, q));
     }
 
     normalize(): void
@@ -187,7 +190,7 @@ export class Quaternion
         this.w *= normalizeFactor;
     }
     
-    rotate(v: Vector3): Vector3
+    rotateVector(v: Vector3): Vector3
     {
         // Extract the vector part of the quaternion
         const u = new Vector3(this.x, this.y, this.z);

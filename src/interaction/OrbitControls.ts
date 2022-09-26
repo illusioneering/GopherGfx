@@ -104,8 +104,8 @@ export class OrbitControls
 
     private updateCamera(): void 
     {
-        this.camera.rotation.copy(this.cameraOrbitX);
-        this.camera.rotation.multiply(this.cameraOrbitY);
+        this.camera.rotation.copy(this.cameraOrbitY);
+        this.camera.rotation.multiply(this.cameraOrbitX);
 
         this.camera.position.set(0, 0, this.distance);
         this.camera.position.rotate(this.camera.rotation);

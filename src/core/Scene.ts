@@ -21,9 +21,6 @@ export class Scene
         // Make sure the camera world transform is computed
         camera.computeWorldTransform();
 
-        // Compute the world transforms for all objects in the scene graph
-        this.computeWorldTransforms();
-
         // Update the scene lights
         this.lightManager.clear();
         this.root3d.setLights(this.lightManager);
