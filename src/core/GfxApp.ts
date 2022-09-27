@@ -62,14 +62,18 @@ export abstract class GfxApp
     // Create the scene and enter the main loop
     start(): void 
     {
+        this.createScene();
+        this.initializationLoop();
+    }
+
+    private initializationLoop(): void
+    {
         if(this.waitForAssetLoading && !this.assetManager.allAssetsLoaded())
         {
-            window.requestAnimationFrame(() => this.start());
+            window.requestAnimationFrame(() => this.initializationLoop());
         }
         else
         {
-            this.createScene();
-
             this.time = Date.now();
             this.mainLoop();
         }
