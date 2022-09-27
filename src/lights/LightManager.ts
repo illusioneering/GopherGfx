@@ -1,5 +1,6 @@
 import { Light } from './Light'
 import { Vector3 } from '../math/Vector3';
+import { Quaternion } from '../math/Quaternion';
 
 export class LightManager
 {
@@ -48,20 +49,22 @@ export class LightManager
     updateLights(): void
     {
         this.lights.forEach((light: Light) => {
+
+            const worldPosition = new Vector3();
+            const worldRotation = new Quaternion();
+            const worldScale = new Vector3();
+            light.worldMatrix.decompose(worldPosition, worldRotation, worldScale);
+            this.lightPositions.push(worldPosition.x, worldPosition.y, worldPosition.z);
+            this.lightTypes.push(light.getType());
+
             if(light.visible)
             {
-                this.lightPositions.push(light.worldPosition.x, light.worldPosition.y, light.worldPosition.z);
-
-                this.lightTypes.push(light.getType());
                 this.ambientIntensities.push(light.ambientIntensity.r, light.ambientIntensity.g, light.ambientIntensity.b);
                 this.diffuseIntensities.push(light.diffuseIntensity.r, light.diffuseIntensity.g, light.diffuseIntensity.b);
                 this.specularIntensities.push(light.specularIntensity.r, light.specularIntensity.g, light.specularIntensity.b);
             }
             else
             {
-                this.lightPositions.push(light.worldPosition.x, light.worldPosition.y, light.worldPosition.z);
-
-                this.lightTypes.push(light.getType());
                 this.ambientIntensities.push(0, 0, 0);
                 this.diffuseIntensities.push(0, 0, 0);
                 this.specularIntensities.push(0, 0, 0);

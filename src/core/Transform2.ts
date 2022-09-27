@@ -19,10 +19,6 @@ export class Transform2
     public scale: Vector2;
     public layer: number;
 
-    public worldPosition: Vector2;
-    public worldRotation: number;
-    public worldScale: Vector2;
-
     public autoUpdateMatrix: boolean;
     public matrix: Matrix3;
     public worldMatrix: Matrix3;
@@ -40,10 +36,6 @@ export class Transform2
         this.rotation = 0;
         this.scale = new Vector2(1, 1);
 
-        this.worldPosition = new Vector2();
-        this.worldRotation = 0;
-        this.worldScale = new Vector2(1, 1);
-        
         this.autoUpdateMatrix = true;
         this.matrix = new Matrix3();
         this.worldMatrix = new Matrix3();
@@ -85,8 +77,6 @@ export class Transform2
         {
             this.worldMatrix.copy(this.matrix);
         }
-
-        [this.worldPosition, this.worldRotation, this.worldScale] = this.worldMatrix.decompose();
 
         this.children.forEach((elem: Transform2) => {
             elem.computeWorldTransform();

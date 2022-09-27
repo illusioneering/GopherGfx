@@ -69,6 +69,8 @@ export abstract class GfxApp
         else
         {
             this.createScene();
+
+            this.time = Date.now();
             this.mainLoop();
         }
     }

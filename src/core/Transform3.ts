@@ -25,10 +25,6 @@ export class Transform3
     public matrix: Matrix4;
     public worldMatrix: Matrix4;
 
-    public worldPosition: Vector3;
-    public worldRotation: Quaternion;
-    public worldScale: Vector3;
-
     public parent: Transform3 | null;
 
     public boundingBox: BoundingBox3;
@@ -45,10 +41,6 @@ export class Transform3
         this.autoUpdateMatrix = true;
         this.matrix = new Matrix4();
         this.worldMatrix = new Matrix4();
-
-        this.worldPosition = new Vector3();
-        this.worldRotation = new Quaternion();
-        this.worldScale = new Vector3();
 
         this.parent = null;
 
@@ -82,8 +74,6 @@ export class Transform3
         {
             this.worldMatrix.copy(this.matrix);
         }
-
-        this.worldMatrix.decompose(this.worldPosition, this.worldRotation, this.worldScale);
 
         this.children.forEach((elem: Transform3) => {
             elem.computeWorldTransform();

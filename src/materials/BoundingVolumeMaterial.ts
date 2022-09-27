@@ -9,6 +9,8 @@ import { SphereMesh } from '../geometry/3d/SphereMesh';
 import { LineMaterial } from './LineMaterial';
 import { Line3 } from '../geometry/3d/Line3';
 import { BoundingBox3 } from '../math/BoundingBox3';
+import { Vector3 } from '../math/Vector3';
+import { Quaternion } from '../math/Quaternion';
 
 export enum BoundingVolumeMode
 {
@@ -73,7 +75,12 @@ export class BoundingVolumeMaterial extends Material3
         {
             const abb = new BoundingBox3();
             abb.copy(mesh.boundingBox);
-            abb.transform(mesh.worldPosition, mesh.worldRotation, mesh.worldScale);
+
+            const worldPosition = new Vector3();
+            const worldRotation = new Quaternion();
+            const worldScale = new Vector3();
+            mesh.worldMatrix.decompose(worldPosition, worldRotation, worldScale);
+            abb.transform(worldPosition, worldRotation, worldScale);
 
             this.box.position.copy(abb.min);
             this.box.position.add(abb.max);
@@ -89,7 +96,11 @@ export class BoundingVolumeMaterial extends Material3
         }
         else if(this.mode == BoundingVolumeMode.BOUNDING_SPHERE)
         {
-            this.sphere.position.copy(mesh.worldPosition);
+            const worldPosition = new Vector3();
+            const worldRotation = new Quaternion();
+            const worldScale = new Vector3();
+            mesh.worldMatrix.decompose(worldPosition, worldRotation, worldScale);
+            this.sphere.position.copy(worldPosition);
             this.sphere.position.add(mesh.boundingSphere.center);
             this.sphere.scale.set(mesh.boundingSphere.radius, mesh.boundingSphere.radius, mesh.boundingSphere.radius);
             this.sphere.matrix.makeTransform(this.sphere.position, this.sphere.rotation, this.sphere.scale)

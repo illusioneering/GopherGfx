@@ -6,6 +6,7 @@ import { Vector2 } from './Vector2';
 import { Camera } from '../core/Camera'
 import { Mesh } from '../geometry/3d/Mesh'
 import { Transform3 } from '../core/Transform3'
+import { Quaternion } from './Quaternion';
 
 export class Ray 
 {
@@ -26,10 +27,15 @@ export class Ray
 
     setPickRay(deviceCoords: Vector2, camera: Camera): void
     {
-        this.origin.copy(camera.worldPosition);
+        const worldPosition = new Vector3();
+        const worldRotation = new Quaternion();
+        const worldScale = new Vector3();
+        camera.worldMatrix.decompose(worldPosition, worldRotation, worldScale);
+            
+        this.origin.copy(worldPosition);
         this.direction.set(deviceCoords.x, deviceCoords.y, -1);
         this.direction.applyMatrix(camera.projectionMatrix.inverse());
-        this.direction.rotate(camera.worldRotation);
+        this.direction.rotate(worldRotation);
         this.direction.normalize();
     }
 
@@ -148,9 +154,14 @@ export class Ray
         const localIntersection = this.createLocalRay(mesh).intersectsBox(mesh.boundingBox);
         if(localIntersection)
         {
-            localIntersection.multiply(mesh.worldScale);
-            localIntersection.rotate(mesh.worldRotation);
-            localIntersection.add(mesh.worldPosition);
+            const worldPosition = new Vector3();
+            const worldRotation = new Quaternion();
+            const worldScale = new Vector3();
+            mesh.worldMatrix.decompose(worldPosition, worldRotation, worldScale);
+
+            localIntersection.multiply(worldScale);
+            localIntersection.rotate(worldRotation);
+            localIntersection.add(worldPosition);
         }
         return localIntersection;
     }
@@ -160,9 +171,14 @@ export class Ray
         const localIntersection = this.createLocalRay(mesh).intersectsSphere(mesh.boundingSphere);
         if(localIntersection)
         {
-            localIntersection.multiply(mesh.worldScale);
-            localIntersection.rotate(mesh.worldRotation);
-            localIntersection.add(mesh.worldPosition);
+            const worldPosition = new Vector3();
+            const worldRotation = new Quaternion();
+            const worldScale = new Vector3();
+            mesh.worldMatrix.decompose(worldPosition, worldRotation, worldScale);
+
+            localIntersection.multiply(worldScale);
+            localIntersection.rotate(worldRotation);
+            localIntersection.add(worldPosition);
         }
 
         return localIntersection;
@@ -192,9 +208,14 @@ export class Ray
             );
             if(intersection)
             {
-                intersection.multiply(mesh.worldScale);
-                intersection.rotate(mesh.worldRotation);
-                intersection.add(mesh.worldPosition);
+                const worldPosition = new Vector3();
+                const worldRotation = new Quaternion();
+                const worldScale = new Vector3();
+                mesh.worldMatrix.decompose(worldPosition, worldRotation, worldScale);
+
+                intersection.multiply(worldScale);
+                intersection.rotate(worldRotation);
+                intersection.add(worldPosition);
                 results.push(intersection);
             }
         }
@@ -272,13 +293,18 @@ export class Ray
     {
         const localRay = new Ray(this.origin.clone(), this.direction.clone());
 
-        localRay.origin.subtract(transform.worldPosition);
+        const worldPosition = new Vector3();
+        const worldRotation = new Quaternion();
+        const worldScale = new Vector3();
+        transform.worldMatrix.decompose(worldPosition, worldRotation, worldScale);
 
-        const inverseRotation = transform.worldRotation.inverse();
+        localRay.origin.subtract(worldPosition);
+
+        const inverseRotation = worldRotation.inverse();
         localRay.origin.rotate(inverseRotation);
         localRay.direction.rotate(inverseRotation);
 
-        const scale = transform.worldScale;
+        const scale = worldScale;
         const inverseScale = new Vector3();
         inverseScale.x = 1 / scale.x;
         inverseScale.y = 1 / scale.y;
