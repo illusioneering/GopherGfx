@@ -98,6 +98,7 @@ export class UnlitMaterial extends Material3
         {
             // Disable the texture in the shader
             this.gl.uniform1i(this.useTextureUniform, 0);
+            this.gl.disableVertexAttribArray(this.texCoordAttribute);
         }
 
         // Draw the triangles

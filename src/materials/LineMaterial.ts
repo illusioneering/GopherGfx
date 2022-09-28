@@ -14,17 +14,21 @@ export class LineMaterial
 
     private colorUniform3d: WebGLUniformLocation | null;
     private useTextureUniform3d: WebGLUniformLocation | null;
+    private textureUniform3d: WebGLUniformLocation | null;
     private modelViewUniform3d: WebGLUniformLocation | null;
     private projectionUniform3d: WebGLUniformLocation | null;
     private positionAttribute3d: number;
     private colorAttribute3d: number;
+    private texCoordAttribute3d: number;
 
     private colorUniform2d: WebGLUniformLocation | null;
     private useTextureUniform2d: WebGLUniformLocation | null;
+    private textureUniform2d: WebGLUniformLocation | null;
     private modelUniform2d: WebGLUniformLocation | null;
     private layerUniform2d: WebGLUniformLocation | null;
     private positionAttribute2d: number;
     private colorAttribute2d: number;
+    private texCoordAttribute2d: number;
 
     protected readonly gl: WebGL2RenderingContext;
 
@@ -40,16 +44,20 @@ export class LineMaterial
         this.modelViewUniform3d = UnlitMaterial.shader.getUniform(this.gl, 'modelViewMatrix');
         this.projectionUniform3d = UnlitMaterial.shader.getUniform(this.gl, 'projectionMatrix');
         this.useTextureUniform3d = UnlitMaterial.shader.getUniform(this.gl, 'useTexture');
+        this.textureUniform3d = UnlitMaterial.shader.getUniform(this.gl, 'textureImage');
         this.positionAttribute3d = UnlitMaterial.shader.getAttribute(this.gl, 'position');
         this.colorAttribute3d = UnlitMaterial.shader.getAttribute(this.gl, 'color');
+        this.texCoordAttribute3d = UnlitMaterial.shader.getAttribute(this.gl, 'texCoord');   
   
         Material2.shader.initialize(this.gl);
         this.colorUniform2d = Material2.shader.getUniform(this.gl, 'materialColor');
         this.modelUniform2d = Material2.shader.getUniform(this.gl, 'modelMatrix');
         this.layerUniform2d = Material2.shader.getUniform(this.gl, 'layer');
         this.useTextureUniform2d = Material2.shader.getUniform(this.gl, 'useTexture');
+        this.textureUniform2d = Material2.shader.getUniform(this.gl, 'textureImage');
         this.positionAttribute2d = Material2.shader.getAttribute(this.gl, 'position');
         this.colorAttribute2d = Material2.shader.getAttribute(this.gl, 'color');
+        this.texCoordAttribute2d = Material2.shader.getAttribute(this.gl, 'texCoord');
     }
 
 
@@ -63,6 +71,7 @@ export class LineMaterial
 
         // Disable the texture in the shader
         this.gl.uniform1i(this.useTextureUniform3d, 0);
+        this.gl.disableVertexAttribArray(this.texCoordAttribute3d);
 
         // Set the camera uniforms
         this.gl.uniformMatrix4fv(this.modelViewUniform3d, false, Matrix4.multiply(line.worldMatrix, camera.viewMatrix).mat);
@@ -95,6 +104,7 @@ export class LineMaterial
 
         // Disable the texture in the shader
         this.gl.uniform1i(this.useTextureUniform2d, 0);
+        this.gl.disableVertexAttribArray(this.texCoordAttribute2d);
 
         // Set the model matrix uniform
         this.gl.uniformMatrix3fv(this.modelUniform2d, false, line.worldMatrix.mat);
