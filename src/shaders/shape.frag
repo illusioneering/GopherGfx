@@ -2,7 +2,7 @@
 
 precision mediump float;
 
-uniform vec4 color;
+uniform vec4 materialColor;
 uniform int useTexture;
 uniform sampler2D textureImage;
 
@@ -13,7 +13,7 @@ out vec4 fragColor;
 
 void main() 
 {
-    fragColor = color * vertColor;
+    fragColor = materialColor * vertColor;
 
     if(useTexture != 0)
     {

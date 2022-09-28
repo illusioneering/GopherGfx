@@ -40,7 +40,7 @@ export class UnlitMaterial extends Material3
 
         UnlitMaterial.shader.initialize(this.gl);
 
-        this.colorUniform = UnlitMaterial.shader.getUniform(this.gl, 'color');
+        this.colorUniform = UnlitMaterial.shader.getUniform(this.gl, 'materialColor');
         this.textureUniform = UnlitMaterial.shader.getUniform(this.gl, 'textureImage');
         this.useTextureUniform = UnlitMaterial.shader.getUniform(this.gl, 'useTexture');
 

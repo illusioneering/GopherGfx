@@ -42,7 +42,7 @@ export class Material2
         
         Material2.shader.initialize(this.gl);
 
-        this.colorUniform = Material2.shader.getUniform(this.gl, 'color');
+        this.colorUniform = Material2.shader.getUniform(this.gl, 'materialColor');
         this.modelUniform = Material2.shader.getUniform(this.gl, 'modelMatrix');
         this.layerUniform = Material2.shader.getUniform(this.gl, 'layer');
 
