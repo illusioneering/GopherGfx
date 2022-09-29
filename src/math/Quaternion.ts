@@ -154,10 +154,40 @@ export class Quaternion
     // https://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/
     setMatrix(matrix: Matrix4): void
     {
-        this.w = Math.sqrt(1 + matrix.mat[0] + matrix.mat[5] + matrix.mat[10]) / 2;
-        this.x = (matrix.mat[6] - matrix.mat[9]) / (4 * this.w);
-        this.y = (matrix.mat[8] - matrix.mat[2]) / (4 * this.w);
-        this.z = (matrix.mat[1] - matrix.mat[4]) / (4 * this.w);
+        const trace = matrix.mat[0] + matrix.mat[5] + matrix.mat[10]
+
+        if (trace > 0) 
+        { 
+            const s = Math.sqrt(trace + 1.0) * 2;  
+            this.w = 0.25 * s;
+            this.x = (matrix.mat[6] - matrix.mat[9]) / s;
+            this.y = (matrix.mat[8] - matrix.mat[2]) / s; 
+            this.z = (matrix.mat[1] - matrix.mat[4]) / s; 
+        } 
+        else if ((matrix.mat[0] > matrix.mat[5]) && (matrix.mat[0] > matrix.mat[10]))
+        { 
+            const s = Math.sqrt(1.0 + matrix.mat[0] - matrix.mat[5] - matrix.mat[10]) * 2; 
+            this.w = (matrix.mat[6] - matrix.mat[9]) / s;
+            this.x = 0.25 * s;
+            this.y = (matrix.mat[4] + matrix.mat[1]) / s; 
+            this.z = (matrix.mat[8] + matrix.mat[2]) / s; 
+        } 
+        else if (matrix.mat[5] > matrix.mat[10]) 
+        { 
+            const s = Math.sqrt(1.0 + matrix.mat[5] - matrix.mat[0] - matrix.mat[10]) * 2; 
+            this.w = (matrix.mat[8] - matrix.mat[2]) / s;
+            this.x = (matrix.mat[4] + matrix.mat[1]) / s; 
+            this.y = 0.25 * s;
+            this.z = (matrix.mat[9] + matrix.mat[6]) / s; 
+        } 
+        else 
+        { 
+            const s = Math.sqrt(1.0 + matrix.mat[10] - matrix.mat[0] - matrix.mat[5]) * 2; 
+            this.w = (matrix.mat[1] - matrix.mat[4]) / s;
+            this.x = (matrix.mat[8] + matrix.mat[2]) / s;
+            this.y = (matrix.mat[9] + matrix.mat[6]) / s;
+            this.z = 0.25 * s;
+        }
     }
 
     copy(q: Quaternion): void
