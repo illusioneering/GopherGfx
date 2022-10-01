@@ -53,6 +53,7 @@ export abstract class GfxApp
         window.addEventListener('touchstart', (event: TouchEvent) => {this.onTouchStart(event)}, {passive: false});
         window.addEventListener('touchmove', (event: TouchEvent) => {this.onTouchMove(event)}, {passive: false});
         window.addEventListener('touchend', (event: TouchEvent) => {this.onTouchEnd(event)}, {passive: false});
+        window.addEventListener('touchcancel', (event: TouchEvent) => {this.onTouchEnd(event)}, {passive: false});
         window.addEventListener('contextmenu', event => event.preventDefault());
 
         // default orthographic camera
@@ -132,7 +133,7 @@ export abstract class GfxApp
     onTouchEnd(event: TouchEvent): void
     {
         event.preventDefault();
-        if(event.touches.length == 1)
+        if(event.touches.length == 0)
             this.simulateMouseEvent('mouseup', event);
     }
 
@@ -173,12 +174,12 @@ export abstract class GfxApp
         {
             const mouseEvent = new MouseEvent(type, {
                 'button': 0,
-                'clientX': touchEvent.touches[0].clientX, 
-                'clientY': touchEvent.touches[0].clientY,
-                'screenX': touchEvent.touches[0].screenX,
-                'screenY': touchEvent.touches[0].screenY,
-                'movementX': touchEvent.touches[0].clientX - this.previousTouches[0].x,
-                'movementY': touchEvent.touches[0].clientY - this.previousTouches[0].y,
+                'clientX': touchEvent.changedTouches[0].clientX, 
+                'clientY': touchEvent.changedTouches[0].clientY,
+                'screenX': touchEvent.changedTouches[0].screenX,
+                'screenY': touchEvent.changedTouches[0].screenY,
+                'movementX': touchEvent.changedTouches[0].clientX - this.previousTouches[0].x,
+                'movementY': touchEvent.changedTouches[0].clientY - this.previousTouches[0].y,
                 'view': touchEvent.view,
                 cancelable: true,
                 bubbles: true,
@@ -187,7 +188,7 @@ export abstract class GfxApp
             touchEvent.target!.dispatchEvent(mouseEvent);
         }
 
-        this.previousTouches = [ new Vector2(touchEvent.touches[0].clientX, touchEvent.touches[0].clientY) ];
+        this.previousTouches = [ new Vector2(touchEvent.changedTouches[0].clientX, touchEvent.changedTouches[0].clientY) ];
     }
 
     private simulateWheelEvent(touchEvent: TouchEvent): void
