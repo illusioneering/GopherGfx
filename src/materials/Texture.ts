@@ -56,4 +56,50 @@ export class Texture
     {
         GfxApp.getInstance().assetManager.errorAssets.push(url);
     }
+
+    setMinFilter(linear: boolean, mipmap: boolean)
+    {
+        this.gl.activeTexture(this.gl.TEXTURE0 + this.id);
+
+        if(linear)
+        {
+            if(mipmap)
+                this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.NEAREST_MIPMAP_LINEAR);
+            else
+                this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR);
+        }
+        else
+        {
+            if(mipmap)
+                this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.NEAREST_MIPMAP_NEAREST);
+            else
+                this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.NEAREST);
+        }
+    }
+
+    setMagFilter(linear: boolean)
+    {
+        this.gl.activeTexture(this.gl.TEXTURE0 + this.id);
+
+        if(linear)
+            this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
+        else
+            this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST);
+    }
+
+    setWrapping(repeat: boolean)
+    {
+        this.gl.activeTexture(this.gl.TEXTURE0 + this.id);
+        
+        if(repeat)
+        {
+            this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.REPEAT);
+            this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.REPEAT);
+        }
+        else
+        {
+            this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE);
+            this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
+        }
+    }
 }
