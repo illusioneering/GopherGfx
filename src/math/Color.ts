@@ -19,6 +19,16 @@ export class Color
         return newColor;
     }
 
+    public static lerp(c1: Color, c2: Color, alpha: number): Color
+    {
+        return new Color(
+            c1.r * (1-alpha) + c2.r * alpha,
+            c1.g * (1-alpha) + c2.g * alpha,
+            c1.b * (1-alpha) + c2.b * alpha,
+            c1.a * (1-alpha) + c2.a * alpha,
+        );
+    }
+
     public r: number;
     public g: number;
     public b: number;
@@ -46,5 +56,18 @@ export class Color
         this.g = color.g;
         this.b = color.b;
         this.a = color.a;
+    }
+
+    clone(): Color
+    {
+        return new Color(this.r, this.g, this.b, this.a);
+    }
+
+    lerp(c1: Color, c2: Color, alpha: number): void
+    {
+        this.r = c1.r * (1-alpha) + c2.r * alpha;
+        this.g = c1.g * (1-alpha) + c2.g * alpha;
+        this.b = c1.b * (1-alpha) + c2.b * alpha;
+        this.a = c1.b * (1-alpha) + c2.a * alpha;
     }
 }
