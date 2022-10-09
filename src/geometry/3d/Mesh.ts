@@ -7,6 +7,8 @@ import { GouraudMaterial } from "../../materials/GouraudMaterial";
 import { Camera } from "../../core/Camera";
 import { LightManager } from "../../lights/LightManager";
 import { GfxApp } from "../../core/GfxApp";
+import { BoundingBox3 } from "../../math/BoundingBox3";
+import { BoundingSphere } from "../../math/BoundingSphere";
 
 export class Mesh extends Transform3
 {
@@ -17,14 +19,16 @@ export class Mesh extends Transform3
     public colorBuffer: WebGLBuffer | null;
     public indexBuffer: WebGLBuffer | null;
     public texCoordBuffer: WebGLBuffer | null;
+    public morphTargetPositionBuffer: WebGLBuffer | null;
+    public morphTargetNormalBuffer: WebGLBuffer | null;
 
     public vertexCount: number;
     public triangleCount: number;
 
     public material: Material3;
+    public morphTargetBoundingBox: BoundingBox3;
+    public morphTargetBoundingSphere: BoundingSphere;
 
-
-    
     constructor()
     {
         super();
@@ -36,11 +40,15 @@ export class Mesh extends Transform3
         this.colorBuffer = this.gl.createBuffer();
         this.indexBuffer = this.gl.createBuffer();
         this.texCoordBuffer = this.gl.createBuffer();
+        this.morphTargetPositionBuffer = this.gl.createBuffer();
+        this.morphTargetNormalBuffer = this.gl.createBuffer();
+
         this.vertexCount = 0;
         this.triangleCount = 0;
 
-        // default material
         this.material = new GouraudMaterial();
+        this.morphTargetBoundingBox = new BoundingBox3();
+        this.morphTargetBoundingSphere = new BoundingSphere();
     }
 
     draw(parent: Transform3, camera: Camera, lightManager: LightManager): void
@@ -55,35 +63,44 @@ export class Mesh extends Transform3
         });
     }
 
-    setVertices(vertices: Vector3[] | number[], usage = this.gl.STATIC_DRAW): void
+    setVertices(vertices: Vector3[] | number[], dynamicDraw = false): void
     {
         if(vertices.length > 0)
         {
             this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.positionBuffer);
 
-            let vArray: number[];
             if(typeof vertices[0] === 'number')
             {
-                vArray = vertices as number[];
+                if(dynamicDraw)
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(vertices as number[]), this.gl.DYNAMIC_DRAW);
+                else
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(vertices as number[]), this.gl.STATIC_DRAW);
                 
+                this.vertexCount = vertices.length / 3;
+                this.boundingBox.computeBounds(vertices);
+                this.boundingSphere.computeBounds(vertices, this.boundingBox);
             }
             else
             {
-                vArray = [];
+                const vArray: number[] = [];
                 (vertices as Vector3[]).forEach((elem: Vector3) =>
                 {
                     vArray.push(elem.x, elem.y, elem.z);
                 });
-            }
-            
-            this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(vArray), usage);
-            this.vertexCount = vArray.length / 3;
 
-            this.computeBounds(vertices); 
+                if(dynamicDraw)
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(vArray), this.gl.DYNAMIC_DRAW);
+                else
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(vArray), this.gl.STATIC_DRAW);
+
+                this.vertexCount = vertices.length;
+                this.boundingBox.computeBounds(vArray);
+                this.boundingSphere.computeBounds(vArray, this.boundingBox);
+            }      
         }
     }
 
-    setNormals(normals: Vector3[] | number[], usage = this.gl.STATIC_DRAW): void
+    setNormals(normals: Vector3[] | number[], dynamicDraw = false): void
     {
         if(normals.length > 0)
         {
@@ -91,7 +108,10 @@ export class Mesh extends Transform3
 
             if(typeof normals[0] === 'number')
             {
-                this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(normals as number[]), usage);
+                if(dynamicDraw)
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(normals as number[]), this.gl.DYNAMIC_DRAW);
+                else
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(normals as number[]), this.gl.STATIC_DRAW);
             }
             else
             {
@@ -101,12 +121,15 @@ export class Mesh extends Transform3
                     nArray.push(elem.x, elem.y, elem.z);
                 });
                 
-                this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(nArray), usage);
+                if(dynamicDraw)
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(nArray), this.gl.DYNAMIC_DRAW);
+                else
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(nArray), this.gl.STATIC_DRAW);
             }
         }
     }
 
-    setColors(colors: Color[] | number[], usage = this.gl.STATIC_DRAW): void
+    setColors(colors: Color[] | number[], dynamicDraw = false): void
     {
         if(colors.length > 0)
         {
@@ -114,7 +137,10 @@ export class Mesh extends Transform3
 
             if(typeof colors[0] === 'number')
             {
-                this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(colors as number[]), usage);
+                if(dynamicDraw)
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(colors as number[]), this.gl.DYNAMIC_DRAW);
+                else
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(colors as number[]), this.gl.STATIC_DRAW);
             }
             else
             {
@@ -124,12 +150,15 @@ export class Mesh extends Transform3
                     cArray.push(elem.r, elem.g, elem.b, elem.a);
                 });
                 
-                this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(cArray), usage);
+                if(dynamicDraw)
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(cArray), this.gl.DYNAMIC_DRAW);
+                else
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(cArray), this.gl.STATIC_DRAW);
             }
         }
     }
 
-    setTextureCoordinates(texCoords: Vector2[] | number[], usage = this.gl.STATIC_DRAW): void
+    setTextureCoordinates(texCoords: Vector2[] | number[], dynamicDraw = false): void
     {
         if(texCoords.length > 0)
         {
@@ -137,7 +166,10 @@ export class Mesh extends Transform3
 
             if(typeof texCoords[0] === 'number')
             {
-                this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(texCoords as number[]), usage);
+                if(dynamicDraw)
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(texCoords as number[]), this.gl.DYNAMIC_DRAW);
+                else
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(texCoords as number[]), this.gl.STATIC_DRAW);
             }
             else
             {
@@ -147,12 +179,15 @@ export class Mesh extends Transform3
                     tArray.push(elem.x, elem.y);
                 });
                 
-                this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(tArray), usage);
+                if(dynamicDraw)
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(tArray), this.gl.DYNAMIC_DRAW);
+                else
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(tArray), this.gl.STATIC_DRAW);
             }
         }
     }
 
-    setIndices(indices: Vector3[] | number[], usage = this.gl.STATIC_DRAW): void
+    setIndices(indices: Vector3[] | number[], dynamicDraw = false): void
     {
         if(indices.length > 0)
         {
@@ -161,7 +196,11 @@ export class Mesh extends Transform3
             if(typeof indices[0] === 'number')
             {
                 this.triangleCount = indices.length / 3;
-                this.gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices as number[]), usage);
+
+                if(dynamicDraw)
+                    this.gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices as number[]), this.gl.DYNAMIC_DRAW);
+                else
+                    this.gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices as number[]), this.gl.STATIC_DRAW);
             }
             else
             {
@@ -172,12 +211,15 @@ export class Mesh extends Transform3
                     iArray.push(elem.x, elem.y, elem.z);
                 });
                 
-                this.gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(iArray), usage);
+                if(dynamicDraw)
+                    this.gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(iArray), this.gl.DYNAMIC_DRAW);
+                else
+                    this.gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(iArray), this.gl.STATIC_DRAW);
             }
         }
     }
 
-    setArrayBuffer(values: Vector3[] | number[], buffer: WebGLBuffer | null, usage = this.gl.STATIC_DRAW): void
+    setArrayBuffer(values: Vector3[] | number[], buffer: WebGLBuffer | null, dynamicDraw = false): void
     {
         if(values.length > 0)
         {
@@ -185,7 +227,10 @@ export class Mesh extends Transform3
 
             if(typeof values[0] === 'number')
             {
-                this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(values as number[]), usage);
+                if(dynamicDraw)
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(values as number[]), this.gl.DYNAMIC_DRAW);
+                else
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(values as number[]), this.gl.STATIC_DRAW);
             }
             else
             {
@@ -195,7 +240,74 @@ export class Mesh extends Transform3
                     nArray.push(elem.x, elem.y, elem.z);
                 });
                 
-                this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(nArray), usage);
+                if(dynamicDraw)
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(nArray), this.gl.DYNAMIC_DRAW);
+                else
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(nArray), this.gl.STATIC_DRAW);
+            }
+        }
+    }
+
+    setMorphTargetVertices(vertices: Vector3[] | number[], dynamicDraw = false, computeBounds = true): void
+    {
+        if(vertices.length > 0)
+        {
+            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.morphTargetPositionBuffer);
+
+            if(typeof vertices[0] === 'number')
+            {
+                if(dynamicDraw)
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(vertices as number[]), this.gl.DYNAMIC_DRAW);
+                else
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(vertices as number[]), this.gl.STATIC_DRAW);
+
+                this.morphTargetBoundingBox.computeBounds(vertices);
+                this.morphTargetBoundingSphere.computeBounds(vertices, this.morphTargetBoundingBox);
+            }
+            else
+            {
+                const vArray: number[] = [];
+                (vertices as Vector3[]).forEach((elem: Vector3) =>
+                {
+                    vArray.push(elem.x, elem.y, elem.z);
+                });
+
+                if(dynamicDraw)
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(vArray), this.gl.DYNAMIC_DRAW);
+                else
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(vArray), this.gl.STATIC_DRAW);
+
+                this.morphTargetBoundingBox.computeBounds(vArray);
+                this.morphTargetBoundingSphere.computeBounds(vArray, this.morphTargetBoundingBox);
+            }
+        }
+    }
+
+    setMorphTargetNormals(normals: Vector3[] | number[], dynamicDraw = false): void
+    {
+        if(normals.length > 0)
+        {
+            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.morphTargetNormalBuffer);
+
+            if(typeof normals[0] === 'number')
+            {
+                if(dynamicDraw)
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(normals as number[]), this.gl.DYNAMIC_DRAW);
+                else
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(normals as number[]), this.gl.STATIC_DRAW);
+            }
+            else
+            {
+                const nArray: number[] = [];
+                (normals as Vector3[]).forEach((elem: Vector3) =>
+                {
+                    nArray.push(elem.x, elem.y, elem.z);
+                });
+                
+                if(dynamicDraw)
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(nArray), this.gl.DYNAMIC_DRAW);
+                else
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(nArray), this.gl.STATIC_DRAW);
             }
         }
     }
@@ -268,83 +380,7 @@ export class Mesh extends Transform3
         if(vertices.length == 0)
             return;
 
-        if(typeof vertices[0] === 'number')
-        {
-            const vArray = vertices as number[];
-
-            this.boundingBox.max.set(vArray[0], vArray[1], vArray[2]);
-            this.boundingBox.min.set(vArray[0], vArray[1], vArray[2]);
-            
-            for(let i=0; i < vArray.length; i+=3)
-            {
-                if(vArray[i] > this.boundingBox.max.x)
-                    this.boundingBox.max.x = vArray[i];
-                if(vArray[i] < this.boundingBox.min.x)
-                    this.boundingBox.min.x = vArray[i];
-
-                if(vArray[i+1] > this.boundingBox.max.y)
-                    this.boundingBox.max.y = vArray[i+1];
-                if(vArray[i+1] < this.boundingBox.min.y)
-                    this.boundingBox.min.y = vArray[i+1];
-
-                if(vArray[i+2] > this.boundingBox.max.z)
-                    this.boundingBox.max.z = vArray[i+2];
-                if(vArray[i+2] < this.boundingBox.min.z)
-                    this.boundingBox.min.z = vArray[i+2];    
-            }
-        }
-        else
-        {
-            this.boundingBox.max.copy((vertices as Vector3[])[0]);
-            this.boundingBox.min.copy((vertices as Vector3[])[0]);
-
-            (vertices as Vector3[]).forEach((elem: Vector3) =>
-            {
-                if(elem.x > this.boundingBox.max.x)
-                    this.boundingBox.max.x = elem.x;
-                if(elem.x < this.boundingBox.min.x)
-                    this.boundingBox.min.x = elem.x;
-
-                if(elem.y > this.boundingBox.max.y)
-                    this.boundingBox.max.y = elem.y;
-                if(elem.y < this.boundingBox.min.y)
-                    this.boundingBox.min.y =elem.y;
-
-                if(elem.z > this.boundingBox.max.z)
-                    this.boundingBox.max.z = elem.z;
-                if(elem.z < this.boundingBox.min.z)
-                    this.boundingBox.min.z = elem.z;
-            });
-        }
-
-        this.boundingSphere.center.copy(this.boundingBox.min);
-        this.boundingSphere.center.add(this.boundingBox.max);
-        this.boundingSphere.center.multiplyScalar(0.5);
-        this.boundingSphere.radius = 0;
-        if(typeof vertices[0] === 'number')
-        {
-            const vArray = vertices as number[];
-            for(let i=0; i < vArray.length; i+=3)
-            {
-                const distance = Math.sqrt(
-                    (vArray[i] - this.boundingSphere.center.x) * (vArray[i] - this.boundingSphere.center.x) +
-                    (vArray[i+1] - this.boundingSphere.center.y) * (vArray[i+1] - this.boundingSphere.center.y) +
-                    (vArray[i+2] - this.boundingSphere.center.z) * (vArray[i+2] - this.boundingSphere.center.z)
-                );
-                
-                if(distance > this.boundingSphere.radius)
-                    this.boundingSphere.radius = distance;
-            }
-        }
-        else
-        {
-            (vertices as Vector3[]).forEach((elem: Vector3) =>
-            {
-                const distance = elem.distanceTo(this.boundingSphere.center);
-
-                if(distance > this.boundingSphere.radius)
-                    this.boundingSphere.radius = distance;
-            });
-        }
+        this.boundingBox.computeBounds(vertices);
+        this.boundingSphere.computeBounds(vertices, this.boundingBox);
     }
 }

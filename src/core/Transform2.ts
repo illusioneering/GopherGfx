@@ -61,11 +61,12 @@ export class Transform2
         });
     }
 
-    computeWorldTransform(): void
+    // forwards traversal
+    traverseSceneGraph(): void
     {
         if(this.autoUpdateMatrix)
         {
-            this.matrix.makeTransform(this.position, this.rotation, this.scale);
+            this.matrix.compose(this.position, this.rotation, this.scale);
         }
 
         if(this.parent)
@@ -79,9 +80,31 @@ export class Transform2
         }
 
         this.children.forEach((elem: Transform2) => {
-            elem.computeWorldTransform();
+            elem.traverseSceneGraph();
         });
     }
+
+    // backwards traversal
+    updateWorldMatrix(): void
+    {
+        if(this.autoUpdateMatrix)
+        {
+            this.matrix.compose(this.position, this.rotation, this.scale);
+        }
+        
+        if(this.parent)
+        {
+            this.parent.updateWorldMatrix();
+            this.worldMatrix.copy(this.parent.worldMatrix);
+            this.worldMatrix.multiply(this.matrix);
+        }
+        else
+        {
+            this.worldMatrix.copy(this.matrix);
+        }
+    }
+
+    
 
     add(child: Transform2) 
     {
@@ -131,13 +154,18 @@ export class Transform2
         this.position.add(localVector);
     }
 
-    // in local space
+
     lookAt(target: Vector2, lookVector = Vector2.UP): void
     {
-        const targetVector = Vector2.subtract(target, this.position);
+        this.updateWorldMatrix();
+        
+        const [worldPosition, worldRotation, worldScale] = this.worldMatrix.decompose();
+        const targetVector = Vector2.subtract(target, worldPosition);
+
         if(targetVector.length() > 0)
         {
-            this.rotation = lookVector.angleBetweenSigned(targetVector);
+            const worldLookVector = Vector2.rotate(lookVector, worldRotation);
+            this.rotation += worldLookVector.angleBetweenSigned(targetVector);
         }
     }
 

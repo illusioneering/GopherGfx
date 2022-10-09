@@ -27,14 +27,11 @@ export class Ray
 
     setPickRay(deviceCoords: Vector2, camera: Camera): void
     {
-        const worldPosition = new Vector3();
-        const worldRotation = new Quaternion();
-        const worldScale = new Vector3();
-        camera.worldMatrix.decompose(worldPosition, worldRotation, worldScale);
+        const [worldPosition, worldRotation, worldScale] = camera.worldMatrix.decompose();
             
         this.origin.copy(worldPosition);
         this.direction.set(deviceCoords.x, deviceCoords.y, -1);
-        this.direction.applyMatrix(camera.projectionMatrix.inverse());
+        this.direction.transformVector(camera.projectionMatrix.inverse());
         this.direction.rotate(worldRotation);
         this.direction.normalize();
     }
@@ -154,10 +151,7 @@ export class Ray
         const localIntersection = this.createLocalRay(mesh).intersectsBox(mesh.boundingBox);
         if(localIntersection)
         {
-            const worldPosition = new Vector3();
-            const worldRotation = new Quaternion();
-            const worldScale = new Vector3();
-            mesh.worldMatrix.decompose(worldPosition, worldRotation, worldScale);
+            const [worldPosition, worldRotation, worldScale] = mesh.worldMatrix.decompose();
 
             localIntersection.multiply(worldScale);
             localIntersection.rotate(worldRotation);
@@ -171,10 +165,7 @@ export class Ray
         const localIntersection = this.createLocalRay(mesh).intersectsSphere(mesh.boundingSphere);
         if(localIntersection)
         {
-            const worldPosition = new Vector3();
-            const worldRotation = new Quaternion();
-            const worldScale = new Vector3();
-            mesh.worldMatrix.decompose(worldPosition, worldRotation, worldScale);
+            const [worldPosition, worldRotation, worldScale] = mesh.worldMatrix.decompose();
 
             localIntersection.multiply(worldScale);
             localIntersection.rotate(worldRotation);
@@ -208,10 +199,7 @@ export class Ray
             );
             if(intersection)
             {
-                const worldPosition = new Vector3();
-                const worldRotation = new Quaternion();
-                const worldScale = new Vector3();
-                mesh.worldMatrix.decompose(worldPosition, worldRotation, worldScale);
+                const [worldPosition, worldRotation, worldScale] = mesh.worldMatrix.decompose();
 
                 intersection.multiply(worldScale);
                 intersection.rotate(worldRotation);
@@ -293,10 +281,7 @@ export class Ray
     {
         const localRay = new Ray(this.origin.clone(), this.direction.clone());
 
-        const worldPosition = new Vector3();
-        const worldRotation = new Quaternion();
-        const worldScale = new Vector3();
-        transform.worldMatrix.decompose(worldPosition, worldRotation, worldScale);
+        const [worldPosition, worldRotation, worldScale] = transform.worldMatrix.decompose();
 
         localRay.origin.subtract(worldPosition);
 

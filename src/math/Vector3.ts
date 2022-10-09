@@ -94,7 +94,43 @@ export class Vector3
 
     public static rotate(v: Vector3, q: Quaternion): Vector3
     {
-        return q.rotateVector(v);
+        // Extract the vector part of the quaternion
+        const u = new Vector3(q.x, q.y, q.z);
+
+        // vprime = 2.0f * dot(u, v) * u
+        const result = Vector3.multiplyScalar(u, 2 * u.dot(v));
+
+        // + (s*s - dot(u, u)) * v
+        result.add(Vector3.multiplyScalar(v, q.w * q.w - u.dot(u)));
+
+        const crossUV = u.cross(v);
+        crossUV.multiplyScalar(2 * q.w);
+        result.add(crossUV);
+
+        return result;
+    }
+
+    public static lerp(v1: Vector3, v2: Vector3, alpha: number): Vector3
+    {
+        return new Vector3(
+            v1.x * (1-alpha) + v2.x * alpha,
+            v1.y * (1-alpha) + v2.y * alpha,
+            v1.z * (1-alpha) + v2.z * alpha
+        );
+    }
+
+    public static transform(v: Vector3, m: Matrix4): Vector3
+    {
+        const result = new Vector3(v.x, v.y, v.z);
+        result.transform(m);
+        return result;
+    }
+
+    public static transformVector(v: Vector3, m: Matrix4): Vector3
+    {
+        const result = new Vector3(v.x, v.y, v.z);
+        result.transformVector(m);
+        return result;
     }
 
     public x: number;
@@ -214,7 +250,7 @@ export class Vector3
         this.z = -this.z;
     }
 
-    applyMatrix(m: Matrix4): void
+    transform(m: Matrix4): void
     {
         const v = this.clone();
         const w = 1 / (m.mat[3]*v.x + m.mat[7]*v.y + m.mat[11]*v.z + m.mat[15]);
@@ -223,7 +259,7 @@ export class Vector3
         this.z = w * (m.mat[2]*v.x + m.mat[6]*v.y + m.mat[10]*v.z + m.mat[14]);
     }
 
-    applyMatrixAsNormal(m: Matrix4): void
+    transformVector(m: Matrix4): void
     {
         const v = this.clone();
         const w = 1 / (m.mat[3]*v.x + m.mat[7]*v.y + m.mat[11]*v.z);
@@ -234,7 +270,7 @@ export class Vector3
 
     rotate(q: Quaternion): void
     {
-        this.copy(q.rotateVector(this));
+        this.copy(Vector3.rotate(this, q));
     }
 
     angleBetween(v: Vector3): number
@@ -266,5 +302,12 @@ export class Vector3
         this.x = Math.sqrt(m.mat[0]*m.mat[0] + m.mat[1]*m.mat[1] + m.mat[2]*m.mat[2]);
         this.y = Math.sqrt(m.mat[4]*m.mat[4] + m.mat[5]*m.mat[5] + m.mat[6]*m.mat[6]);
         this.z = Math.sqrt(m.mat[8]*m.mat[8] + m.mat[9]*m.mat[9] + m.mat[10]*m.mat[10]);
+    }
+
+    lerp(v1: Vector3, v2: Vector3, alpha: number): void
+    {
+        this.x = v1.x * (1-alpha) + v2.x * alpha;
+        this.y = v1.y * (1-alpha) + v2.y * alpha;
+        this.z = v1.z * (1-alpha) + v2.z * alpha;
     }
 }

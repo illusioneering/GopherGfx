@@ -16,10 +16,9 @@ import { Matrix4 } from '../math/Matrix4'
 export class WireframeMaterial extends Material3
 {
     public static shader = new ShaderProgram(wireframeVertexShader, wireframeFragmentShader);
+    public static wireframeBuffers: Map<Mesh, WebGLBuffer> = new Map();
 
     public color: Color;
-
-    private wireframeBuffers: Map<Mesh, WebGLBuffer>;
 
     private positionAttribute: number;
     private modelViewUniform: WebGLUniformLocation | null;
@@ -31,7 +30,6 @@ export class WireframeMaterial extends Material3
         super();
 
         this.color = new Color(1, 1, 1, 1);
-        this.wireframeBuffers = new Map();
 
         WireframeMaterial.shader.initialize(this.gl);
         this.positionAttribute = WireframeMaterial.shader.getAttribute(this.gl, 'position');
@@ -60,26 +58,31 @@ export class WireframeMaterial extends Material3
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, mesh.positionBuffer);
         this.gl.vertexAttribPointer(this.positionAttribute, 3, this.gl.FLOAT, false, 0, 0);
 
-        if(!this.wireframeBuffers.get(mesh))
+        if(!WireframeMaterial.wireframeBuffers.get(mesh))
         {
             this.updateWireframeBuffer(mesh);
         }
 
-        this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.wireframeBuffers.get(mesh) as WebGLBuffer);
+        this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, WireframeMaterial.wireframeBuffers.get(mesh) as WebGLBuffer);
         this.gl.drawElements(this.gl.LINES, mesh.triangleCount * 6, this.gl.UNSIGNED_SHORT, 0);
+    }
+
+    setColor(color: Color): void
+    {
+        this.color.copy(color);
     }
 
     public updateWireframeBuffer(mesh: Mesh): void
     {
         let wireframeBuffer: WebGLBuffer | null | undefined;
-        wireframeBuffer = this.wireframeBuffers.get(mesh);
+        wireframeBuffer = WireframeMaterial.wireframeBuffers.get(mesh);
 
         if(!wireframeBuffer)
         {
             wireframeBuffer = this.gl.createBuffer();
             
             if(wireframeBuffer)
-                this.wireframeBuffers.set(mesh, wireframeBuffer);
+                WireframeMaterial.wireframeBuffers.set(mesh, wireframeBuffer);
         }
 
         const indexArray = new Uint16Array(mesh.triangleCount * 3);

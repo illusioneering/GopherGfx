@@ -19,7 +19,7 @@ export class Scene
     draw(camera: Camera): void
     {
         // Make sure the camera world transform is computed
-        camera.computeWorldTransform();
+        camera.updateWorldMatrix();
 
         // Update the scene lights
         this.lightManager.clear();
@@ -47,14 +47,14 @@ export class Scene
         }
     }
 
-    computeWorldTransforms(): void
+    traverseSceneGraph(): void
     {
         this.root3d.children.forEach((elem: Transform3) => {
-            elem.computeWorldTransform();
+            elem.traverseSceneGraph();
         });
 
         this.root2d.children.forEach((elem: Transform2) => {
-            elem.computeWorldTransform();
+            elem.traverseSceneGraph();
         });
     }
 }

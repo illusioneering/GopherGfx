@@ -7,10 +7,6 @@ precision mediump float;
 
 const int MAX_LIGHTS = 16;
 
-uniform mat4 modelMatrix;
-uniform mat4 viewMatrix;
-uniform mat4 projectionMatrix;
-uniform mat4 normalMatrix;
 uniform vec3 eyePosition;
 
 uniform int numLights;
@@ -25,52 +21,54 @@ uniform vec3 kDiffuse;
 uniform vec3 kSpecular;
 uniform float shininess;
 
-in vec3 position;
-in vec3 normal;
-in vec4 color;
-in vec2 texCoord;
+uniform int useTexture;
+uniform sampler2D textureImage;
 
-out vec4 vertColor;
-out vec2 uv;
+in vec3 vertPosition;
+in vec3 vertNormal;
+in vec4 vertColor;
+in vec2 uv;
+
+out vec4 fragColor;
 
 void main() 
 {
-    // Compute the final vertex position and normal
-    vec3 worldPosition = (modelMatrix * vec4(position, 1)).xyz;
-    vec3 worldNormal = normalize((normalMatrix * vec4(normal, 0)).xyz);
-
     vec3 illumination = vec3(0, 0, 0);
     for(int i=0; i < numLights; i++)
     {
         // Ambient component
         illumination += kAmbient * ambientIntensities[i];
 
+        // Normalize the interpolated normal vector
+        vec3 n = normalize(vertNormal);
+
         // Compute the vector from the vertex position to the light
         vec3 l;
         if(lightTypes[i] == DIRECTIONAL_LIGHT)
             l = normalize(lightPositions[i]);
         else
-            l = normalize(lightPositions[i] - worldPosition);
+            l = normalize(lightPositions[i] - vertPosition);
 
         // Diffuse component
-        float diffuseComponent = max(dot(worldNormal, l), 0.0);
+        float diffuseComponent = max(dot(n, l), 0.0);
         illumination += diffuseComponent * kDiffuse * diffuseIntensities[i];
 
         // Compute the vector from the vertex to the eye
-        vec3 e = normalize(eyePosition - worldPosition);
+        vec3 e = normalize(eyePosition - vertPosition);
 
         // Compute the light vector reflected about the normal
-        vec3 r = reflect(-l, worldNormal);
+        vec3 r = reflect(-l, n);
 
         // Specular component
         float specularComponent = pow(max(dot(e, r), 0.0), shininess);
         illumination += specularComponent * kSpecular * specularIntensities[i];
     }
 
-    vertColor = color;
-    vertColor.rgb *= illumination;
+    fragColor = vertColor;
+    fragColor.rgb *= illumination;
 
-    uv = texCoord.xy; 
-
-    gl_Position = projectionMatrix * viewMatrix * vec4(worldPosition, 1);
+    if(useTexture != 0)
+    {
+        fragColor *= texture(textureImage, uv);
+    }
 }

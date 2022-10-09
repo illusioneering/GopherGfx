@@ -78,4 +78,56 @@ export class BoundingBox3
         else
             return true;
     }
+
+    computeBounds(vertices: Vector3[] | number[]): void
+    {
+        if(typeof vertices[0] === 'number')
+        {
+            const vArray = vertices as number[];
+
+            this.max.set(vArray[0], vArray[1], vArray[2]);
+            this.min.set(vArray[0], vArray[1], vArray[2]);
+            
+            for(let i=0; i < vArray.length; i+=3)
+            {
+                if(vArray[i] > this.max.x)
+                    this.max.x = vArray[i];
+                if(vArray[i] < this.min.x)
+                    this.min.x = vArray[i];
+
+                if(vArray[i+1] > this.max.y)
+                    this.max.y = vArray[i+1];
+                if(vArray[i+1] < this.min.y)
+                    this.min.y = vArray[i+1];
+
+                if(vArray[i+2] > this.max.z)
+                    this.max.z = vArray[i+2];
+                if(vArray[i+2] < this.min.z)
+                    this.min.z = vArray[i+2];    
+            }
+        }
+        else
+        {
+            this.max.copy((vertices as Vector3[])[0]);
+            this.min.copy((vertices as Vector3[])[0]);
+
+            (vertices as Vector3[]).forEach((elem: Vector3) =>
+            {
+                if(elem.x > this.max.x)
+                    this.max.x = elem.x;
+                if(elem.x < this.min.x)
+                    this.min.x = elem.x;
+
+                if(elem.y > this.max.y)
+                    this.max.y = elem.y;
+                if(elem.y < this.min.y)
+                    this.min.y =elem.y;
+
+                if(elem.z > this.max.z)
+                    this.max.z = elem.z;
+                if(elem.z < this.min.z)
+                    this.min.z = elem.z;
+            });
+        }
+    }
 }

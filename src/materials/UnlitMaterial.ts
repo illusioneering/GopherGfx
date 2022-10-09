@@ -105,4 +105,9 @@ export class UnlitMaterial extends Material3
         this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, mesh.indexBuffer);
         this.gl.drawElements(this.gl.TRIANGLES, mesh.triangleCount*3, this.gl.UNSIGNED_SHORT, 0);
     }
+
+    setColor(color: Color): void
+    {
+        this.color.copy(color);
+    }
 }

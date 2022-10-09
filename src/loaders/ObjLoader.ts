@@ -4,12 +4,11 @@ import { StringParser } from './StringParser';
 
 export class ObjLoader
 {
-    static load(filename: string, mesh: Mesh | null = null, callback: ((loadedMesh: Mesh) => void) | null = null): Mesh
+    static load(filename: string, callback: ((loadedMesh: Mesh) => void) | null = null): Mesh
     {
         GfxApp.getInstance().assetManager.requestedAssets.push(filename);
 
-        if(!mesh)
-            mesh = new Mesh();
+        const mesh = new Mesh();
 
         fetch(filename).then((response: Response) => {
             if(!response.ok)
@@ -19,11 +18,11 @@ export class ObjLoader
         .then((data: Blob) => {
             data.text().then((text: string) => {
                 ObjLoader.parse(text, mesh!);
-                GfxApp.getInstance().assetManager.loadedAssets.push(filename);
                 if(callback)
                 {
                     callback(mesh!);
                 }
+                GfxApp.getInstance().assetManager.loadedAssets.push(filename);
             });
         })
         .catch(() => {

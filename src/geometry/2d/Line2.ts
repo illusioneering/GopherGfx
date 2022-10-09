@@ -2,12 +2,10 @@ import { Transform2 } from "../../core/Transform2";
 import { Vector2 } from "../../math/Vector2";
 import { Color } from "../../math/Color";
 import { LineMaterial } from "../../materials/LineMaterial"
-import { Camera } from "../../core/Camera";
-import { LightManager } from "../../lights/LightManager";
 import { GfxApp } from "../../core/GfxApp";
 import { BoundingBox2 } from "../../math/BoundingBox2";
 
-enum LineMode
+export enum LineMode2
 {
     LINES,
     LINE_STRIP,
@@ -26,7 +24,7 @@ export class Line2 extends Transform2
 
     public lineMode: number;
     
-    constructor(lineMode = LineMode.LINE_STRIP)
+    constructor(lineMode = LineMode2.LINE_STRIP)
     {
         super();
 
@@ -53,7 +51,7 @@ export class Line2 extends Transform2
          this.setVertices(vertices);
          this.createDefaultVertexColors();
 
-         this.lineMode = LineMode.LINE_LOOP;
+         this.lineMode = LineMode2.LINE_LOOP;
     }
 
     draw(parent: Transform2,): void
@@ -145,9 +143,9 @@ export class Line2 extends Transform2
 
     public glLineMode(): number
     {
-        if(this.lineMode == LineMode.LINES)
+        if(this.lineMode == LineMode2.LINES)
             return this.gl.LINES;
-        else if(this.lineMode == LineMode.LINE_STRIP)
+        else if(this.lineMode == LineMode2.LINE_STRIP)
             return this.gl.LINE_STRIP;
         else
             return this.gl.LINE_LOOP;  

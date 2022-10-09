@@ -1,7 +1,7 @@
 // @ts-ignore
-import gouraudVertexShader from '../shaders/gouraud.vert'
+import phongVertexShader from '../shaders/phong.vert'
 // @ts-ignore
-import gouraudFragmentShader from '../shaders/gouraud.frag'
+import phongFragmentShader from '../shaders/phong.frag'
 
 import { Material3 } from './Material3';
 import { ShaderProgram } from './ShaderProgram';
@@ -13,7 +13,7 @@ import { Texture } from './Texture';
 import { Vector3 } from '../math/Vector3'
 import { Color } from '../math/Color' 
 
-export class GouraudMaterial extends Material3
+export class PhongMaterial extends Material3
 {
     public texture: Texture | null;
     public ambientColor: Color;
@@ -21,7 +21,7 @@ export class GouraudMaterial extends Material3
     public specularColor: Color;
     public shininess: number;
 
-    public static shader = new ShaderProgram(gouraudVertexShader, gouraudFragmentShader);
+    public static shader = new ShaderProgram(phongVertexShader, phongFragmentShader);
 
     private kAmbientUniform: WebGLUniformLocation | null;
     private kDiffuseUniform: WebGLUniformLocation | null;
@@ -59,33 +59,33 @@ export class GouraudMaterial extends Material3
         this.specularColor = new Color(0, 0, 0);
         this.shininess = 30;
 
-        GouraudMaterial.shader.initialize(this.gl);
+        PhongMaterial.shader.initialize(this.gl);
 
-        this.kAmbientUniform = GouraudMaterial.shader.getUniform(this.gl, 'kAmbient');
-        this.kDiffuseUniform = GouraudMaterial.shader.getUniform(this.gl, 'kDiffuse');
-        this.kSpecularUniform = GouraudMaterial.shader.getUniform(this.gl, 'kSpecular');
-        this.shininessUniform = GouraudMaterial.shader.getUniform(this.gl, 'shininess');
+        this.kAmbientUniform = PhongMaterial.shader.getUniform(this.gl, 'kAmbient');
+        this.kDiffuseUniform = PhongMaterial.shader.getUniform(this.gl, 'kDiffuse');
+        this.kSpecularUniform = PhongMaterial.shader.getUniform(this.gl, 'kSpecular');
+        this.shininessUniform = PhongMaterial.shader.getUniform(this.gl, 'shininess');
 
-        this.textureUniform = GouraudMaterial.shader.getUniform(this.gl, 'textureImage');
-        this.useTextureUniform = GouraudMaterial.shader.getUniform(this.gl, 'useTexture');
+        this.textureUniform = PhongMaterial.shader.getUniform(this.gl, 'textureImage');
+        this.useTextureUniform = PhongMaterial.shader.getUniform(this.gl, 'useTexture');
 
-        this.eyePositionUniform = GouraudMaterial.shader.getUniform(this.gl, 'eyePosition');
-        this.viewUniform = GouraudMaterial.shader.getUniform(this.gl, 'viewMatrix');
-        this.modelUniform = GouraudMaterial.shader.getUniform(this.gl, 'modelMatrix');
-        this.projectionUniform = GouraudMaterial.shader.getUniform(this.gl, 'projectionMatrix');
-        this.normalUniform = GouraudMaterial.shader.getUniform(this.gl, 'normalMatrix');
+        this.eyePositionUniform = PhongMaterial.shader.getUniform(this.gl, 'eyePosition');
+        this.viewUniform = PhongMaterial.shader.getUniform(this.gl, 'viewMatrix');
+        this.modelUniform = PhongMaterial.shader.getUniform(this.gl, 'modelMatrix');
+        this.projectionUniform = PhongMaterial.shader.getUniform(this.gl, 'projectionMatrix');
+        this.normalUniform = PhongMaterial.shader.getUniform(this.gl, 'normalMatrix');
 
-        this.numLightsUniform = GouraudMaterial.shader.getUniform(this.gl, 'numLights');
-        this.lightTypesUniform = GouraudMaterial.shader.getUniform(this.gl, 'lightTypes');
-        this.lightPositionsUniform = GouraudMaterial.shader.getUniform(this.gl, 'lightPositions');
-        this.ambientIntensitiesUniform = GouraudMaterial.shader.getUniform(this.gl, 'ambientIntensities');
-        this.diffuseIntensitiesUniform = GouraudMaterial.shader.getUniform(this.gl, 'diffuseIntensities');
-        this.specularIntensitiesUniform = GouraudMaterial.shader.getUniform(this.gl, 'specularIntensities');
+        this.numLightsUniform = PhongMaterial.shader.getUniform(this.gl, 'numLights');
+        this.lightTypesUniform = PhongMaterial.shader.getUniform(this.gl, 'lightTypes');
+        this.lightPositionsUniform = PhongMaterial.shader.getUniform(this.gl, 'lightPositions');
+        this.ambientIntensitiesUniform = PhongMaterial.shader.getUniform(this.gl, 'ambientIntensities');
+        this.diffuseIntensitiesUniform = PhongMaterial.shader.getUniform(this.gl, 'diffuseIntensities');
+        this.specularIntensitiesUniform = PhongMaterial.shader.getUniform(this.gl, 'specularIntensities');
 
-        this.positionAttribute = GouraudMaterial.shader.getAttribute(this.gl, 'position');
-        this.normalAttribute = GouraudMaterial.shader.getAttribute(this.gl, 'normal');
-        this.colorAttribute = GouraudMaterial.shader.getAttribute(this.gl, 'color');
-        this.texCoordAttribute = GouraudMaterial.shader.getAttribute(this.gl, 'texCoord');   
+        this.positionAttribute = PhongMaterial.shader.getAttribute(this.gl, 'position');
+        this.normalAttribute = PhongMaterial.shader.getAttribute(this.gl, 'normal');
+        this.colorAttribute = PhongMaterial.shader.getAttribute(this.gl, 'color');
+        this.texCoordAttribute = PhongMaterial.shader.getAttribute(this.gl, 'texCoord');   
     }
 
     draw(mesh: Mesh, transform: Transform3, camera: Camera, lightManager: LightManager): void
@@ -96,7 +96,7 @@ export class GouraudMaterial extends Material3
         this.initialize();
 
         // Switch to this shader
-        this.gl.useProgram(GouraudMaterial.shader.getProgram());
+        this.gl.useProgram(PhongMaterial.shader.getProgram());
 
         // Set the camera uniforms
         const cameraPosition = new Vector3();

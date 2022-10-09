@@ -38,7 +38,7 @@ export class Camera extends Transform3
         this.far = far;
         this.projectionMatrixDirty = true;
 
-        this.projectionMatrix.makePerspective(fov, aspectRatio, near, far);
+        this.projectionMatrix.setPerspective(fov, aspectRatio, near, far);
     }
 
     public setOrthographicCamera(left: number, right: number, bottom: number, top: number, near: number, far: number): void
@@ -50,12 +50,12 @@ export class Camera extends Transform3
         this.far = far;
         this.projectionMatrixDirty = true;
 
-        this.projectionMatrix.makeOrthographic(left, right, bottom, top, near, far);
+        this.projectionMatrix.setOrthographic(left, right, bottom, top, near, far);
     }
 
-    public computeWorldTransform(): void
+    public updateWorldMatrix(): void
     {
-        super.computeWorldTransform();
+        super.updateWorldMatrix();
         this.viewMatrix = this.worldMatrix.inverse();
     }
 

@@ -50,18 +50,15 @@ export class LightManager
     {
         this.lights.forEach((light: Light) => {
 
-            const worldPosition = new Vector3();
-            const worldRotation = new Quaternion();
-            const worldScale = new Vector3();
-            light.worldMatrix.decompose(worldPosition, worldRotation, worldScale);
+            const [worldPosition, worldRotation, worldScale] = light.worldMatrix.decompose();
             this.lightPositions.push(worldPosition.x, worldPosition.y, worldPosition.z);
             this.lightTypes.push(light.getType());
 
             if(light.visible)
             {
-                this.ambientIntensities.push(light.ambientIntensity.r, light.ambientIntensity.g, light.ambientIntensity.b);
-                this.diffuseIntensities.push(light.diffuseIntensity.r, light.diffuseIntensity.g, light.diffuseIntensity.b);
-                this.specularIntensities.push(light.specularIntensity.r, light.specularIntensity.g, light.specularIntensity.b);
+                this.ambientIntensities.push(light.ambientIntensity.x, light.ambientIntensity.y, light.ambientIntensity.z);
+                this.diffuseIntensities.push(light.diffuseIntensity.x, light.diffuseIntensity.y, light.diffuseIntensity.z);
+                this.specularIntensities.push(light.specularIntensity.x, light.specularIntensity.y, light.specularIntensity.z);
             }
             else
             {

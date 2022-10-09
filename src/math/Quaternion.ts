@@ -5,6 +5,11 @@ export class Quaternion
 {
     public static readonly IDENTITY: Quaternion = new Quaternion();
 
+    public static copy(q: Quaternion): Quaternion
+    {
+        return new Quaternion(q.x, q.y, q.z, q.w);
+    }
+
     public static multiply(q1: Quaternion, q2: Quaternion): Quaternion
     {
         const dest = new Quaternion();
@@ -29,6 +34,11 @@ export class Quaternion
         const dest = q.clone();
         dest.invert();
         return dest;
+    }
+
+    makeIdentity(): Quaternion
+    {
+        return new Quaternion(0, 0, 0, 1);
     }
 
     public static makeRotationX(angle: number): Quaternion
@@ -59,10 +69,10 @@ export class Quaternion
         return dest;
     }
 
-    public static makeEulerAngles(yaw: number, pitch: number, roll: number): Quaternion
+    public static makeEulerAngles(x: number, y: number, z: number, order = 'YZX'): Quaternion
     {
         const dest = new Quaternion();
-        dest.setEulerAngles(yaw, pitch, roll);
+        dest.setEulerAngles(x, y, z, order);
         return dest;
     }
 
@@ -73,9 +83,11 @@ export class Quaternion
         return dest;
     }
 
-    public static rotateVector(q: Quaternion, v: Vector3): Vector3
+    public static slerp(q1: Quaternion, q2: Quaternion, alpha: number): Quaternion
     {
-        return q.rotateVector(v);
+        const q = new Quaternion();
+        q.slerp(q1, q2, alpha);
+        return q;
     }
     
     public x: number;
@@ -97,6 +109,14 @@ export class Quaternion
         this.y = y;
         this.z = z;
         this.w = w;
+    }
+
+    setIdentity(): void
+    {
+        this.x = 0;
+        this.y = 0;
+        this.z = 0;
+        this.w  = 1;
     }
 
     setRotationX(angle: number): void
@@ -123,6 +143,7 @@ export class Quaternion
         this.z = Math.sin(angle / 2);
     }
 
+    // http://www.euclideanspace.com/maths/geometry/rotations/conversions/angleToQuaternion/index.htm
     // assumes axis is normalized
     setAxisAngle(axis: Vector3, angle: number): void
     {
@@ -134,21 +155,64 @@ export class Quaternion
         this.z = sinAngle * axis.z;
     }
 
-    setEulerAngles(yaw: number, pitch: number, roll: number): void
+    // based on the implementation in three.js
+    setEulerAngles(x: number, y: number, z: number, order = 'YZX'): void
     {
-        const cosPitch = Math.cos(pitch/2);
-        const sinPitch = Math.sin(pitch/2);
+		const cos = Math.cos;
+		const sin = Math.sin;
 
-        const cosYaw = Math.cos(yaw/2);
-        const sinYaw = Math.sin(yaw/2);
-        
-        const cosRoll = Math.cos(-roll/2);
-        const sinRoll = Math.sin(-roll/2);
+		const c1 = cos( x / 2 );
+		const c2 = cos( y / 2 );
+		const c3 = cos( z / 2 );
 
-        this.x = sinPitch * cosYaw * cosRoll + cosPitch * sinYaw * sinRoll;
-        this.y = cosPitch * sinYaw * cosRoll - sinPitch * cosYaw * sinRoll;
-        this.z = cosPitch * cosYaw * sinRoll + sinPitch * sinYaw * cosRoll;    
-        this.w = cosPitch * cosYaw * cosRoll - sinPitch * sinYaw * sinRoll;
+		const s1 = sin( x / 2 );
+		const s2 = sin( y / 2 );
+		const s3 = sin( z / 2 );
+
+		switch ( order ) 
+        {
+			case 'XYZ':
+				this.x = s1 * c2 * c3 + c1 * s2 * s3;
+				this.y = c1 * s2 * c3 - s1 * c2 * s3;
+				this.z = c1 * c2 * s3 + s1 * s2 * c3;
+				this.w = c1 * c2 * c3 - s1 * s2 * s3;
+				break;
+
+			case 'YXZ':
+				this.x = s1 * c2 * c3 + c1 * s2 * s3;
+				this.y = c1 * s2 * c3 - s1 * c2 * s3;
+				this.z = c1 * c2 * s3 - s1 * s2 * c3;
+				this.w = c1 * c2 * c3 + s1 * s2 * s3;
+				break;
+
+			case 'ZXY':
+				this.x = s1 * c2 * c3 - c1 * s2 * s3;
+				this.y = c1 * s2 * c3 + s1 * c2 * s3;
+				this.z = c1 * c2 * s3 + s1 * s2 * c3;
+				this.w = c1 * c2 * c3 - s1 * s2 * s3;
+				break;
+
+			case 'ZYX':
+				this.x = s1 * c2 * c3 - c1 * s2 * s3;
+				this.y = c1 * s2 * c3 + s1 * c2 * s3;
+				this.z = c1 * c2 * s3 - s1 * s2 * c3;
+				this.w = c1 * c2 * c3 + s1 * s2 * s3;
+				break;
+
+			case 'YZX':
+				this.x = s1 * c2 * c3 + c1 * s2 * s3;
+				this.y = c1 * s2 * c3 + s1 * c2 * s3;
+				this.z = c1 * c2 * s3 - s1 * s2 * c3;
+				this.w = c1 * c2 * c3 - s1 * s2 * s3;
+				break;
+
+			case 'XZY':
+				this.x = s1 * c2 * c3 - c1 * s2 * s3;
+				this.y = c1 * s2 * c3 - s1 * c2 * s3;
+				this.z = c1 * c2 * s3 + s1 * s2 * c3;
+				this.w = c1 * c2 * c3 + s1 * s2 * s3;
+				break;
+		}
     }
 
     // https://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/
@@ -209,6 +273,12 @@ export class Quaternion
         this.copy(Quaternion.multiply(this, q));
     }
 
+    // Quaternion multiplication is not commutative
+    premultiply(q: Quaternion): void
+    {
+        this.copy(Quaternion.multiply(q, this));
+    }
+
     normalize(): void
     {
         const normalizeFactor = 1 / Math.sqrt(this.x * this.x + this.y * this.y +
@@ -219,32 +289,16 @@ export class Quaternion
         this.z *= normalizeFactor;
         this.w *= normalizeFactor;
     }
-    
-    rotateVector(v: Vector3): Vector3
-    {
-        // Extract the vector part of the quaternion
-        const u = new Vector3(this.x, this.y, this.z);
-
-        // vprime = 2.0f * dot(u, v) * u
-        const result = Vector3.multiplyScalar(u, 2 * u.dot(v));
-
-        // + (s*s - dot(u, u)) * v
-        result.add(Vector3.multiplyScalar(v, this.w * this.w - u.dot(u)));
-
-        const crossUV = u.cross(v);
-        crossUV.multiplyScalar(2 * this.w);
-        result.add(crossUV);
-
-        return result;
-    }
 
     invert(): void
     {
-        const norm = 1 / (this.x*this.x + this.y*this.y + this.z*this.z + this.w*this.w);
-        this.x *= -norm;
-        this.y *= -norm;
-        this.z *= -norm;
-        this.w *= norm;
+        const normalizeFactor = 1 / Math.sqrt(this.x * this.x + this.y * this.y +
+            this.z * this.z + this.w * this.w);
+
+        this.x *= -normalizeFactor;
+        this.y *= -normalizeFactor;
+        this.z *= -normalizeFactor;
+        this.w *= normalizeFactor;
     }
 
     inverse(): Quaternion
@@ -276,5 +330,86 @@ export class Quaternion
             2 * (tmp3 - tmp4)*invs, 2 * (tmp5 + tmp6)*invs, (-sqx - sqy + sqz + sqw), 0,
             0, 0, 0, 1
         );
+    }
+
+    lookAt(eye: Vector3, target: Vector3, up = Vector3.UP): void
+    {
+        const z = Vector3.subtract(eye, target);
+        z.normalize();
+
+        const x = Vector3.cross(up, z);
+        x.normalize();
+
+        const y = Vector3.cross(z, x);
+        y.normalize();
+
+        const m = new Matrix4();
+        m.setRowMajor(
+            x.x, y.x, z.x, 0,
+            x.y, y.y, z.y, 0,
+            x.z, y.z, z.z, 0,
+            0, 0, 0, 1
+        );
+        this.setMatrix(m);
+    }
+
+    // based on VRPN implementation
+    // https://github.com/vrpn/vrpn/blob/master/quat/quat.c
+    slerp(q1: Quaternion, q2: Quaternion, alpha: number): void
+    {
+        const temp = q1.clone();
+
+        let cosOmega = q1.x*q2.x + q1.y*q2.y + q1.z*q2.z + q1.w*q2.w;
+        let omega, sinOmega, startScale, endScale;
+
+        // If the above dot product is negative, it would be better to
+        // go between the negative of the initial and the final, so that
+        // we take the shorter path.  
+        if(cosOmega < 0)
+        {
+            cosOmega *= -1;
+            temp.x *= -1;
+            temp.y *= -1;
+            temp.z *= -1;
+            temp.w *= -1;
+        }
+
+        if((1 + cosOmega) > 0.00001)
+        {
+            // usual case
+            if((1 - cosOmega) > 0.00001)
+            {
+                omega = Math.acos(cosOmega);
+                sinOmega = Math.sin(omega);
+                startScale = Math.sin((1 - alpha) * omega) / sinOmega;
+                endScale = Math.sin(alpha * omega) / sinOmega;
+            }
+            // ends very close
+            else
+            {
+                startScale = 1 - alpha;
+                endScale = alpha;
+            }
+
+            this.x = startScale * temp.x + endScale * q2.x;
+            this.y = startScale * temp.y + endScale * q2.y;
+            this.z = startScale * temp.z + endScale * q2.z;
+            this.w = startScale * temp.w + endScale * q2.w;
+        }
+        // ends nearly opposite
+        else
+        {
+            this.x = -temp.y;
+            this.y = temp.x;
+            this.z = -temp.w;
+            this.w = temp.z;
+
+            startScale = Math.sin((0.5 - alpha) * Math.PI);
+            endScale = Math.sin(alpha * Math.PI);
+
+            this.x = startScale * temp.x + endScale * this.x;
+            this.y = startScale * temp.y + endScale * this.y;
+            this.z = startScale * temp.y + endScale * this.z;
+        }
     }
 }

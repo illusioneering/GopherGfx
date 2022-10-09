@@ -89,7 +89,7 @@ export abstract class GfxApp
             this.update((Date.now() - this.time) / 1000);
             
             // Compute the world transforms for all objects in the scene graph
-            this.scene.computeWorldTransforms();
+            this.scene.traverseSceneGraph();
 
             // Call the late update method
             this.lateUpdate((Date.now() - this.time) / 1000);
@@ -114,7 +114,6 @@ export abstract class GfxApp
     // Create a simulated mouse event for touch input
     onTouchStart(event: TouchEvent): void
     {
-        event.preventDefault();
         if(event.touches.length == 1)
             this.simulateMouseEvent('mousedown', event);
     }
@@ -132,7 +131,6 @@ export abstract class GfxApp
     // Create a simulated mouse event for touch input
     onTouchEnd(event: TouchEvent): void
     {
-        event.preventDefault();
         if(event.touches.length == 0)
             this.simulateMouseEvent('mouseup', event);
     }
@@ -174,6 +172,7 @@ export abstract class GfxApp
         {
             const mouseEvent = new MouseEvent(type, {
                 'button': 0,
+                'buttons': 1,
                 'clientX': touchEvent.changedTouches[0].clientX, 
                 'clientY': touchEvent.changedTouches[0].clientY,
                 'screenX': touchEvent.changedTouches[0].screenX,

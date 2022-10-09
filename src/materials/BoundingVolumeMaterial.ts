@@ -61,6 +61,7 @@ export class BoundingVolumeMaterial extends Material3
         {
             this.box.position.copy(mesh.boundingBox.min);
             this.box.position.add(mesh.boundingBox.max);
+
             this.box.position.multiplyScalar(0.5);
             this.box.scale.set(
                 mesh.boundingBox.max.x - mesh.boundingBox.min.x,
@@ -68,7 +69,7 @@ export class BoundingVolumeMaterial extends Material3
                 mesh.boundingBox.max.z - mesh.boundingBox.min.z
             );
             this.box.parent = mesh;
-            this.box.computeWorldTransform();
+            this.box.traverseSceneGraph();
             this.box.draw(mesh, camera, lightManager);
         }
         else if(this.mode == BoundingVolumeMode.AXIS_ALIGNED_BOUNDING_BOX)
@@ -76,10 +77,7 @@ export class BoundingVolumeMaterial extends Material3
             const abb = new BoundingBox3();
             abb.copy(mesh.boundingBox);
 
-            const worldPosition = new Vector3();
-            const worldRotation = new Quaternion();
-            const worldScale = new Vector3();
-            mesh.worldMatrix.decompose(worldPosition, worldRotation, worldScale);
+            const [worldPosition, worldRotation, worldScale] = mesh.worldMatrix.decompose();
             abb.transform(worldPosition, worldRotation, worldScale);
 
             this.box.position.copy(abb.min);
@@ -90,22 +88,24 @@ export class BoundingVolumeMaterial extends Material3
                 abb.max.y - abb.min.y,
                 abb.max.z - abb.min.z
             );
-            this.box.matrix.makeTransform(this.box.position, this.box.rotation, this.box.scale)
+            this.box.matrix.compose(this.box.position, this.box.rotation, this.box.scale)
             this.box.worldMatrix.copy(this.box.matrix);
             this.box.draw(mesh, camera, lightManager);
         }
         else if(this.mode == BoundingVolumeMode.BOUNDING_SPHERE)
         {
-            const worldPosition = new Vector3();
-            const worldRotation = new Quaternion();
-            const worldScale = new Vector3();
-            mesh.worldMatrix.decompose(worldPosition, worldRotation, worldScale);
+            const [worldPosition, worldRotation, worldScale] = mesh.worldMatrix.decompose();
             this.sphere.position.copy(worldPosition);
             this.sphere.position.add(mesh.boundingSphere.center);
             this.sphere.scale.set(mesh.boundingSphere.radius, mesh.boundingSphere.radius, mesh.boundingSphere.radius);
-            this.sphere.matrix.makeTransform(this.sphere.position, this.sphere.rotation, this.sphere.scale)
+            this.sphere.matrix.compose(this.sphere.position, this.sphere.rotation, this.sphere.scale)
             this.sphere.worldMatrix.copy(this.sphere.matrix);
             this.sphere.draw(mesh, camera, lightManager);
         }
+    }
+
+    setColor(color: Color): void
+    {
+        this.color.copy(color);
     }
 }

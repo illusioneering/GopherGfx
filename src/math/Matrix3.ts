@@ -60,15 +60,29 @@ export class Matrix3
 
     public static makeRotation(angle: number): Matrix3
     {
-        const matrix = new Matrix3();
-        matrix.makeRotation(angle);
-        return matrix;
+        const cosTheta = Math.cos(angle);
+        const sinTheta = Math.sin(angle);
+        
+        return Matrix3.fromRowMajor(
+            cosTheta, -sinTheta, 0,
+            sinTheta, cosTheta, 0,
+            0, 0, 1
+        );
     }
 
     public static makeScale(scale: Vector2): Matrix3
     {
+        return Matrix3.fromRowMajor(
+            scale.x, 0, 0,
+            0, scale.y, 0,
+            0, 0, 1 
+        );
+    }
+
+    public static compose(position = Vector2.ZERO, rotation = 0, scale = Vector2.ONE): Matrix3
+    {
         const matrix = new Matrix3();
-        matrix.makeScale(scale);
+        matrix.compose(position, rotation, scale);
         return matrix;
     }
 
@@ -133,7 +147,7 @@ export class Matrix3
         this.copy(temp);
     }
 
-    makeTranslation(v: Vector2): void
+    setTranslation(v: Vector2): void
     { 
         this.setRowMajor(
             1, 0, v.x,
@@ -142,7 +156,7 @@ export class Matrix3
         );
     }
 
-    makeRotation(angle: number): void
+    setRotation(angle: number): void
     {
         const cosTheta = Math.cos(angle);
         const sinTheta = Math.sin(angle);
@@ -154,20 +168,13 @@ export class Matrix3
         );
     }
 
-    makeScale(scale: Vector2): void
+    setScale(scale: Vector2): void
     {
         this.setRowMajor(
             scale.x, 0, 0,
             0, scale.y, 0,
             0, 0, 1 
         );
-    }
-
-    makeTransform(position = Vector2.ZERO, rotation = 0, scale = Vector2.ONE): void
-    {
-        this.makeTranslation(position);
-        this.multiply(Matrix3.makeRotation(rotation));
-        this.multiply(Matrix3.makeScale(scale));
     }
 
     multiplyScalar(x: number): void
@@ -216,6 +223,13 @@ export class Matrix3
         );
     }
 
+    compose(position = Vector2.ZERO, rotation = 0, scale = Vector2.ONE): void
+    {
+        this.setTranslation(position);
+        this.multiply(Matrix3.makeRotation(rotation));
+        this.multiply(Matrix3.makeScale(scale));
+    }
+
     decompose(): [Vector2, number, Vector2]
     {
         const position = new Vector2();
@@ -224,6 +238,6 @@ export class Matrix3
         position.setPositionFromMatrix(this);
         scale.setScaleFromMatrix(this);
 
-        return [position, Math.atan2(this.mat[1], this.mat[3]), scale];
+        return [position, Math.atan2(this.mat[1], this.mat[0]), scale];
     }
 }

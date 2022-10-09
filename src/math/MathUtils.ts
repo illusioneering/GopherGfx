@@ -19,4 +19,9 @@ export class MathUtils
     {
         return Math.max(min, Math.min(max, value));
     }
+
+    public static lerp(x: number, y: number, alpha: number): number
+    {
+        return x * (1-alpha) + y * alpha;
+    }
 }

@@ -88,6 +88,20 @@ export class Vector2
         return new Vector2(Math.cos(angle)*v.x - Math.sin(angle)*v.y, Math.sin(angle)*v.x + Math.cos(angle)*v.y); 
     }
 
+    public static transform(v: Vector2, m: Matrix3): Vector2
+    {
+        const result = new Vector2(v.x, v.y);
+        result.transform(m);
+        return result;
+    }
+
+    public static transformVector(v: Vector2, m: Matrix3): Vector2
+    {
+        const result = new Vector2(v.x, v.y);
+        result.transformVector(m);
+        return result;
+    }
+
     public x: number;
     public y: number;
     
@@ -175,12 +189,20 @@ export class Vector2
         this.y = Math.sqrt(m.mat[3]*m.mat[3] + m.mat[4]*m.mat[4]);
     }
 
-    applyMatrix(m: Matrix3): void
+    transform(m: Matrix3): void
     {
         const v = this.clone();
         const w = 1 / (m.mat[2]*v.x + m.mat[5]*v.y + m.mat[8]);
         this.x = w * (m.mat[0]*v.x + m.mat[3]*v.y + m.mat[6]);
         this.y = w * (m.mat[1]*v.x + m.mat[4]*v.y + m.mat[7]);
+    }
+
+    transformVector(m: Matrix3): void
+    {
+        const v = this.clone();
+        const w = 1 / (m.mat[2]*v.x + m.mat[5]*v.y);
+        this.x = w * (m.mat[0]*v.x + m.mat[3]*v.y);
+        this.y = w * (m.mat[1]*v.x + m.mat[4]*v.y);
     }
 
     dot(v: Vector2): number

@@ -53,6 +53,16 @@ export class Matrix4
         return matrix;
     }
 
+    public static makeIdentity(): Matrix4
+    {
+        return Matrix4.fromRowMajor(
+            1, 0, 0, 0,
+            0, 1, 0, 0,
+            0, 0, 1, 0,
+            0, 0, 0, 1
+        );
+    }
+
     public static makeTranslation(v: Vector3): Matrix4
     {
         return Matrix4.fromRowMajor(
@@ -66,42 +76,49 @@ export class Matrix4
     public static makeRotationX(angle: number): Matrix4
     {
         const matrix = new Matrix4();
-        matrix.makeRotationX(angle);
+        matrix.setRotationX(angle);
         return matrix;
     }
 
     public static makeRotationY(angle: number): Matrix4
     {
         const matrix = new Matrix4();
-        matrix.makeRotationY(angle);
+        matrix.setRotationY(angle);
         return matrix;
     }
 
     public static makeRotationZ(angle: number): Matrix4
     {
         const matrix = new Matrix4();
-        matrix.makeRotationZ(angle);
+        matrix.setRotationZ(angle);
         return matrix;
     }
 
-    public static makeRotation(axis: Vector3, angle: number): Matrix4
+    public static makeAxisAngle(axis: Vector3, angle: number): Matrix4
     {
         const matrix = new Matrix4();
-        matrix.makeRotation(axis, angle);
+        matrix.setAxisAngle(axis, angle);
         return matrix;
+    }
+
+    public static makeEulerAngles(x: number, y: number, z: number, order = 'YZX'): Matrix4
+    {
+        const dest = new Matrix4();
+        dest.setEulerAngles(x, y, z, order);
+        return dest;
     }
 
     public static makeScale(scale: Vector3): Matrix4
     {
         const matrix = new Matrix4();
-        matrix.makeScale(scale);
+        matrix.setScale(scale);
         return matrix;
     }
 
-    public static makeTransform(position = Vector3.ZERO, rotation = Quaternion.IDENTITY, scale = Vector3.UP): Matrix4
+    public static compose(position = Vector3.ZERO, rotation = Quaternion.IDENTITY, scale = Vector3.UP): Matrix4
     {
         const matrix = new Matrix4();
-        matrix.makeTransform(position, rotation, scale);
+        matrix.compose(position, rotation, scale);
         return matrix;
     }
 
@@ -115,21 +132,21 @@ export class Matrix4
     public static makeOrthographic(left: number, right: number, bottom: number, top: number, near: number, far: number): Matrix4
     {
         const matrix = new Matrix4();
-        matrix.makeOrthographic(left, right, bottom, top, near, far);
+        matrix.setOrthographic(left, right, bottom, top, near, far);
         return matrix;
     }
 
     public static makePerspective(fov: number, aspectRatio: number, near: number, far: number): Matrix4
     {
         const matrix = new Matrix4();
-        matrix.makePerspective(fov, aspectRatio, near, far);
+        matrix.setPerspective(fov, aspectRatio, near, far);
         return matrix;
     }
 
     public static makeFrustum(left: number, right: number, bottom: number, top: number, near: number, far: number): Matrix4
     {
         const matrix = new Matrix4();
-        matrix.makeFrustum(left, right, bottom, top, near, far);
+        matrix.setFrustum(left, right, bottom, top, near, far);
         return matrix;
     }
 
@@ -221,7 +238,23 @@ export class Matrix4
         this.copy(temp);
     }
 
-    makeTranslation(v: Vector3): void
+    premultiply(m: Matrix4): void
+    {
+        const temp = Matrix4.multiply(this, m);
+        this.copy(temp);
+    }
+
+    setIdentity(): void
+    {
+        this.setRowMajor(
+            1, 0, 0, 0,
+            0, 1, 0, 0,
+            0, 0, 1, 0,
+            0, 0, 0, 1
+        );
+    }
+
+    setTranslation(v: Vector3): void
     {
         this.setRowMajor(
             1, 0, 0, v.x,
@@ -231,7 +264,7 @@ export class Matrix4
         );
     }
 
-    makeRotationX(angle: number): void
+    setRotationX(angle: number): void
     {
         const cosTheta = Math.cos(angle);
         const sinTheta = Math.sin(angle);
@@ -244,7 +277,7 @@ export class Matrix4
         );
     }
 
-    makeRotationY(angle: number): void
+    setRotationY(angle: number): void
     {
         const cosTheta = Math.cos(angle);
         const sinTheta = Math.sin(angle);
@@ -257,7 +290,7 @@ export class Matrix4
         );
     }
 
-    makeRotationZ(angle: number): void
+    setRotationZ(angle: number): void
     {
         const cosTheta = Math.cos(angle);
         const sinTheta = Math.sin(angle);
@@ -269,7 +302,7 @@ export class Matrix4
         );
     }
 
-    makeRotation(axis: Vector3, angle: number): void
+    setAxisAngle(axis: Vector3, angle: number): void
     {
         const c = Math.cos(angle);
 		const s = Math.sin(angle);
@@ -284,7 +317,7 @@ export class Matrix4
 		);
     }
 
-    makeScale(scale: Vector3): void
+    setScale(scale: Vector3): void
     {
         this.setRowMajor(
             scale.x, 0, 0, 0,
@@ -313,7 +346,7 @@ export class Matrix4
         );
     }
 
-    makeOrthographic(left: number, right: number, bottom: number, top: number, near: number, far: number): void
+    setOrthographic(left: number, right: number, bottom: number, top: number, near: number, far: number): void
     {
         this.setRowMajor(
             2/(right-left), 0, 0, -(right+left)/(right-left),
@@ -323,14 +356,14 @@ export class Matrix4
         );
     }
 
-    makePerspective(fov: number, aspectRatio: number, near: number, far: number): void
+    setPerspective(fov: number, aspectRatio: number, near: number, far: number): void
     {
         const yMax = near * Math.tan(fov * Math.PI / 360);
         const xMax = yMax * aspectRatio;
-        this.makeFrustum(-xMax, xMax, -yMax, yMax, near, far); 
+        this.setFrustum(-xMax, xMax, -yMax, yMax, near, far); 
     }
 
-    makeFrustum(left: number, right: number, bottom: number, top: number, near: number, far: number): void
+    setFrustum(left: number, right: number, bottom: number, top: number, near: number, far: number): void
     {
         this.setRowMajor(
             2*near/(right-left), 0, (right+left)/(right-left), 0,
@@ -338,13 +371,6 @@ export class Matrix4
             0, 0, -(far+near)/(far-near), -2*far*near/(far-near),
             0, 0, -1, 0
         );
-    }
-
-    makeTransform(position = Vector3.ZERO, rotation = Quaternion.IDENTITY, scale = Vector3.ONE): void
-    {
-        this.makeTranslation(position);
-        this.multiply(rotation.getMatrix());
-        this.multiply(Matrix4.makeScale(scale));
     }
 
     lookAt(eye: Vector3, target: Vector3, up = Vector3.UP): void
@@ -356,6 +382,7 @@ export class Matrix4
         x.normalize();
 
         const y = Vector3.cross(z, x);
+        y.normalize();
 
         const rotation = Matrix4.fromRowMajor(
             x.x, y.x, z.x, 0,
@@ -547,8 +574,138 @@ export class Matrix4
         );
     }
 
-    decompose(position: Vector3, rotation: Quaternion, scale: Vector3): void
+    // based on the implementation in three.js
+    setEulerAngles(x: number, y: number, z: number, order = 'YZX'): void
     {
+		const a = Math.cos(x)
+        const b = Math.sin(x);
+		const c = Math.cos(y);
+        const d = Math.sin(y);
+		const e = Math.cos(z);
+        const f = Math.sin(z);
+
+		if (order == 'XYZ')
+        {
+			const ae = a * e, af = a * f, be = b * e, bf = b * f;
+
+			this.mat[ 0 ] = c * e;
+			this.mat[ 4 ] = - c * f;
+			this.mat[ 8 ] = d;
+
+			this.mat[ 1 ] = af + be * d;
+			this.mat[ 5 ] = ae - bf * d;
+			this.mat[ 9 ] = - b * c;
+
+			this.mat[ 2 ] = bf - ae * d;
+			this.mat[ 6 ] = be + af * d;
+			this.mat[ 10 ] = a * c;
+		} 
+        else if(order == 'YXZ')
+        {
+			const ce = c * e, cf = c * f, de = d * e, df = d * f;
+
+			this.mat[ 0 ] = ce + df * b;
+			this.mat[ 4 ] = de * b - cf;
+			this.mat[ 8 ] = a * d;
+
+			this.mat[ 1 ] = a * f;
+			this.mat[ 5 ] = a * e;
+			this.mat[ 9 ] = - b;
+
+			this.mat[ 2 ] = cf * b - de;
+			this.mat[ 6 ] = df + ce * b;
+			this.mat[ 10 ] = a * c;
+        }
+        else if(order == 'ZXY')
+        {
+            const ce = c * e, cf = c * f, de = d * e, df = d * f;
+
+            this.mat[ 0 ] = ce - df * b;
+            this.mat[ 4 ] = - a * f;
+            this.mat[ 8 ] = de + cf * b;
+
+            this.mat[ 1 ] = cf + de * b;
+            this.mat[ 5 ] = a * e;
+            this.mat[ 9 ] = df - ce * b;
+
+            this.mat[ 2 ] = - a * d;
+            this.mat[ 6 ] = b;
+            this.mat[ 10 ] = a * c;
+		} 
+        else if(order === 'ZYX')
+        {
+			const ae = a * e, af = a * f, be = b * e, bf = b * f;
+
+			this.mat[ 0 ] = c * e;
+			this.mat[ 4 ] = be * d - af;
+			this.mat[ 8 ] = ae * d + bf;
+
+			this.mat[ 1 ] = c * f;
+			this.mat[ 5 ] = bf * d + ae;
+			this.mat[ 9 ] = af * d - be;
+
+			this.mat[ 2 ] = - d;
+			this.mat[ 6 ] = b * c;
+			this.mat[ 10 ] = a * c;
+		}
+        else if(order === 'YZX')
+        {
+			const ac = a * c, ad = a * d, bc = b * c, bd = b * d;
+
+			this.mat[ 0 ] = c * e;
+			this.mat[ 4 ] = bd - ac * f;
+			this.mat[ 8 ] = bc * f + ad;
+
+			this.mat[ 1 ] = f;
+			this.mat[ 5 ] = a * e;
+			this.mat[ 9 ] = - b * e;
+
+			this.mat[ 2 ] = - d * e;
+			this.mat[ 6 ] = ad * f + bc;
+			this.mat[ 10 ] = ac - bd * f;
+		} 
+        else if(order === 'XZY') 
+        {
+			const ac = a * c, ad = a * d, bc = b * c, bd = b * d;
+
+			this.mat[ 0 ] = c * e;
+			this.mat[ 4 ] = - f;
+			this.mat[ 8 ] = d * e;
+
+			this.mat[ 1 ] = ac * f + bd;
+			this.mat[ 5 ] = a * e;
+			this.mat[ 9 ] = ad * f - bc;
+
+			this.mat[ 2 ] = bc * f - ad;
+			this.mat[ 6 ] = b * e;
+			this.mat[ 10 ] = bd * f + ac;
+		}
+
+		// bottom row
+		this.mat[ 3 ] = 0;
+		this.mat[ 7 ] = 0;
+		this.mat[ 11 ] = 0;
+
+		// last column
+		this.mat[ 12 ] = 0;
+		this.mat[ 13 ] = 0;
+		this.mat[ 14 ] = 0;
+		this.mat[ 15 ] = 1;
+    }
+
+    compose(position = Vector3.ZERO, rotation = Quaternion.IDENTITY, scale = Vector3.ONE): void
+    {
+        this.setTranslation(position);
+        this.multiply(rotation.getMatrix());
+        this.multiply(Matrix4.makeScale(scale));
+    }
+
+    decompose(): [Vector3, Quaternion, Vector3]
+    {
+        const position = new Vector3();
+        const rotation = new Quaternion();
+        const scale = new Vector3();
+
         position.setPositionFromMatrix(this);
         scale.setScaleFromMatrix(this);
 
@@ -574,5 +731,7 @@ export class Matrix4
         rotationMatrix.mat[15] = 1;
 
         rotation.setMatrix(rotationMatrix);
+
+        return [position, rotation, scale];
     }
 }

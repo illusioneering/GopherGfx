@@ -58,11 +58,12 @@ export class Transform3
         });
     }
 
-    computeWorldTransform(): void
+    // forward traversal
+    traverseSceneGraph(): void
     {
         if(this.autoUpdateMatrix)
         {
-            this.matrix.makeTransform(this.position, this.rotation, this.scale);
+            this.matrix.compose(this.position, this.rotation, this.scale);
         }
         
         if(this.parent)
@@ -76,8 +77,28 @@ export class Transform3
         }
 
         this.children.forEach((elem: Transform3) => {
-            elem.computeWorldTransform();
+            elem.traverseSceneGraph();
         });
+    }
+
+    // backwards traversal
+    updateWorldMatrix(): void
+    {
+        if(this.autoUpdateMatrix)
+        {
+            this.matrix.compose(this.position, this.rotation, this.scale);
+        }
+        
+        if(this.parent)
+        {
+            this.parent.updateWorldMatrix();
+            this.worldMatrix.copy(this.parent.worldMatrix);
+            this.worldMatrix.multiply(this.matrix);
+        }
+        else
+        {
+            this.worldMatrix.copy(this.matrix);
+        }
     }
 
     add(child: Transform3) 
@@ -119,22 +140,22 @@ export class Transform3
 
     translate(translation: Vector3): void
     {
-        this.position.add(this.rotation.rotateVector(translation));
+        this.position.add(Vector3.rotate(translation, this.rotation));
     }
 
     translateX(distance: number): void
     {
-        this.position.add(this.rotation.rotateVector(new Vector3(distance, 0, 0)));
+        this.position.add(Vector3.rotate(new Vector3(distance, 0, 0), this.rotation));
     }
 
     translateY(distance: number): void
     {
-        this.position.add(this.rotation.rotateVector(new Vector3(0, distance, 0)));
+        this.position.add(Vector3.rotate(new Vector3(0, distance, 0), this.rotation));
     }
 
     translateZ(distance: number): void
     {
-        this.position.add(this.rotation.rotateVector(new Vector3(0, 0, distance)));
+        this.position.add(Vector3.rotate(new Vector3(0, 0, distance), this.rotation));
     }
 
     rotate(rotation: Vector3): void
@@ -157,11 +178,11 @@ export class Transform3
         this.rotation.multiply(Quaternion.makeRotationZ(angle));
     }
 
-    // in local space
     lookAt(target: Vector3, up = Vector3.UP): void
     {
-        const rotationMatrix = Matrix4.lookAt(this.position, target, up);
-        this.rotation.setMatrix(rotationMatrix);
+        this.updateWorldMatrix();
+        const [worldPosition, worldRotation, worldScale] = this.worldMatrix.decompose();
+        this.rotation.lookAt(worldPosition, target, up);
     }
 
     intersects(other: Transform3, mode = IntersectionMode3.BOUNDING_SPHERE): boolean

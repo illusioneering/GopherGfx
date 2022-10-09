@@ -7,7 +7,7 @@ import { LightManager } from "../../lights/LightManager";
 import { GfxApp } from "../../core/GfxApp";
 import { BoundingBox3 } from "../../math/BoundingBox3";
 
-enum LineMode
+export enum LineMode3
 {
     LINES,
     LINE_STRIP,
@@ -26,7 +26,7 @@ export class Line3 extends Transform3
 
     public lineMode: number;
     
-    constructor(lineMode = LineMode.LINE_STRIP)
+    constructor(lineMode = LineMode3.LINE_STRIP)
     {
         super();
 
@@ -79,7 +79,7 @@ export class Line3 extends Transform3
          this.setVertices(vertices);
          this.createDefaultVertexColors();
 
-         this.lineMode = LineMode.LINES;
+         this.lineMode = LineMode3.LINES;
     }
 
     draw(parent: Transform3, camera: Camera, lightManager: LightManager): void
@@ -117,6 +117,9 @@ export class Line3 extends Transform3
             
             this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(vArray), usage);
             this.vertexCount = vArray.length / 3;
+
+            this.boundingBox.computeBounds(vArray);
+            this.boundingSphere.computeBounds(vArray, this.boundingBox);
         }
     }
 
@@ -171,9 +174,9 @@ export class Line3 extends Transform3
 
     public glLineMode(): number
     {
-        if(this.lineMode == LineMode.LINES)
+        if(this.lineMode == LineMode3.LINES)
             return this.gl.LINES;
-        else if(this.lineMode == LineMode.LINE_STRIP)
+        else if(this.lineMode == LineMode3.LINE_STRIP)
             return this.gl.LINE_STRIP;
         else
             return this.gl.LINE_LOOP;  
