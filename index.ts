@@ -11,6 +11,7 @@ export * from './src/geometry/3d/BoxMesh'
 export * from './src/geometry/3d/SphereMesh'
 export * from './src/geometry/3d/ConeMesh'
 export * from './src/geometry/3d/PlaneMesh'
+export * from './src/geometry/3d/CylinderMesh'
 export * from './src/geometry/3d/Line3'
 export * from './src/geometry/3d/Axes3'
 

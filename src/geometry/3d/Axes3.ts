@@ -3,7 +3,7 @@ import { Line3, LineMode3 } from "./Line3";
 
 export class Axes3 extends Line3
 {
-    constructor(size: number)
+    constructor(size = 1)
     {
         super(LineMode3.LINES);
 
