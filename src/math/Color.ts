@@ -29,6 +29,36 @@ export class Color
         );
     }
 
+    public static add(c1: Color, c2: Color): Color
+    {
+        return new Color(c1.r + c2.r, c1.g + c2.g, c1.b + c2.b);
+    }
+
+    public static subtract(c1: Color, c2: Color): Color
+    {
+        return new Color(c1.r - c2.r, c1.g - c2.g, c1.b - c2.b);
+    }
+
+    public static multiply(c1: Color, c2: Color): Color
+    {
+        return new Color(c1.r * c2.r, c1.g * c2.g, c1.b * c2.b);
+    }
+
+    public static divide(c1: Color, c2: Color): Color
+    {
+        return new Color(c1.r / c2.r, c1.g / c2.g, c1.b / c2.b);
+    }
+
+    public static multiplyScalar(v: Color, n: number): Color
+    {
+        return new Color(v.r * n, v.g * n, v.b * n);
+    }
+
+    public static divideScalar(v: Color, n: number): Color
+    {
+        return new Color(v.r / n, v.g / n, v.b / n);
+    }
+
     public r: number;
     public g: number;
     public b: number;
@@ -69,5 +99,47 @@ export class Color
         this.g = c1.g * (1-alpha) + c2.g * alpha;
         this.b = c1.b * (1-alpha) + c2.b * alpha;
         this.a = c1.b * (1-alpha) + c2.a * alpha;
+    }
+
+    add(c: Color): void
+    {
+        this.r += c.r;
+        this.g += c.g;
+        this.b += c.b;
+    }
+
+    subtract(c: Color): void
+    {
+        this.r -= c.r;
+        this.g -= c.g;
+        this.b -= c.b;
+    }
+
+    multiply(c: Color): void
+    {
+        this.r *= c.r;
+        this.g *= c.g;
+        this.b *= c.b;
+    }
+
+    divide(c: Color): void
+    {
+        this.r /= c.r;
+        this.g /= c.g;
+        this.b /= c.b;
+    }
+
+    multiplyScalar(n: number): void
+    {
+        this.r *= n;
+        this.g *= n;
+        this.b *= n;
+    }
+
+    divideScalar(n: number): void
+    {
+        this.r /= n;
+        this.g /= n;
+        this.b /= n;
     }
 }

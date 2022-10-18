@@ -18,13 +18,12 @@ export abstract class GfxApp
     public scene: Scene;
     public assetManager: AssetManager;
     public runInBackground: boolean;
-    public waitForAssetLoading: boolean;
 
     private time: number;
     private paused: boolean;
     private previousTouches: Vector2[];
 
-    constructor()
+    constructor(enableStencilBuffer = false)
     {
         GfxApp.instance = this;
 
@@ -33,10 +32,9 @@ export abstract class GfxApp
 
         this.camera = new Camera();
         this.scene = new Scene();
-        this.renderer = new Renderer();
+        this.renderer = new Renderer(enableStencilBuffer);
         this.assetManager = new AssetManager();
         this.runInBackground = false;
-        this.waitForAssetLoading = true;
 
         this.previousTouches = [ new Vector2() ];
   
@@ -69,12 +67,13 @@ export abstract class GfxApp
 
     private initializationLoop(): void
     {
-        if(this.waitForAssetLoading && !this.assetManager.allAssetsLoaded())
+        if(!this.assetManager.allAssetsLoaded())
         {
             window.requestAnimationFrame(() => this.initializationLoop());
         }
         else
         {
+            this.onAssetsLoaded();
             this.time = Date.now();
             this.mainLoop();
         }
@@ -242,6 +241,9 @@ export abstract class GfxApp
 
     // Optional late update method to be called just before drawing the scene
     lateUpdate(deltaTime: number): void {}
+
+    // Optional method called after all assets are loaded before entering main loop
+    onAssetsLoaded(): void {}
 
     // Subclasses can override these methods to handle events
     onMouseDown(event: MouseEvent): void {}

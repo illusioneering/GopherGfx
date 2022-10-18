@@ -92,7 +92,7 @@ export class SphereMesh extends Mesh
             vertices[i].multiplyScalar(radius);
         }
 
-        [vertices, indices] = this.mergeSharedVertices(vertices, indices);
+        [vertices, indices] = this.mergeSphereVertices(vertices, indices);
         
         // Compute texture coordinates
         for(let i=0; i < vertices.length; i++)
@@ -285,7 +285,7 @@ export class SphereMesh extends Mesh
         return triangles;
     }
 
-    private mergeSharedVertices(vertices: Vector3[], indices: number[]): [Vector3[], number[]]
+    private mergeSphereVertices(vertices: Vector3[], indices: number[]): [Vector3[], number[]]
     {
         const newVertices: Vector3[] = [];
         const newIndices: number[] = [];

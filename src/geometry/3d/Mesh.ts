@@ -379,8 +379,93 @@ export class Mesh extends Transform3
         
         if(vertices.length == 0)
             return;
-
+;
         this.boundingBox.computeBounds(vertices);
         this.boundingSphere.computeBounds(vertices, this.boundingBox);
+    }
+
+    public mergeSharedVertices(): void
+    {
+        const vArray = this.getVertices();
+        const nArray = this.getNormals();
+        const cArray = this.getColors();
+        const uvArray = this.getTextureCoordinates();
+
+        const vertices: Vector3[] = [];
+        const normals: Vector3[] = [];
+        const colors: Color[] = [];
+        const uvs: Vector2[] = [];
+        const indices = this.getIndices();
+
+        // Copy the vertices, normals, and colors into Vector3 arrays for convenience
+        for(let i=0; i < vArray.length; i+=3)
+        {
+            vertices.push(new Vector3(vArray[i], vArray[i+1], vArray[i+2]));
+            normals.push(new Vector3(nArray[i], nArray[i+1], nArray[i+2]));
+            colors.push(new Color(cArray[i], cArray[i+1], cArray[i+2]));
+        }
+
+        // Copy the uvs into a Vector2 arrays for convenience
+        for(let i=0; i < uvArray.length; i+=2)
+        {
+            uvs.push(new Vector2(uvArray[i], uvArray[i+1]));
+        }
+
+        const newVertices: Vector3[] = [];
+        const newNormals: Vector3[] = [];
+        const newColors: Color[] = [];
+        const newUVs: Vector2[] = [];
+        const newIndices: number[] = indices.slice();
+        const counts: number[] = [];
+
+        for(let i=0; i < vertices.length; i++)
+        {
+            let duplicate = false;
+            for(let j = 0; j < newVertices.length; j++)
+            {
+                if(vertices[i].equals(newVertices[j]))
+                {
+                    for(let k = 0; k < indices.length; k++)
+                    {
+                        if(indices[k] == i)
+                            newIndices[k] = j;
+                    }
+
+                    newNormals[j].add(normals[i]);
+                    newColors[j].add(colors[i]);
+                    newUVs[j].add(uvs[i]);
+                    counts[j]++;
+                    duplicate = true;
+                }   
+            }
+
+            if(!duplicate)
+            {
+                newVertices.push(vertices[i]);
+                newNormals.push(normals[i]);
+                newColors.push(colors[i]);
+                newUVs.push(uvs[i]);
+                counts.push(1);
+
+                for(let k = 0; k < indices.length; k++)
+                {
+                    if(indices[k] == i)
+                        newIndices[k] = newVertices.length-1;
+                }
+            }
+        }
+
+        for(let i=0; i < newVertices.length; i++)
+        {
+            newNormals[i].multiplyScalar(1 / counts[i]);
+            newColors[i].multiplyScalar(1 / counts[i]);
+            newUVs[i].multiplyScalar(1 / counts[i]);
+        }
+
+        this.setVertices(newVertices);
+        this.setNormals(newNormals);
+        this.setColors(newColors);
+        this.setTextureCoordinates(newUVs);
+        this.setIndices(newIndices);
     }
 }

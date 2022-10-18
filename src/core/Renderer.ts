@@ -19,7 +19,7 @@ export class Renderer
     public readonly gfxCanvas: HTMLCanvasElement;
     public readonly gl: WebGL2RenderingContext;
 
-    constructor()
+    constructor(enableStencilBuffer = false)
     {
         this.gfxCanvas = document.getElementById("gfxCanvas") as HTMLCanvasElement;
         if(!this.gfxCanvas)
@@ -33,7 +33,7 @@ export class Renderer
         // Initialize the GL context
         // Disabling alpha in the back buffer prevents texture blending issues
         // due to the way WebGL composites the canvas with the body background
-        const gl = this.gfxCanvas.getContext("webgl2", {alpha: false})!;
+        const gl = this.gfxCanvas.getContext("webgl2", {alpha: false, stencil: enableStencilBuffer})!;
         if(!gl) 
         {
             alert("Unable to initialize WebGL. Your browser or machine may not support it.");

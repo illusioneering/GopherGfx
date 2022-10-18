@@ -40,6 +40,7 @@ export class ObjLoader
         const colors: number[] = [];
         const normals: number[] = [];
         const indices: number[] = [];
+        const uvs: number[] = [];
 
         while(!parser.done())
         {
@@ -49,6 +50,8 @@ export class ObjLoader
                 this.parseVertex(parser.readLine(), vertices, colors);
             else if(nextToken == 'vn')
                 this.parseNormal(parser.readLine(), normals);
+            else if(nextToken == 'vt')
+                this.parseTextureCoordinate(parser.readLine(), uvs);
             else if(nextToken == 'f')
                 this.parseFace(parser.readLine(), indices);
             else
@@ -63,6 +66,10 @@ export class ObjLoader
         // If the file did not contain vertex colors, then assign a default color
         if(colors.length == 0)
             mesh.createDefaultVertexColors();
+
+        // If we have per vertex UVs, asign them to the mesh
+        if(uvs.length / 2 == vertices.length / 3)
+            mesh.setTextureCoordinates(uvs);
     }
 
     private static parseVertex(line: string[], vertices: number[], colors: number[])
@@ -86,6 +93,13 @@ export class ObjLoader
         normals.push(Number(line[1]));
         normals.push(Number(line[2]));
     }
+
+    private static parseTextureCoordinate(line: string[], uvs: number[])
+    {
+        uvs.push(Number(line[0]));
+        uvs.push(Number(line[1]));
+    }
+
 
     private static parseFace(line: string[], indices: number[])
     {
