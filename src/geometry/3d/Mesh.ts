@@ -315,48 +315,48 @@ export class Mesh extends Transform3
     getVertices(): number[]
     {
         const vertexArray = new Float32Array(this.vertexCount * 3);
-        this.gl.bindBuffer(this.gl.COPY_READ_BUFFER, this.positionBuffer);
-        this.gl.getBufferSubData(this.gl.COPY_READ_BUFFER, 0, vertexArray);
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.positionBuffer);
+        this.gl.getBufferSubData(this.gl.ARRAY_BUFFER, 0, vertexArray);
         return [... vertexArray];
     }
 
     getNormals(): number[]
     {
         const normalArray = new Float32Array(this.vertexCount * 3);
-        this.gl.bindBuffer(this.gl.COPY_READ_BUFFER, this.normalBuffer);
-        this.gl.getBufferSubData(this.gl.COPY_READ_BUFFER, 0, normalArray);
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.normalBuffer);
+        this.gl.getBufferSubData(this.gl.ARRAY_BUFFER, 0, normalArray);
         return [... normalArray];
     }
 
     getColors(): number[]
     {
         const colorArray = new Float32Array(this.vertexCount * 4);
-        this.gl.bindBuffer(this.gl.COPY_READ_BUFFER, this.colorBuffer);
-        this.gl.getBufferSubData(this.gl.COPY_READ_BUFFER, 0, colorArray);
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.colorBuffer);
+        this.gl.getBufferSubData(this.gl.ARRAY_BUFFER, 0, colorArray);
         return [... colorArray];
     }
 
     getTextureCoordinates(): number[]
     {
         const texCoordArray = new Float32Array(this.vertexCount * 2);
-        this.gl.bindBuffer(this.gl.COPY_READ_BUFFER, this.texCoordBuffer);
-        this.gl.getBufferSubData(this.gl.COPY_READ_BUFFER, 0, texCoordArray);
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.texCoordBuffer);
+        this.gl.getBufferSubData(this.gl.ARRAY_BUFFER, 0, texCoordArray);
         return [... texCoordArray];
     }
 
     getIndices(): number[]
     {
         const indexArray = new Uint16Array(this.triangleCount * 3);
-        this.gl.bindBuffer(this.gl.COPY_READ_BUFFER, this.indexBuffer);
-        this.gl.getBufferSubData(this.gl.COPY_READ_BUFFER, 0, indexArray);
+        this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
+        this.gl.getBufferSubData(this.gl.ELEMENT_ARRAY_BUFFER, 0, indexArray);
         return [... indexArray];
     }
 
     getArrayBuffer(buffer: WebGLBuffer | null): number[]
     {
         const valueArray = new Float32Array(this.vertexCount * 3);
-        this.gl.bindBuffer(this.gl.COPY_READ_BUFFER, buffer);
-        this.gl.getBufferSubData(this.gl.COPY_READ_BUFFER, 0, valueArray);
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, buffer);
+        this.gl.getBufferSubData(this.gl.ARRAY_BUFFER, 0, valueArray);
         return [... valueArray];
     }
 

@@ -149,16 +149,16 @@ export class Line3 extends Transform3
     getVertices(): number[]
     {
         const vertexArray = new Float32Array(this.vertexCount * 3);
-        this.gl.bindBuffer(this.gl.COPY_READ_BUFFER, this.positionBuffer);
-        this.gl.getBufferSubData(this.gl.COPY_READ_BUFFER, 0, vertexArray);
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.positionBuffer);
+        this.gl.getBufferSubData(this.gl.ARRAY_BUFFER, 0, vertexArray);
         return [... vertexArray];
     }
 
     getColors(): number[]
     {
         const colorArray = new Float32Array(this.vertexCount * 4);
-        this.gl.bindBuffer(this.gl.COPY_READ_BUFFER, this.colorBuffer);
-        this.gl.getBufferSubData(this.gl.COPY_READ_BUFFER, 0, colorArray);
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.colorBuffer);
+        this.gl.getBufferSubData(this.gl.ARRAY_BUFFER, 0, colorArray);
         return [... colorArray];
     }
 

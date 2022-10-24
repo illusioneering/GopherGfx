@@ -86,8 +86,8 @@ export class WireframeMaterial extends Material3
         }
 
         const indexArray = new Uint16Array(mesh.triangleCount * 3);
-        this.gl.bindBuffer(this.gl.COPY_READ_BUFFER, mesh.indexBuffer);
-        this.gl.getBufferSubData(this.gl.COPY_READ_BUFFER, 0, indexArray);
+        this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, mesh.indexBuffer);
+        this.gl.getBufferSubData(this.gl.ELEMENT_ARRAY_BUFFER, 0, indexArray);
         const indices = [... indexArray];
 
         const wireframeIndices: number[] = [];
