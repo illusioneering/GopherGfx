@@ -1,5 +1,6 @@
 import { GfxApp } from '../core/GfxApp';
 import { Transform3 } from '../core/Transform3';
+import { Axes3 } from '../geometry/3d/Axes3';
 import { BoxMesh } from '../geometry/3d/BoxMesh';
 import { UnlitMaterial } from '../materials/UnlitMaterial';
 import { Color } from '../math/Color';
@@ -10,13 +11,14 @@ import { Vector3 } from '../math/Vector3';
 
 export class TransformWidget extends Transform3
 {
-    public axes: BoxMesh[];
-
+    public axes: Axes3;
+    public thickAxes: BoxMesh[];
+    
     private deviceCoords: Vector2;
     private currentAxis: number;
     private selectionPoint: Vector3;
 
-    constructor(lineLength = 1, lineWidth = 0.01, triggerDistance = 0.05)
+    constructor(lineLength = 1, selectionWidth = 0.01, triggerDistance = 0.05)
     {
         super();
 
@@ -24,35 +26,38 @@ export class TransformWidget extends Transform3
         this.deviceCoords = new Vector2();
         this.selectionPoint = new Vector3();
 
-        this.axes = [];
-        this.axes.push(new BoxMesh(lineLength, lineWidth, lineWidth));
-        this.axes.push(new BoxMesh(lineWidth, lineLength, lineWidth));
-        this.axes.push(new BoxMesh(lineWidth, lineWidth, lineLength));
+        this.axes = new Axes3(lineLength);
+        this.add(this.axes);
 
-        this.axes[0].position.set(lineLength/2, 0, 0);
-        this.axes[1].position.set(0, lineLength/2, 0);
-        this.axes[2].position.set(0, 0, lineLength/2);
+        this.thickAxes = [];
+        this.thickAxes.push(new BoxMesh(lineLength, selectionWidth, selectionWidth));
+        this.thickAxes.push(new BoxMesh(selectionWidth, lineLength, selectionWidth));
+        this.thickAxes.push(new BoxMesh(selectionWidth, selectionWidth, lineLength));
 
-        this.axes[0].material = new UnlitMaterial();
-        this.axes[1].material = new UnlitMaterial();
-        this.axes[2].material = new UnlitMaterial();
+        this.thickAxes[0].position.set(lineLength/2, 0, 0);
+        this.thickAxes[1].position.set(0, lineLength/2, 0);
+        this.thickAxes[2].position.set(0, 0, lineLength/2);
 
-        this.axes[0].material.setColor(new Color(1, 0, 0));
-        this.axes[1].material.setColor(new Color(0, 1, 0));
-        this.axes[2].material.setColor(new Color(0, 0, 1));
+        this.thickAxes[0].material = new UnlitMaterial();
+        this.thickAxes[1].material = new UnlitMaterial();
+        this.thickAxes[2].material = new UnlitMaterial();
 
-        this.axes[0].boundingBox.max.y = triggerDistance;
-        this.axes[0].boundingBox.max.z = triggerDistance;
+        this.thickAxes[0].material.setColor(new Color(1, 0, 0));
+        this.thickAxes[1].material.setColor(new Color(0, 1, 0));
+        this.thickAxes[2].material.setColor(new Color(0, 0, 1));
 
-        this.axes[1].boundingBox.max.x = triggerDistance;
-        this.axes[1].boundingBox.max.z = triggerDistance;
+        this.thickAxes[0].boundingBox.max.y = triggerDistance;
+        this.thickAxes[0].boundingBox.max.z = triggerDistance;
 
-        this.axes[2].boundingBox.max.x = triggerDistance;
-        this.axes[2].boundingBox.max.y = triggerDistance;
+        this.thickAxes[1].boundingBox.max.x = triggerDistance;
+        this.thickAxes[1].boundingBox.max.z = triggerDistance;
 
-        this.add(this.axes[0]);
-        this.add(this.axes[1]);
-        this.add(this.axes[2]);
+        this.thickAxes[2].boundingBox.max.x = triggerDistance;
+        this.thickAxes[2].boundingBox.max.y = triggerDistance;
+
+        this.add(this.thickAxes[0]);
+        this.add(this.thickAxes[1]);
+        this.add(this.thickAxes[2]);
 
         window.addEventListener('mousedown', (event: MouseEvent) => {this.onMouseDown(event)});
         window.addEventListener('mouseup', (event: MouseEvent) => {this.onMouseUp(event)});
@@ -66,29 +71,21 @@ export class TransformWidget extends Transform3
 
         if(this.currentAxis == -1)
         {
-            this.axes[0].scale.y = 1;
-            this.axes[0].scale.z = 1;
-
-            this.axes[1].scale.x = 1;
-            this.axes[1].scale.z = 1;
-
-            this.axes[2].scale.x = 1;
-            this.axes[2].scale.y = 1;
+            this.thickAxes[0].visible = false;
+            this.thickAxes[1].visible = false;
+            this.thickAxes[2].visible = false;
             
-            if(ray.intersectsOrientedBoundingBox(this.axes[0]))
+            if(ray.intersectsOrientedBoundingBox(this.thickAxes[0]))
             {
-                this.axes[0].scale.y = 2;
-                this.axes[0].scale.z = 2;
+                this.thickAxes[0].visible = true;
             }
-            else if(ray.intersectsOrientedBoundingBox(this.axes[1]))
+            else if(ray.intersectsOrientedBoundingBox(this.thickAxes[1]))
             {
-                this.axes[1].scale.x = 2;
-                this.axes[1].scale.z = 2;
+                this.thickAxes[1].visible = true;
             }
-            else if(ray.intersectsOrientedBoundingBox(this.axes[2]))
+            else if(ray.intersectsOrientedBoundingBox(this.thickAxes[2]))
             {
-                this.axes[2].scale.x = 2;
-                this.axes[2].scale.y = 2;
+                this.thickAxes[2].visible = true;
             }
         }
         else if(this.currentAxis == 0)
@@ -132,7 +129,7 @@ export class TransformWidget extends Transform3
 
         if(this.currentAxis == -1)
         {
-            if(ray.intersectsOrientedBoundingBox(this.axes[0]))
+            if(ray.intersectsOrientedBoundingBox(this.thickAxes[0]))
             {
                 const [worldPosition, worldRotation, worldScale] = GfxApp.getInstance().camera.worldMatrix.decompose();
                 const projectedPosition = ray.intersectsPlane(new Plane(Vector3.ZERO, new Vector3(0, worldPosition.y, worldPosition.z)));
@@ -146,7 +143,7 @@ export class TransformWidget extends Transform3
                 return;
             }
 
-            if(ray.intersectsOrientedBoundingBox(this.axes[1]))
+            if(ray.intersectsOrientedBoundingBox(this.thickAxes[1]))
             {
                 const [worldPosition, worldRotation, worldScale] = GfxApp.getInstance().camera.worldMatrix.decompose();
 
@@ -160,7 +157,7 @@ export class TransformWidget extends Transform3
                 return;
             }
 
-            if(ray.intersectsOrientedBoundingBox(this.axes[2]))
+            if(ray.intersectsOrientedBoundingBox(this.thickAxes[2]))
             {
                 const [worldPosition, worldRotation, worldScale] = GfxApp.getInstance().camera.worldMatrix.decompose();
                 const projectedPosition = ray.intersectsPlane(new Plane(Vector3.ZERO, new Vector3(worldPosition.x, worldPosition.y, 0)));
