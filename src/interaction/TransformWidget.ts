@@ -8,7 +8,7 @@ import { Ray } from '../math/Ray'
 import { Vector2 } from '../math/Vector2';
 import { Vector3 } from '../math/Vector3';
 
-export class PositionWidget extends Transform3
+export class TransformWidget extends Transform3
 {
     public axes: BoxMesh[];
 
