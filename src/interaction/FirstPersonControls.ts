@@ -1,6 +1,7 @@
 import { Camera } from '../core/Camera';
 import { Vector3 } from '../math/Vector3';
 import { Quaternion } from '../math/Quaternion';
+import { Vector2 } from '../math/Vector2';
 
 export class FirstPersonControls
 {
@@ -13,6 +14,7 @@ export class FirstPersonControls
     private moveDirection: Vector3;
     private rotationDirection: Vector3;
     private mouseDrag: boolean;
+    private mouseMovement: Vector2;
 
     private targetOrbitX: Quaternion;
     private targetOrbitY: Quaternion;
@@ -27,6 +29,7 @@ export class FirstPersonControls
         this.moveDirection = new Vector3();
         this.rotationDirection = new Vector3();
         this.mouseDrag = false;
+        this.mouseMovement = new Vector2();
 
         this.targetOrbitX = new Quaternion();
         this.targetOrbitY = new Quaternion();
@@ -38,7 +41,6 @@ export class FirstPersonControls
         window.addEventListener('keyup', (event: KeyboardEvent) => {this.onKeyUp(event)});  
     }
 
-
     onMouseDown(event: MouseEvent): void 
     {
         if((event.target! as Element).localName == "canvas")
@@ -48,15 +50,14 @@ export class FirstPersonControls
     onMouseUp(event: MouseEvent): void
     {
         this.mouseDrag = false;
-        this.rotationDirection.set(0, 0, 0);
     }
     
     onMouseMove(event: MouseEvent): void
     {
         if(this.mouseDrag)
         {
-            this.rotationDirection.x += -event.movementY;
-            this.rotationDirection.y += -event.movementX;
+            this.mouseMovement.x = -event.movementY;
+            this.mouseMovement.y = -event.movementX;
         }
     }
 
@@ -102,6 +103,11 @@ export class FirstPersonControls
 
     update(deltaTime: number): void
     {
+        this.rotationDirection.x += this.mouseMovement.x;
+        this.rotationDirection.y += this.mouseMovement.y;
+        this.mouseMovement.x = 0;
+        this.mouseMovement.y = 0;
+
         // Prevent the camera from rotating upside-down
         const newTargetOrbitX = Quaternion.multiply(this.targetOrbitX, Quaternion.makeRotationX(this.rotationDirection.x * this.rotationSpeed * deltaTime));
         const testVector = new Vector3(0, 0, -1);
@@ -126,5 +132,12 @@ export class FirstPersonControls
         const moveDirectionNormalized = Vector3.normalize(this.moveDirection);
         moveDirectionNormalized.multiplyScalar(this.translationSpeed * deltaTime);
         this.camera.translate(moveDirectionNormalized);
+    }
+
+    freeze(): void
+    {
+        this.mouseDrag = false;
+        this.mouseMovement.x = 0;
+        this.mouseMovement.y = 0;
     }
 }

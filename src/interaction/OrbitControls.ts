@@ -1,12 +1,14 @@
 import { Camera } from '../core/Camera';
 import { Quaternion } from '../math/Quaternion';
+import { Vector2 } from '../math/Vector2';
 import { Vector3 } from '../math/Vector3';
 
 export class OrbitControls
 {
     public camera: Camera;
     public zoomable: boolean;
-    public rotationSpeed: number;
+    public rotationSpeedX: number;
+    public rotationSpeedY: number;
     public zoomSpeed: number;
 
     // Camera parameters
@@ -17,6 +19,7 @@ export class OrbitControls
     private rotationDirection: Vector3;
     private zoomDirection: number;
     private mouseDrag: boolean;
+    private mouseMovement: Vector2;
 
     constructor(camera: Camera, distance = 1, zoomable = true)
     {
@@ -24,7 +27,8 @@ export class OrbitControls
         this.zoomable = zoomable;
         this.distance = distance;
 
-        this.rotationSpeed = Math.PI / 4;
+        this.rotationSpeedX = Math.PI / 4;
+        this.rotationSpeedY = Math.PI / 4;
         this.zoomSpeed = .25;
 
         this.targetPoint = new Vector3();
@@ -33,6 +37,7 @@ export class OrbitControls
         this.rotationDirection = new Vector3();
         this.zoomDirection = 0;
         this.mouseDrag = false;
+        this.mouseMovement = new Vector2();
 
         window.addEventListener('mousedown', (event: MouseEvent) => {this.onMouseDown(event)});
         window.addEventListener('mouseup', (event: MouseEvent) => {this.onMouseUp(event)});
@@ -76,8 +81,8 @@ export class OrbitControls
     {
         if(this.mouseDrag)
         {
-            this.rotationDirection.x += -event.movementY;
-            this.rotationDirection.y += -event.movementX;
+            this.mouseMovement.x = -event.movementY;
+            this.mouseMovement.y = -event.movementX;
         }
     }
 
@@ -91,8 +96,13 @@ export class OrbitControls
 
     update(deltaTime: number): void
     {
-        this.cameraOrbitX.multiply(Quaternion.makeRotationX(this.rotationDirection.x * this.rotationSpeed * deltaTime));
-        this.cameraOrbitY.multiply(Quaternion.makeRotationY(this.rotationDirection.y * this.rotationSpeed * deltaTime));
+        this.rotationDirection.x += this.mouseMovement.x;
+        this.rotationDirection.y += this.mouseMovement.y;
+        this.mouseMovement.x = 0;
+        this.mouseMovement.y = 0;
+
+        this.cameraOrbitX.multiply(Quaternion.makeRotationX(this.rotationDirection.x * this.rotationSpeedX * deltaTime));
+        this.cameraOrbitY.multiply(Quaternion.makeRotationY(this.rotationDirection.y * this.rotationSpeedY * deltaTime));
         this.distance += this.zoomDirection * this.zoomSpeed * deltaTime;
 
         // Reset the cumulative parameters
@@ -110,5 +120,12 @@ export class OrbitControls
         this.camera.position.set(0, 0, this.distance);
         this.camera.position.rotate(this.camera.rotation);
         this.camera.position.add(this.targetPoint);
+    }
+
+    freeze(): void
+    {
+        this.mouseDrag = false;
+        this.mouseMovement.x = 0;
+        this.mouseMovement.y = 0;
     }
 }

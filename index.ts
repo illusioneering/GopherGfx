@@ -24,6 +24,7 @@ export * from './src/geometry/2d/Axes2'
 
 export * from './src/interaction/OrbitControls'
 export * from './src/interaction/FirstPersonControls'
+export * from './src/interaction/TransformWidget'
 
 export * from './src/lights/LightManager'
 export * from './src/lights/Light'

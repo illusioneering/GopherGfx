@@ -27,11 +27,12 @@ export class Ray
 
     setPickRay(deviceCoords: Vector2, camera: Camera): void
     {
+        
         const [worldPosition, worldRotation, worldScale] = camera.worldMatrix.decompose();
             
         this.origin.copy(worldPosition);
         this.direction.set(deviceCoords.x, deviceCoords.y, -1);
-        this.direction.transformVector(camera.projectionMatrix.inverse());
+        this.direction.transform(camera.projectionMatrix.inverse());
         this.direction.rotate(worldRotation);
         this.direction.normalize();
     }
@@ -146,30 +147,22 @@ export class Ray
         return intersectionPoint;
     }
 
-    intersectsMeshBoundingBox(mesh: Mesh): Vector3 | null
+    intersectsOrientedBoundingBox(transform: Transform3): Vector3 | null
     {
-        const localIntersection = this.createLocalRay(mesh).intersectsBox(mesh.boundingBox);
+        const localIntersection = this.createLocalRay(transform).intersectsBox(transform.boundingBox);
         if(localIntersection)
         {
-            const [worldPosition, worldRotation, worldScale] = mesh.worldMatrix.decompose();
-
-            localIntersection.multiply(worldScale);
-            localIntersection.rotate(worldRotation);
-            localIntersection.add(worldPosition);
+            localIntersection.transform(transform.worldMatrix);
         }
         return localIntersection;
     }
 
-    intersectsMeshBoundingSphere(mesh: Mesh): Vector3 | null
+    intersectsOrientedBoundingSphere(transform: Transform3): Vector3 | null
     {
-        const localIntersection = this.createLocalRay(mesh).intersectsSphere(mesh.boundingSphere);
+        const localIntersection = this.createLocalRay(transform).intersectsSphere(transform.boundingSphere);
         if(localIntersection)
         {
-            const [worldPosition, worldRotation, worldScale] = mesh.worldMatrix.decompose();
-
-            localIntersection.multiply(worldScale);
-            localIntersection.rotate(worldRotation);
-            localIntersection.add(worldPosition);
+            localIntersection.transform(transform.worldMatrix);
         }
 
         return localIntersection;
@@ -181,7 +174,7 @@ export class Ray
         // If we do not intersect the bounding box, then there is no
         // need to load the vertices from GPU memory and conduct
         // an intersection test with each triangle in the mesh.
-        if(!this.intersectsMeshBoundingBox(mesh))
+        if(!this.intersectsOrientedBoundingBox(mesh))
             return null;
 
         const vertices = mesh.getVertices();
@@ -199,11 +192,7 @@ export class Ray
             );
             if(intersection)
             {
-                const [worldPosition, worldRotation, worldScale] = mesh.worldMatrix.decompose();
-
-                intersection.multiply(worldScale);
-                intersection.rotate(worldRotation);
-                intersection.add(worldPosition);
+                intersection.transform(mesh.worldMatrix);
                 results.push(intersection);
             }
         }
