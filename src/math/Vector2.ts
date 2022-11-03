@@ -102,6 +102,14 @@ export class Vector2
         return result;
     }
 
+    public static lerp(v1: Vector2, v2: Vector2, alpha: number): Vector2
+    {
+        return new Vector2(
+            v1.x * (1-alpha) + v2.x * alpha,
+            v1.y * (1-alpha) + v2.y * alpha
+        );
+    }
+
     public x: number;
     public y: number;
     
@@ -256,5 +264,11 @@ export class Vector2
         const y = this.y;
         this.x = Math.cos(angle)*x - Math.sin(angle)*y;
         this.y = Math.sin(angle)*x + Math.cos(angle)*y; 
+    }
+
+    lerp(v1: Vector2, v2: Vector2, alpha: number): void
+    {
+        this.x = v1.x * (1-alpha) + v2.x * alpha;
+        this.y = v1.y * (1-alpha) + v2.y * alpha;
     }
 }

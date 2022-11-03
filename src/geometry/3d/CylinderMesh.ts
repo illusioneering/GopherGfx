@@ -3,13 +3,15 @@ import { Mesh } from './Mesh'
 export class CylinderMesh extends Mesh
 {
     public readonly numSegments: number;
+    public readonly radius: number;
     public readonly height: number;
 
-    constructor(numSegments = 20, height = 1)
+    constructor(numSegments = 20, radius = 1, height = 1)
     {
         super();
         
         this.numSegments = numSegments;
+        this.radius = radius;
         this.height = height;
 
         this.createCylinderMesh(numSegments, height);
@@ -31,8 +33,8 @@ export class CylinderMesh extends Mesh
         {
             const angle = i * angleIncrement;
 
-            vertices.push(Math.cos(angle), height/2, Math.sin(angle));
-            vertices.push(Math.cos(angle), -height/2, Math.sin(angle));
+            vertices.push(Math.cos(angle) * this.radius, height/2, Math.sin(angle) * this.radius);
+            vertices.push(Math.cos(angle) * this.radius, -height/2, Math.sin(angle) * this.radius);
 
             normals.push(Math.cos(angle), 0, Math.sin(angle));
             normals.push(Math.cos(angle), 0, Math.sin(angle));
@@ -61,7 +63,7 @@ export class CylinderMesh extends Mesh
         {
             const angle = i * angleIncrement;
 
-            vertices.push(Math.cos(angle), height/2, Math.sin(angle));
+            vertices.push(Math.cos(angle) * this.radius, height/2, Math.sin(angle) * this.radius);
             normals.push(0, 1, 0);
             uvs.push(1 - i / numSegments, 0);
         }
@@ -84,7 +86,7 @@ export class CylinderMesh extends Mesh
         {
             const angle = i * angleIncrement;
 
-            vertices.push(Math.cos(angle), -height/2, Math.sin(angle));
+            vertices.push(Math.cos(angle) * this.radius, -height/2, Math.sin(angle) * this.radius);
             normals.push(0, -1, 0);
             uvs.push(1 - i / numSegments, 1);
         }
