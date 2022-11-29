@@ -1,6 +1,4 @@
 import { Light } from './Light'
-import { Vector3 } from '../math/Vector3';
-import { Quaternion } from '../math/Quaternion';
 
 export class LightManager
 {

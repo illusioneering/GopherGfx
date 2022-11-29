@@ -25,6 +25,12 @@ export class Mesh extends Transform3
     public vertexCount: number;
     public triangleCount: number;
 
+    public positionCache: number[] | null;
+    public normalCache: number[] | null;
+    public colorCache: number[] | null;
+    public indexCache: number[] | null;
+    public texCoordCache: number[] | null;
+
     public material: Material3;
     public morphTargetBoundingBox: BoundingBox3;
     public morphTargetBoundingSphere: BoundingSphere;
@@ -46,6 +52,12 @@ export class Mesh extends Transform3
         this.vertexCount = 0;
         this.triangleCount = 0;
 
+        this.positionCache = null;
+        this.normalCache = null;
+        this.colorCache = null;
+        this.indexCache = null;
+        this.texCoordCache = null;
+
         this.material = new GouraudMaterial();
         this.morphTargetBoundingBox = new BoundingBox3();
         this.morphTargetBoundingSphere = new BoundingSphere();
@@ -65,6 +77,8 @@ export class Mesh extends Transform3
 
     setVertices(vertices: Vector3[] | number[], dynamicDraw = false): void
     {
+        this.positionCache = null;
+
         if(vertices.length > 0)
         {
             this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.positionBuffer);
@@ -102,6 +116,8 @@ export class Mesh extends Transform3
 
     setNormals(normals: Vector3[] | number[], dynamicDraw = false): void
     {
+        this.normalCache = null;
+
         if(normals.length > 0)
         {
             this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.normalBuffer);
@@ -131,6 +147,8 @@ export class Mesh extends Transform3
 
     setColors(colors: Color[] | number[], dynamicDraw = false): void
     {
+        this.colorCache = null;
+
         if(colors.length > 0)
         {
             this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.colorBuffer);
@@ -160,6 +178,8 @@ export class Mesh extends Transform3
 
     setTextureCoordinates(texCoords: Vector2[] | number[], dynamicDraw = false): void
     {
+        this.texCoordCache = null;
+
         if(texCoords.length > 0)
         {
             this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.texCoordBuffer);
@@ -189,6 +209,8 @@ export class Mesh extends Transform3
 
     setIndices(indices: Vector3[] | number[], dynamicDraw = false): void
     {
+        this.indexCache = null;
+
         if(indices.length > 0)
         {
             this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
@@ -314,42 +336,67 @@ export class Mesh extends Transform3
 
     getVertices(): number[]
     {
-        const vertexArray = new Float32Array(this.vertexCount * 3);
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.positionBuffer);
-        this.gl.getBufferSubData(this.gl.ARRAY_BUFFER, 0, vertexArray);
-        return [... vertexArray];
+        if(!this.positionCache)
+        {
+            const vertexArray = new Float32Array(this.vertexCount * 3);
+            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.positionBuffer);
+            this.gl.getBufferSubData(this.gl.ARRAY_BUFFER, 0, vertexArray);
+            this.positionCache = [... vertexArray];
+        }
+
+        return this.positionCache;
     }
 
     getNormals(): number[]
     {
-        const normalArray = new Float32Array(this.vertexCount * 3);
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.normalBuffer);
-        this.gl.getBufferSubData(this.gl.ARRAY_BUFFER, 0, normalArray);
-        return [... normalArray];
+        if(!this.normalCache)
+        {
+            const normalArray = new Float32Array(this.vertexCount * 3);
+            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.normalBuffer);
+            this.gl.getBufferSubData(this.gl.ARRAY_BUFFER, 0, normalArray);
+            this.normalCache = [... normalArray];
+        }
+
+        return this.normalCache;
     }
 
     getColors(): number[]
     {
-        const colorArray = new Float32Array(this.vertexCount * 4);
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.colorBuffer);
-        this.gl.getBufferSubData(this.gl.ARRAY_BUFFER, 0, colorArray);
-        return [... colorArray];
+        if(!this.colorCache)
+        {
+            const colorArray = new Float32Array(this.vertexCount * 4);
+            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.colorBuffer);
+            this.gl.getBufferSubData(this.gl.ARRAY_BUFFER, 0, colorArray);
+            this.colorCache = [... colorArray];
+        }
+
+        return this.colorCache;
     }
 
     getTextureCoordinates(): number[]
     {
-        const texCoordArray = new Float32Array(this.vertexCount * 2);
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.texCoordBuffer);
-        this.gl.getBufferSubData(this.gl.ARRAY_BUFFER, 0, texCoordArray);
-        return [... texCoordArray];
+        if(!this.texCoordCache)
+        {
+            const texCoordArray = new Float32Array(this.vertexCount * 2);
+            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.texCoordBuffer);
+            this.gl.getBufferSubData(this.gl.ARRAY_BUFFER, 0, texCoordArray);
+            this.texCoordCache = [... texCoordArray];
+        }
+
+        return this.texCoordCache;
     }
 
     getIndices(): number[]
     {
-        const indexArray = new Uint16Array(this.triangleCount * 3);
-        this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
-        this.gl.getBufferSubData(this.gl.ELEMENT_ARRAY_BUFFER, 0, indexArray);
-        return [... indexArray];
+        if(!this.indexCache)
+        {
+            const indexArray = new Uint16Array(this.triangleCount * 3);
+            this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
+            this.gl.getBufferSubData(this.gl.ELEMENT_ARRAY_BUFFER, 0, indexArray);
+            this.indexCache = [... indexArray];
+        }
+
+        return this.indexCache;
     }
 
     getArrayBuffer(buffer: WebGLBuffer | null): number[]

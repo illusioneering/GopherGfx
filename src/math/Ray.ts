@@ -6,7 +6,6 @@ import { Vector2 } from './Vector2';
 import { Camera } from '../core/Camera'
 import { Mesh } from '../geometry/3d/Mesh'
 import { Transform3 } from '../core/Transform3'
-import { Quaternion } from './Quaternion';
 
 export class Ray 
 {
@@ -171,30 +170,50 @@ export class Ray
     // Brute force intersection test
     intersectsMesh(mesh: Mesh): Vector3 | null
     { 
+        const localRay = this.createLocalRay(mesh);
+
         // If we do not intersect the bounding box, then there is no
         // need to load the vertices from GPU memory and conduct
         // an intersection test with each triangle in the mesh.
-        if(!this.intersectsOrientedBoundingBox(mesh))
+        if(!localRay.intersectsBox(mesh.boundingBox))
             return null;
 
         const vertices = mesh.getVertices();
         const indices = mesh.getIndices();
 
-        const localRay = this.createLocalRay(mesh);
+        const result = localRay.intersectsTriangles(vertices, indices);
+
+        if(result)
+            result.transform(mesh.worldMatrix);
+
+        return result;
+    }
+
+    intersectsTriangles(vertices: Vector3[] | number[], indices: number[]): Vector3 | null
+    {
+        let positions: Vector3[];
+        if(typeof vertices[0] === 'number')
+        {
+            positions = [];
+
+            const vArray = vertices as number[]
+            for(let i=0; i < vertices.length; i+=3)
+            {
+                positions.push(new Vector3(vArray[i], vArray[i+1], vArray[i+2]));
+            }
+        }
+        else
+        {
+            positions = vertices as Vector3[];
+        }
 
         const results = [];
         for(let i=0; i < indices.length; i+=3)
         {
-            const intersection = this.intersectsTriangle(localRay,
-                new Vector3(vertices[indices[i]*3], vertices[indices[i]*3+1], vertices[indices[i]*3+2]),
-                new Vector3(vertices[indices[i+1]*3], vertices[indices[i+1]*3+1], vertices[indices[i+1]*3+2]),
-                new Vector3(vertices[indices[i+2]*3], vertices[indices[i+2]*3+1], vertices[indices[i+2]*3+2])
-            );
+            const intersection = this.intersectsTriangle(positions[indices[i]], positions[indices[i+1]], positions[indices[i+2]]);
+            
             if(intersection)
-            {
-                intersection.transform(mesh.worldMatrix);
                 results.push(intersection);
-            }
         }
 
         if(results.length == 0)
@@ -221,13 +240,13 @@ export class Ray
 
     // Implementation of the Möller–Trumbore intersection algorithm
     // https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
-    intersectsTriangle(ray: Ray, vertex0: Vector3, vertex1: Vector3, vertex2: Vector3): Vector3 | null
+    intersectsTriangle(vertex0: Vector3, vertex1: Vector3, vertex2: Vector3): Vector3 | null
     {
         const EPSILON = 0.0000001;
 
         const edge1 = Vector3.subtract(vertex1, vertex0);
         const edge2 = Vector3.subtract(vertex2, vertex0);
-        const h = Vector3.cross(ray.direction, edge2);
+        const h = Vector3.cross(this.direction, edge2);
         const a = edge1.dot(h);
     
         if (a > -EPSILON && a < EPSILON) 
@@ -237,7 +256,7 @@ export class Ray
         }
 
         const f = 1.0 / a;
-        const s = Vector3.subtract(ray.origin, vertex0);
+        const s = Vector3.subtract(this.origin, vertex0);
         const u = f * (s.dot(h));
         if (u < 0.0 || u > 1.0)
         {
@@ -245,7 +264,7 @@ export class Ray
         }
 
         const q = Vector3.cross(s, edge1);
-        const v = f * ray.direction.dot(q);
+        const v = f * this.direction.dot(q);
         if (v < 0.0 || u + v > 1.0) 
         {
             return null;
@@ -257,9 +276,9 @@ export class Ray
         // ray intersection
         if (t > EPSILON) 
         {
-            const intersection = ray.direction.clone();
+            const intersection = this.direction.clone();
             intersection.multiplyScalar(t);
-            intersection.add(ray.origin);
+            intersection.add(this.origin);
             return intersection;
         }
 

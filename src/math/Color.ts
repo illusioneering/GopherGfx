@@ -9,7 +9,7 @@ export class Color
     public static readonly PURPLE = new Color(1, 0, 1);
     public static readonly CYAN = new Color(0, 1, 1);
 
-    static copy(color: Color): Color
+    public static copy(color: Color): Color
     {
         const newColor = new Color();
         newColor.r = color.r;
@@ -17,6 +17,15 @@ export class Color
         newColor.b = color.b;
         newColor.a = color.a;
         return newColor;
+    }
+
+    public static createFromString(color: string): Color
+    {
+        return new Color(
+            parseInt(color.substring(1,3), 16) / 255,
+            parseInt(color.substring(3,5), 16) / 255,
+            parseInt(color.substring(5,7), 16) / 255
+        );
     }
 
     public static lerp(c1: Color, c2: Color, alpha: number): Color
@@ -78,6 +87,13 @@ export class Color
         this.g = g;
         this.b = b;
         this.a = a;
+    }
+
+    setFromString(color: string): void
+    {
+        this.r = parseInt(color.substring(1,3), 16) / 255;
+        this.g = parseInt(color.substring(3,5), 16) / 255;
+        this.b = parseInt(color.substring(5,7), 16) / 255;
     }
 
     copy(color: Color)

@@ -9,6 +9,9 @@ export class FirstPersonControls
     
     public translationSpeed: number;
     public rotationSpeed: number;
+    public mouseButton: number;
+    public flyMode: boolean;
+    public hasMoved: boolean;
 
     // Camera parameters
     private moveDirection: Vector3;
@@ -23,8 +26,11 @@ export class FirstPersonControls
     {
         this.camera = camera;
 
+        this.mouseButton = 0;
         this.translationSpeed = 2;
         this.rotationSpeed = Math.PI / 4;
+        this.flyMode = true;
+        this.hasMoved = false;
 
         this.moveDirection = new Vector3();
         this.rotationDirection = new Vector3();
@@ -43,13 +49,14 @@ export class FirstPersonControls
 
     onMouseDown(event: MouseEvent): void 
     {
-        if((event.target! as Element).localName == "canvas")
+        if(this.mouseButton == event.button && (event.target! as Element).localName == "canvas")
             this.mouseDrag = true;
     }
 
     onMouseUp(event: MouseEvent): void
     {
-        this.mouseDrag = false;
+        if(this.mouseButton == event.button)
+            this.mouseDrag = false;
     }
     
     onMouseMove(event: MouseEvent): void
@@ -129,9 +136,28 @@ export class FirstPersonControls
         this.camera.lookAt(target, Vector3.UP);
         
         // Translate the camera based on the keyboard input
-        const moveDirectionNormalized = Vector3.normalize(this.moveDirection);
-        moveDirectionNormalized.multiplyScalar(this.translationSpeed * deltaTime);
-        this.camera.translate(moveDirectionNormalized);
+        if(this.moveDirection.length() == 0)
+        {
+            this.hasMoved = false;
+        }
+        else
+        {
+            const moveDirectionNormalized = Vector3.normalize(this.moveDirection);
+            if(this.flyMode)
+            {
+                moveDirectionNormalized.multiplyScalar(this.translationSpeed * deltaTime);
+                this.camera.translate(moveDirectionNormalized);
+            }
+            else
+            {
+                const translation = Vector3.rotate(moveDirectionNormalized, this.camera.rotation);
+                translation.y = 0;
+                translation.normalize();
+                translation.multiplyScalar(this.translationSpeed * deltaTime);
+                this.camera.position.add(translation);
+            }
+            this.hasMoved = true;
+        }
     }
 
     freeze(): void
@@ -139,5 +165,6 @@ export class FirstPersonControls
         this.mouseDrag = false;
         this.mouseMovement.x = 0;
         this.mouseMovement.y = 0;
+        this.moveDirection.set(0, 0, 0);
     }
 }

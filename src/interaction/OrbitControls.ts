@@ -10,6 +10,7 @@ export class OrbitControls
     public rotationSpeedX: number;
     public rotationSpeedY: number;
     public zoomSpeed: number;
+    public mouseButton: number;
 
     // Camera parameters
     private targetPoint: Vector3;
@@ -30,6 +31,7 @@ export class OrbitControls
         this.rotationSpeedX = Math.PI / 4;
         this.rotationSpeedY = Math.PI / 4;
         this.zoomSpeed = .25;
+        this.mouseButton = 0;
 
         this.targetPoint = new Vector3();
         this.cameraOrbitX = new Quaternion();
@@ -68,13 +70,14 @@ export class OrbitControls
 
     onMouseDown(event: MouseEvent): void 
     {
-        if((event.target! as Element).localName == "canvas")
+        if(this.mouseButton == event.button && (event.target! as Element).localName == "canvas")
             this.mouseDrag = true;
     }
 
     onMouseUp(event: MouseEvent): void
     {
-        this.mouseDrag = false;
+        if(this.mouseButton == event.button)
+            this.mouseDrag = false;
     }
     
     onMouseMove(event: MouseEvent): void
@@ -125,7 +128,7 @@ export class OrbitControls
     freeze(): void
     {
         this.mouseDrag = false;
-        this.mouseMovement.x = 0;
-        this.mouseMovement.y = 0;
+        this.mouseMovement.set(0, 0);
+        this.zoomDirection = 0;
     }
 }

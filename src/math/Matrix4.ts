@@ -73,6 +73,13 @@ export class Matrix4
         );
     }
 
+    public static makeRotation(rotation: Quaternion): Matrix4
+    {
+        const matrix = new Matrix4();
+        matrix.setRotation(rotation);
+        return matrix;
+    }
+
     public static makeRotationX(angle: number): Matrix4
     {
         const matrix = new Matrix4();
@@ -260,6 +267,32 @@ export class Matrix4
             1, 0, 0, v.x,
             0, 1, 0, v.y,
             0, 0, 1, v.z,
+            0, 0, 0, 1
+        );
+    }
+
+    // based on http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToMatrix/index.htm
+    setRotation(rotation: Quaternion): void
+    {
+        const sqw = rotation.w*rotation.w;
+        const sqx = rotation.x*rotation.x;
+        const sqy = rotation.y*rotation.y;
+        const sqz = rotation.z*rotation.z;
+
+        // invs (inverse square length) is only required if quaternion is not already normalised
+        const invs = 1 / (sqx + sqy + sqz + sqw);
+
+        const tmp1 = rotation.x*rotation.y;
+        const tmp2 = rotation.z*rotation.w;
+        const tmp3 = rotation.x*rotation.z;
+        const tmp4 = rotation.y*rotation.w;
+        const tmp5 = rotation.y*rotation.z;
+        const tmp6 = rotation.x*rotation.w;
+        
+        this.setRowMajor(
+            ( sqx - sqy - sqz + sqw)*invs, 2 * (tmp1 - tmp2)*invs, 2 * (tmp3 + tmp4)*invs, 0,
+            2 * (tmp1 + tmp2)*invs, (-sqx + sqy - sqz + sqw)*invs, 2 * (tmp5 - tmp6)*invs, 0,
+            2 * (tmp3 - tmp4)*invs, 2 * (tmp5 + tmp6)*invs, (-sqx - sqy + sqz + sqw), 0,
             0, 0, 0, 1
         );
     }
