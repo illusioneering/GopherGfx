@@ -220,6 +220,10 @@ export class Ray
         {
             return null;
         }
+        else if(results.length == 1)
+        {
+            return results[0];
+        }
         else
         {
             let closestPoint = 0;

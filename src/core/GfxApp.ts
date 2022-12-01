@@ -84,20 +84,23 @@ export abstract class GfxApp
     {
         if(this.runInBackground || !this.paused)
         {
+            // Compute the delta time
+            const deltaTime =  (Date.now() - this.time) / 1000;
+
+            // Update the time
+            this.time = Date.now();
+
             // Update the app
-            this.update((Date.now() - this.time) / 1000);
+            this.update(deltaTime);
             
             // Compute the world transforms for all objects in the scene graph
             this.scene.traverseSceneGraph();
 
             // Call the late update method
-            this.lateUpdate((Date.now() - this.time) / 1000);
+            this.lateUpdate(deltaTime);
 
             // Draw the graphics
             this.renderer.render(this.scene, this.camera);
-
-            // Update the time
-            this.time = Date.now();
         }
 
         // Run the main loop function on the next frame
