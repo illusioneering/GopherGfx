@@ -14,9 +14,11 @@
     "@typescript-eslint/parser": "^5.36.2",
     "esbuild-plugin-glsl": "^1.1.0",
     "eslint": "^8.23.0",
-    "tsup": "^6.2.3"
+    "tsup": "^6.2.3",
+    "typedoc": "^0.23.23"
   },
   "scripts": {
-    "build": "tsup ./index.ts"
+    "build": "tsup ./index.ts",
+    "docs": "typedoc --out docs index.ts"
   }
 }

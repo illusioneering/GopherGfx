@@ -3,13 +3,29 @@ import { Matrix4 } from "./Matrix4";
 
 export class Quaternion
 {
+    /**
+     * A static property representing the identity quaternion (0, 0, 0, 1)
+     */
     public static readonly IDENTITY: Quaternion = new Quaternion();
 
+    /**
+     * Copies a Quaternion object
+     * 
+     * @param q - The Quaternion object to copy
+     * @returns A new Quaternion object with the same values as q
+     */
     public static copy(q: Quaternion): Quaternion
     {
         return new Quaternion(q.x, q.y, q.z, q.w);
     }
 
+    /**
+     * Multiplies two Quaternion objects together
+     * 
+     * @param q1 - The first Quaternion object
+     * @param q2 - The second Quaternion object
+     * @returns A new Quaternion object representing the product of q1 and q2
+     */
     public static multiply(q1: Quaternion, q2: Quaternion): Quaternion
     {
         const dest = new Quaternion();
@@ -22,6 +38,12 @@ export class Quaternion
         return dest;
     }
 
+    /**
+     * Normalizes a Quaternion object
+     * 
+     * @param q - The Quaternion object to normalize
+     * @returns A new Quaternion object with normalized values
+     */
     public static normalize(q: Quaternion): Quaternion
     {
         const dest = q.clone();
@@ -29,6 +51,12 @@ export class Quaternion
         return dest;
     }
 
+    /**
+     * Inverts a Quaternion object
+     * 
+     * @param q - The Quaternion object to invert
+     * @returns A new Quaternion object representing the inverse of q
+     */
     public static inverse(q: Quaternion): Quaternion
     {
         const dest = q.clone();
@@ -36,11 +64,22 @@ export class Quaternion
         return dest;
     }
 
+    /**
+     * Creates a new identity Quaternion object
+     * 
+     * @returns A new Quaternion object representing the identity Quaternion (0, 0, 0, 1)
+     */
     makeIdentity(): Quaternion
     {
         return new Quaternion(0, 0, 0, 1);
     }
 
+    /**
+     * Creates a new Quaternion object representing a rotation around the x-axis
+     * 
+     * @param angle - The angle to rotate by around the x-axis (in radians)
+     * @returns A new Quaternion object representing a rotation around the x-axis
+     */
     public static makeRotationX(angle: number): Quaternion
     {
         const dest = new Quaternion();
@@ -48,6 +87,12 @@ export class Quaternion
         return dest;
     }
 
+    /**
+     * Creates a new Quaternion object representing a rotation around the y-axis
+     * 
+     * @param angle - The angle to rotate by around the y-axis (in radians)
+     * @returns A new Quaternion object representing a rotation around the y-axis
+     */
     public static makeRotationY(angle: number): Quaternion
     {
         const dest = new Quaternion();
@@ -55,6 +100,12 @@ export class Quaternion
         return dest;
     }
 
+    /**
+     * Creates a new Quaternion object representing a rotation around the z-axis
+     * 
+     * @param angle - The angle to rotate by around the z-axis (in radians)
+     * @returns A new Quaternion object representing a rotation around the z-axis
+     */
     public static makeRotationZ(angle: number): Quaternion
     {
         const dest = new Quaternion();

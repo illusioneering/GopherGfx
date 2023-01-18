@@ -12,18 +12,36 @@ export class Ray
     public origin: Vector3;
     public direction: Vector3;
 
+    /**
+     * Constructor of the Ray class
+     * 
+     * @param origin - The origin of the ray
+     * @param direction - The direction of the ray
+     */
     constructor(origin = new Vector3(), direction = new Vector3(0, 0, -1))
     {
         this.origin = origin;
         this.direction = direction;
     }
     
+    /**
+     * Sets the origin and direction of the Ray
+     * 
+     * @param origin - The origin of the Ray
+     * @param direction - The direction of the Ray
+     */
     set(origin: Vector3, direction: Vector3): void
     {
         this.origin = origin;
         this.direction = direction;
     }
 
+    /**
+     * Sets the Ray based on the device coordinates and camera
+     * 
+     * @param deviceCoords - A Vector2 containing the device coordinates
+     * @param camera - The Camera used to set the Ray
+     */
     setPickRay(deviceCoords: Vector2, camera: Camera): void
     {
         
@@ -36,7 +54,13 @@ export class Ray
         this.direction.normalize();
     }
 
-    // Reference: https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-plane-and-ray-disk-intersection
+    /**
+     * Checks if the Ray intersects a Plane
+     * Reference: https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-plane-and-ray-disk-intersection
+     * 
+     * @param plane - The Plane to check for intersection
+     * @returns A Vector3 containing the intersection point or null if there is no intersection
+     */
     intersectsPlane(plane: Plane): Vector3 | null
     {
 
@@ -58,8 +82,14 @@ export class Ray
         
         return null;
     }
-
-    // Reference: https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-sphere-intersection
+    
+    /**
+     * Checks if the Ray intersects a Sphere
+     * Reference: https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-sphere-intersection
+     * 
+     * @param sphere - The Sphere to check for intersection
+     * @returns A Vector3 containing the intersection point or null if there is no intersection
+     */
     intersectsSphere(sphere: BoundingSphere): Vector3 | null
     {
 
@@ -90,7 +120,13 @@ export class Ray
         return intersection;
     }
 
-    // Reference: https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-box-intersection
+    /**
+     * Checks if the Ray intersects a Box
+     * Reference: https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-box-intersection
+     * 
+     * @param box - The Box to check for intersection
+     * @returns A Vector3 containing the intersection point or null if there is no intersection
+     */
     intersectsBox(box: BoundingBox3): Vector3 | null
     {
         let tmin = (box.min.x - this.origin.x) / this.direction.x; 
@@ -146,6 +182,12 @@ export class Ray
         return intersectionPoint;
     }
 
+    /**
+     * Checks if the Ray intersects an Oriented Bounding Box
+     * 
+     * @param transform - The Transform of the Oriented Bounding Box
+     * @returns A Vector3 containing the intersection point or null if there is no intersection
+     */
     intersectsOrientedBoundingBox(transform: Transform3): Vector3 | null
     {
         const localIntersection = this.createLocalRay(transform).intersectsBox(transform.boundingBox);
@@ -156,6 +198,12 @@ export class Ray
         return localIntersection;
     }
 
+    /**
+     * Computes the intersection between a ray and an oriented bounding sphere
+     * 
+     * @param transform - The transformation of the bounding sphere 
+     * @returns The intersection point if the ray intersects the bounding sphere, otherwise null
+     */
     intersectsOrientedBoundingSphere(transform: Transform3): Vector3 | null
     {
         const localIntersection = this.createLocalRay(transform).intersectsSphere(transform.boundingSphere);
@@ -167,7 +215,12 @@ export class Ray
         return localIntersection;
     }
 
-    // Brute force intersection test
+    /**
+     * Computes a brute force intersection test between a ray and a mesh 
+     * 
+     * @param mesh - The mesh to test the intersection against
+     * @returns The intersection point if the ray intersects the mesh, otherwise null
+     */
     intersectsMesh(mesh: Mesh): Vector3 | null
     { 
         const localRay = this.createLocalRay(mesh);
@@ -189,6 +242,14 @@ export class Ray
         return result;
     }
 
+    
+    /**
+     * Computes the intersection between a ray and a series of triangles 
+     * 
+     * @param vertices - Array of either Vector3 objects or numbers representing the vertex positions
+     * @param indices - Array of indices representing the triangle faces
+     * @returns The intersection point if the ray intersects the triangles, otherwise null
+     */
     intersectsTriangles(vertices: Vector3[] | number[], indices: number[]): Vector3 | null
     {
         let positions: Vector3[];
@@ -242,8 +303,15 @@ export class Ray
         }
     }
 
-    // Implementation of the Möller–Trumbore intersection algorithm
-    // https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
+    /**
+     * Implementation of the Möller–Trumbore triangle intersection algorithm
+     * https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
+     * 
+     * @param vertex0 - Vector3 object representing the first vertex of the triangle
+     * @param vertex1 - Vector3 object representing the second vertex of the triangle
+     * @param vertex2 - Vector3 object representing the third vertex of the triangle
+     * @returns The intersection point if the ray intersects the triangle, otherwise null
+     */
     intersectsTriangle(vertex0: Vector3, vertex1: Vector3, vertex2: Vector3): Vector3 | null
     {
         const EPSILON = 0.0000001;
@@ -289,6 +357,12 @@ export class Ray
         return null;
     }
 
+    /**
+     * Creates a new Ray object in the local space of a given Transform
+     * 
+     * @param transform - The Transform object to create the local ray from
+     * @returns The ray in the local space of the Transform
+     */
     createLocalRay(transform: Transform3): Ray
     {
         const localRay = new Ray(this.origin.clone(), this.direction.clone());
