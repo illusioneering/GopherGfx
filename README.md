@@ -6,6 +6,7 @@ GopherGfx is a high-level scene graph library written in TypeScript and WebGL2. 
 
 The following classes still need documentation.  Please delete them from this list as they are completed.
 
+```
 src\core\Camera.ts
 src\core\GfxApp.ts
 src\core\Renderer.ts
@@ -66,6 +67,7 @@ src\math\Matrix3.ts
 src\math\Matrix4.ts
 src\math\Plane.ts
 src\math\Quaternion.ts
+```
 
 ## Documentation Workflow
 
