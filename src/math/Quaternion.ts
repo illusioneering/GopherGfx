@@ -21,6 +21,7 @@ export class Quaternion
 
     /**
      * Multiplies two Quaternion objects together
+     * This operation is not commutative, so order matters
      * 
      * @param q1 - The first Quaternion object
      * @param q2 - The second Quaternion object
@@ -34,6 +35,26 @@ export class Quaternion
         dest.x = q1.w*q2.x + q1.x*q2.w + q1.y*q2.z - q1.z*q2.y;
         dest.y = q1.w*q2.y + q1.y*q2.w + q1.z*q2.x - q1.x*q2.z;
         dest.z = q1.w*q2.z + q1.z*q2.w + q1.x*q2.y - q1.y*q2.x;
+
+        return dest;
+    }
+
+    /**
+     * Premultiplies two Quaternion objects
+     * This operation is not commutative, so order matters
+     * 
+     * @param q1 - The first Quaternion object
+     * @param q2 - The second Quaternion object
+     * @returns A new Quaternion object which is the result of the premultiplication of the two input Quaternion objects
+     */
+    public static premultiply(q1: Quaternion, q2: Quaternion): Quaternion
+    {
+        const dest = new Quaternion();
+
+        dest.w = q2.w*q1.w - q2.x*q1.x - q2.y*q1.y - q2.z*q1.z;
+        dest.x = q2.w*q1.x + q2.x*q1.w + q2.y*q1.z - q2.z*q1.y;
+        dest.y = q2.w*q1.y + q2.y*q1.w + q2.z*q1.x - q2.x*q1.z;
+        dest.z = q2.w*q1.z + q2.z*q1.w + q2.x*q1.y - q2.y*q1.x;
 
         return dest;
     }
@@ -113,6 +134,13 @@ export class Quaternion
         return dest;
     }
 
+    /**
+     * Create a quaternion from a given axis and angle
+     * 
+     * @param axis - The axis to rotate around
+     * @param angle - The angle of rotation
+     * @returns A new Quaternion
+     */
     public static makeAxisAngle(axis: Vector3, angle: number): Quaternion
     {
         const dest = new Quaternion();
@@ -120,6 +148,15 @@ export class Quaternion
         return dest;
     }
 
+    /**
+     * Create a quaternion from given Euler angles
+     * 
+     * @param x - The x-axis rotation angle
+     * @param y - The y-axis rotation angle
+     * @param z - The z-axis rotation angle
+     * @param order - The order of the rotations (defaults to 'YZX')
+     * @returns A new Quaternion
+     */
     public static makeEulerAngles(x: number, y: number, z: number, order = 'YZX'): Quaternion
     {
         const dest = new Quaternion();
@@ -127,6 +164,12 @@ export class Quaternion
         return dest;
     }
 
+    /**
+     * Create a quaternion from a given Matrix4 object
+     * 
+     * @param matrix - The Matrix4 object to use for creating the quaternion
+     * @returns A new Quaternion
+     */
     public static makeMatrix(matrix: Matrix4): Quaternion
     {
         const dest = new Quaternion();
@@ -134,6 +177,14 @@ export class Quaternion
         return dest;
     }
 
+    /**
+     * Computes a Quaternion from two input Quaternions using spherical linear interpolation
+     * 
+     * @param q1 - The first Quaternion
+     * @param q2 - The second Quaternion
+     * @param alpha - The interpolation factor
+     * @returns A new Quaternion representing the slerp between q1 and q2
+     */
     public static slerp(q1: Quaternion, q2: Quaternion, alpha: number): Quaternion
     {
         const q = new Quaternion();
@@ -146,6 +197,14 @@ export class Quaternion
     public z: number;
     public w: number;
 
+    /**
+     * Creates a new Quaternion object
+     * 
+     * @param x - The x component of the Quaternion
+     * @param y - The y component of the Quaternion
+     * @param z - The z component of the Quaternion
+     * @param w - The w component of the Quaternion
+     */
     constructor(x = 0, y = 0, z = 0, w = 1)
     {
         this.x = x;
@@ -154,6 +213,14 @@ export class Quaternion
         this.w = w;
     }
 
+    /**
+     * Sets the quaternion to the given x, y, z, and w values
+     * 
+     * @param x - The x value
+     * @param y - The y value
+     * @param z - The z value
+     * @param w - The w value
+     */
     set(x: number, y: number, z: number, w: number): void
     {
         this.x = x;
@@ -162,6 +229,10 @@ export class Quaternion
         this.w = w;
     }
 
+    
+    /**
+     * Sets the quaternion to the identity quaternion
+     */
     setIdentity(): void
     {
         this.x = 0;
@@ -170,6 +241,11 @@ export class Quaternion
         this.w  = 1;
     }
 
+    /**
+     * Sets the quaternion to a rotation around the x axis
+     * 
+     * @param angle - The angle of rotation in radians
+     */
     setRotationX(angle: number): void
     {
         this.w = Math.cos(angle / 2);
@@ -178,6 +254,11 @@ export class Quaternion
         this.z = 0;
     }
 
+    /**
+     * Sets the quaternion to a rotation around the y axis
+     * 
+     * @param angle - The angle of rotation in radians
+     */
     setRotationY(angle: number): void
     {
         this.w = Math.cos(angle / 2);
@@ -186,6 +267,12 @@ export class Quaternion
         this.z = 0;
     }
 
+    
+    /**
+     * Sets the quaternion to a rotation around the z axis
+     * 
+     * @param angle - The angle of rotation in radians
+     */
     setRotationZ(angle: number): void
     {
         this.w = Math.cos(angle / 2);
@@ -194,10 +281,16 @@ export class Quaternion
         this.z = Math.sin(angle / 2);
     }
 
-    // http://www.euclideanspace.com/maths/geometry/rotations/conversions/angleToQuaternion/index.htm
-    // assumes axis is normalized
+    /**
+     * Sets the quaternion values using a (normalized) axis and an angle in radians
+     * @param axis - The axis of rotation
+     * @param angle - The angle of rotation in radians
+     */
     setAxisAngle(axis: Vector3, angle: number): void
     {
+        // Based on the approached described here
+        // http://www.euclideanspace.com/maths/geometry/rotations/conversions/angleToQuaternion/index.htm
+
         const sinAngle = Math.sin(angle / 2);
 
         this.w = Math.cos(angle / 2);
@@ -206,9 +299,18 @@ export class Quaternion
         this.z = sinAngle * axis.z;
     }
 
-    // based on the implementation in three.js
+    /**
+     * Sets the quaternion values using Euler angles
+     * 
+     * @param x - The x-axis rotation angle in radians
+     * @param y - The y-axis rotation angle in radians
+     * @param z - The z-axis rotation angle in radians
+     * @param order - The order in which the rotation angles are applied (defaults to 'YZX')
+     */
     setEulerAngles(x: number, y: number, z: number, order = 'YZX'): void
     {
+        // Based on the implementation in three.js
+
 		const cos = Math.cos;
 		const sin = Math.sin;
 
@@ -266,9 +368,16 @@ export class Quaternion
 		}
     }
 
-    // https://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/
+    /**
+     * Sets the quaternion from a rotation matrix
+     * 
+     * @param matrix - The rotation matrix in homogeneous coordinates
+     */
     setMatrix(matrix: Matrix4): void
     {
+        // Based on implementation described here:
+        // https://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/
+
         const trace = matrix.mat[0] + matrix.mat[5] + matrix.mat[10]
 
         if (trace > 0) 
@@ -305,6 +414,11 @@ export class Quaternion
         }
     }
 
+    /**
+     * Copies the values of another quaternion into this one
+     * 
+     * @param q - The quaternion to copy
+     */
     copy(q: Quaternion): void
     {
         this.x = q.x;
@@ -313,23 +427,41 @@ export class Quaternion
         this.w = q.w;
     }
 
+    /**
+     * Clones this quaternion
+     * 
+     * @returns A new quaternion with the same values as this one
+     */
     clone(): Quaternion
     {
         return new Quaternion(this.x, this.y, this.z, this.w);
     }
 
-    // Quaternion multiplication is not commutative
+    /**
+     * Multiply this quaternion with the input quaternion
+     * This operation is not commutative, so order matters
+     * 
+     * @param q - The quaternion to multiply with
+     */
     multiply(q: Quaternion): void
     {
         this.copy(Quaternion.multiply(this, q));
     }
 
-    // Quaternion multiplication is not commutative
+    /**
+     * Premultiply this quaternion with the input quaternion
+     * This operation is not commutative, so order matters
+     * 
+     * @param q - The quaternion to premultiply with
+     */
     premultiply(q: Quaternion): void
     {
         this.copy(Quaternion.multiply(q, this));
     }
 
+    /**
+     * Normalize this quaternion
+     */
     normalize(): void
     {
         const normalizeFactor = 1 / Math.sqrt(this.x * this.x + this.y * this.y +
@@ -341,6 +473,9 @@ export class Quaternion
         this.w *= normalizeFactor;
     }
 
+    /**
+     * Inverts the Quaternion in place
+     */
     invert(): void
     {
         const normalizeFactor = 1 / Math.sqrt(this.x * this.x + this.y * this.y +
@@ -352,14 +487,25 @@ export class Quaternion
         this.w *= normalizeFactor;
     }
 
+    /**
+     * Returns the inverse of this Quaternion
+     * 
+     * @returns The inverse of this Quaternion
+     */
     inverse(): Quaternion
     {
         return Quaternion.inverse(this);
     }
 
-    // based on http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToMatrix/index.htm
+    /**
+     * Returns a 4x4 rotation matrix representation of this Quaternion
+     * 
+     * @returns A 4x4 rotation matrix representation of this Quaternion
+     */
     getMatrix(): Matrix4
     {
+        // Based on implementation described at
+        // http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToMatrix/index.htm
         const sqw = this.w*this.w;
         const sqx = this.x*this.x;
         const sqy = this.y*this.y;
@@ -383,6 +529,13 @@ export class Quaternion
         );
     }
 
+    /**
+     * Creates a quaternion that rotates the vector `eye` to point towards `target`
+     * 
+     * @param eye - The vector representing the starting point
+     * @param target - The vector representing the target point
+     * @param up - The vector representing the up direction (defaults to Vector3.UP)
+     */
     lookAt(eye: Vector3, target: Vector3, up = Vector3.UP): void
     {
         const z = Vector3.subtract(eye, target);
@@ -404,10 +557,17 @@ export class Quaternion
         this.setMatrix(m);
     }
 
-    // based on VRPN implementation
-    // https://github.com/vrpn/vrpn/blob/master/quat/quat.c
+    /**
+     * Interpolates between two quaternions, q1 and q2, based on the given `alpha` value
+     * 
+     * @param q1 - The starting quaternion
+     * @param q2 - The ending quaternion
+     * @param alpha - The interpolation value (0-1)
+     */
     slerp(q1: Quaternion, q2: Quaternion, alpha: number): void
     {
+        // based on VRPN implementation
+        // https://github.com/vrpn/vrpn/blob/master/quat/quat.c
         const temp = q1.clone();
 
         let cosOmega = q1.x*q2.x + q1.y*q2.y + q1.z*q2.z + q1.w*q2.w;

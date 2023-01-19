@@ -66,7 +66,6 @@ src\math\MathUtils.ts
 src\math\Matrix3.ts
 src\math\Matrix4.ts
 src\math\Plane.ts
-src\math\Quaternion.ts
 ```
 
 ## Documentation Workflow
@@ -92,6 +91,7 @@ Write comments for the following methods of the INSERT_CLASS_HERE class.  You do
 3. Copy and paste several methods from the class after the query template.  In my experience, batching about 4-5 methods seems to work well.  After that it may run out of tokens or produce errors, but it depends on the total combined length of both the input and response.
 4. Submit the query.
 5. Copy and paste the generated comments above the header for each method.
+6. If you notice any obvious errors or opportunities for clarification, feel free to make edits or additions.  (But don't worry too much, I will go through all the AI-generated comments before we push this out to students.)
 
 ## License
 
