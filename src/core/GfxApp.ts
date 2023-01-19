@@ -4,25 +4,71 @@ import { Scene } from './Scene';
 import { Vector2 } from '../math/Vector2'
 import { AssetManager } from '../loaders/AssetManager';
 
+/**
+ * The base class for a GopherGfx application.
+*/
 export abstract class GfxApp 
 {
+    /**
+     * The singleton instance of the GfxApp class.
+     */
     private static instance: GfxApp;
     
+    /**
+     * Gets the singleton instance of the GfxApp class.
+     * 
+     * @returns The singleton instance of the GfxApp class.
+     */
     public static getInstance(): GfxApp
     {
         return GfxApp.instance;
     }
 
+    /**
+     * The renderer used by the GfxApp instance.
+     */
     public renderer: Renderer;
+
+    /**
+     * The camera used by the GfxApp instance.
+     */
     public camera: Camera;
+
+    /**
+     * The scene used by the GfxApp instance.
+     */
     public scene: Scene;
+
+    /**
+     * Coordinates asynchronous loading of external assets.
+     */
     public assetManager: AssetManager;
+
+    /**
+     * A boolean indicating whether the GfxApp should continue to run in the background.
+     */
     public runInBackground: boolean;
 
+    /**
+     * The current game time in seconds.
+     */
     private time: number;
+
+    /**
+     * A boolean indicating whether the GfxApp is currently paused.
+     */
     private paused: boolean;
+
+    /**
+     * An array of the previous touches on the touch screen.
+     */
     private previousTouches: Vector2[];
 
+    /**
+     * Constructor for the GfxApp class
+     * 
+     * @param enableStencilBuffer - Boolean value to enable/disable the stencil buffer
+     */
     constructor(enableStencilBuffer = false)
     {
         GfxApp.instance = this;
@@ -58,13 +104,18 @@ export abstract class GfxApp
         this.camera.setOrthographicCamera(0, 1, 0, 1, 0.01, 1);
     }
 
-    // Create the scene and enter the main loop
+    /**
+     * Creates the scene and starts the program
+     */
     start(): void 
     {
         this.createScene();
         this.initializationLoop();
     }
 
+    /**
+     * Initialization loop for loading assets before starting the main loop
+     */
     private initializationLoop(): void
     {
         if(!this.assetManager.allAssetsLoaded())
@@ -79,7 +130,11 @@ export abstract class GfxApp
         }
     }
 
-    // This starts the main loop of the game
+    /**
+     * Main loop for the GfxApp class
+     * 
+     * @param deltaTime - The time difference between frames for calculating updates
+     */
     private mainLoop(): void
     {
         if(this.runInBackground || !this.paused)
@@ -107,20 +162,26 @@ export abstract class GfxApp
         window.requestAnimationFrame(() => this.mainLoop());
     }
 
-    // Resize the viewport
+    /**
+     * Resizes the viewport of the GfxApp
+     */
     resize(): void
     {
         this.renderer.resize(window.innerWidth, window.innerHeight, this.camera.getAspectRatio());
     }
 
-    // Create a simulated mouse event for touch input
+    /**
+     * Creates a simulated mouse down event for touch input
+     */
     onTouchStart(event: TouchEvent): void
     {
         if(event.touches.length == 1)
             this.simulateMouseEvent('mousedown', event);
     }
 
-    // Create a simulated mouse event for touch input
+    /**
+     * Creates a simulated mouse move event for touch input
+     */
     onTouchMove(event: TouchEvent): void
     {
         event.preventDefault();
@@ -130,44 +191,80 @@ export abstract class GfxApp
             this.simulateWheelEvent(event);
     }
 
-    // Create a simulated mouse event for touch input
+    /**
+     * Creates a simulated mouse up event for touch input
+     */
     onTouchEnd(event: TouchEvent): void
     {
         if(event.touches.length == 0)
             this.simulateMouseEvent('mouseup', event);
     }
 
+    /**
+     * Handles focus events to pause and resume the application
+     * 
+     * @param event - The FocusEvent
+     */
     onFocusReceived(event: FocusEvent): void 
     {
         this.resume();
     }
 
+    /**
+     * Handles focus events to pause and resume the application
+     * 
+     * @param event - The FocusEvent
+     */
     onFocusLost(event: FocusEvent): void 
     {
         this.pause();
     }
 
+    /**
+     * Pauses the application
+     */
     pause(): void
     {
         this.paused = true;
     }
 
+    /**
+     * Resumes the application
+     */
     resume(): void
     {
         this.time = Date.now();
         this.paused = false;
     }
 
+    /**
+     * Returns true if the application is paused
+     * 
+     * @returns True if the application is paused, false otherwise
+     */
     isPaused(): boolean
     {
         return this.paused;
     }
 
+    /**
+     * Converts mouse coordinates to normalized device coordinates
+     * 
+     * @param mouseX - The x coordinate of the mouse
+     * @param mouseY - The y coordinate of the mouse
+     * @returns The normalized device coordinates
+     */
     getNormalizedDeviceCoordinates(mouseX: number, mouseY: number): Vector2
     {
         return this.renderer.getNormalizedDeviceCoordinates(mouseX, mouseY);
     }
 
+    /**
+     * Simulates a mouse event from a given TouchEvent
+     * 
+     * @param type - The type of mouse event to simulate
+     * @param touchEvent - The touch event to use for simulating the mouse event
+     */
     private simulateMouseEvent(type: string, touchEvent: TouchEvent): void
     {
         if(this.previousTouches.length == 1)
@@ -192,6 +289,11 @@ export abstract class GfxApp
         this.previousTouches = [ new Vector2(touchEvent.changedTouches[0].clientX, touchEvent.changedTouches[0].clientY) ];
     }
 
+    /**
+     * Simulates a mouse wheel event from a given TouchEvent
+     * 
+     * @param touchEvent - The touch event to use for simulating the wheel event
+     */
     private simulateWheelEvent(touchEvent: TouchEvent): void
     {
         if(this.previousTouches.length > 1)
@@ -238,21 +340,73 @@ export abstract class GfxApp
         }   
     }
 
-    // Your app should implement the following abstract methods
+    /**
+     * Abstract method to be implemented by any subclass of GfxApp.
+     * Creates the scene for the application.
+     */
     abstract createScene(): void;
+
+    /**
+     * Abstract method to be implemented by any subclass of GfxApp.
+     * Updates the application's state with the given deltaTime.
+     * 
+     * @param deltaTime - Time elapsed since the last update call (in seconds)
+     */
     abstract update(deltaTime: number): void;
 
-    // Optional late update method to be called just before drawing the scene
+    /**
+     * Late update method to be called just before drawing the scene.
+     * Optional method - subclasses do not need to override it.
+     * 
+     * @param deltaTime - Time elapsed since the last update call (in seconds)
+     */
     lateUpdate(deltaTime: number): void {}
 
-    // Optional method called after all assets are loaded before entering main loop
+    /**
+     * Method called after all assets are loaded before entering main loop.
+     * Optional method - subclasses do not need to override it.
+     */
     onAssetsLoaded(): void {}
 
-    // Subclasses can override these methods to handle events
+    /**
+     * Method called when the mouse is clicked. Subclasses can override this method to handle the event.
+     * 
+     * @param event - The MouseEvent object associated with the mouse click
+     */
     onMouseDown(event: MouseEvent): void {}
+
+    /**
+     * Method called when the mouse is released. Subclasses can override this method to handle the event.
+     * 
+     * @param event - The MouseEvent object associated with the mouse release
+     */
     onMouseUp(event: MouseEvent): void {}
+
+    /**
+     * Method called when the mouse is moved. Subclasses can override this method to handle the event.
+     * 
+     * @param event - The MouseEvent object associated with the mouse movement
+     */
     onMouseMove(event: MouseEvent): void {}
+
+    /**
+     * Method called when the mouse wheel is moved. Subclasses can override this method to handle the event.
+     * 
+     * @param event - The WheelEvent object associated with the mouse wheel movement
+     */
     onMouseWheel(event: WheelEvent): void {}
+
+    /**
+     * Method called when a key is pressed. Subclasses can override this method to handle the event.
+     * 
+     * @param event - The KeyboardEvent object associated with the key press
+     */
     onKeyDown(event: KeyboardEvent): void {}
+
+    /**
+     * Method called when a key is released. Subclasses can override this method to handle the event.
+     * 
+     * @param event - The KeyboardEvent object associated with the key release
+     */
     onKeyUp(event: KeyboardEvent): void {}
 }
