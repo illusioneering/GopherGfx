@@ -11,14 +11,36 @@ export enum Viewport
     STRETCH
 }
 
+/**
+ * Creates a renderer object to use for drawing to a WebGL2 canvas
+ */
 export class Renderer
 {
+    /**
+     * The background color of the viewport
+     */
     public background: Color;
+
+    /**
+     * The viewport of the renderer
+     */
     public viewport: Viewport;
 
+    /**
+     * The canvas element that the renderer draws to
+     */
     public readonly gfxCanvas: HTMLCanvasElement;
+
+    /**
+     * The WebGL2 context used by the renderer
+     */
     public readonly gl: WebGL2RenderingContext;
 
+    /**
+     * Creates a WebGL context for the given canvas element
+     *
+     * @param enableStencilBuffer - Whether to enable the stencil buffer for the WebGL context
+     */
     constructor(enableStencilBuffer = false)
     {
         this.gfxCanvas = document.getElementById("gfxCanvas") as HTMLCanvasElement;
@@ -56,6 +78,12 @@ export class Renderer
         this.viewport = Viewport.FIT;
     }
 
+    /**
+     * Resizes the graphics canvas and adjusts the viewport to maintain the provided aspect ratio.
+     * @param width - The width of the graphics canvas in pixels.
+     * @param height - The height of the graphics canvas in pixels.
+     * @param aspectRatio - The aspect ratio of the graphics canvas.
+     */
     resize(width: number, height: number, aspectRatio: number): void
     {
         this.gfxCanvas.width = width;
@@ -118,6 +146,11 @@ export class Renderer
         }
     }
 
+    /**
+     * Draws the scene using the provided camera.
+     * @param scene - The scene to draw.
+     * @param camera - The camera used to draw the scene.
+     */
     render(scene: Scene, camera: Camera): void
     {
         if(camera.projectionMatrixDirty)
@@ -132,6 +165,12 @@ export class Renderer
         scene.draw(camera);
     }
 
+    /**
+     * Gets the normalized device coordinates from the provided mouse coordinates. 
+     * @param mouseX - The x coordinate of the mouse.
+     * @param mouseY - The y coordinate of the mouse.
+     * @returns The normalized device coordinates.
+     */
     getNormalizedDeviceCoordinates(mouseX: number, mouseY: number): Vector2
     {
         const viewport = this.gl.getParameter(this.gl.VIEWPORT) as Int32Array;

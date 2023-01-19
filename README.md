@@ -2,13 +2,11 @@
 
 GopherGfx is a high-level scene graph library written in TypeScript and WebGL2.  It was written by [Evan Suma Rosenberg](https://illusioneering.cs.umn.edu/) for teaching [CSCI 4611: Programming Interactive Computer Graphics and Games](https://csci-4611-spring-2023.github.io/) at the University of Minnesota.
 
-## Documentation
+## To Do (TAs)
 
 The following classes still need documentation.  Please delete them from this list as they are completed.
 
 ```
-src\core\Renderer.ts
-src\core\Scene.ts
 src\core\Transform2.ts
 src\core\Transform3.ts
 src\geometry\2d
@@ -73,17 +71,7 @@ src\math\Plane.ts
 3. Enter the following query, replacing INSERT_CLASS_HERE with the name of the class.
 
 ```
-Use the following format for writing TypeScript comments:
-
-        /**
-         * Computes the distance between two Vector3 objects
-         * 
-         * @param v1 - The first Vector3 object
-         * @param v2 - The second Vector3 object
-         * @returns The distance between the two input vectors
-         */
-
-Write comments for the following methods of the INSERT_CLASS_HERE class.  You don't need to include the original code.
+Write TypeScript documentation for the following methods of the INSERT_CLASS_HERE class in TSDoc format.  Don't output the original code or anything in curly braces.
 ```
 
 3. Copy and paste several methods from the class after the query template.  In my experience, batching about 4-5 methods seems to work well.  After that it may run out of tokens or produce errors, but it depends on the total combined length of both the input and response.
