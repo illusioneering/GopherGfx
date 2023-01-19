@@ -2,12 +2,13 @@
 
 GopherGfx is a high-level scene graph library written in TypeScript and WebGL2.  It was written by [Evan Suma Rosenberg](https://illusioneering.cs.umn.edu/) for teaching [CSCI 4611: Programming Interactive Computer Graphics and Games](https://csci-4611-spring-2023.github.io/) at the University of Minnesota.
 
-## To Do (TAs)
+For more information, please see the [online documentation](https://illusioneering.github.io/GopherGfx/).
+
+## To Do (for TAs)
 
 The following classes still need documentation.  Please delete them from this list as they are completed.
 
 ```
-src\core\Transform2.ts
 src\core\Transform3.ts
 src\geometry\2d
 src\geometry\2d\Axes2.ts
