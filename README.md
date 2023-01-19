@@ -71,7 +71,17 @@ src\math\Plane.ts
 3. Enter the following query, replacing INSERT_CLASS_HERE with the name of the class.
 
 ```
-Write TypeScript documentation for the following methods of the INSERT_CLASS_HERE class in TSDoc format.  Don't output the original code or anything in curly braces.
+Use the following format for writing TypeScript comments:
+
+        /**
+         * Computes the distance between two Vector3 objects
+         * 
+         * @param v1 - The first Vector3 object
+         * @param v2 - The second Vector3 object
+         * @returns The distance between the two input vectors
+         */
+
+Write comments for the following methods of the INSERT_CLASS_HERE class.  You don't need to include the original code.
 ```
 
 3. Copy and paste several methods from the class after the query template.  In my experience, batching about 4-5 methods seems to work well.  After that it may run out of tokens or produce errors, but it depends on the total combined length of both the input and response.

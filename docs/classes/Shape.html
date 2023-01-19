@@ -15,6 +15,11 @@
 <li><a href="../modules.html">gophergfx</a></li>
 <li><a href="Shape.html">Shape</a></li></ul>
 <h1>Class Shape</h1></div>
+<section class="tsd-panel tsd-comment">
+<div class="tsd-comment tsd-typography"><p>The Transform2 class is used to represent an object in two-dimensional space. 
+It stores information such as position, rotation, scale, visibility, and a reference to its parent object. 
+It also contains a matrix to keep track of its transformation relative to its parent object.</p>
+</div></section>
 <section class="tsd-panel tsd-hierarchy">
 <h4>Hierarchy</h4>
 <ul class="tsd-hierarchy">
@@ -25,7 +30,7 @@
 <li><a href="Rectangle.html" class="tsd-signature-type" data-tsd-kind="Class">Rectangle</a></li>
 <li><a href="Circle.html" class="tsd-signature-type" data-tsd-kind="Class">Circle</a></li></ul></li></ul></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/geometry/2d/Shape.ts#L7">src/geometry/2d/Shape.ts:7</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/geometry/2d/Shape.ts#L7">src/geometry/2d/Shape.ts:7</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -88,111 +93,135 @@
 <h4 class="tsd-returns-title">Returns <a href="Shape.html" class="tsd-signature-type" data-tsd-kind="Class">Shape</a></h4><aside class="tsd-sources">
 <p>Overrides <a href="Transform2.html">Transform2</a>.<a href="Transform2.html#constructor">constructor</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/geometry/2d/Shape.ts#L19">src/geometry/2d/Shape.ts:19</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/geometry/2d/Shape.ts#L19">src/geometry/2d/Shape.ts:19</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Properties</h2>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a id="autoUpdateMatrix" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>auto<wbr/>Update<wbr/>Matrix</span><a href="#autoUpdateMatrix" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
-<div class="tsd-signature">auto<wbr/>Update<wbr/>Matrix<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div><aside class="tsd-sources">
+<div class="tsd-signature">auto<wbr/>Update<wbr/>Matrix<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+<div class="tsd-comment tsd-typography"><p>Boolean indicating whether the matrix should be automatically updated</p>
+</div><aside class="tsd-sources">
 <p>Inherited from <a href="Transform2.html">Transform2</a>.<a href="Transform2.html#autoUpdateMatrix">autoUpdateMatrix</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/core/Transform2.ts#L22">src/core/Transform2.ts:22</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/core/Transform2.ts#L53">src/core/Transform2.ts:53</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a id="boundingBox" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>bounding<wbr/>Box</span><a href="#boundingBox" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
-<div class="tsd-signature">bounding<wbr/>Box<span class="tsd-signature-symbol">:</span> <a href="BoundingBox2.html" class="tsd-signature-type" data-tsd-kind="Class">BoundingBox2</a></div><aside class="tsd-sources">
+<div class="tsd-signature">bounding<wbr/>Box<span class="tsd-signature-symbol">:</span> <a href="BoundingBox2.html" class="tsd-signature-type" data-tsd-kind="Class">BoundingBox2</a></div>
+<div class="tsd-comment tsd-typography"><p>Bounding box for this transform</p>
+</div><aside class="tsd-sources">
 <p>Inherited from <a href="Transform2.html">Transform2</a>.<a href="Transform2.html#boundingBox">boundingBox</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/core/Transform2.ts#L28">src/core/Transform2.ts:28</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/core/Transform2.ts#L73">src/core/Transform2.ts:73</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a id="boundingCircle" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>bounding<wbr/>Circle</span><a href="#boundingCircle" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
-<div class="tsd-signature">bounding<wbr/>Circle<span class="tsd-signature-symbol">:</span> <a href="BoundingCircle.html" class="tsd-signature-type" data-tsd-kind="Class">BoundingCircle</a></div><aside class="tsd-sources">
+<div class="tsd-signature">bounding<wbr/>Circle<span class="tsd-signature-symbol">:</span> <a href="BoundingCircle.html" class="tsd-signature-type" data-tsd-kind="Class">BoundingCircle</a></div>
+<div class="tsd-comment tsd-typography"><p>Bounding circle object for this transform</p>
+</div><aside class="tsd-sources">
 <p>Inherited from <a href="Transform2.html">Transform2</a>.<a href="Transform2.html#boundingCircle">boundingCircle</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/core/Transform2.ts#L29">src/core/Transform2.ts:29</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/core/Transform2.ts#L78">src/core/Transform2.ts:78</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a id="children" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>children</span><a href="#children" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
-<div class="tsd-signature">children<span class="tsd-signature-symbol">:</span> <a href="Transform2.html" class="tsd-signature-type" data-tsd-kind="Class">Transform2</a><span class="tsd-signature-symbol">[]</span></div><aside class="tsd-sources">
+<div class="tsd-signature">children<span class="tsd-signature-symbol">:</span> <a href="Transform2.html" class="tsd-signature-type" data-tsd-kind="Class">Transform2</a><span class="tsd-signature-symbol">[]</span></div>
+<div class="tsd-comment tsd-typography"><p>Array of children for this transform</p>
+</div><aside class="tsd-sources">
 <p>Inherited from <a href="Transform2.html">Transform2</a>.<a href="Transform2.html#children">children</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/core/Transform2.ts#L14">src/core/Transform2.ts:14</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/core/Transform2.ts#L22">src/core/Transform2.ts:22</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="colorBuffer" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>color<wbr/>Buffer</span><a href="#colorBuffer" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">color<wbr/>Buffer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">WebGLBuffer</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/geometry/2d/Shape.ts#L12">src/geometry/2d/Shape.ts:12</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/geometry/2d/Shape.ts#L12">src/geometry/2d/Shape.ts:12</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a id="gl" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagProtected">Protected</code> <code class="tsd-tag ts-flagReadonly">Readonly</code> <span>gl</span><a href="#gl" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">gl<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">WebGL2RenderingContext</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/geometry/2d/Shape.ts#L9">src/geometry/2d/Shape.ts:9</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/geometry/2d/Shape.ts#L9">src/geometry/2d/Shape.ts:9</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a id="layer" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>layer</span><a href="#layer" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
-<div class="tsd-signature">layer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div><aside class="tsd-sources">
+<div class="tsd-signature">layer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+<div class="tsd-comment tsd-typography"><p>Integer representing the layer of this transform</p>
+</div><aside class="tsd-sources">
 <p>Inherited from <a href="Transform2.html">Transform2</a>.<a href="Transform2.html#layer">layer</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/core/Transform2.ts#L20">src/core/Transform2.ts:20</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/core/Transform2.ts#L48">src/core/Transform2.ts:48</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="material" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>material</span><a href="#material" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">material<span class="tsd-signature-symbol">:</span> <a href="Material2.html" class="tsd-signature-type" data-tsd-kind="Class">Material2</a></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/geometry/2d/Shape.ts#L17">src/geometry/2d/Shape.ts:17</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/geometry/2d/Shape.ts#L17">src/geometry/2d/Shape.ts:17</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a id="matrix" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>matrix</span><a href="#matrix" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
-<div class="tsd-signature">matrix<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Matrix3</span></div><aside class="tsd-sources">
+<div class="tsd-signature">matrix<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Matrix3</span></div>
+<div class="tsd-comment tsd-typography"><p>Matrix3 representing the transformation matrix in local space</p>
+</div><aside class="tsd-sources">
 <p>Inherited from <a href="Transform2.html">Transform2</a>.<a href="Transform2.html#matrix">matrix</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/core/Transform2.ts#L23">src/core/Transform2.ts:23</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/core/Transform2.ts#L58">src/core/Transform2.ts:58</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a id="parent" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>parent</span><a href="#parent" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
-<div class="tsd-signature">parent<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="Transform2.html" class="tsd-signature-type" data-tsd-kind="Class">Transform2</a></div><aside class="tsd-sources">
+<div class="tsd-signature">parent<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="Transform2.html" class="tsd-signature-type" data-tsd-kind="Class">Transform2</a></div>
+<div class="tsd-comment tsd-typography"><p>Parent transform for this transform</p>
+</div><aside class="tsd-sources">
 <p>Inherited from <a href="Transform2.html">Transform2</a>.<a href="Transform2.html#parent">parent</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/core/Transform2.ts#L15">src/core/Transform2.ts:15</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/core/Transform2.ts#L27">src/core/Transform2.ts:27</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a id="position" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>position</span><a href="#position" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
-<div class="tsd-signature">position<span class="tsd-signature-symbol">:</span> <a href="Vector2.html" class="tsd-signature-type" data-tsd-kind="Class">Vector2</a></div><aside class="tsd-sources">
+<div class="tsd-signature">position<span class="tsd-signature-symbol">:</span> <a href="Vector2.html" class="tsd-signature-type" data-tsd-kind="Class">Vector2</a></div>
+<div class="tsd-comment tsd-typography"><p>Vector2 representing the position</p>
+</div><aside class="tsd-sources">
 <p>Inherited from <a href="Transform2.html">Transform2</a>.<a href="Transform2.html#position">position</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/core/Transform2.ts#L17">src/core/Transform2.ts:17</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/core/Transform2.ts#L32">src/core/Transform2.ts:32</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="positionBuffer" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>position<wbr/>Buffer</span><a href="#positionBuffer" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">position<wbr/>Buffer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">WebGLBuffer</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/geometry/2d/Shape.ts#L11">src/geometry/2d/Shape.ts:11</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/geometry/2d/Shape.ts#L11">src/geometry/2d/Shape.ts:11</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a id="rotation" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>rotation</span><a href="#rotation" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
-<div class="tsd-signature">rotation<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div><aside class="tsd-sources">
+<div class="tsd-signature">rotation<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+<div class="tsd-comment tsd-typography"><p>Rotation of the transform in radians</p>
+</div><aside class="tsd-sources">
 <p>Inherited from <a href="Transform2.html">Transform2</a>.<a href="Transform2.html#rotation">rotation</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/core/Transform2.ts#L18">src/core/Transform2.ts:18</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/core/Transform2.ts#L37">src/core/Transform2.ts:37</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a id="scale" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>scale</span><a href="#scale" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
-<div class="tsd-signature">scale<span class="tsd-signature-symbol">:</span> <a href="Vector2.html" class="tsd-signature-type" data-tsd-kind="Class">Vector2</a></div><aside class="tsd-sources">
+<div class="tsd-signature">scale<span class="tsd-signature-symbol">:</span> <a href="Vector2.html" class="tsd-signature-type" data-tsd-kind="Class">Vector2</a></div>
+<div class="tsd-comment tsd-typography"><p>Vector2 representing the scale</p>
+</div><aside class="tsd-sources">
 <p>Inherited from <a href="Transform2.html">Transform2</a>.<a href="Transform2.html#scale">scale</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/core/Transform2.ts#L19">src/core/Transform2.ts:19</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/core/Transform2.ts#L42">src/core/Transform2.ts:42</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="texCoordBuffer" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>tex<wbr/>Coord<wbr/>Buffer</span><a href="#texCoordBuffer" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">tex<wbr/>Coord<wbr/>Buffer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">WebGLBuffer</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/geometry/2d/Shape.ts#L13">src/geometry/2d/Shape.ts:13</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/geometry/2d/Shape.ts#L13">src/geometry/2d/Shape.ts:13</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="vertexCount" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>vertex<wbr/>Count</span><a href="#vertexCount" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">vertex<wbr/>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/geometry/2d/Shape.ts#L15">src/geometry/2d/Shape.ts:15</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/geometry/2d/Shape.ts#L15">src/geometry/2d/Shape.ts:15</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a id="visible" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>visible</span><a href="#visible" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
-<div class="tsd-signature">visible<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div><aside class="tsd-sources">
+<div class="tsd-signature">visible<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+<div class="tsd-comment tsd-typography"><p>Boolean indicating whether this transform should be rendered</p>
+</div><aside class="tsd-sources">
 <p>Inherited from <a href="Transform2.html">Transform2</a>.<a href="Transform2.html#visible">visible</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/core/Transform2.ts#L26">src/core/Transform2.ts:26</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/core/Transform2.ts#L68">src/core/Transform2.ts:68</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a id="worldMatrix" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>world<wbr/>Matrix</span><a href="#worldMatrix" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
-<div class="tsd-signature">world<wbr/>Matrix<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Matrix3</span></div><aside class="tsd-sources">
+<div class="tsd-signature">world<wbr/>Matrix<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Matrix3</span></div>
+<div class="tsd-comment tsd-typography"><p>Matrix3 representing the transformation matrix in world space</p>
+</div><aside class="tsd-sources">
 <p>Inherited from <a href="Transform2.html">Transform2</a>.<a href="Transform2.html#worldMatrix">worldMatrix</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/core/Transform2.ts#L24">src/core/Transform2.ts:24</a></li></ul></aside></section></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/core/Transform2.ts#L63">src/core/Transform2.ts:63</a></li></ul></aside></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Methods</h2>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="add" class="tsd-anchor"></a>
@@ -200,15 +229,19 @@
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 <li class="tsd-signature tsd-anchor-link" id="add.add-1">add<span class="tsd-signature-symbol">(</span>child<span class="tsd-signature-symbol">: </span><a href="Transform2.html" class="tsd-signature-type" data-tsd-kind="Class">Transform2</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#add.add-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Adds a child Transform2 to the current Transform2</p>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>child: <a href="Transform2.html" class="tsd-signature-type" data-tsd-kind="Class">Transform2</a></h5></li></ul></div>
+<h5>child: <a href="Transform2.html" class="tsd-signature-type" data-tsd-kind="Class">Transform2</a></h5>
+<div class="tsd-comment tsd-typography"><p>The child Transform2 to add</p>
+</div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Inherited from <a href="Transform2.html">Transform2</a>.<a href="Transform2.html#add">add</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/core/Transform2.ts#L109">src/core/Transform2.ts:109</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/core/Transform2.ts#L174">src/core/Transform2.ts:174</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="computeBounds" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>compute<wbr/>Bounds</span><a href="#computeBounds" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -221,7 +254,7 @@
 <h5>vertices: <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> | </span><a href="Vector2.html" class="tsd-signature-type" data-tsd-kind="Class">Vector2</a><span class="tsd-signature-symbol">[]</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/geometry/2d/Shape.ts#L154">src/geometry/2d/Shape.ts:154</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/geometry/2d/Shape.ts#L154">src/geometry/2d/Shape.ts:154</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="createDefaultVertexColors" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>create<wbr/>Default<wbr/>Vertex<wbr/>Colors</span><a href="#createDefaultVertexColors" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -229,21 +262,25 @@
 <li class="tsd-description">
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/geometry/2d/Shape.ts#L144">src/geometry/2d/Shape.ts:144</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/geometry/2d/Shape.ts#L144">src/geometry/2d/Shape.ts:144</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="draw" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>draw</span><a href="#draw" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 <li class="tsd-signature tsd-anchor-link" id="draw.draw-1">draw<span class="tsd-signature-symbol">(</span>parent<span class="tsd-signature-symbol">: </span><a href="Transform2.html" class="tsd-signature-type" data-tsd-kind="Class">Transform2</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#draw.draw-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Recursively draws the Transform2 object and its children</p>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>parent: <a href="Transform2.html" class="tsd-signature-type" data-tsd-kind="Class">Transform2</a></h5></li></ul></div>
+<h5>parent: <a href="Transform2.html" class="tsd-signature-type" data-tsd-kind="Class">Transform2</a></h5>
+<div class="tsd-comment tsd-typography"><p>The parent Transform2 object</p>
+</div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Overrides <a href="Transform2.html">Transform2</a>.<a href="Transform2.html#draw">draw</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/geometry/2d/Shape.ts#L34">src/geometry/2d/Shape.ts:34</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/geometry/2d/Shape.ts#L34">src/geometry/2d/Shape.ts:34</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="getColors" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Colors</span><a href="#getColors" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -251,7 +288,7 @@
 <li class="tsd-description">
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/geometry/2d/Shape.ts#L128">src/geometry/2d/Shape.ts:128</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/geometry/2d/Shape.ts#L128">src/geometry/2d/Shape.ts:128</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="getTextureCoordinates" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Texture<wbr/>Coordinates</span><a href="#getTextureCoordinates" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -259,7 +296,7 @@
 <li class="tsd-description">
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/geometry/2d/Shape.ts#L136">src/geometry/2d/Shape.ts:136</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/geometry/2d/Shape.ts#L136">src/geometry/2d/Shape.ts:136</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="getVertices" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Vertices</span><a href="#getVertices" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -267,62 +304,86 @@
 <li class="tsd-description">
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/geometry/2d/Shape.ts#L120">src/geometry/2d/Shape.ts:120</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/geometry/2d/Shape.ts#L120">src/geometry/2d/Shape.ts:120</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="intersects" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>intersects</span><a href="#intersects" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 <li class="tsd-signature tsd-anchor-link" id="intersects.intersects-1">intersects<span class="tsd-signature-symbol">(</span>other<span class="tsd-signature-symbol">: </span><a href="Transform2.html" class="tsd-signature-type" data-tsd-kind="Class">Transform2</a>, mode<span class="tsd-signature-symbol">?: </span><a href="../enums/IntersectionMode2.html" class="tsd-signature-type" data-tsd-kind="Enumeration">IntersectionMode2</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><a href="#intersects.intersects-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Checks if this Transform2 intersects another Transform2, using either a BoundingCircle or AxisAlignedBoundingBox</p>
+
+<h3>Returns</h3><p>A boolean indicating whether the two objects intersect</p>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>other: <a href="Transform2.html" class="tsd-signature-type" data-tsd-kind="Class">Transform2</a></h5></li>
+<h5>other: <a href="Transform2.html" class="tsd-signature-type" data-tsd-kind="Class">Transform2</a></h5>
+<div class="tsd-comment tsd-typography"><p>The Transform2 to check for intersection with</p>
+</div></li>
 <li>
-<h5>mode: <a href="../enums/IntersectionMode2.html" class="tsd-signature-type" data-tsd-kind="Enumeration">IntersectionMode2</a><span class="tsd-signature-symbol"> = IntersectionMode2.BOUNDING_CIRCLE</span></h5></li></ul></div>
+<h5>mode: <a href="../enums/IntersectionMode2.html" class="tsd-signature-type" data-tsd-kind="Enumeration">IntersectionMode2</a><span class="tsd-signature-symbol"> = IntersectionMode2.BOUNDING_CIRCLE</span></h5>
+<div class="tsd-comment tsd-typography"><p>The mode to use for intersection (defaults to BOUNDING_CIRCLE)</p>
+</div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
 <p>Inherited from <a href="Transform2.html">Transform2</a>.<a href="Transform2.html#intersects">intersects</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/core/Transform2.ts#L172">src/core/Transform2.ts:172</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/core/Transform2.ts#L275">src/core/Transform2.ts:275</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="lookAt" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>look<wbr/>At</span><a href="#lookAt" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 <li class="tsd-signature tsd-anchor-link" id="lookAt.lookAt-1">look<wbr/>At<span class="tsd-signature-symbol">(</span>target<span class="tsd-signature-symbol">: </span><a href="Vector2.html" class="tsd-signature-type" data-tsd-kind="Class">Vector2</a>, lookVector<span class="tsd-signature-symbol">?: </span><a href="Vector2.html" class="tsd-signature-type" data-tsd-kind="Class">Vector2</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#lookAt.lookAt-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Looks at a target vector with the given look vector</p>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>target: <a href="Vector2.html" class="tsd-signature-type" data-tsd-kind="Class">Vector2</a></h5></li>
+<h5>target: <a href="Vector2.html" class="tsd-signature-type" data-tsd-kind="Class">Vector2</a></h5>
+<div class="tsd-comment tsd-typography"><p>The vector to look at</p>
+</div></li>
 <li>
-<h5>lookVector: <a href="Vector2.html" class="tsd-signature-type" data-tsd-kind="Class">Vector2</a><span class="tsd-signature-symbol"> = Vector2.UP</span></h5></li></ul></div>
+<h5>lookVector: <a href="Vector2.html" class="tsd-signature-type" data-tsd-kind="Class">Vector2</a><span class="tsd-signature-symbol"> = Vector2.UP</span></h5>
+<div class="tsd-comment tsd-typography"><p>The vector used to determine the look direction (defaults to Vector2.UP)</p>
+</div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Inherited from <a href="Transform2.html">Transform2</a>.<a href="Transform2.html#lookAt">lookAt</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/core/Transform2.ts#L158">src/core/Transform2.ts:158</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/core/Transform2.ts#L254">src/core/Transform2.ts:254</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="remove" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>remove</span><a href="#remove" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 <li class="tsd-signature tsd-anchor-link" id="remove.remove-1">remove<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><a href="#remove.remove-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Removes the current Transform2 from its parent</p>
+
+<h3>Returns</h3><p>True if the Transform2 was successfully removed, false otherwise</p>
+</div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
 <p>Inherited from <a href="Transform2.html">Transform2</a>.<a href="Transform2.html#remove">remove</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/core/Transform2.ts#L115">src/core/Transform2.ts:115</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/core/Transform2.ts#L185">src/core/Transform2.ts:185</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="removeChild" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>remove<wbr/>Child</span><a href="#removeChild" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 <li class="tsd-signature tsd-anchor-link" id="removeChild.removeChild-1">remove<wbr/>Child<span class="tsd-signature-symbol">(</span>child<span class="tsd-signature-symbol">: </span><a href="Transform2.html" class="tsd-signature-type" data-tsd-kind="Class">Transform2</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="Transform2.html" class="tsd-signature-type" data-tsd-kind="Class">Transform2</a><a href="#removeChild.removeChild-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Removes the specified child Transform2 from the current Transform2</p>
+
+<h3>Returns</h3><p>The removed Transform2, or null if it was not found</p>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>child: <a href="Transform2.html" class="tsd-signature-type" data-tsd-kind="Class">Transform2</a></h5></li></ul></div>
+<h5>child: <a href="Transform2.html" class="tsd-signature-type" data-tsd-kind="Class">Transform2</a></h5>
+<div class="tsd-comment tsd-typography"><p>The child Transform2 to remove</p>
+</div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="Transform2.html" class="tsd-signature-type" data-tsd-kind="Class">Transform2</a></h4><aside class="tsd-sources">
 <p>Inherited from <a href="Transform2.html">Transform2</a>.<a href="Transform2.html#removeChild">removeChild</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/core/Transform2.ts#L123">src/core/Transform2.ts:123</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/core/Transform2.ts#L199">src/core/Transform2.ts:199</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="setColors" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>set<wbr/>Colors</span><a href="#setColors" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -337,7 +398,7 @@
 <h5>usage: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = ...</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/geometry/2d/Shape.ts#L74">src/geometry/2d/Shape.ts:74</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/geometry/2d/Shape.ts#L74">src/geometry/2d/Shape.ts:74</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="setTextureCoordinates" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>set<wbr/>Texture<wbr/>Coordinates</span><a href="#setTextureCoordinates" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -352,7 +413,7 @@
 <h5>usage: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = ...</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/geometry/2d/Shape.ts#L97">src/geometry/2d/Shape.ts:97</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/geometry/2d/Shape.ts#L97">src/geometry/2d/Shape.ts:97</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="setVertices" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>set<wbr/>Vertices</span><a href="#setVertices" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -367,67 +428,83 @@
 <h5>usage: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = ...</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/geometry/2d/Shape.ts#L46">src/geometry/2d/Shape.ts:46</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/geometry/2d/Shape.ts#L46">src/geometry/2d/Shape.ts:46</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="translate" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>translate</span><a href="#translate" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 <li class="tsd-signature tsd-anchor-link" id="translate.translate-1">translate<span class="tsd-signature-symbol">(</span>translation<span class="tsd-signature-symbol">: </span><a href="Vector2.html" class="tsd-signature-type" data-tsd-kind="Class">Vector2</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#translate.translate-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Translates the current Transform2 by the specified Vector2</p>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>translation: <a href="Vector2.html" class="tsd-signature-type" data-tsd-kind="Class">Vector2</a></h5></li></ul></div>
+<h5>translation: <a href="Vector2.html" class="tsd-signature-type" data-tsd-kind="Class">Vector2</a></h5>
+<div class="tsd-comment tsd-typography"><p>The Vector2 to translate the Transform2</p>
+</div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Inherited from <a href="Transform2.html">Transform2</a>.<a href="Transform2.html#translate">translate</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/core/Transform2.ts#L139">src/core/Transform2.ts:139</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/core/Transform2.ts#L220">src/core/Transform2.ts:220</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="translateX" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>translateX</span><a href="#translateX" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 <li class="tsd-signature tsd-anchor-link" id="translateX.translateX-1">translateX<span class="tsd-signature-symbol">(</span>distance<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#translateX.translateX-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Translates the position of a Transform2 along the X-axis</p>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>distance: <span class="tsd-signature-type">number</span></h5></li></ul></div>
+<h5>distance: <span class="tsd-signature-type">number</span></h5>
+<div class="tsd-comment tsd-typography"><p>The distance to translate the Transform2 by</p>
+</div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Inherited from <a href="Transform2.html">Transform2</a>.<a href="Transform2.html#translateX">translateX</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/core/Transform2.ts#L145">src/core/Transform2.ts:145</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/core/Transform2.ts#L231">src/core/Transform2.ts:231</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="translateY" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>translateY</span><a href="#translateY" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 <li class="tsd-signature tsd-anchor-link" id="translateY.translateY-1">translateY<span class="tsd-signature-symbol">(</span>distance<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#translateY.translateY-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Translates the position of a Transform2 along the Y-axis</p>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>distance: <span class="tsd-signature-type">number</span></h5></li></ul></div>
+<h5>distance: <span class="tsd-signature-type">number</span></h5>
+<div class="tsd-comment tsd-typography"><p>The distance to translate the Transform2 by</p>
+</div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Inherited from <a href="Transform2.html">Transform2</a>.<a href="Transform2.html#translateY">translateY</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/core/Transform2.ts#L151">src/core/Transform2.ts:151</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/core/Transform2.ts#L242">src/core/Transform2.ts:242</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="traverseSceneGraph" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>traverse<wbr/>Scene<wbr/>Graph</span><a href="#traverseSceneGraph" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 <li class="tsd-signature tsd-anchor-link" id="traverseSceneGraph.traverseSceneGraph-1">traverse<wbr/>Scene<wbr/>Graph<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#traverseSceneGraph.traverseSceneGraph-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Traverses the scene graph starting from the current Transform2 object</p>
+</div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Inherited from <a href="Transform2.html">Transform2</a>.<a href="Transform2.html#traverseSceneGraph">traverseSceneGraph</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/core/Transform2.ts#L65">src/core/Transform2.ts:65</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/core/Transform2.ts#L125">src/core/Transform2.ts:125</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="updateWorldMatrix" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>update<wbr/>World<wbr/>Matrix</span><a href="#updateWorldMatrix" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 <li class="tsd-signature tsd-anchor-link" id="updateWorldMatrix.updateWorldMatrix-1">update<wbr/>World<wbr/>Matrix<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#updateWorldMatrix.updateWorldMatrix-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Updates the world matrix of the current Transform2 object and its parent</p>
+</div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Inherited from <a href="Transform2.html">Transform2</a>.<a href="Transform2.html#updateWorldMatrix">updateWorldMatrix</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/b81b9fa/src/core/Transform2.ts#L88">src/core/Transform2.ts:88</a></li></ul></aside></li></ul></section></section></div>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/51b9bf7/src/core/Transform2.ts#L150">src/core/Transform2.ts:150</a></li></ul></aside></li></ul></section></section></div>
 <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 <div class="tsd-navigation settings">
 <details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
