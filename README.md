@@ -42,8 +42,6 @@ src\materials\Text.ts
 src\materials\UnlitMaterial.ts
 src\materials\WireframeMaterial.ts
 src\math\BoundingBox3.ts
-src\math\BoundingSphere.ts
-src\math\CurvePath3.ts
 src\math\LinearPath3.ts
 src\math\Matrix4.ts
 ```

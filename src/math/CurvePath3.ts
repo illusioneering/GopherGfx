@@ -11,6 +11,12 @@ export class CurvePath3
     public alpha: number;
     public tension: number;
 
+/**
+ * Constructs a CurvePath3 object with the given alpha and tension values
+ * 
+ * @param alpha - The alpha value for the curve
+ * @param tension - The tension value for the curve
+ */
     constructor(alpha = 0.5, tension = 0)
     {
         this.controlPoints = [];
@@ -18,6 +24,13 @@ export class CurvePath3
         this.tension = tension;
     }
 
+/**
+ * Computes a point on the curve from the given segment and parameter values
+ * 
+ * @param segment - The segment to calculate the point from
+ * @param t - The parameter value from 0-1 to calculate the point from
+ * @returns The point on the curve at the given segment and parameter value, or null if the segment is out of range
+ */    
     getPoint(segment: number, t: number): Vector3 | null
     {
         if(segment == 0)
@@ -76,6 +89,17 @@ export class CurvePath3
         }
     }
 
+
+/**
+ * Computes a point on the curve from the given control points and parameter values
+ * 
+ * @param p0 - The first control point
+ * @param p1 - The second control point
+ * @param p2 - The third control point
+ * @param p3 - The fourth control point
+ * @param t - The parameter value from 0-1 to calculate the point from
+ * @returns The point on the curve at the given control points and parameter value
+ */
     private computePoint(p0: Vector3, p1: Vector3, p2: Vector3, p3: Vector3, t: number): Vector3
     {
         const t01 = Math.pow(p0.distanceTo(p1), this.alpha);

@@ -6,18 +6,32 @@ export class BoundingSphere
     public center: Vector3;
     public radius: number;
 
+/**
+ * Constructs a BoundingSphere
+ */    
     constructor()
     {
         this.center = new Vector3();
         this.radius = 0;
     }
 
+/**
+ * Copies the given BoundingSphere into the current one
+ * 
+ * @param circle - The BoundingSphere object to copy
+ */
     copy(circle: BoundingSphere): void
     {
         this.center.copy(circle.center);
         this.radius = circle.radius;
     }
 
+/**
+ * Transforms the BoundingSphere by the given translation and scale
+ * 
+ * @param translation - The translation Vector3
+ * @param scale - The scale Vector3
+ */
     transform(translation: Vector3, scale: Vector3)
     {
         this.center.multiply(scale);
@@ -29,7 +43,13 @@ export class BoundingSphere
             this.radius *= scale.y;
     }
 
-    intersects(circle: BoundingSphere): boolean
+ /**
+ * Checks if the given BoundingSphere intersects with the current one
+ * 
+ * @param circle - The BoundingSphere to check against
+ * @returns True if the two BoundingSpheres intersect, false otherwise
+ */
+   intersects(circle: BoundingSphere): boolean
     {
         const distance = this.center.distanceTo(circle.center);
 
@@ -39,6 +59,12 @@ export class BoundingSphere
             return false;
     }
 
+/**
+ * Computes the bounds of the BoundingSphere from the given vertices
+ * 
+ * @param vertices - The array of Vector3 or number objects representing the vertices
+ * @param boundingBox - The BoundingBox3 object to use when computing the bounds
+ */
     computeBounds(vertices: Vector3[] | number[], boundingBox: BoundingBox3): void
     {
         this.center.copy(boundingBox.min);

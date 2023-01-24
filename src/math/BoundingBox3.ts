@@ -6,18 +6,33 @@ export class BoundingBox3
     public min: Vector3;
     public max: Vector3;
 
+/**
+ * Constructs a BoundingBox3 object.
+ */
     constructor()
     {
         this.min = new Vector3();
         this.max = new Vector3();
     }
 
+/**
+ * Copies the minimum and maximum values of another BoundingBox3 object into this one.
+ * 
+ * @param box - The BoundingBox3 object to copy
+ */
     copy(box: BoundingBox3): void
     {
         this.min.copy(box.min);
         this.max.copy(box.max);
     }
 
+/**
+ * Transforms the min and max properties of the BoundingBox3 object by scaling, rotating and translating the box
+ * 
+ * @param translation - The Vector3 object representing the translation
+ * @param rotation - The Quaternion object representing the rotation
+ * @param scale - The Vector3 object representing the scale
+ */
     transform(translation: Vector3, rotation: Quaternion, scale: Vector3)
     {
         this.min.multiply(scale);
@@ -55,6 +70,12 @@ export class BoundingBox3
         this.max.add(translation);
     }
 
+/**
+ * Checks if this BoundingBox3 object intersects with the provided BoundingBox3 object
+ * 
+ * @param box - The BoundingBox3 object to check intersection against
+ * @returns True if the boxes intersect, false otherwise
+ */
     intersects(box: BoundingBox3): boolean
     {
         const thisCenter = Vector3.add(this.max, this.min);
@@ -79,6 +100,12 @@ export class BoundingBox3
             return true;
     }
 
+    
+/**
+ * Computes the minimum and maximum Vector3 objects for the BoundingBox3 from a given array of vertices
+ * 
+ * @param vertices - An array of Vector3 or number objects with the vertices
+ */
     computeBounds(vertices: Vector3[] | number[]): void
     {
         if(typeof vertices[0] === 'number')
