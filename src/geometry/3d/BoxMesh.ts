@@ -22,6 +22,13 @@ export class BoxMesh extends Mesh
         this.createDefaultVertexColors();
     }
 
+    /**
+     * Sets the line for the box mesh.
+     * 
+     * @param startPoint - The start point of the line
+     * @param endPoint - The end point of the line
+     * @param thickness - The thickness of the line
+     */
     public setLine(startPoint: Vector3, endPoint: Vector3, thickness: number)
     {
         this.position.copy(startPoint);
@@ -34,7 +41,13 @@ export class BoxMesh extends Mesh
         this.scale.z = distance;
     }
 
-
+    /**
+     * Create vertices for the box mesh.
+     * 
+     * @param width - The width of the box
+     * @param height - The height of the box
+     * @param depth - The depth of the box
+     */
     private createVertices(width: number, height: number, depth: number): void
     {
         const vertices: number[] = [];
@@ -78,6 +91,9 @@ export class BoxMesh extends Mesh
         this.setVertices(vertices);
     }
 
+    /**
+     * Create the normals for the box mesh.
+     */
     private createNormals(): void
     {
         const normals: number[] = [];
@@ -121,6 +137,9 @@ export class BoxMesh extends Mesh
         this.setNormals(normals);
     }
 
+    /**
+     * Create the indices for the box mesh.
+     */
     private createIndices(): void
     {
         const indices: number[] = [];
@@ -152,6 +171,9 @@ export class BoxMesh extends Mesh
         this.setIndices(indices);
     }
 
+    /**
+     * Create the texture coordinates for the box mesh.
+     */
     private createTextureCoords(): void
     {
         const uvs: number[] = [];
