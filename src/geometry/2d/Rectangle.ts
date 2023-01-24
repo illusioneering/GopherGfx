@@ -1,10 +1,29 @@
 import { Shape } from './Shape'
 
+/**
+ * Represents a rectangle 2D shape
+ * @export
+ * @class Rectangle
+ * @extends {Shape}
+ */
 export class Rectangle extends Shape
 {
+    /**
+     * width of the rectangle, in screen coordinates [0, 1]
+     */
     public readonly width: number;
+    /**
+     * height of the rectangle, in screen coordinates [0, 1]
+     */
     public readonly height: number;
 
+    /**
+     * Creates an instance of a Rectangle.
+     * 
+     * @constructor
+     * @param width - width of the rectangle, in screen coordinates [0, 1]
+     * @param height - height of the rectangle, in screen coordinates [0, 1]
+     */
     constructor(width = 1, height = 1)
     {
         super();

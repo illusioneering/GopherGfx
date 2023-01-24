@@ -10,13 +10,6 @@ The following classes still need documentation.  Please delete them from this li
 
 ```
 src\core\Transform3.ts
-src\geometry\2d
-src\geometry\2d\Axes2.ts
-src\geometry\2d\Circle.ts
-src\geometry\2d\Line2.ts
-src\geometry\2d\Rectangle.ts
-src\geometry\2d\Shape.ts
-src\geometry\2d\ShapeInstance.ts
 src\geometry\3d\Axes3.ts
 src\geometry\3d\BoxMesh.ts
 src\geometry\3d\ConeMesh.ts
@@ -41,13 +34,11 @@ src\loaders\TextFileLoader.ts
 src\materials\BoundingVolumeMaterial.ts
 src\materials\GouraudMaterial.ts
 src\materials\LineMaterial.ts
-src\materials\Material2.ts
 src\materials\Material3.ts
 src\materials\MorphMaterial.ts
 src\materials\PhongMaterial.ts
 src\materials\ShaderProgram.ts
 src\materials\Text.ts
-src\materials\Texture.ts
 src\materials\UnlitMaterial.ts
 src\materials\WireframeMaterial.ts
 src\math\BoundingBox3.ts

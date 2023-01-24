@@ -10,14 +10,52 @@ import { Transform2 } from '../core/Transform2'
 import { Color } from '../math/Color' 
 import { Texture } from './Texture';
 
+/**
+ * Represents a Material for use in 2D graphics
+ * @export
+ * @class Material2
+ */
 export class Material2
 {
+    /**
+     * Controls the visibility of the material (false = hidden)
+     * 
+     * @memberof Material2
+     */
     public visible: boolean;
+
+    /**
+     * Controls the color of the material (defaults to white)
+     * 
+     * @memberof Material2
+     */
     public color: Color;
+
+    /**
+     * Controls the draw mode of the material (one of gl.POINTS, gl.LINES,
+     * gl.LINE_STRIP, gl.LINE_LOOP, gl.TRIANGLES, gl.TRIANGLE_STRIP,
+     * gl.TRIANGLE_FAN)
+     * 
+     * @memberof Material2
+     */
     public drawMode: number;
+
+    /**
+     * Controls the texture of the material. Can be null, meaning no texture.
+     * 
+     * @memberof Material2
+     */
     public texture: Texture | null;
 
     private readonly gl: WebGL2RenderingContext;
+
+    /**
+     * Shaders to use for all materials
+     * 
+     * @constructor
+     * @memberof Material2
+     * @static
+     */
     public static shader = new ShaderProgram(shapeVertexShader, shapeFragmentShader);
 
     private colorUniform: WebGLUniformLocation | null;
@@ -31,6 +69,9 @@ export class Material2
     private colorAttribute: number;
     private texCoordAttribute: number;
 
+    /**
+    * Constructs a new Material2, defaulting to a white textureless line loop
+    */
     constructor()
     {
         this.gl  = GfxApp.getInstance().renderer.gl;
@@ -54,6 +95,11 @@ export class Material2
         this.texCoordAttribute = Material2.shader.getAttribute(this.gl, 'texCoord');
     }
 
+    /**
+     * Copies an existing Material2 to this one
+     * 
+     * @param box - The Material2 to copy
+     */
     copy(mat: Material2): void
     {
         this.visible = mat.visible;
@@ -62,6 +108,12 @@ export class Material2
         this.texture = mat.texture;
     }
 
+    /**
+     * Draws a shape with this material and a given transform
+     * 
+     * @param shape - The shape to draw with this material
+     * @param transform - The transform where the shape should be drawn
+     */
     draw(shape: Shape, transform: Transform2): void
     {
         if(!this.visible || shape.vertexCount == 0)

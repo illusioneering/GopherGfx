@@ -1,14 +1,34 @@
 import { GfxApp } from '../core/GfxApp';
 
+/**
+ * Represents an image texture
+ * 
+ * @class Texture
+ */
 export class Texture
 {
     private static numTextures = 0;
 
     protected readonly gl: WebGL2RenderingContext;
 
+    /**
+     * The internal object used by WebGL to draw this texture
+     */
     public texture: WebGLTexture | null;
+
+    /**
+     * The WebGL texture ID used to draw this texture
+     */
     public id: number;
 
+    /**
+     * Create a new instance of a texture.
+     * 
+     * @param url URL to load the texture from (can be absolute, e.g.
+     * "http://unlikely-url.com/some-image.jpg", or relative, e.g.
+     * "./some-image.jpg"). Can be null to start out with, in which case the
+     * texture will be empty.
+     */
     constructor(url: string | null = null)
     {
         this.gl  = GfxApp.getInstance().renderer.gl;
@@ -32,6 +52,14 @@ export class Texture
         }
     }
 
+    /**
+     * Load an image into this texture.
+     * 
+     * @param url URL to load the texture from (can be absolute, e.g.
+     * "http://unlikely-url.com/some-image.jpg", or relative, e.g.
+     * "./some-image.jpg"). Can be null to start out with, in which case the
+     * texture will be empty.
+     */
     load(url: string): void
     {
         GfxApp.getInstance().assetManager.requestedAssets.push(url);
@@ -42,6 +70,12 @@ export class Texture
         image.src = url;
     }
 
+    /**
+     * Callback function for image loaded events
+     * 
+     * @param image HTML DOM image element produced by loading the image texture
+     * @param url Original URL the image was loaded from (used as an internal identifier for the image asset)
+     */
     imageLoaded(image: HTMLImageElement, url: string): void
     {
         GfxApp.getInstance().assetManager.loadedAssets.push(url);
@@ -52,11 +86,22 @@ export class Texture
         this.gl.generateMipmap(this.gl.TEXTURE_2D);
     }
 
+    /**
+     * Callback function for when the requested image cannot be found (load error)
+     * 
+     * @param url Original URL the image was loaded from (used as an internal identifier for the errored image asset)
+     */
     imageNotFound(url: string): void
     {
         GfxApp.getInstance().assetManager.errorAssets.push(url);
     }
 
+    /**
+     * Control the minification filter (sampling if a texture is shown at less than its original size)
+     * 
+     * @param linear Use linear filtering
+     * @param mipmap Use mipmapping
+     */
     setMinFilter(linear: boolean, mipmap: boolean)
     {
         this.gl.activeTexture(this.gl.TEXTURE0 + this.id);
@@ -77,6 +122,11 @@ export class Texture
         }
     }
 
+    /**
+     * Control the magnification filter (sampling if a texture is shown at greater than its original size)
+     * 
+     * @param linear Use linear filtering
+     */
     setMagFilter(linear: boolean)
     {
         this.gl.activeTexture(this.gl.TEXTURE0 + this.id);
@@ -87,6 +137,11 @@ export class Texture
             this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST);
     }
 
+    /**
+     * Set the wrapping mode for the texture.
+     * 
+     * @param repeat Repeat the texture beyond its bounds or just show it once
+     */
     setWrapping(repeat: boolean)
     {
         this.gl.activeTexture(this.gl.TEXTURE0 + this.id);

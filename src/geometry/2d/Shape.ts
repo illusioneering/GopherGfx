@@ -4,18 +4,58 @@ import { Color } from "../../math/Color";
 import { Material2 } from "../../materials/Material2";
 import { GfxApp } from "../../core/GfxApp";
 
+/**
+ * Represents a 2D shape. Note that for actually drawing shapes in the scene, a
+ * {ShapeInstance} should be used instead.
+ * 
+ * @export
+ * @class Shape
+ * @extends {Transform2}
+ */
 export class Shape extends Transform2
 {
     protected readonly gl: WebGL2RenderingContext;
 
+    /**
+     * Buffer that stores the position of each vertex.
+     * 
+     * @memberof Shape
+     */
     public positionBuffer: WebGLBuffer | null;
+
+    /**
+     * Buffer that stores the color of each vertex.
+     * 
+     * @memberof Shape
+     */
     public colorBuffer: WebGLBuffer | null;
+
+    /**
+     * Buffer that stores the texture (UV) coordinate at each vertex.
+     * 
+     * @memberof Shape
+     */
     public texCoordBuffer: WebGLBuffer | null;
 
+    /**
+     * Number of vertices in the shape.
+     * 
+     * @memberof Shape
+     */
     public vertexCount: number;
 
+    /**
+     * Material to draw the shape with.
+     * 
+     * @memberof Shape
+     */
     public material: Material2;
     
+    /**
+     * Construct a new 2D shape
+     * 
+     * @constructor
+     */
     constructor()
     {
         super();
@@ -31,6 +71,11 @@ export class Shape extends Transform2
         this.material = new Material2();
     }
 
+    /**
+     * Draw a shape with a particular Transform (position, rotation, scale)
+     * 
+     * @param parent - unused
+     */
     draw(parent: Transform2): void
     {
         if(!this.visible)
@@ -43,6 +88,13 @@ export class Shape extends Transform2
         });
     }
 
+    /**
+     * Set the vertices of the shape. Vertices should be in normalized device
+     * coordinates [-1, 1].
+     * 
+     * @param vertices - Array of vertices.
+     * @param usage - Intended usage (static or dynamic) of the shape's vertices.
+     */
     setVertices(vertices: Vector2[] | number[], usage = this.gl.STATIC_DRAW): void
     {
         if(vertices.length > 0)
@@ -71,6 +123,12 @@ export class Shape extends Transform2
         }
     }
 
+    /**
+     * Set the color at each vertex of the shape.
+     * 
+     * @param color - Array of colors.
+     * @param usage - Intended usage (static or dynamic) of the shape's vertex colors.
+     */
     setColors(colors: Color[] | number[], usage = this.gl.STATIC_DRAW): void
     {
         if(colors.length > 0)
@@ -94,6 +152,12 @@ export class Shape extends Transform2
         }
     }
 
+    /**
+     * Set the texture (UV) coordinates at each vertex of the shape.
+     * 
+     * @param texCoords - Array of texture coordinates.
+     * @param usage - Intended usage (static or dynamic) of the shape's UV coordinates.
+     */
     setTextureCoordinates(texCoords: Vector2[] | number[], usage = this.gl.STATIC_DRAW): void
     {
         if(texCoords.length > 0)
@@ -117,6 +181,11 @@ export class Shape extends Transform2
         }
     }
 
+    /**
+     * Get the vertices of the shape
+     * 
+     * @returns - Returns the array of vertices as numbers (not Vector2 objects)
+     */
     getVertices(): number[]
     {
         const vertexArray = new Float32Array(this.vertexCount * 2);
@@ -125,6 +194,11 @@ export class Shape extends Transform2
         return [... vertexArray];
     }
 
+    /**
+     * Get the vertex colors of the shape
+     * 
+     * @returns - Returns the array of colors as numbers (not Color objects)
+     */
     getColors(): number[]
     {
         const colorArray = new Float32Array(this.vertexCount * 4);
@@ -133,6 +207,11 @@ export class Shape extends Transform2
         return [... colorArray];
     }
 
+    /**
+     * Get the texture coordinates of the shape
+     * 
+     * @returns - Returns the array of texture (UV) coordinates as numbers (not Vector2 objects)
+     */
     getTextureCoordinates(): number[]
     {
         const texCoordArray = new Float32Array(this.vertexCount * 2);
@@ -141,6 +220,9 @@ export class Shape extends Transform2
         return [... texCoordArray];
     }
 
+    /**
+     * Create default (white) vertex colors for the shape
+     */
     public createDefaultVertexColors(): void
     {
         const colors: number[] = [];
@@ -151,6 +233,12 @@ export class Shape extends Transform2
         this.setColors(colors);
     }
 
+    /**
+     * Compute the 2D Bounds (both bounding box and bounding circle) of the shape.
+     * 
+     * @param vertices - Vertices to include in the shape. If empty, defaults to
+     * the object's current vertices.
+     */
     public computeBounds(vertices: Vector2[] | number[] | null): void
     {
         if(!vertices)
