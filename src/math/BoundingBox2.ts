@@ -6,18 +6,33 @@ export class BoundingBox2
     public min: Vector2;
     public max: Vector2;
 
+    /**
+    * Constructs a new BoundingBox2
+    */
     constructor()
     {
         this.min = new Vector2();
         this.max = new Vector2();
     }
 
+    /**
+     * Copies an existing BoundingBox2 to this one
+     * 
+     * @param box - The BoundingBox2 to copy
+     */
     copy(box: BoundingBox2): void
     {
         this.min.copy(box.min);
         this.max.copy(box.max);
     }
 
+    /**
+     * Transforms the BoundingBox2 with a translation, rotation, and scale
+     * 
+     * @param translation - The translation vector
+     * @param rotation - The rotation (in radians)
+     * @param scale - The scaling vector
+     */
     transform(translation: Vector2, rotation: number, scale: Vector2)
     {
         this.min.multiply(scale);
@@ -41,6 +56,12 @@ export class BoundingBox2
         this.max.add(translation);
     }
 
+    /**
+     * Checks if this BoundingBox2 intersects with another BoundingBox2
+     * 
+     * @param box - The other BoundingBox2 to check against
+     * @returns True if the two BoundingBox2s intersect, false otherwise
+     */
     intersects(box: BoundingBox2): boolean
     {
         const thisCenter = Vector2.add(this.max, this.min);

@@ -50,19 +50,11 @@ src\materials\Text.ts
 src\materials\Texture.ts
 src\materials\UnlitMaterial.ts
 src\materials\WireframeMaterial.ts
-src\math\BoundingBox2.ts
 src\math\BoundingBox3.ts
-src\math\BoundingCircle.ts
 src\math\BoundingSphere.ts
-src\math\Color.ts
-src\math\CurvePath2.ts
 src\math\CurvePath3.ts
-src\math\LinearPath2.ts
 src\math\LinearPath3.ts
-src\math\MathUtils.ts
-src\math\Matrix3.ts
 src\math\Matrix4.ts
-src\math\Plane.ts
 ```
 
 ## Documentation Workflow

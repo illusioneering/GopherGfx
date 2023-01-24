@@ -11,6 +11,12 @@ export class CurvePath2
     public alpha: number;
     public tension: number;
 
+    /** 
+     * Constructor for the CurvePath2 class.
+     * 
+     * @param alpha - The alpha parameter for the curve calculation (default 0.5)
+     * @param tension - The tension parameter for the curve calculation (default 0) 
+     */
     constructor(alpha = 0.5, tension = 0)
     {
         this.controlPoints = [];
@@ -18,6 +24,13 @@ export class CurvePath2
         this.tension = tension;
     }
 
+    /**
+     * Computes a point on the curve at a given segment and t value.
+     * 
+     * @param segment - The index of the control point of the segment
+     * @param t - The parameter t in the range [0,1]
+     * @returns The point on the curve at the specified segment and t value
+     */
     getPoint(segment: number, t: number): Vector2 | null
     {
         if(segment == 0)
@@ -76,6 +89,17 @@ export class CurvePath2
         }
     }
 
+
+    /**
+     * Computes a point on a CurvePath2 based on the given parameters
+     * 
+     * @param p0 - The first Vector2 object
+     * @param p1 - The second Vector2 object
+     * @param p2 - The third Vector2 object
+     * @param p3 - The fourth Vector2 object
+     * @param t - The t value used to calculate the point
+     * @returns The Vector2 that represents the point on the CurvePath2
+     */
     private computePoint(p0: Vector2, p1: Vector2, p2: Vector2, p3: Vector2, t: number): Vector2
     {
         const t01 = Math.pow(p0.distanceTo(p1), this.alpha);
