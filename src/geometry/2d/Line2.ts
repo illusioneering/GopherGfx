@@ -5,11 +5,6 @@ import { LineMaterial } from "../../materials/LineMaterial"
 import { GfxApp } from "../../core/GfxApp";
 import { BoundingBox2 } from "../../math/BoundingBox2";
 
-/**
-  * 
-  * @export
-  * @enum {number}
-  */
 export enum LineMode2
 {
     LINES,
@@ -17,68 +12,18 @@ export enum LineMode2
     LINE_LOOP
 }
 
-/** 
- * Represents a 2D line.
- * @export
- * @class Line2
- * @extends {Transform2}
- */
 export class Line2 extends Transform2
 {
-    /**
-     * WebGL context of the application.
-     * 
-     * @protected
-     * @type {WebGL2RenderingContext}
-     * @memberof Line2
-     */
     protected readonly gl: WebGL2RenderingContext;
 
-    /**
-     * Buffer that stores the position of each vertex.
-     * 
-     * @type {WebGLBuffer | null}
-     * @memberof Line2
-     */
     public positionBuffer: WebGLBuffer | null;
-
-    /**
-     * Buffer that stores the color of each vertex.
-     * 
-     * @type {WebGLBuffer | null}
-     * @memberof Line2
-     */
     public colorBuffer: WebGLBuffer | null;
 
-    /**
-     * Number of vertices of the line.
-     * 
-     * @type {number}
-     * @memberof Line2
-     */
     public vertexCount: number;
-
-    /**
-     * Material used to render the line.
-     * 
-     * @type {LineMaterial}
-     * @memberof Line2
-     */
     public material: LineMaterial;
 
-    /**
-     * Mode of the line.
-     * 
-     * @type {number}
-     * @memberof Line2
-     */
     public lineMode: number;
     
-    /**
-     * Creates an instance of Line2.
-     * @param {number} [lineMode=LineMode2.LINE_STRIP] 
-     * @memberof Line2
-     */
     constructor(lineMode = LineMode2.LINE_STRIP)
     {
         super();
@@ -95,12 +40,6 @@ export class Line2 extends Transform2
         this.lineMode = lineMode;
     }
 
-    /**
-     * Creates the line from a bounding box.
-     * 
-     * @param {BoundingBox2} box 
-     * @memberof Line2
-     */
     createFromBox(box: BoundingBox2)
     {      
          const vertices: number[] = [];
@@ -115,12 +54,6 @@ export class Line2 extends Transform2
          this.lineMode = LineMode2.LINE_LOOP;
     }
 
-    /**
-     * Draws the line.
-     * 
-     * @param {Transform2} parent 
-     * @memberof Line2
-     */
     draw(parent: Transform2,): void
     {
         if(!this.visible)
@@ -133,13 +66,6 @@ export class Line2 extends Transform2
         });
     }
 
-    /**
-     * Sets the vertices of the line.
-     * 
-     * @param {(Vector2[] | number[])} vertices 
-     * @param {number} [usage=this.gl.STATIC_DRAW] 
-     * @memberof Line2
-     */
     setVertices(vertices: Vector2[] | number[], usage = this.gl.STATIC_DRAW): void
     {
         if(vertices.length > 0)
@@ -166,13 +92,6 @@ export class Line2 extends Transform2
         }
     }
 
-    /**
-     * Sets the colors of the line.
-     * 
-     * @param {(Color[] | number[])} colors 
-     * @param {number} [usage=this.gl.STATIC_DRAW] 
-     * @memberof Line2
-     */
     setColors(colors: Color[] | number[], usage = this.gl.STATIC_DRAW): void
     {
         if(colors.length > 0)
@@ -196,12 +115,6 @@ export class Line2 extends Transform2
         }
     }
 
-    /**
-     * Returns an array of vertex positions.
-     * 
-     * @returns {number[]} 
-     * @memberof Line2
-     */
     getVertices(): number[]
     {
         const vertexArray = new Float32Array(this.vertexCount * 2);
@@ -210,12 +123,6 @@ export class Line2 extends Transform2
         return [... vertexArray];
     }
 
-    /**
-     * Returns an array of vertex colors.
-     * 
-     * @returns {number[]} 
-     * @memberof Line2
-     */
     getColors(): number[]
     {
         const colorArray = new Float32Array(this.vertexCount * 4);
@@ -224,11 +131,6 @@ export class Line2 extends Transform2
         return [... colorArray];
     }
 
-    /**
-     * Sets all vertex colors to white.
-     * 
-     * @memberof Line2
-     */
     public createDefaultVertexColors(): void
     {
         const colors: number[] = [];
@@ -239,12 +141,6 @@ export class Line2 extends Transform2
         this.setColors(colors);
     }
 
-    /**
-     * Returns the GL line mode.
-     * 
-     * @returns {number} 
-     * @memberof Line2
-     */
     public glLineMode(): number
     {
         if(this.lineMode == LineMode2.LINES)
