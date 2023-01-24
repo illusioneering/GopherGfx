@@ -2,27 +2,24 @@ import { Shape } from './Shape'
 
 /**
  * Represents a rectangle 2D shape
- * @export
- * @class Rectangle
- * @extends {Shape}
  */
 export class Rectangle extends Shape
 {
     /**
-     * width of the rectangle, in screen coordinates [0, 1]
+     * width of the rectangle, in normalized device coordinates [-1, 1]
      */
     public readonly width: number;
+
     /**
-     * height of the rectangle, in screen coordinates [0, 1]
+     * height of the rectangle, in normalized device coordinates [-1, 1]
      */
     public readonly height: number;
 
     /**
      * Creates an instance of a Rectangle.
      * 
-     * @constructor
-     * @param width - width of the rectangle, in screen coordinates [0, 1]
-     * @param height - height of the rectangle, in screen coordinates [0, 1]
+     * @param width - width of the rectangle, in normalized device coordinates [-1, 1]
+     * @param height - height of the rectangle, in normalized device coordinates [-1, 1]
      */
     constructor(width = 1, height = 1)
     {
@@ -38,7 +35,12 @@ export class Rectangle extends Shape
         this.createDefaultVertexColors();
     }
 
-
+    /**
+     * Creates the vertices of a Rectangle object
+     * 
+     * @param width - The width of the Rectangle
+     * @param height - The height of the Rectangle
+     */
     private createVertices(width: number, height: number): void
     {
         const vertices: number[] = [];
@@ -51,6 +53,9 @@ export class Rectangle extends Shape
         this.setVertices(vertices);
     }
 
+    /**
+     * Creates the texture coordinates of a Rectangle object
+     */
     private createTextureCoordinates(): void
     {
         const uvs: number[] = [];

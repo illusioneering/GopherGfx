@@ -4,31 +4,21 @@ import { Material2 } from '../../materials/Material2';
 
 /**
  * Represents an instance of a 2D shape.
- * 
- * @export
- * @class Shape
- * @extends {Transform2}
  */
 export class ShapeInstance extends Transform2
 {
     /**
      * The "prototype" shape to base the shape instance off of
-     * 
-     * @memberof ShapeInstance
      */
-    public readonly baseShape;
+    public readonly baseShape: Shape;
 
     /**
      * The material to draw this shape instance with
-     * 
-     * @memberof ShapeInstance
      */
     public material: Material2;
 
     /**
      * Create a new instance of a shape.
-     * 
-     * @constructor
      * @param baseShape Template shape to base this one off of
      * @param copyTransform Copy the transform of the template shape into this shape instance
      */
@@ -50,7 +40,7 @@ export class ShapeInstance extends Transform2
     }
 
     /**
-     * @returns The template shape this instance is based off.
+     * @returns The template shape this instance is based upon.
      */
     getBaseShape(): Shape
     {
@@ -59,10 +49,8 @@ export class ShapeInstance extends Transform2
 
     /**
      * Draw the shape instance
-     * 
-     * @param parent Unused
      */
-    draw(parent: Transform2): void
+    draw(): void
     {
         if(!this.visible)
             return;
@@ -70,7 +58,7 @@ export class ShapeInstance extends Transform2
         this.material.draw(this.baseShape, this);
 
         this.children.forEach((elem: Transform2) => {
-            elem.draw(this);
+            elem.draw();
         });
     }
 }

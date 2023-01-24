@@ -21,6 +21,7 @@ export * from './src/geometry/2d/Rectangle'
 export * from './src/geometry/2d/Circle'
 export * from './src/geometry/2d/Line2'
 export * from './src/geometry/2d/Axes2'
+export * from './src/geometry/2d/Particles2'
 
 export * from './src/interaction/OrbitControls'
 export * from './src/interaction/FirstPersonControls'

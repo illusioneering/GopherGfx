@@ -5,11 +5,6 @@ import { LineMaterial } from "../../materials/LineMaterial"
 import { GfxApp } from "../../core/GfxApp";
 import { BoundingBox2 } from "../../math/BoundingBox2";
 
-/**
-  * 
-  * @export
-  * @enum {number}
-  */
 export enum LineMode2
 {
     LINES,
@@ -19,65 +14,41 @@ export enum LineMode2
 
 /** 
  * Represents a 2D line.
- * @export
- * @class Line2
- * @extends {Transform2}
  */
 export class Line2 extends Transform2
 {
     /**
      * WebGL context of the application.
-     * 
-     * @protected
-     * @type {WebGL2RenderingContext}
-     * @memberof Line2
      */
     protected readonly gl: WebGL2RenderingContext;
 
     /**
      * Buffer that stores the position of each vertex.
-     * 
-     * @type {WebGLBuffer | null}
-     * @memberof Line2
      */
     public positionBuffer: WebGLBuffer | null;
 
     /**
      * Buffer that stores the color of each vertex.
-     * 
-     * @type {WebGLBuffer | null}
-     * @memberof Line2
      */
     public colorBuffer: WebGLBuffer | null;
 
     /**
      * Number of vertices of the line.
-     * 
-     * @type {number}
-     * @memberof Line2
      */
     public vertexCount: number;
 
     /**
      * Material used to render the line.
-     * 
-     * @type {LineMaterial}
-     * @memberof Line2
      */
     public material: LineMaterial;
 
     /**
      * Mode of the line.
-     * 
-     * @type {number}
-     * @memberof Line2
      */
     public lineMode: number;
     
     /**
      * Creates an instance of Line2.
-     * @param {number} [lineMode=LineMode2.LINE_STRIP] 
-     * @memberof Line2
      */
     constructor(lineMode = LineMode2.LINE_STRIP)
     {
@@ -96,10 +67,9 @@ export class Line2 extends Transform2
     }
 
     /**
-     * Creates the line from a bounding box.
+     * Creates a Line object from a BoundingBox2 object
      * 
-     * @param {BoundingBox2} box 
-     * @memberof Line2
+     * @param box - The BoundingBox2 object to create the Line from
      */
     createFromBox(box: BoundingBox2)
     {      
@@ -116,12 +86,9 @@ export class Line2 extends Transform2
     }
 
     /**
-     * Draws the line.
-     * 
-     * @param {Transform2} parent 
-     * @memberof Line2
+     * Draws the Line object
      */
-    draw(parent: Transform2,): void
+    draw(): void
     {
         if(!this.visible)
             return;
@@ -129,16 +96,15 @@ export class Line2 extends Transform2
         this.material.draw2d(this);
 
         this.children.forEach((elem: Transform2) => {
-            elem.draw(this);
+            elem.draw();
         });
     }
 
     /**
-     * Sets the vertices of the line.
+     * Sets the vertices of the Line object
      * 
-     * @param {(Vector2[] | number[])} vertices 
-     * @param {number} [usage=this.gl.STATIC_DRAW] 
-     * @memberof Line2
+     * @param vertices - An array of Vector2 objects or numbers representing the vertex positions
+     * @param usage - OpenGL flag specifying the expected usage of the buffer (defaults to STATIC_DRAW)
      */
     setVertices(vertices: Vector2[] | number[], usage = this.gl.STATIC_DRAW): void
     {
@@ -167,11 +133,10 @@ export class Line2 extends Transform2
     }
 
     /**
-     * Sets the colors of the line.
+     * Sets the colors of the Line object
      * 
-     * @param {(Color[] | number[])} colors 
-     * @param {number} [usage=this.gl.STATIC_DRAW] 
-     * @memberof Line2
+     * @param colors - An array of Color objects or numbers representing the vertex colors
+     * @param usage - OpenGL flag specifying the expected usage of the buffer (defaults to STATIC_DRAW)
      */
     setColors(colors: Color[] | number[], usage = this.gl.STATIC_DRAW): void
     {
@@ -197,10 +162,9 @@ export class Line2 extends Transform2
     }
 
     /**
-     * Returns an array of vertex positions.
+     * Gets the vertex positions of the Line object
      * 
-     * @returns {number[]} 
-     * @memberof Line2
+     * @returns An array of numbers representing the vertex positions
      */
     getVertices(): number[]
     {
@@ -211,10 +175,9 @@ export class Line2 extends Transform2
     }
 
     /**
-     * Returns an array of vertex colors.
+     * Gets the vertex colors of the Line object
      * 
-     * @returns {number[]} 
-     * @memberof Line2
+     * @returns An array of numbers representing the vertex colors
      */
     getColors(): number[]
     {
@@ -224,10 +187,9 @@ export class Line2 extends Transform2
         return [... colorArray];
     }
 
+    
     /**
-     * Sets all vertex colors to white.
-     * 
-     * @memberof Line2
+     * Creates a default set of colors for the Line object, with each vertex having a color of white (r,g,b,a = 1,1,1,1)
      */
     public createDefaultVertexColors(): void
     {
@@ -240,10 +202,9 @@ export class Line2 extends Transform2
     }
 
     /**
-     * Returns the GL line mode.
+     * Returns the appropriate OpenGL line mode for the current LineMode2 value
      * 
-     * @returns {number} 
-     * @memberof Line2
+     * @returns The OpenGL line mode corresponding to the LineMode2 value
      */
     public glLineMode(): number
     {

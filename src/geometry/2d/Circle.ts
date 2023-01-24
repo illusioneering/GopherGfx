@@ -1,24 +1,20 @@
 import { Shape } from './Shape'
+
 /**
- * The `Circle` class is used for creating a 2D Circle with a specified radius and number of segments.
- *
- * @extends {Shape}
+ * The Circle class is used for creating a 2D circle with a specified radius and number of segments.
  */
 export class Circle extends Shape {
+
     /**
      * The radius of the Circle
-     * 
-     * @readonly
-     * @memberof Circle
      */
     public readonly radius: number;
 
     /**
      * Creates an instance of Circle.
      * 
-     * @param {number} [radius=0.5] - The radius of the Circle
-     * @param {number} [numSegments=50] - The number of segments of the Circle 
-     * @memberof Circle
+     * @param radius - The radius of the Circle
+     * @param numSegments - The number of segments of the Circle 
      */
     constructor(radius = 0.5, numSegments = 50) {
         super();
@@ -30,12 +26,10 @@ export class Circle extends Shape {
     }
 
     /**
-     * Create the vertices of the Circle
-     *
-     * @private
-     * @param {number} radius
-     * @param {number} numSegments
-     * @memberof Circle
+     * Creates the vertices of the circle
+     * 
+     * @param radius - The radius of the circle
+     * @param numSegments - The number of segments in the circle
      */
     private createVertices(radius: number, numSegments: number): void {
         const vertices = [0, 0];
@@ -47,11 +41,9 @@ export class Circle extends Shape {
     }
 
     /**
-     * Create the texture coordinates of the Circle
-     *
-     * @private
-     * @param {number} numSegments
-     * @memberof Circle
+     * Creates the texture coordinates of the circle
+     * 
+     * @param numSegments - The number of segments in the circle
      */
     private createTextureCoordinates(numSegments: number): void {
         const uvs = [0.5, 0.5];

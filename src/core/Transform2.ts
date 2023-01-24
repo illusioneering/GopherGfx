@@ -106,16 +106,14 @@ export class Transform2
 
     /**
      * Recursively draws the Transform2 object and its children
-     * 
-     * @param parent - The parent Transform2 object
      */
-    draw(parent: Transform2): void
+    draw(): void
     {
         if(!this.visible)
             return;
 
         this.children.forEach((elem: Transform2) => {
-            elem.draw(this);
+            elem.draw();
         });
     }
 

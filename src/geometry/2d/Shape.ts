@@ -5,12 +5,7 @@ import { Material2 } from "../../materials/Material2";
 import { GfxApp } from "../../core/GfxApp";
 
 /**
- * Represents a 2D shape. Note that for actually drawing shapes in the scene, a
- * {ShapeInstance} should be used instead.
- * 
- * @export
- * @class Shape
- * @extends {Transform2}
+ * Represents a 2D shape. 
  */
 export class Shape extends Transform2
 {
@@ -18,43 +13,36 @@ export class Shape extends Transform2
 
     /**
      * Buffer that stores the position of each vertex.
-     * 
-     * @memberof Shape
      */
     public positionBuffer: WebGLBuffer | null;
 
     /**
      * Buffer that stores the color of each vertex.
-     * 
-     * @memberof Shape
      */
     public colorBuffer: WebGLBuffer | null;
 
     /**
      * Buffer that stores the texture (UV) coordinate at each vertex.
-     * 
-     * @memberof Shape
      */
     public texCoordBuffer: WebGLBuffer | null;
 
     /**
+     * Array of buffers that store custom information for each vertex.
+     */
+    public customBuffers: (WebGLBuffer | null)[];
+
+    /**
      * Number of vertices in the shape.
-     * 
-     * @memberof Shape
      */
     public vertexCount: number;
 
     /**
      * Material to draw the shape with.
-     * 
-     * @memberof Shape
      */
     public material: Material2;
     
     /**
      * Construct a new 2D shape
-     * 
-     * @constructor
      */
     constructor()
     {
@@ -65,6 +53,7 @@ export class Shape extends Transform2
         this.positionBuffer = this.gl.createBuffer();
         this.colorBuffer = this.gl.createBuffer();
         this.texCoordBuffer = this.gl.createBuffer();
+        this.customBuffers = [];
         this.vertexCount = 0;
 
         // default material
@@ -73,10 +62,8 @@ export class Shape extends Transform2
 
     /**
      * Draw a shape with a particular Transform (position, rotation, scale)
-     * 
-     * @param parent - unused
      */
-    draw(parent: Transform2): void
+    draw(): void
     {
         if(!this.visible)
             return;
@@ -84,7 +71,7 @@ export class Shape extends Transform2
         this.material.draw(this, this);
 
         this.children.forEach((elem: Transform2) => {
-            elem.draw(this);
+            elem.draw();
         });
     }
 
@@ -182,6 +169,25 @@ export class Shape extends Transform2
     }
 
     /**
+     * Sets a custom buffer from an input array.
+     * 
+     * @param bufferIndex - The index number of the buffer to set.
+     * @param values - Array of numerical values to store in the buffer.
+     * @param usage - Intended usage (static or dynamic) of the shape's buffer.
+     */
+    setCustomBuffer(bufferIndex: number, values: number[], usage = this.gl.STATIC_DRAW): void
+    {
+        while(this.customBuffers.length <= bufferIndex)
+            this.customBuffers.push(this.gl.createBuffer());
+
+        if(values.length > 0)
+        {
+            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.customBuffers[bufferIndex]);
+            this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(values), usage);
+        }
+    }
+
+    /**
      * Get the vertices of the shape
      * 
      * @returns - Returns the array of vertices as numbers (not Vector2 objects)
@@ -218,6 +224,21 @@ export class Shape extends Transform2
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.texCoordBuffer);
         this.gl.getBufferSubData(this.gl.ARRAY_BUFFER, 0, texCoordArray);
         return [... texCoordArray];
+    }
+
+    /**
+     * Get the values in one of the shape's custom buffers
+     * 
+     * @param bufferIndex - The index number of the buffer to get.
+     * @param numAvalues - The number of values per vertex in the buffer.
+     * @returns - Returns the array of numbers stored in the buffer
+     */
+    getCustomBuffer(bufferIndex: number, numValues: number): number[]
+    {
+        const customBufferArray = new Float32Array(this.vertexCount * numValues);
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.customBuffers[bufferIndex]);
+        this.gl.getBufferSubData(this.gl.ARRAY_BUFFER, 0, customBufferArray);
+        return [... customBufferArray];
     }
 
     /**

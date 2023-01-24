@@ -1,16 +1,13 @@
 import { Line2, LineMode2 } from "./Line2";
+
 /**
- * The `Axes2` class is used for creating a 2D X and Y axes with a specified size. 
- *
- * @extends {Line2}
+ * The Axes2 class is used for creating a 2D X and Y axes with a specified size. 
  */
 export class Axes2 extends Line2 {
     /**
      * 
      * Creates an instance of Axes2.
-     * @param {number} [size=1] - The size of the axes.
-     * 
-     * @memberof Axes2
+     * @param size - The size of the axes.
      */
     constructor(size = 1) {
         super(LineMode2.LINES);

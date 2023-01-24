@@ -49,7 +49,7 @@ export class Scene
         });
 
         this.root2d.children.forEach((elem: Transform2) => {
-            elem.draw(this.root2d);
+            elem.draw();
         });
     }
 
