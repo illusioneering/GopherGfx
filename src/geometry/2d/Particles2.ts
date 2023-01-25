@@ -144,7 +144,7 @@ export class Particles2 extends Transform2
      */
     draw(): void
     {
-        if(!this.visible || this.baseParticle.vertexCount == 0)
+        if(!this.visible)
             return;
 
          // Switch to this shader
@@ -209,6 +209,10 @@ export class Particles2 extends Transform2
  
         // Draw the shape
         this.gl.drawArraysInstanced(this.baseParticle.material.drawMode, 0, this.baseParticle.vertexCount, this.numParticles);
+
+        // Reset the divisors so it doesn't break other shaders
+        this.gl.vertexAttribDivisor(this.particlePositionAttribute, 0);
+        this.gl.vertexAttribDivisor(this.particleSizeAttribute, 0);
 
         this.children.forEach((elem: Transform2) => {
             elem.draw();
