@@ -175,6 +175,7 @@ export abstract class GfxApp
      */
     onTouchStart(event: TouchEvent): void
     {
+        event.preventDefault();
         if(event.touches.length == 1)
             this.simulateMouseEvent('mousedown', event);
     }
@@ -196,6 +197,7 @@ export abstract class GfxApp
      */
     onTouchEnd(event: TouchEvent): void
     {
+        event.preventDefault();
         if(event.touches.length == 0)
             this.simulateMouseEvent('mouseup', event);
     }
