@@ -97,20 +97,15 @@ export class Particles2 extends Transform2
         this.vertColorAttribute = Particles2.shader.getAttribute(this.gl, 'vertColor');
         this.texCoordAttribute = Particles2.shader.getAttribute(this.gl, 'texCoord');
 
-        if(this.numParticles > 0)
-        {
-            const particlePositionArray: number[] = [];
-            this.particlePositions.forEach((elem: Vector2) =>
-            {
-                particlePositionArray.push(elem.x, elem.y);
-            });
-        
-            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.particlePositionBuffer);
-            this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(particlePositionArray), this.gl.DYNAMIC_DRAW);
-        
-            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.particleSizeBuffer);
-            this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(this.particleSizes), this.gl.DYNAMIC_DRAW);
-        }
+        const particlePositionArray: number[] = [];
+        for(let i=0; i < this.particlePositions.length; i++)
+                particlePositionArray.push(this.particlePositions[i].x, this.particlePositions[i].y);
+    
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.particlePositionBuffer);
+        this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(particlePositionArray), this.gl.DYNAMIC_DRAW);
+    
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.particleSizeBuffer);
+        this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(this.particleSizes), this.gl.DYNAMIC_DRAW);
     }
 
     /**
@@ -121,19 +116,26 @@ export class Particles2 extends Transform2
         return this.baseParticle;
     }
 
-    update(): void
+    /**
+     * Update the particle positions and/or sizes
+     * 
+     * @param updatePositions - Whether to update the particle positions (defaults to true)
+     * @param updateSizes - Whether to update the particle sizes (defaults to false)
+     */
+    update(updatePositions = true, updateSizes = false): void
     {
-        if(this.numParticles > 0)
+        if(updatePositions)
         {
             const particlePositionArray: number[] = [];
-            this.particlePositions.forEach((elem: Vector2) =>
-            {
-                particlePositionArray.push(elem.x, elem.y);
-            });
-        
+            for(let i=0; i < this.particlePositions.length; i++)
+                particlePositionArray.push(this.particlePositions[i].x, this.particlePositions[i].y);
+
             this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.particlePositionBuffer);
             this.gl.bufferSubData(this.gl.ARRAY_BUFFER, 0, new Float32Array(particlePositionArray));
-
+        }
+        
+        if(updateSizes)
+        {
             this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.particleSizeBuffer);
             this.gl.bufferSubData(this.gl.ARRAY_BUFFER, 0, new Float32Array(this.particleSizes));
         }
