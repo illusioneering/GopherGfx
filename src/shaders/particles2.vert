@@ -6,7 +6,7 @@ uniform mat3 modelMatrix;
 uniform float layer;
 
 in vec2 particlePosition;
-in vec2 particleSize;
+in float particleSize;
 
 in vec2 vertPosition;
 in vec4 vertColor;

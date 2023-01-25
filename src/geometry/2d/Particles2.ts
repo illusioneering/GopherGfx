@@ -32,7 +32,7 @@ export class Particles2 extends Transform2
     /**
      * Array containing sizes for each particle instance.
      */
-    public particleSizes: Vector2[];
+    public particleSizes: number[];
 
     public static shader = new ShaderProgram(particleVertexShader, particleFragmentShader);
 
@@ -75,7 +75,7 @@ export class Particles2 extends Transform2
         for(let i=0; i < this.numParticles; i++)
         {
             this.particlePositions.push(new Vector2());
-            this.particleSizes.push(new Vector2(1, 1));
+            this.particleSizes.push(1);
         }
 
         this.particlePositionBuffer = this.gl.createBuffer();
@@ -99,23 +99,17 @@ export class Particles2 extends Transform2
 
         if(this.numParticles > 0)
         {
-            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.particlePositionBuffer);
             const particlePositionArray: number[] = [];
             this.particlePositions.forEach((elem: Vector2) =>
             {
                 particlePositionArray.push(elem.x, elem.y);
             });
         
+            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.particlePositionBuffer);
             this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(particlePositionArray), this.gl.DYNAMIC_DRAW);
-
-            const particleSizeArray: number[] = [];
-            this.particleSizes.forEach((elem: Vector2) =>
-            {
-                particleSizeArray.push(elem.x, elem.y);
-            });
         
             this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.particleSizeBuffer);
-            this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(particleSizeArray), this.gl.DYNAMIC_DRAW);
+            this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(this.particleSizes), this.gl.DYNAMIC_DRAW);
         }
     }
 
@@ -138,20 +132,10 @@ export class Particles2 extends Transform2
             });
         
             this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.particlePositionBuffer);
-            this.gl.bufferSubData(this.gl.ARRAY_BUFFER, 
-                0,
-                new Float32Array(particlePositionArray));
+            this.gl.bufferSubData(this.gl.ARRAY_BUFFER, 0, new Float32Array(particlePositionArray));
 
-            const particleSizeArray: number[] = [];
-            this.particleSizes.forEach((elem: Vector2) =>
-            {
-                particleSizeArray.push(elem.x, elem.y);
-            });
-        
             this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.particleSizeBuffer);
-            this.gl.bufferSubData(this.gl.ARRAY_BUFFER, 
-                0,
-                new Float32Array(particleSizeArray));
+            this.gl.bufferSubData(this.gl.ARRAY_BUFFER, 0, new Float32Array(this.particleSizes));
         }
     }
 
@@ -188,7 +172,7 @@ export class Particles2 extends Transform2
          // Set the particle sizes
          this.gl.enableVertexAttribArray(this.particleSizeAttribute);
          this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.particleSizeBuffer);
-         this.gl.vertexAttribPointer(this.particleSizeAttribute, 2, this.gl.FLOAT, false, 0, 0);
+         this.gl.vertexAttribPointer(this.particleSizeAttribute, 1, this.gl.FLOAT, false, 0, 0);
          this.gl.vertexAttribDivisor(this.particleSizeAttribute, 1);
  
          // Set the vertex colors
