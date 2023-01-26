@@ -18,6 +18,13 @@ export class TransformWidget extends Transform3
     private currentAxis: number;
     private selectionPoint: Vector3;
 
+    /**
+ * Constructor for the TransformWidget class
+ * 
+ * @param lineLength - The length of each line in the axes, default = 1 
+ * @param selectionWidth - The width of each selected axis line
+ * @param triggerDistance - The maximum distance from the axis line that can trigger selection
+ */
     constructor(lineLength = 1, selectionWidth = 0.01, triggerDistance = 0.05)
     {
         super();
@@ -64,6 +71,11 @@ export class TransformWidget extends Transform3
         window.addEventListener('mousemove', (event: MouseEvent) => {this.onMouseMove(event)});
     }
 
+/**
+ * Updates the TransformWidget based on the deltaTime value
+ *
+ * @param deltaTime - The amount of time that has passed since the last update
+ */
     update(deltaTime: number): void
     {
         const ray = new Ray();
@@ -120,6 +132,11 @@ export class TransformWidget extends Transform3
         }
     }
 
+/**
+ * Handles a mouse down event, checking for intersection with the thickAxes and setting currentAxis if one is found
+ * 
+ * @param event - The MouseEvent
+ */
     onMouseDown(event: MouseEvent): void 
     {
         this.deviceCoords = GfxApp.getInstance().getNormalizedDeviceCoordinates(event.x, event.y);
@@ -173,16 +190,31 @@ export class TransformWidget extends Transform3
         }
     }
 
+/**
+ * Handles a mouse up event, resetting the currentAxis
+ * 
+ * @param event - The MouseEvent
+ */    
     onMouseUp(event: MouseEvent): void
     {
         this.currentAxis = -1;
     }
     
+/**
+ * Handles a mouse move event, updating the deviceCoords
+ * 
+ * @param event - The MouseEvent
+ */
     onMouseMove(event: MouseEvent): void
     {
         this.deviceCoords = GfxApp.getInstance().getNormalizedDeviceCoordinates(event.x, event.y);
     }
 
+/**
+ * Checks if the TransformWidget is currently selected
+ * 
+ * @returns True if the TransformWidget is selected, false otherwise
+ */
     isSelected(): boolean
     {
         return this.currentAxis >= 0;

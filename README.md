@@ -19,16 +19,11 @@ src\geometry\3d\Mesh.ts
 src\geometry\3d\MeshInstance.ts
 src\geometry\3d\PlaneMesh.ts
 src\geometry\3d\SphereMesh.ts
-src\interaction\FirstPersonControls.ts
-src\interaction\OrbitControls.ts
-src\interaction\TransformWidget.ts
 src\lights\AmbientLight.ts
 src\lights\DirectionalLight.ts
 src\lights\Light.ts
 src\lights\LightManager.ts
 src\lights\PointLight.ts
-src\loaders\AssetManager.ts
-src\loaders\ObjLoader.ts
 src\materials\BoundingVolumeMaterial.ts
 src\materials\GouraudMaterial.ts
 src\materials\Material3.ts

@@ -22,6 +22,11 @@ export class FirstPersonControls
     private targetOrbitX: Quaternion;
     private targetOrbitY: Quaternion;
 
+/**
+ * Constructs an instance of the FirstPersonControls class.
+ * 
+ * @param camera - The camera object to use with the controls
+ */    
     constructor(camera: Camera)
     {
         this.camera = camera;
@@ -47,18 +52,33 @@ export class FirstPersonControls
         window.addEventListener('keyup', (event: KeyboardEvent) => {this.onKeyUp(event)});  
     }
 
+/**
+ * Handles the mousedown event, setting a flag to indicate that the mouse is being dragged.
+ * 
+ * @param event - The mouse event object
+ */
     onMouseDown(event: MouseEvent): void 
     {
         if(this.mouseButton == event.button && (event.target! as Element).localName == "canvas")
             this.mouseDrag = true;
     }
 
+/**
+ * Handles the mouseup event, setting a flag to indicate that the mouse is no longer being dragged.
+ * 
+ * @param event - The mouse event object
+ */
     onMouseUp(event: MouseEvent): void
     {
         if(this.mouseButton == event.button)
             this.mouseDrag = false;
     }
-    
+
+/**
+ * Handles the mousemove event, updating the mouseMovement vector with the movement of the mouse.
+ * 
+ * @param event - The mouse event object
+ */    
     onMouseMove(event: MouseEvent): void
     {
         if(this.mouseDrag)
@@ -68,6 +88,11 @@ export class FirstPersonControls
         }
     }
 
+/**
+ * Handles the keydown event, updating the moveDirection vector based on the key pressed.
+ * 
+ * @param event - The keyboard event object
+ */
     onKeyDown(event: KeyboardEvent): void 
     {
         if(event.key == 'w')
@@ -88,6 +113,11 @@ export class FirstPersonControls
         }
     }
 
+/**
+ * Handles the keyup event, updating the moveDirection vector based on the key released.
+ * 
+ * @param event - The keyboard event object
+ */    
     onKeyUp(event: KeyboardEvent): void 
     {
         if(event.key == 'w' && this.moveDirection.z == -1)
@@ -108,6 +138,11 @@ export class FirstPersonControls
         }
     }
 
+/**
+ * Updates the FirstPersonControls object
+ * 
+ * @param deltaTime - The amount of time since the last update
+ */
     update(deltaTime: number): void
     {
         this.rotationDirection.x += this.mouseMovement.x;
@@ -160,6 +195,9 @@ export class FirstPersonControls
         }
     }
 
+/**
+ * Freezes the FirstPersonControls object
+ */
     freeze(): void
     {
         this.mouseDrag = false;
