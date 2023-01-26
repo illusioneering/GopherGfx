@@ -4,6 +4,9 @@ export class TextFile
 {
     data: string;
 
+/**
+ * Creates a new instance of the TextFile class
+ */
     constructor()
     {
         this.data = '';
@@ -12,6 +15,13 @@ export class TextFile
 
 export class TextFileLoader
 {
+/**
+ * Loads a text file located at the specified filename
+ * 
+ * @param filename - The path to the text file to be loaded
+ * @param callback - An optional callback function to be invoked when the file is loaded
+ * @returns The TextFile object containing the loaded file's data
+ */
     static load(filename: string, callback: ((loadedFile: TextFile) => void) | null = null): TextFile
     {
         GfxApp.getInstance().assetManager.requestedAssets.push(filename);

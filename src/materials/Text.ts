@@ -16,6 +16,20 @@ export class Text extends Texture
 
     private textCanvas: CanvasRenderingContext2D | null;
 
+/**
+ * Constructor for Text class
+ * 
+ * @param text - The text to be rendered
+ * @param width - The width of the text canvas
+ * @param height - The height of the text canvas
+ * @param font - The font style of the text
+ * @param fillStyle - The fill style of the text
+ * @param backgroundStyle - The background style of the text
+ * @param strokeStyle - The stroke style of the text
+ * @param strokeWidth - The stroke width of the text
+ * @param align - The alignment of the text
+ * @param baseline - The baseline of the text
+ */
     constructor(text: string, width: number, height: number, font = '24px monospace', 
                 fillStyle = 'black', backgroundStyle = '', strokeStyle = '', strokeWidth = 1,
                 align: CanvasTextAlign = 'center', baseline: CanvasTextBaseline = 'middle')
@@ -37,6 +51,15 @@ export class Text extends Texture
         this.updateTextureImage();
     }
 
+/**
+ * Updates the texture image of the Text class
+ * 
+ * Sets the width and height of the canvas, font, text alignment, and baseline.
+ * Fills the canvas with the background style if specified.
+ * Fills the text with the fill style if specified.
+ * Strokes the text with the stroke style and stroke width if specified.
+ * Binds the texture and generated mipmap.
+ */
     public updateTextureImage(): void
     {
         if(this.textCanvas)

@@ -32,6 +32,10 @@ export class LineMaterial
 
     protected readonly gl: WebGL2RenderingContext;
 
+/**
+ * Constructor for the LineMaterial class
+ * Initializes the shader uniforms and attributes for 3D and 2D drawing
+ */    
     constructor()
     {
         this.visible = true;
@@ -60,7 +64,12 @@ export class LineMaterial
         this.texCoordAttribute2d = Material2.shader.getAttribute(this.gl, 'texCoord');
     }
 
-
+/**
+ * Draws a 3D line using the given Line3 object and camera
+ *
+ * @param line - The Line3 object to be drawn
+ * @param camera - The Camera used to render the line
+ */
     draw3d(line: Line3, camera: Camera): void
     {
         if(!this.visible || line.vertexCount < 2)
@@ -94,6 +103,11 @@ export class LineMaterial
         this.gl.drawArrays(line.glLineMode(), 0, line.vertexCount)
     }
 
+/**
+ * Draws a 2D line using the given Line2 object
+ *
+ * @param line - The Line2 object to be drawn
+ */
     draw2d(line: Line2): void
     {
         if(!this.visible || line.vertexCount < 2)

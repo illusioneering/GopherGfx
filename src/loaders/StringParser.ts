@@ -4,6 +4,11 @@ export class StringParser
     private line: number;
     private token: number;
 
+/**
+ * Constructs a StringParser object from the given data string
+ * 
+ * @param data - The string to be parsed
+ */
     constructor(data: string)
     {
         this.tokens = [];
@@ -28,11 +33,23 @@ export class StringParser
         }
     }
 
+
+/**
+ * Checks the next token in the string without consuming it
+ * 
+ * @returns The next token in the string
+ */
     peek(): string
     {
         return this.tokens[this.line][this.token];
     }
-    
+
+/**
+ * Consumes the current token if it matches the expected token
+ * 
+ * @param token - The expected token
+ * @returns True if the current token matches the expected token and was consumed, false otherwise
+ */    
     expect(token: string): boolean
     {
         if(this.peek() == token)
@@ -46,17 +63,30 @@ export class StringParser
         }
     }
 
+/**
+ * Consumes the current line
+ */    
     consumeLine(): void
     {
         this.line++;
         this.token = 0;
     }
 
+/**
+ * Checks if the parser has reached the end of the string
+ * 
+ * @returns True if the parser has reached the end of the string, false otherwise
+ */
     done(): boolean
     {
         return this.line >= this.tokens.length;
     }
 
+/**
+ * Reads and consumes the next token in the string
+ * 
+ * @returns The next token in the string
+ */
     readToken(): string
     {
         const nextToken = this.tokens[this.line][this.token];
@@ -71,12 +101,21 @@ export class StringParser
         return nextToken;
     }
 
-
+/**
+ * Reads and consumes the next token in the string as a number
+ * 
+ * @returns The next token in the string as a number
+ */
     readNumber(): number
     {
         return Number(this.readToken());
     }
 
+/**
+ * Reads and consumes the rest of the current line
+ * 
+ * @returns The rest of the current line as an array of strings
+ */
     readLine(): string[]
     {
         const nextLine = [];

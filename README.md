@@ -29,21 +29,14 @@ src\lights\LightManager.ts
 src\lights\PointLight.ts
 src\loaders\AssetManager.ts
 src\loaders\ObjLoader.ts
-src\loaders\StringParser.ts
-src\loaders\TextFileLoader.ts
 src\materials\BoundingVolumeMaterial.ts
 src\materials\GouraudMaterial.ts
-src\materials\LineMaterial.ts
 src\materials\Material3.ts
 src\materials\MorphMaterial.ts
 src\materials\PhongMaterial.ts
 src\materials\ShaderProgram.ts
-src\materials\Text.ts
 src\materials\UnlitMaterial.ts
 src\materials\WireframeMaterial.ts
-src\math\BoundingBox3.ts
-src\math\LinearPath3.ts
-src\math\Matrix4.ts
 ```
 
 ## Documentation Workflow
