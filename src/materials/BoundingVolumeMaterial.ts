@@ -19,9 +19,9 @@ export enum BoundingVolumeMode
 export class BoundingVolumeMaterial extends Material3
 {
     public mode: BoundingVolumeMode;
-    public color: Color;
-
-    public wireframeMaterial: WireframeMaterial;
+    
+    public readonly color: Color;
+    public readonly wireframeMaterial: WireframeMaterial;
 
     private sphere: SphereMesh;
     private box: Line3;
@@ -41,10 +41,10 @@ export class BoundingVolumeMaterial extends Material3
 
         this.box = new Line3();
         this.box.createFromBox(boundingBox);
-        this.box.color = color;
+        this.box.color = this.color;
 
         this.wireframeMaterial = new WireframeMaterial();
-        this.wireframeMaterial.color = color;
+        this.wireframeMaterial.color = this.color;
         this.sphere.material = this.wireframeMaterial;
     }
 
