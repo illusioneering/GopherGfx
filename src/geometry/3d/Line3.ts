@@ -1,11 +1,12 @@
 import { Transform3 } from "../../core/Transform3";
 import { Vector3 } from "../../math/Vector3";
 import { Color } from "../../math/Color";
-import { LineMaterial } from "../../materials/LineMaterial"
 import { Camera } from "../../core/Camera";
 import { LightManager } from "../../lights/LightManager";
 import { GfxApp } from "../../core/GfxApp";
 import { BoundingBox3 } from "../../math/BoundingBox3";
+import { UnlitMaterial } from '../../materials/UnlitMaterial';
+import { Matrix4 } from "../../math/Matrix4";
 
 export enum LineMode3
 {
@@ -18,28 +19,43 @@ export class Line3 extends Transform3
 {
     protected readonly gl: WebGL2RenderingContext;
 
-    public positionBuffer: WebGLBuffer | null;
-    public colorBuffer: WebGLBuffer | null;
-
+    public color: Color;
     public vertexCount: number;
-    public material: LineMaterial;
-
     public lineMode: number;
+
+    public readonly positionBuffer: WebGLBuffer | null;
+    public readonly colorBuffer: WebGLBuffer | null;
+
+    private colorUniform: WebGLUniformLocation | null;
+    private useTextureUniform: WebGLUniformLocation | null;
+    private textureUniform: WebGLUniformLocation | null;
+    private modelViewUniform: WebGLUniformLocation | null;
+    private projectionUniform: WebGLUniformLocation | null;
+    private positionAttribute: number;
+    private colorAttribute: number;
+    private texCoordAttribute: number;
     
     constructor(lineMode = LineMode3.LINE_STRIP)
     {
         super();
 
-        this.gl  = GfxApp.getInstance().renderer.gl;
+        this.color = new Color();
+        this.vertexCount = 0;
+        this.lineMode = lineMode;
 
+        this.gl  = GfxApp.getInstance().renderer.gl;
         this.positionBuffer = this.gl.createBuffer();
         this.colorBuffer = this.gl.createBuffer();
-        this.vertexCount = 0;
 
-        // default material
-        this.material = new LineMaterial();
-
-        this.lineMode = lineMode;
+        UnlitMaterial.shader.initialize(this.gl);
+        this.colorUniform = UnlitMaterial.shader.getUniform(this.gl, 'materialColor');
+        this.modelViewUniform = UnlitMaterial.shader.getUniform(this.gl, 'modelViewMatrix');
+        this.projectionUniform = UnlitMaterial.shader.getUniform(this.gl, 'projectionMatrix');
+        this.useTextureUniform = UnlitMaterial.shader.getUniform(this.gl, 'useTexture');
+        this.textureUniform = UnlitMaterial.shader.getUniform(this.gl, 'textureImage');
+        this.positionAttribute = UnlitMaterial.shader.getAttribute(this.gl, 'position');
+        this.colorAttribute = UnlitMaterial.shader.getAttribute(this.gl, 'color');
+        this.texCoordAttribute = UnlitMaterial.shader.getAttribute(this.gl, 'texCoord');   
     }
 
     createFromBox(box: BoundingBox3)
@@ -87,7 +103,32 @@ export class Line3 extends Transform3
         if(!this.visible)
             return;
 
-        this.material.draw3d(this, camera);
+        // Switch to this shader
+        this.gl.useProgram(UnlitMaterial.shader.getProgram());
+
+        // Disable the texture in the shader
+        this.gl.uniform1i(this.useTextureUniform, 0);
+        this.gl.disableVertexAttribArray(this.texCoordAttribute);
+
+        // Set the camera uniforms
+        this.gl.uniformMatrix4fv(this.modelViewUniform, false, Matrix4.multiply(this.worldMatrix, camera.viewMatrix).mat);
+        this.gl.uniformMatrix4fv(this.projectionUniform, false, camera.projectionMatrix.mat);
+
+        // Set the material property uniforms
+        this.gl.uniform4f(this.colorUniform, this.color.r, this.color.g, this.color.b, this.color.a);
+
+        // Set the vertex colors
+        this.gl.enableVertexAttribArray(this.colorAttribute);
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.colorBuffer);
+        this.gl.vertexAttribPointer(this.colorAttribute, 4, this.gl.FLOAT, false, 0, 0);
+
+        // Set the vertex positions
+        this.gl.enableVertexAttribArray(this.positionAttribute);
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.positionBuffer);
+        this.gl.vertexAttribPointer(this.positionAttribute, 3, this.gl.FLOAT, false, 0, 0);
+
+        // Draw the lines
+        this.gl.drawArrays(this.glLineMode(), 0, this.vertexCount);
 
         this.children.forEach((elem: Transform3) => {
             elem.draw(this, camera, lightManager);

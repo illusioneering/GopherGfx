@@ -6,11 +6,8 @@ import { Transform3 } from '../core/Transform3'
 import { LightManager } from '../lights/LightManager';
 import { Color } from '../math/Color' 
 import { SphereMesh } from '../geometry/3d/SphereMesh';
-import { LineMaterial } from './LineMaterial';
 import { Line3 } from '../geometry/3d/Line3';
 import { BoundingBox3 } from '../math/BoundingBox3';
-import { Vector3 } from '../math/Vector3';
-import { Quaternion } from '../math/Quaternion';
 
 export enum BoundingVolumeMode
 {
@@ -24,7 +21,6 @@ export class BoundingVolumeMaterial extends Material3
     public mode: BoundingVolumeMode;
     public color: Color;
 
-    public lineMaterial: LineMaterial
     public wireframeMaterial: WireframeMaterial;
 
     private sphere: SphereMesh;
@@ -45,14 +41,11 @@ export class BoundingVolumeMaterial extends Material3
 
         this.box = new Line3();
         this.box.createFromBox(boundingBox);
+        this.box.color = color;
 
         this.wireframeMaterial = new WireframeMaterial();
         this.wireframeMaterial.color = color;
         this.sphere.material = this.wireframeMaterial;
-
-        this.lineMaterial = new  LineMaterial();
-        this.lineMaterial.color = color;
-        this.box.material = this.lineMaterial;
     }
 
     draw(mesh: Mesh, transform: Transform3, camera: Camera, lightManager: LightManager): void

@@ -47,7 +47,6 @@ export * from './src/materials/WireframeMaterial'
 export * from './src/materials/UnlitMaterial'
 export * from './src/materials/BoundingVolumeMaterial'
 export * from './src/materials/MorphMaterial'
-export * from './src/materials/LineMaterial'
 export * from './src/materials/Texture'
 export * from './src/materials/Text'
 

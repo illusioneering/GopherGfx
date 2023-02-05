@@ -1,9 +1,9 @@
 import { Transform2 } from "../../core/Transform2";
 import { Vector2 } from "../../math/Vector2";
 import { Color } from "../../math/Color";
-import { LineMaterial } from "../../materials/LineMaterial"
 import { GfxApp } from "../../core/GfxApp";
 import { BoundingBox2 } from "../../math/BoundingBox2";
+import { Material2 } from "../../materials/Material2";
 
 export enum LineMode2
 {
@@ -17,36 +17,24 @@ export enum LineMode2
  */
 export class Line2 extends Transform2
 {
-    /**
-     * WebGL context of the application.
-     */
     protected readonly gl: WebGL2RenderingContext;
 
-    /**
-     * Buffer that stores the position of each vertex.
-     */
-    public positionBuffer: WebGLBuffer | null;
-
-    /**
-     * Buffer that stores the color of each vertex.
-     */
-    public colorBuffer: WebGLBuffer | null;
-
-    /**
-     * Number of vertices of the line.
-     */
+    public color: Color;
     public vertexCount: number;
-
-    /**
-     * Material used to render the line.
-     */
-    public material: LineMaterial;
-
-    /**
-     * Mode of the line.
-     */
     public lineMode: number;
-    
+
+    public readonly positionBuffer: WebGLBuffer | null;
+    public readonly colorBuffer: WebGLBuffer | null;
+
+    private colorUniform: WebGLUniformLocation | null;
+    private useTextureUniform: WebGLUniformLocation | null;
+    private textureUniform: WebGLUniformLocation | null;
+    private modelUniform: WebGLUniformLocation | null;
+    private layerUniform: WebGLUniformLocation | null;
+    private positionAttribute: number;
+    private colorAttribute: number;
+    private texCoordAttribute: number;
+ 
     /**
      * Creates an instance of Line2.
      */
@@ -54,16 +42,23 @@ export class Line2 extends Transform2
     {
         super();
 
-        this.gl  = GfxApp.getInstance().renderer.gl;
+        this.color = new Color();
+        this.vertexCount = 0;
+        this.lineMode = lineMode;
 
+        this.gl  = GfxApp.getInstance().renderer.gl;
         this.positionBuffer = this.gl.createBuffer();
         this.colorBuffer = this.gl.createBuffer();
-        this.vertexCount = 0;
-
-        // default material
-        this.material = new LineMaterial();
-
-        this.lineMode = lineMode;
+       
+        Material2.shader.initialize(this.gl);
+        this.colorUniform = Material2.shader.getUniform(this.gl, 'materialColor');
+        this.modelUniform = Material2.shader.getUniform(this.gl, 'modelMatrix');
+        this.layerUniform = Material2.shader.getUniform(this.gl, 'layer');
+        this.useTextureUniform = Material2.shader.getUniform(this.gl, 'useTexture');
+        this.textureUniform = Material2.shader.getUniform(this.gl, 'textureImage');
+        this.positionAttribute = Material2.shader.getAttribute(this.gl, 'position');
+        this.colorAttribute = Material2.shader.getAttribute(this.gl, 'color');
+        this.texCoordAttribute = Material2.shader.getAttribute(this.gl, 'texCoord');
     }
 
     /**
@@ -93,8 +88,35 @@ export class Line2 extends Transform2
         if(!this.visible)
             return;
 
-        this.material.draw2d(this);
+        // Switch to this shader
+        this.gl.useProgram(Material2.shader.getProgram());
 
+        // Disable the texture in the shader
+        this.gl.uniform1i(this.useTextureUniform, 0);
+        this.gl.disableVertexAttribArray(this.texCoordAttribute);
+
+        // Set the model matrix uniform
+        this.gl.uniformMatrix3fv(this.modelUniform, false, this.worldMatrix.mat);
+
+        // Set the material property uniforms
+        this.gl.uniform4f(this.colorUniform, this.color.r, this.color.g, this.color.b, this.color.a);
+
+        // Set the layer uniform
+        this.gl.uniform1f(this.layerUniform, this.layer);
+
+        // Set the vertex colors
+        this.gl.enableVertexAttribArray(this.colorAttribute);
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.colorBuffer);
+        this.gl.vertexAttribPointer(this.colorAttribute, 4, this.gl.FLOAT, false, 0, 0);
+
+        // Set the vertex positions
+        this.gl.enableVertexAttribArray(this.positionAttribute);
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.positionBuffer);
+        this.gl.vertexAttribPointer(this.positionAttribute, 2, this.gl.FLOAT, false, 0, 0);
+
+        // Draw the lines
+        this.gl.drawArrays(this.glLineMode(), 0, this.vertexCount);
+        
         this.children.forEach((elem: Transform2) => {
             elem.draw();
         });
