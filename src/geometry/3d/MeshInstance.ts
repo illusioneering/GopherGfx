@@ -14,6 +14,8 @@ export class MeshInstance extends Transform3
         super();
         this.baseMesh = baseMesh;
         this.material = baseMesh.material;
+        this.boundingBox = baseMesh.boundingBox;
+        this.boundingSphere = baseMesh.boundingSphere;
 
         if(copyTransform)
         {
