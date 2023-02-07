@@ -293,6 +293,21 @@ export class Vector3
         return result;
     }
 
+    /**
+     * Reflects a vector about a normal
+     *
+     * @param v - The vector to reflect
+     * @param n - The normal to reflect about
+     * @returns A new Vector3 object that represents the result of reflecting v about n
+     */
+    public static reflect(v: Vector3, n: Vector3): Vector3
+    {
+        const result = n.clone();
+        result.multiplyScalar(v.dot(n) * -2);
+        result.add(v);
+        return result;
+    }
+
     public x: number;
     public y: number;
     public z: number;
@@ -598,5 +613,18 @@ export class Vector3
         this.x = v1.x * (1-alpha) + v2.x * alpha;
         this.y = v1.y * (1-alpha) + v2.y * alpha;
         this.z = v1.z * (1-alpha) + v2.z * alpha;
+    }
+
+    /**
+     * Reflects this vector about a normal
+     *
+     * @param n - The normal to reflect about
+     */
+    reflect(normal: Vector3): void
+    {
+        const reflection = normal.clone();
+        reflection.multiplyScalar(this.dot(normal) * -2);
+        reflection.add(this);
+        this.copy(reflection);
     }
 }
