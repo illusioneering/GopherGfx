@@ -5,6 +5,7 @@ import morphFragmentShader from '../shaders/morph.frag'
 
 import { Material3 } from './Material3';
 import { ShaderProgram } from './ShaderProgram';
+import { MorphMesh } from '../geometry/3d/MorphMesh';
 import { Mesh } from '../geometry/3d/Mesh';
 import { Camera } from '../core/Camera';
 import { Transform3 } from '../core/Transform3';
@@ -50,7 +51,6 @@ export class MorphMaterial extends Material3
     private colorAttribute: number;
     private texCoordAttribute: number;
 
-    public morphAlpha: number;
     private morphAlphaUniform: WebGLUniformLocation | null;
     private morphTargetPositionAttribute: number;
     private morphTargetNormalAttribute: number;
@@ -95,7 +95,6 @@ export class MorphMaterial extends Material3
         this.colorAttribute = MorphMaterial.shader.getAttribute(this.gl, 'color');
         this.texCoordAttribute = MorphMaterial.shader.getAttribute(this.gl, 'texCoord');   
 
-        this.morphAlpha = 0;
         this.morphAlphaUniform = MorphMaterial.shader.getUniform(this.gl, 'morphAlpha');
         this.morphTargetPositionAttribute = MorphMaterial.shader.getAttribute(this.gl, 'morphTargetPosition');
         this.morphTargetNormalAttribute = MorphMaterial.shader.getAttribute(this.gl, 'morphTargetNormal');   
@@ -105,7 +104,7 @@ export class MorphMaterial extends Material3
 
     draw(mesh: Mesh, transform: Transform3, camera: Camera, lightManager: LightManager): void
     {
-        if(!this.visible || mesh.triangleCount == 0)
+        if(!(mesh instanceof MorphMesh) || !this.visible || mesh.triangleCount == 0)
             return;
 
         // Initialize all the gl parameters for this shader
@@ -153,8 +152,8 @@ export class MorphMaterial extends Material3
         this.gl.vertexAttribPointer(this.colorAttribute, 4, this.gl.FLOAT, false, 0, 0);
 
         // Update the morph targets
-        this.gl.uniform1f(this.morphAlphaUniform, this.morphAlpha);
-        if(this.morphAlpha > 0)
+        this.gl.uniform1f(this.morphAlphaUniform, mesh.morphAlpha);
+        if(mesh.morphAlpha > 0)
         {
             // Set the morph target positions
             this.gl.enableVertexAttribArray(this.morphTargetPositionAttribute);
