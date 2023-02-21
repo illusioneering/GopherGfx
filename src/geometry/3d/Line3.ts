@@ -39,7 +39,7 @@ export class Line3 extends Transform3
     {
         super();
 
-        this.color = new Color();
+        this.color = new Color(1, 1, 1);
         this.vertexCount = 0;
         this.lineMode = lineMode;
 
