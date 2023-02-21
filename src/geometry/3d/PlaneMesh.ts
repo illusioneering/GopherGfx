@@ -21,7 +21,7 @@ export class PlaneMesh extends Mesh
 
     private createVertices(width: number, height: number): void
     {
-        const vertices = [];
+        const vertices: number[] = [];
 
         vertices.push(-width/2, -height/2, 0);
         vertices.push(width/2, -height/2, 0);
@@ -33,7 +33,7 @@ export class PlaneMesh extends Mesh
 
     private createNormals(): void
     {
-        const normals = [];
+        const normals: number[] = [];
 
         // Back face
         normals.push(0, 0, -1);
@@ -46,7 +46,7 @@ export class PlaneMesh extends Mesh
 
     private createIndices(): void
     {
-        const indices = [];
+        const indices: number[] = [];
 
         indices.push(0, 2, 1);
         indices.push(2, 0, 3);
@@ -56,7 +56,7 @@ export class PlaneMesh extends Mesh
 
     private createTextureCoords(): void
     {
-        const uvs = [];
+        const uvs: number[] = [];
 
         uvs.push(1, 1);
         uvs.push(0, 1);

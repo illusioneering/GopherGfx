@@ -7,6 +7,7 @@ export * from './src/core/Transform3'
 
 export * from './src/geometry/3d/Mesh'
 export * from './src/geometry/3d/MeshInstance'
+export * from './src/geometry/3d/MeshFactory'
 export * from './src/geometry/3d/BoxMesh'
 export * from './src/geometry/3d/SphereMesh'
 export * from './src/geometry/3d/ConeMesh'

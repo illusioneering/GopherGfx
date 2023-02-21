@@ -6,7 +6,7 @@ export class SphereMesh extends Mesh
     public readonly radius;
     public readonly subdivisions;
 
-    constructor(radius = 1, subdivisions=3)
+    constructor(radius = 1, subdivisions=2)
     {
         super();
         
