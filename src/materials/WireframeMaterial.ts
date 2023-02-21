@@ -67,11 +67,6 @@ export class WireframeMaterial extends Material3
         this.gl.drawElements(this.gl.LINES, mesh.triangleCount * 6, this.gl.UNSIGNED_SHORT, 0);
     }
 
-    setColor(color: Color): void
-    {
-        this.color.copy(color);
-    }
-
     public updateWireframeBuffer(mesh: Mesh): void
     {
         let wireframeBuffer: WebGLBuffer | null | undefined;
@@ -105,5 +100,15 @@ export class WireframeMaterial extends Material3
 
         this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, wireframeBuffer);
         this.gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(wireframeIndices), this.gl.STATIC_DRAW);
+    }
+
+    setColor(color: Color): void
+    {
+        this.color.copy(color);
+    }
+
+    getColor(): Color
+    {
+        return this.color;
     }
 }

@@ -169,4 +169,9 @@ export class PhongMaterial extends Material3
         this.diffuseColor.copy(color);
         this.specularColor.copy(color);
     }
+
+    getColor(): Color
+    {
+        return this.diffuseColor;
+    }
 }

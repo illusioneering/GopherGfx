@@ -110,4 +110,9 @@ export class UnlitMaterial extends Material3
     {
         this.color.copy(color);
     }
+
+    getColor(): Color
+    {
+        return this.color;
+    }
 }

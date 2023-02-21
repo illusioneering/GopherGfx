@@ -44,4 +44,5 @@ export abstract class Material3
 
     abstract draw(object: Mesh, transform: Transform3, camera: Camera, lightManager: LightManager): void;
     abstract setColor(color: Color): void;
+    abstract getColor(): Color;
 }

@@ -215,13 +215,6 @@ export class MorphMaterial extends Material3
         }
     }
 
-    setColor(color: Color): void
-    {
-        this.ambientColor.copy(color);
-        this.diffuseColor.copy(color);
-        this.specularColor.copy(color);
-    }
-
     public updateWireframeBuffer(mesh: Mesh): void
     {
         let wireframeBuffer: WebGLBuffer | null | undefined;
@@ -255,5 +248,17 @@ export class MorphMaterial extends Material3
 
         this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, wireframeBuffer);
         this.gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(wireframeIndices), this.gl.STATIC_DRAW);
+    }
+
+    setColor(color: Color): void
+    {
+        this.ambientColor.copy(color);
+        this.diffuseColor.copy(color);
+        this.specularColor.copy(color);
+    }
+
+    getColor(): Color
+    {
+        return this.diffuseColor;
     }
 }
