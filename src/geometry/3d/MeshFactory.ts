@@ -1,7 +1,7 @@
 import { Mesh } from './Mesh'
 import { Vector3 } from '../../math/Vector3';
 
-class MeshFactory
+export class MeshFactory
 {
     public static createBox(width = 1, height = 1, depth = 1): Mesh
     {

@@ -5,6 +5,7 @@ import { Camera } from "./Camera";
 import { LightManager } from "../lights/LightManager";
 import { BoundingBox3 } from "../math/BoundingBox3";
 import { BoundingSphere } from "../math/BoundingSphere"
+import { BoundingVolumeMaterial } from "../materials/BoundingVolumeMaterial";
 
 export enum IntersectionMode3
 {
@@ -30,6 +31,9 @@ export class Transform3
     public boundingBox: BoundingBox3;
     public boundingSphere: BoundingSphere;
 
+    public drawBoundingVolume: boolean;
+    public boundingVolumeMaterial: BoundingVolumeMaterial | null;
+
     constructor()
     {
         this.children = [];
@@ -46,12 +50,18 @@ export class Transform3
 
         this.boundingBox = new BoundingBox3();
         this.boundingSphere = new BoundingSphere();
+
+        this.drawBoundingVolume = false;
+        this.boundingVolumeMaterial = null;
     }
 
     draw(parent: Transform3, camera: Camera, lightManager: LightManager): void
     {
         if(!this.visible)
             return;
+
+        if(this.drawBoundingVolume && this.boundingVolumeMaterial)
+            this.boundingVolumeMaterial.draw(this, this, camera, lightManager);
 
         this.children.forEach((elem: Transform3) => {
             elem.draw(this, camera, lightManager);

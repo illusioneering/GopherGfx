@@ -64,6 +64,9 @@ export class Mesh extends Transform3
 
         this.material.draw(this, this, camera, lightManager);
 
+        if(this.drawBoundingVolume && this.boundingVolumeMaterial)
+            this.boundingVolumeMaterial.draw(this, this, camera, lightManager);
+
         this.children.forEach((elem: Transform3) => {
             elem.draw(this, camera, lightManager);
         });

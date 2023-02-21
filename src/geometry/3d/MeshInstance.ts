@@ -16,12 +16,15 @@ export class MeshInstance extends Transform3
         this.material = baseMesh.material;
         this.boundingBox = baseMesh.boundingBox;
         this.boundingSphere = baseMesh.boundingSphere;
-
+        this.visible = baseMesh.visible;
+        this.drawBoundingVolume = baseMesh.drawBoundingVolume;
+        this.boundingVolumeMaterial = baseMesh.boundingVolumeMaterial;
+        
         if(copyTransform)
         {
             this.position.copy(baseMesh.position);
             this.rotation.copy(baseMesh.rotation);
-            this.scale.copy(baseMesh.scale);
+            this.scale.copy(baseMesh.scale);  
         }
     }
 
@@ -36,6 +39,9 @@ export class MeshInstance extends Transform3
             return;
 
         this.material.draw(this.baseMesh, this, camera, lightManager);
+
+        if(this.drawBoundingVolume && this.boundingVolumeMaterial)
+            this.boundingVolumeMaterial.draw(this, this, camera, lightManager);
 
         this.children.forEach((elem: Transform3) => {
             elem.draw(this, camera, lightManager);
