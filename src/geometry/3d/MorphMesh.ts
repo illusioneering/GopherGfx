@@ -11,6 +11,9 @@ export class MorphMesh extends Mesh
     public morphTargetBoundingSphere: BoundingSphere;
     public material: MorphMaterial;
 
+    public morphTargetPositionBuffer: WebGLBuffer | null;
+    public morphTargetNormalBuffer: WebGLBuffer | null;
+
     constructor()
     {
         // Call the superclass constructor
@@ -21,6 +24,9 @@ export class MorphMesh extends Mesh
         this.morphTargetBoundingBox = new BoundingBox3();
         this.morphTargetBoundingSphere = new BoundingSphere();
         this.material = new MorphMaterial();
+
+        this.morphTargetPositionBuffer = this.gl.createBuffer();
+        this.morphTargetNormalBuffer = this.gl.createBuffer();
     }
 
     setMorphTargetVertices(vertices: Vector3[] | number[], dynamicDraw = false, computeBounds = true): void

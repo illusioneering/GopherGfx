@@ -17,8 +17,6 @@ export class Mesh extends Transform3
     public colorBuffer: WebGLBuffer | null;
     public indexBuffer: WebGLBuffer | null;
     public texCoordBuffer: WebGLBuffer | null;
-    public morphTargetPositionBuffer: WebGLBuffer | null;
-    public morphTargetNormalBuffer: WebGLBuffer | null;
 
     public vertexCount: number;
     public triangleCount: number;
@@ -42,8 +40,6 @@ export class Mesh extends Transform3
         this.colorBuffer = this.gl.createBuffer();
         this.indexBuffer = this.gl.createBuffer();
         this.texCoordBuffer = this.gl.createBuffer();
-        this.morphTargetPositionBuffer = this.gl.createBuffer();
-        this.morphTargetNormalBuffer = this.gl.createBuffer();
 
         this.vertexCount = 0;
         this.triangleCount = 0;
