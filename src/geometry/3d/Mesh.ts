@@ -68,7 +68,7 @@ export class Mesh extends Transform3
         });
     }
 
-    setVertices(vertices: Vector3[] | number[], dynamicDraw = false): void
+    setVertices(vertices: Vector3[] | number[] | Float32Array, dynamicDraw = false): void
     {
         this.positionCache = null;
 
@@ -76,7 +76,19 @@ export class Mesh extends Transform3
         {
             this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.positionBuffer);
 
-            if(typeof vertices[0] === 'number')
+            if(vertices instanceof Float32Array)
+            {
+                if(dynamicDraw)
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, vertices, this.gl.DYNAMIC_DRAW);
+                else
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, vertices, this.gl.STATIC_DRAW);
+
+                this.vertexCount = vertices.length / 3;
+                const vArray = Array.from(vertices);
+                this.boundingBox.computeBounds(vArray);
+                this.boundingSphere.computeBounds(vArray, this.boundingBox);
+            }
+            else if(typeof vertices[0] === 'number')
             {
                 if(dynamicDraw)
                     this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(vertices as number[]), this.gl.DYNAMIC_DRAW);
@@ -107,7 +119,7 @@ export class Mesh extends Transform3
         }
     }
 
-    setNormals(normals: Vector3[] | number[], dynamicDraw = false): void
+    setNormals(normals: Vector3[] | number[] | Float32Array, dynamicDraw = false): void
     {
         this.normalCache = null;
 
@@ -115,7 +127,15 @@ export class Mesh extends Transform3
         {
             this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.normalBuffer);
 
-            if(typeof normals[0] === 'number')
+            if(normals instanceof Float32Array)
+            {
+                if(dynamicDraw)
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, normals, this.gl.DYNAMIC_DRAW);
+                else
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, normals, this.gl.STATIC_DRAW);
+
+            }
+            else if(typeof normals[0] === 'number')
             {
                 if(dynamicDraw)
                     this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(normals as number[]), this.gl.DYNAMIC_DRAW);
@@ -200,7 +220,7 @@ export class Mesh extends Transform3
         }
     }
 
-    setIndices(indices: Vector3[] | number[], dynamicDraw = false): void
+    setIndices(indices: Vector3[] | number[] | Uint16Array, dynamicDraw = false): void
     {
         this.indexCache = null;
 
@@ -208,7 +228,16 @@ export class Mesh extends Transform3
         {
             this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
 
-            if(typeof indices[0] === 'number')
+            if(indices instanceof Uint16Array)
+            {
+                this.triangleCount = indices.length / 3;
+
+                if(dynamicDraw)
+                    this.gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, indices, this.gl.DYNAMIC_DRAW);
+                else
+                    this.gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, indices, this.gl.STATIC_DRAW);
+            }
+            else if(typeof indices[0] === 'number')
             {
                 this.triangleCount = indices.length / 3;
 
