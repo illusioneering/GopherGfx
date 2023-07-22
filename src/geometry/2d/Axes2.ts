@@ -3,9 +3,9 @@ import { Line2, LineMode2 } from "./Line2";
 /**
  * The Axes2 class is used for creating a 2D X and Y axes with a specified size. 
  */
-export class Axes2 extends Line2 {
+export class Axes2 extends Line2 
+{
     /**
-     * 
      * Creates an instance of Axes2.
      * @param size - The size of the axes.
      */

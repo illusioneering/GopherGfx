@@ -12,18 +12,7 @@ export class Axes3 extends Line3
     {
         super(LineMode3.LINES);
         
-        /**
-         * Sets the vertices of Axes3 to the given array
-         * 
-         * @param vertices - The array of vertices to set
-         */
         const vertices: number[] = [];
-        
-        /**
-         * Sets the colors of Axes3 to the given array
-         * 
-         * @param colors - The array of colors to set
-         */
         const colors: number[] = [];
 
          // X axis
