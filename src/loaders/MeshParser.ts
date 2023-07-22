@@ -390,7 +390,7 @@ export class MeshParser
 
                             propertyBytes+=4;
                         }
-                        else if(propertyLine[1] == 'uchar')
+                        else if(propertyLine[1] == 'uchar' || propertyLine[1] == 'char')
                         {
                             if(propertyLine[2] == 'red')
                                 redBytes = propertyBytes;
@@ -403,6 +403,18 @@ export class MeshParser
 
                             propertyBytes+=1;
                         }  
+                        else if(propertyLine[1] == 'short' || propertyLine[1] == 'ushort')
+                        {
+                            propertyBytes+=2;
+                        }
+                        else if(propertyLine[1] == 'int' || propertyLine[1] == 'uint')
+                        {
+                            propertyBytes+=4;
+                        }
+                        else if(propertyLine[1] == 'double')
+                        {
+                            propertyBytes+=8;
+                        }
                     }
 
                     for(let i=0; i < numVertices; i++)
@@ -468,6 +480,22 @@ export class MeshParser
                                     faceBytes+=4;
                                 }
                             }
+                        }
+                        else if(propertyLine[1] == 'uchar' || propertyLine[1] == 'char')
+                        {
+                            faceBytes+=1;
+                        }  
+                        else if(propertyLine[1] == 'short' || propertyLine[1] == 'ushort')
+                        {
+                            faceBytes+=2;
+                        }
+                        else if(propertyLine[1] == 'int' || propertyLine[1] == 'uint' || propertyLine[1] == 'float')
+                        {
+                            faceBytes+=4;
+                        }
+                        else if(propertyLine[1] == 'double')
+                        {
+                            faceBytes+=8;
                         }
                     }
                 }
