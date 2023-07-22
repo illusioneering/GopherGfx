@@ -158,7 +158,7 @@ export class Mesh extends Transform3
         }
     }
 
-    setColors(colors: Color[] | number[], dynamicDraw = false): void
+    setColors(colors: Color[] | number[] | Float32Array, dynamicDraw = false): void
     {
         this.colorCache = null;
 
@@ -166,7 +166,15 @@ export class Mesh extends Transform3
         {
             this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.colorBuffer);
 
-            if(typeof colors[0] === 'number')
+            if(colors instanceof Float32Array)
+            {
+                if(dynamicDraw)
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, colors, this.gl.DYNAMIC_DRAW);
+                else
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, colors, this.gl.STATIC_DRAW);
+
+            }
+            else if(typeof colors[0] === 'number')
             {
                 if(dynamicDraw)
                     this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(colors as number[]), this.gl.DYNAMIC_DRAW);
@@ -189,7 +197,7 @@ export class Mesh extends Transform3
         }
     }
 
-    setTextureCoordinates(texCoords: Vector2[] | number[], dynamicDraw = false): void
+    setTextureCoordinates(texCoords: Vector2[] | number[] | Float32Array, dynamicDraw = false): void
     {
         this.texCoordCache = null;
 
@@ -197,7 +205,15 @@ export class Mesh extends Transform3
         {
             this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.texCoordBuffer);
 
-            if(typeof texCoords[0] === 'number')
+            if(texCoords instanceof Float32Array)
+            {
+                if(dynamicDraw)
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, texCoords, this.gl.DYNAMIC_DRAW);
+                else
+                    this.gl.bufferData(this.gl.ARRAY_BUFFER, texCoords, this.gl.STATIC_DRAW);
+
+            }
+            else if(typeof texCoords[0] === 'number')
             {
                 if(dynamicDraw)
                     this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(texCoords as number[]), this.gl.DYNAMIC_DRAW);
