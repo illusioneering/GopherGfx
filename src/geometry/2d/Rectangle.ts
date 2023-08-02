@@ -1,9 +1,9 @@
-import { Shape } from './Shape'
+import { Mesh2 } from './Mesh2'
 
 /**
  * Represents a rectangle 2D shape
  */
-export class Rectangle extends Shape
+export class Rectangle extends Mesh2
 {
     /**
      * width of the rectangle, in normalized device coordinates [-1, 1]

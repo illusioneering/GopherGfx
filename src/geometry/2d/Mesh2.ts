@@ -1,13 +1,13 @@
-import { Transform2 } from "../../core/Transform2";
+import { Node2 } from "../../core/Node2";
 import { Vector2 } from "../../math/Vector2";
 import { Color } from "../../math/Color";
 import { Material2 } from "../../materials/Material2";
 import { GfxApp } from "../../core/GfxApp";
 
 /**
- * Represents a 2D shape. 
+ * Represents a 2D Mesh2. 
  */
-export class Shape extends Transform2
+export class Mesh2 extends Node2
 {
     protected readonly gl: WebGL2RenderingContext;
 
@@ -32,17 +32,17 @@ export class Shape extends Transform2
     public customBuffers: (WebGLBuffer | null)[];
 
     /**
-     * Number of vertices in the shape.
+     * Number of vertices in the Mesh2.
      */
     public vertexCount: number;
 
     /**
-     * Material to draw the shape with.
+     * Material to draw the Mesh2 with.
      */
     public material: Material2;
     
     /**
-     * Construct a new 2D shape
+     * Construct a new 2D Mesh2
      */
     constructor()
     {
@@ -61,7 +61,7 @@ export class Shape extends Transform2
     }
 
     /**
-     * Draw a shape with a particular Transform (position, rotation, scale)
+     * Draw a Mesh2 with a particular Transform (position, rotation, scale)
      */
     draw(): void
     {
@@ -70,17 +70,17 @@ export class Shape extends Transform2
 
         this.material.draw(this, this);
 
-        this.children.forEach((elem: Transform2) => {
+        this.children.forEach((elem: Node2) => {
             elem.draw();
         });
     }
 
     /**
-     * Set the vertices of the shape. Vertices should be in normalized device
+     * Set the vertices of the Mesh2. Vertices should be in normalized device
      * coordinates [-1, 1].
      * 
      * @param vertices - Array of vertices.
-     * @param usage - Intended usage (static or dynamic) of the shape's vertices.
+     * @param usage - Intended usage (static or dynamic) of the Mesh2's vertices.
      */
     setVertices(vertices: Vector2[] | number[], usage = this.gl.STATIC_DRAW): void
     {
@@ -111,10 +111,10 @@ export class Shape extends Transform2
     }
 
     /**
-     * Set the color at each vertex of the shape.
+     * Set the color at each vertex of the Mesh2.
      * 
      * @param color - Array of colors.
-     * @param usage - Intended usage (static or dynamic) of the shape's vertex colors.
+     * @param usage - Intended usage (static or dynamic) of the Mesh2's vertex colors.
      */
     setColors(colors: Color[] | number[], usage = this.gl.STATIC_DRAW): void
     {
@@ -140,10 +140,10 @@ export class Shape extends Transform2
     }
 
     /**
-     * Set the texture (UV) coordinates at each vertex of the shape.
+     * Set the texture (UV) coordinates at each vertex of the Mesh2.
      * 
      * @param texCoords - Array of texture coordinates.
-     * @param usage - Intended usage (static or dynamic) of the shape's UV coordinates.
+     * @param usage - Intended usage (static or dynamic) of the Mesh2's UV coordinates.
      */
     setTextureCoordinates(texCoords: Vector2[] | number[], usage = this.gl.STATIC_DRAW): void
     {
@@ -173,7 +173,7 @@ export class Shape extends Transform2
      * 
      * @param bufferIndex - The index number of the buffer to set.
      * @param values - Array of numerical values to store in the buffer.
-     * @param usage - Intended usage (static or dynamic) of the shape's buffer.
+     * @param usage - Intended usage (static or dynamic) of the Mesh2's buffer.
      */
     setCustomBuffer(bufferIndex: number, values: number[], usage = this.gl.STATIC_DRAW): void
     {
@@ -188,7 +188,7 @@ export class Shape extends Transform2
     }
 
     /**
-     * Get the vertices of the shape
+     * Get the vertices of the Mesh2
      * 
      * @returns - Returns the array of vertices as numbers (not Vector2 objects)
      */
@@ -201,7 +201,7 @@ export class Shape extends Transform2
     }
 
     /**
-     * Get the vertex colors of the shape
+     * Get the vertex colors of the Mesh2
      * 
      * @returns - Returns the array of colors as numbers (not Color objects)
      */
@@ -214,7 +214,7 @@ export class Shape extends Transform2
     }
 
     /**
-     * Get the texture coordinates of the shape
+     * Get the texture coordinates of the Mesh2
      * 
      * @returns - Returns the array of texture (UV) coordinates as numbers (not Vector2 objects)
      */
@@ -227,7 +227,7 @@ export class Shape extends Transform2
     }
 
     /**
-     * Get the values in one of the shape's custom buffers
+     * Get the values in one of the Mesh2's custom buffers
      * 
      * @param bufferIndex - The index number of the buffer to get.
      * @param numAvalues - The number of values per vertex in the buffer.
@@ -242,7 +242,7 @@ export class Shape extends Transform2
     }
 
     /**
-     * Create default (white) vertex colors for the shape
+     * Create default (white) vertex colors for the Mesh2
      */
     public createDefaultVertexColors(): void
     {
@@ -255,9 +255,9 @@ export class Shape extends Transform2
     }
 
     /**
-     * Compute the 2D Bounds (both bounding box and bounding circle) of the shape.
+     * Compute the 2D Bounds (both bounding box and bounding circle) of the Mesh2.
      * 
-     * @param vertices - Vertices to include in the shape. If empty, defaults to
+     * @param vertices - Vertices to include in the Mesh2. If empty, defaults to
      * the object's current vertices.
      */
     public computeBounds(vertices: Vector2[] | number[] | null): void

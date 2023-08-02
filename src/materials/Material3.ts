@@ -1,7 +1,7 @@
 import { GfxApp } from '../core/GfxApp';
-import { Mesh } from '../geometry/3d/Mesh';
+import { Mesh3 } from '../geometry/3d/Mesh3';
 import { Camera } from '../core/Camera';
-import { Transform3 } from '../core/Transform3';
+import { Node3 } from '../core/Node3';
 import { LightManager } from '../lights/LightManager';
 import { Color } from '../math/Color';
 
@@ -42,7 +42,7 @@ export abstract class Material3
             this.gl.cullFace(this.gl.FRONT);
     }
 
-    abstract draw(object: Mesh, transform: Transform3, camera: Camera, lightManager: LightManager): void;
+    abstract draw(object: Mesh3, transform: Node3, camera: Camera, lightManager: LightManager): void;
     abstract setColor(color: Color): void;
     abstract getColor(): Color;
 }

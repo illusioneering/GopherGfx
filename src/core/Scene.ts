@@ -1,6 +1,6 @@
 import { Camera } from "./Camera";
-import { Transform2 } from "./Transform2";
-import { Transform3 } from "./Transform3";
+import { Node2 } from "./Node2";
+import { Node3 } from "./Node3";
 import { LightManager } from "../lights/LightManager";
 
 /**
@@ -11,12 +11,12 @@ export class Scene
     /**
      * The root node for all 3D elements in the scene.
      */
-    public root3d: Transform3;
+    public root3d: Node3;
 
     /**
      * The root node for all 2D elements in the scene.
      */
-    public root2d: Transform2;
+    public root2d: Node2;
 
     /**
      * Manager for updating the lights in the scene.
@@ -25,8 +25,8 @@ export class Scene
     
     constructor()
     {
-        this.root3d = new Transform3();
-        this.root2d = new Transform2();
+        this.root3d = new Node3();
+        this.root2d = new Node2();
         this.lightManager = new LightManager();
     }
 
@@ -44,22 +44,22 @@ export class Scene
         this.root3d.setLights(this.lightManager);
         this.lightManager.updateLights();
 
-        this.root3d.children.forEach((elem: Transform3) => {
+        this.root3d.children.forEach((elem: Node3) => {
             elem.draw(this.root3d, camera, this.lightManager);
         });
 
-        this.root2d.children.forEach((elem: Transform2) => {
+        this.root2d.children.forEach((elem: Node2) => {
             elem.draw();
         });
     }
 
     /**
-     * Adds a child element to the scene, either as a Transform3 or a Transform2.
+     * Adds a child element to the scene, either as a Node3 or a Node2.
      * @param child - The child element to add to the scene.
      */
-    add(child: Transform2 | Transform3): void
+    add(child: Node2 | Node3): void
     {
-        if(child instanceof Transform3)
+        if(child instanceof Node3)
         {
             this.root3d.add(child);
         }
@@ -74,11 +74,11 @@ export class Scene
      */
     traverseSceneGraph(): void
     {
-        this.root3d.children.forEach((elem: Transform3) => {
+        this.root3d.children.forEach((elem: Node3) => {
             elem.traverseSceneGraph();
         });
 
-        this.root2d.children.forEach((elem: Transform2) => {
+        this.root2d.children.forEach((elem: Node2) => {
             elem.traverseSceneGraph();
         });
     }

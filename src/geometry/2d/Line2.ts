@@ -1,4 +1,4 @@
-import { Transform2 } from "../../core/Transform2";
+import { Node2 } from "../../core/Node2";
 import { Vector2 } from "../../math/Vector2";
 import { Color } from "../../math/Color";
 import { GfxApp } from "../../core/GfxApp";
@@ -15,7 +15,7 @@ export enum LineMode2
 /** 
  * Represents a 2D line.
  */
-export class Line2 extends Transform2
+export class Line2 extends Node2
 {
     protected readonly gl: WebGL2RenderingContext;
 
@@ -117,7 +117,7 @@ export class Line2 extends Transform2
         // Draw the lines
         this.gl.drawArrays(this.glLineMode(), 0, this.vertexCount);
         
-        this.children.forEach((elem: Transform2) => {
+        this.children.forEach((elem: Node2) => {
             elem.draw();
         });
     }

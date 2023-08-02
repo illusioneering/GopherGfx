@@ -1,5 +1,5 @@
-import { Mesh } from '../geometry/3d/Mesh'
-import { Transform3 } from '../core/Transform3'
+import { Mesh3 } from '../geometry/3d/Mesh3'
+import { Node3 } from '../core/Node3'
 import { Color } from '../math/Color'
 import { StringParser } from './StringParser';
 import { Document, Node, Primitive } from '@gltf-transform/core';
@@ -12,7 +12,7 @@ export class MeshParser
      * @param obj - The contents of the object file as a string
      * @param mesh - The Mesh object to store the data
      */
-    static parseOBJ(obj: string, mesh: Mesh)
+    static parseOBJ(obj: string, mesh: Mesh3)
     {
         const parser = new StringParser(obj);
         const vertices: number[] = [];
@@ -123,7 +123,7 @@ export class MeshParser
      * @param ply - The contents of the PLY file as an ArrayBuffer
      * @param mesh - The Mesh object to store the data
      */
-    static parsePLY(ply: ArrayBuffer, mesh: Mesh): void
+    static parsePLY(ply: ArrayBuffer, mesh: Mesh3): void
     {
         const buffer = new Uint8Array(ply);
         const decoder = new TextDecoder();
@@ -180,7 +180,7 @@ export class MeshParser
         }
     }
 
-    private static parsePLYAscii(headerParser: StringParser, dataParser: StringParser, mesh: Mesh): void
+    private static parsePLYAscii(headerParser: StringParser, dataParser: StringParser, mesh: Mesh3): void
     {
         let numVertices = 0;
         let numFaces = 0;
@@ -328,7 +328,7 @@ export class MeshParser
             mesh.setTextureCoordinates(uvs);
     }
 
-    private static parsePLYBinary(headerParser: StringParser, data: DataView, mesh: Mesh, little_endian = true): void
+    private static parsePLYBinary(headerParser: StringParser, data: DataView, mesh: Mesh3, little_endian = true): void
     {
         let numVertices = 0;
         let numFaces = 0;
@@ -529,12 +529,12 @@ export class MeshParser
 
 
     /**
-     * Parses the contents of a GLTF file and stores the scene in a Transform3 object
+     * Parses the contents of a GLTF file and stores the scene in a Node3 object
      * 
      * @param document - The contents of the GLTF file
      * @param transform - The transform to store the data
      */
-    static parseGLTF(document: Document, transform: Transform3): void
+    static parseGLTF(document: Document, transform: Node3): void
     {
         const root = document.getRoot();
         root.listNodes().forEach((node) => {
@@ -543,14 +543,14 @@ export class MeshParser
     }
 
     /**
-     * Recusrively parses a node in the GLTF file and stores the data in a Transform3 object
+     * Recusrively parses a node in the GLTF file and stores the data in a Node3 object
      * 
      * @param node - The current node to parse in the GLTF file
      * @param transform - The transform to store the data
      */
-    private static parseGLTFRecursive(node: Node, parentTransform: Transform3): void
+    private static parseGLTFRecursive(node: Node, parentTransform: Node3): void
     {
-        let transform: Transform3;
+        let transform: Node3;
 
         const gltfMesh = node.getMesh();
         if(gltfMesh)
@@ -563,7 +563,7 @@ export class MeshParser
             }
             else if(primitives.length > 1)
             {
-                transform = new Transform3();
+                transform = new Node3();
 
                 primitives.forEach((primitive) => {
                     transform.add(this.parseGLTFPrimitive(primitive));
@@ -571,12 +571,12 @@ export class MeshParser
             }
             else
             {
-                transform = new Transform3();
+                transform = new Node3();
             }
         }
         else
         {
-            transform = new Transform3();
+            transform = new Node3();
         }   
 
         const position = node.getTranslation();
@@ -594,7 +594,7 @@ export class MeshParser
         });
     }
 
-    private static parseGLTFPrimitive(primitive: Primitive): Mesh
+    private static parseGLTFPrimitive(primitive: Primitive): Mesh3
     {
         const positions = primitive.getAttribute('POSITION');
         const normals = primitive.getAttribute('NORMAL');
@@ -603,7 +603,7 @@ export class MeshParser
         const indices = primitive.getIndices();
         const material = primitive.getMaterial();
 
-        const mesh = new Mesh();
+        const mesh = new Mesh3();
 
         if(positions)
         {

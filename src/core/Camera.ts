@@ -1,11 +1,11 @@
-import { Transform3 } from './Transform3'
+import { Node3 } from './Node3'
 import { Matrix4 } from '../math/Matrix4'
 
 
 /**
- * Camera class that extends Transform3.
+ * Camera class that extends Node3.
 */
-export class Camera extends Transform3
+export class Camera extends Node3
 {
     protected aspectRatio: number;
     protected fov: number;

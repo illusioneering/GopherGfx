@@ -1,9 +1,9 @@
-import { Shape } from './Shape'
+import { Mesh2 } from './Mesh2'
 
 /**
  * The Circle class is used for creating a 2D circle with a specified radius and number of segments.
  */
-export class Circle extends Shape {
+export class Circle extends Mesh2 {
 
     /**
      * The radius of the Circle

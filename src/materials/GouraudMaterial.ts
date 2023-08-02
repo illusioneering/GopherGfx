@@ -5,9 +5,9 @@ import gouraudFragmentShader from '../shaders/gouraud.frag'
 
 import { Material3 } from './Material3';
 import { ShaderProgram } from './ShaderProgram';
-import { Mesh } from '../geometry/3d/Mesh';
+import { Mesh3 } from '../geometry/3d/Mesh3';
 import { Camera } from '../core/Camera';
-import { Transform3 } from '../core/Transform3';
+import { Node3 } from '../core/Node3';
 import { LightManager } from '../lights/LightManager';
 import { Texture } from './Texture';
 import { Vector3 } from '../math/Vector3'
@@ -88,7 +88,7 @@ export class GouraudMaterial extends Material3
         this.texCoordAttribute = GouraudMaterial.shader.getAttribute(this.gl, 'texCoord');   
     }
 
-    draw(mesh: Mesh, transform: Transform3, camera: Camera, lightManager: LightManager): void
+    draw(mesh: Mesh3, transform: Node3, camera: Camera, lightManager: LightManager): void
     {
         if(!this.visible || mesh.triangleCount == 0)
             return;

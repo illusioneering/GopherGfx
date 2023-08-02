@@ -5,10 +5,10 @@ import morphFragmentShader from '../shaders/morph.frag'
 
 import { Material3 } from './Material3';
 import { ShaderProgram } from './ShaderProgram';
-import { MorphMesh } from '../geometry/3d/MorphMesh';
-import { Mesh } from '../geometry/3d/Mesh';
+import { MorphMesh3 } from '../geometry/3d/MorphMesh3';
+import { Mesh3 } from '../geometry/3d/Mesh3';
 import { Camera } from '../core/Camera';
-import { Transform3 } from '../core/Transform3';
+import { Node3 } from '../core/Node3';
 import { LightManager } from '../lights/LightManager';
 import { Texture } from './Texture';
 import { Vector3 } from '../math/Vector3'
@@ -17,7 +17,7 @@ import { Color } from '../math/Color'
 export class MorphMaterial extends Material3
 {
     public static shader = new ShaderProgram(morphVertexShader, morphFragmentShader);
-    private static wireframeBuffers: Map<Mesh, WebGLBuffer> = new Map();
+    private static wireframeBuffers: Map<Mesh3, WebGLBuffer> = new Map();
 
     public texture: Texture | null;
     public ambientColor: Color;
@@ -102,9 +102,9 @@ export class MorphMaterial extends Material3
         this.wireframe = false;
     }
 
-    draw(mesh: Mesh, transform: Transform3, camera: Camera, lightManager: LightManager): void
+    draw(mesh: Mesh3, transform: Node3, camera: Camera, lightManager: LightManager): void
     {
-        if(!(mesh instanceof MorphMesh) || !this.visible || mesh.triangleCount == 0)
+        if(!(mesh instanceof MorphMesh3) || !this.visible || mesh.triangleCount == 0)
             return;
 
         // Initialize all the gl parameters for this shader
@@ -215,7 +215,7 @@ export class MorphMaterial extends Material3
         }
     }
 
-    public updateWireframeBuffer(mesh: Mesh): void
+    public updateWireframeBuffer(mesh: Mesh3): void
     {
         let wireframeBuffer: WebGLBuffer | null | undefined;
         wireframeBuffer = MorphMaterial.wireframeBuffers.get(mesh);

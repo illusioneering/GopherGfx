@@ -5,9 +5,9 @@ import wireframeFragmentShader from '../shaders/wireframe.frag'
 
 import { Material3 } from './Material3';
 import { ShaderProgram } from './ShaderProgram';
-import { Mesh } from '../geometry/3d/Mesh';
+import { Mesh3 } from '../geometry/3d/Mesh3';
 import { Camera } from '../core/Camera';
-import { Transform3 } from '../core/Transform3';
+import { Node3 } from '../core/Node3';
 import { LightManager } from '../lights/LightManager';
 import { Color } from '../math/Color';
 import { Matrix4 } from '../math/Matrix4'
@@ -16,7 +16,7 @@ import { Matrix4 } from '../math/Matrix4'
 export class WireframeMaterial extends Material3
 {
     public static shader = new ShaderProgram(wireframeVertexShader, wireframeFragmentShader);
-    public static wireframeBuffers: Map<Mesh, WebGLBuffer> = new Map();
+    public static wireframeBuffers: Map<Mesh3, WebGLBuffer> = new Map();
 
     public color: Color;
 
@@ -38,7 +38,7 @@ export class WireframeMaterial extends Material3
         this.colorUniform = WireframeMaterial.shader.getUniform(this.gl, 'color');
     }
 
-    draw(mesh: Mesh, transform: Transform3, camera: Camera, lightManager: LightManager): void
+    draw(mesh: Mesh3, transform: Node3, camera: Camera, lightManager: LightManager): void
     {
         if(!this.visible || mesh.triangleCount == 0)
             return;
@@ -67,7 +67,7 @@ export class WireframeMaterial extends Material3
         this.gl.drawElements(this.gl.LINES, mesh.triangleCount * 6, this.gl.UNSIGNED_SHORT, 0);
     }
 
-    public updateWireframeBuffer(mesh: Mesh): void
+    public updateWireframeBuffer(mesh: Mesh3): void
     {
         let wireframeBuffer: WebGLBuffer | null | undefined;
         wireframeBuffer = WireframeMaterial.wireframeBuffers.get(mesh);

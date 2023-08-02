@@ -1,11 +1,11 @@
 import { Vector3 } from './Vector3'
-import { Plane } from './Plane'
+import { Plane3 } from './Plane3'
 import { BoundingBox3 } from './BoundingBox3'
 import { BoundingSphere } from './BoundingSphere'
 import { Vector2 } from './Vector2';
 import { Camera } from '../core/Camera'
-import { Mesh } from '../geometry/3d/Mesh'
-import { Transform3 } from '../core/Transform3'
+import { Mesh3 } from '../geometry/3d/Mesh3'
+import { Node3 } from '../core/Node3'
 
 export class Ray 
 {
@@ -61,7 +61,7 @@ export class Ray
      * @param plane - The Plane to check for intersection
      * @returns A Vector3 containing the intersection point or null if there is no intersection
      */
-    intersectsPlane(plane: Plane): Vector3 | null
+    intersectsPlane(plane: Plane3): Vector3 | null
     {
 
         // This method assumes the normals are unit vectors
@@ -188,7 +188,7 @@ export class Ray
      * @param transform - The Transform of the Oriented Bounding Box
      * @returns A Vector3 containing the intersection point or null if there is no intersection
      */
-    intersectsOrientedBoundingBox(transform: Transform3): Vector3 | null
+    intersectsOrientedBoundingBox(transform: Node3): Vector3 | null
     {
         const localIntersection = this.createLocalRay(transform).intersectsBox(transform.boundingBox);
         if(localIntersection)
@@ -204,7 +204,7 @@ export class Ray
      * @param transform - The transformation of the bounding sphere 
      * @returns The intersection point if the ray intersects the bounding sphere, otherwise null
      */
-    intersectsOrientedBoundingSphere(transform: Transform3): Vector3 | null
+    intersectsOrientedBoundingSphere(transform: Node3): Vector3 | null
     {
         const localIntersection = this.createLocalRay(transform).intersectsSphere(transform.boundingSphere);
         if(localIntersection)
@@ -221,7 +221,7 @@ export class Ray
      * @param mesh - The mesh to test the intersection against
      * @returns The intersection point if the ray intersects the mesh, otherwise null
      */
-    intersectsMesh(mesh: Mesh): Vector3 | null
+    intersectsMesh3(mesh: Mesh3): Vector3 | null
     { 
         const localRay = this.createLocalRay(mesh);
 
@@ -363,7 +363,7 @@ export class Ray
      * @param transform - The Transform object to create the local ray from
      * @returns The ray in the local space of the Transform
      */
-    createLocalRay(transform: Transform3): Ray
+    createLocalRay(transform: Node3): Ray
     {
         const localRay = new Ray(this.origin.clone(), this.direction.clone());
 

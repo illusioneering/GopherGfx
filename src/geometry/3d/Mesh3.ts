@@ -1,4 +1,4 @@
-import { Transform3 } from "../../core/Transform3";
+import { Node3 } from "../../core/Node3";
 import { Vector2 } from "../../math/Vector2";
 import { Vector3 } from "../../math/Vector3";
 import { Color } from "../../math/Color";
@@ -8,7 +8,7 @@ import { Camera } from "../../core/Camera";
 import { LightManager } from "../../lights/LightManager";
 import { GfxApp } from "../../core/GfxApp";
 
-export class Mesh extends Transform3
+export class Mesh3 extends Node3
 {
     protected readonly gl: WebGL2RenderingContext;
 
@@ -53,7 +53,7 @@ export class Mesh extends Transform3
         this.material = new GouraudMaterial();
     }
 
-    draw(parent: Transform3, camera: Camera, lightManager: LightManager): void
+    draw(parent: Node3, camera: Camera, lightManager: LightManager): void
     {
         if(!this.visible)
             return;
@@ -63,7 +63,7 @@ export class Mesh extends Transform3
         if(this.drawBoundingVolume && this.boundingVolumeMaterial)
             this.boundingVolumeMaterial.draw(this, this, camera, lightManager);
 
-        this.children.forEach((elem: Transform3) => {
+        this.children.forEach((elem: Node3) => {
             elem.draw(this, camera, lightManager);
         });
     }

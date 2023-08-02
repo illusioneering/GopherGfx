@@ -1,4 +1,4 @@
-import { Transform3 } from "../../core/Transform3";
+import { Node3 } from "../../core/Node3";
 import { Vector3 } from "../../math/Vector3";
 import { Color } from "../../math/Color";
 import { Camera } from "../../core/Camera";
@@ -15,7 +15,7 @@ export enum LineMode3
     LINE_LOOP
 }
 
-export class Line3 extends Transform3
+export class Line3 extends Node3
 {
     protected readonly gl: WebGL2RenderingContext;
 
@@ -98,7 +98,7 @@ export class Line3 extends Transform3
          this.lineMode = LineMode3.LINES;
     }
 
-    draw(parent: Transform3, camera: Camera, lightManager: LightManager): void
+    draw(parent: Node3, camera: Camera, lightManager: LightManager): void
     {
         if(!this.visible)
             return;
@@ -133,7 +133,7 @@ export class Line3 extends Transform3
         if(this.drawBoundingVolume && this.boundingVolumeMaterial)
             this.boundingVolumeMaterial.draw(this, this, camera, lightManager);
 
-        this.children.forEach((elem: Transform3) => {
+        this.children.forEach((elem: Node3) => {
             elem.draw(this, camera, lightManager);
         });
     }

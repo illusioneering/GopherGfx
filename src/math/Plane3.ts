@@ -1,6 +1,6 @@
 import { Vector3 } from "./Vector3"
 
-export class Plane 
+export class Plane3 
 {
     public point: Vector3;
     public normal: Vector3;

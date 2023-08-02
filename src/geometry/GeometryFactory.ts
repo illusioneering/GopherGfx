@@ -1,9 +1,9 @@
-import { Mesh } from './Mesh'
-import { Vector3 } from '../../math/Vector3';
+import { Mesh3 } from './3d/Mesh3'
+import { Vector3 } from '../math/Vector3';
 
-export class MeshFactory
+export class GeometryFactory
 {
-    public static createBox(width = 1, height = 1, depth = 1): Mesh
+    public static createBox(width = 1, height = 1, depth = 1): Mesh3
     {
         const vertices: number[] = [];
 
@@ -149,7 +149,7 @@ export class MeshFactory
         uvs.push(1, 0);
 
 
-        const mesh = new Mesh();
+        const mesh = new Mesh3();
         mesh.setVertices(vertices);
         mesh.setNormals(normals);
         mesh.setIndices(indices);
@@ -158,7 +158,7 @@ export class MeshFactory
         return mesh;
     }
 
-    public static createLine(startPoint: Vector3, endPoint: Vector3, thickness: number): Mesh
+    public static createBoxLine(startPoint: Vector3, endPoint: Vector3, thickness: number): Mesh3
     {
         const mesh = this.createBox();
 
@@ -174,7 +174,7 @@ export class MeshFactory
         return mesh;
     }
 
-    public static createCone(radius = 1, height = 1, numSegments = 8): Mesh
+    public static createCone(radius = 1, height = 1, numSegments = 8): Mesh3
     {
         const vertices: number[] = [];
 
@@ -258,7 +258,7 @@ export class MeshFactory
         }
 
 
-        const mesh = new Mesh();
+        const mesh = new Mesh3();
         mesh.setVertices(vertices);
         mesh.setNormals(normals);
         mesh.setIndices(indices);
@@ -267,7 +267,7 @@ export class MeshFactory
         return mesh;
     }
 
-    public static createCylinder(numSegments = 20, radius = 1, height = 1): Mesh
+    public static createCylinder(numSegments = 20, radius = 1, height = 1): Mesh3
     {
         const vertices: number[] = [];
         const normals: number[] = [];
@@ -349,7 +349,7 @@ export class MeshFactory
         }
 
 
-        const mesh = new Mesh();
+        const mesh = new Mesh3();
         mesh.setVertices(vertices);
         mesh.setNormals(normals);
         mesh.setIndices(indices);
@@ -358,7 +358,7 @@ export class MeshFactory
         return mesh;
     }
 
-    public static createPlane(width = 1, height = 1): Mesh
+    public static createPlane(width = 1, height = 1): Mesh3
     {
         const vertices: number[] = [];
 
@@ -391,7 +391,7 @@ export class MeshFactory
         uvs.push(1, 0);
 
 
-        const mesh = new Mesh();
+        const mesh = new Mesh3();
         mesh.setVertices(vertices);
         mesh.setNormals(normals);
         mesh.setIndices(indices);
@@ -400,7 +400,7 @@ export class MeshFactory
         return mesh;
     }
 
-    public static createSphere(radius = 1, subdivisions=2): Mesh
+    public static createSphere(radius = 1, subdivisions=2): Mesh3
     {
         // Based on approach from 
         // https://www.danielsieger.com/blog/2021/01/03/generating-platonic-solids.html
@@ -617,7 +617,7 @@ export class MeshFactory
         }
 
 
-        const mesh = new Mesh();
+        const mesh = new Mesh3();
         mesh.setVertices(vertices);
         mesh.setNormals(normals);
         mesh.setIndices(indices);

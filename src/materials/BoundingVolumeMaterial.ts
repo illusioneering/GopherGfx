@@ -1,11 +1,11 @@
 import { Material3 } from './Material3';
 import { WireframeMaterial } from './WireframeMaterial'
 import { Camera } from '../core/Camera';
-import { Transform3 } from '../core/Transform3'
+import { Node3 } from '../core/Node3'
 import { LightManager } from '../lights/LightManager';
 import { Color } from '../math/Color' 
-import { Mesh } from '../geometry/3d/Mesh';
-import { MeshFactory } from '../geometry/3d/MeshFactory';
+import { Mesh3 } from '../geometry/3d/Mesh3';
+import { GeometryFactory } from '../geometry/GeometryFactory';
 import { Line3 } from '../geometry/3d/Line3';
 import { BoundingBox3 } from '../math/BoundingBox3';
 
@@ -23,7 +23,7 @@ export class BoundingVolumeMaterial extends Material3
     public readonly color: Color;
     public readonly wireframeMaterial: WireframeMaterial;
 
-    private sphere: Mesh;
+    private sphere: Mesh3;
     private box: Line3;
     
     constructor(mode = BoundingVolumeMode.ORIENTED_BOUNDING_BOX, color = new Color(1, 1, 1, 1))
@@ -33,7 +33,7 @@ export class BoundingVolumeMaterial extends Material3
         this.mode = mode;
         this.color = Color.copy(color);
 
-        this.sphere = MeshFactory.createSphere(1, 1);
+        this.sphere = GeometryFactory.createSphere(1, 1);
 
         const boundingBox = new BoundingBox3();
         boundingBox.max.set(0.5, 0.5, 0.5);
@@ -48,7 +48,7 @@ export class BoundingVolumeMaterial extends Material3
         this.sphere.material = this.wireframeMaterial;
     }
 
-    draw(object: Transform3, transform: Transform3, camera: Camera, lightManager: LightManager): void
+    draw(object: Node3, transform: Node3, camera: Camera, lightManager: LightManager): void
     {
         if(this.mode == BoundingVolumeMode.ORIENTED_BOUNDING_BOX)
         {

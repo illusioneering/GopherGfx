@@ -3,8 +3,8 @@ import particleVertexShader from '../../shaders/particles2.vert'
 // @ts-ignore
 import particleFragmentShader from '../../shaders/particles2.frag'
 
-import { Shape } from './Shape'
-import { Transform2 } from '../../core/Transform2'
+import { Mesh2 } from './Mesh2'
+import { Node2 } from '../../core/Node2'
 import { ShaderProgram } from '../../materials/ShaderProgram';
 import { GfxApp } from '../../core/GfxApp';
 import { Vector2 } from '../../math/Vector2';
@@ -12,12 +12,12 @@ import { Vector2 } from '../../math/Vector2';
 /**
  * Represents a 2D particle system
  */
-export class Particles2 extends Transform2
+export class Particles2 extends Node2
 {
     /**
      * The template shape used to render each particle.
      */
-    public readonly baseParticle: Shape;
+    public readonly baseParticle: Mesh2;
 
     /**
      * The number of particles to render.
@@ -60,7 +60,7 @@ export class Particles2 extends Transform2
      * 
      * @param baseParticle The template shape for each particle
      */
-    constructor(baseParticle: Shape, numParticles: number)
+    constructor(baseParticle: Mesh2, numParticles: number)
     {
         super();
 
@@ -111,7 +111,7 @@ export class Particles2 extends Transform2
     /**
      * @returns The template shape used to render each particle.
      */
-    getBaseParticle(): Shape
+    getBaseParticle(): Mesh2
     {
         return this.baseParticle;
     }
@@ -216,7 +216,7 @@ export class Particles2 extends Transform2
         this.gl.vertexAttribDivisor(this.particlePositionAttribute, 0);
         this.gl.vertexAttribDivisor(this.particleSizeAttribute, 0);
 
-        this.children.forEach((elem: Transform2) => {
+        this.children.forEach((elem: Node2) => {
             elem.draw();
         });
     }

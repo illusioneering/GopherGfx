@@ -5,8 +5,8 @@ import shapeFragmentShader from '../shaders/shape.frag'
 
 import { GfxApp } from '../core/GfxApp';
 import { ShaderProgram } from './ShaderProgram';
-import { Shape } from '../geometry/2d/Shape';
-import { Transform2 } from '../core/Transform2'
+import { Mesh2 } from '../geometry/2d/Mesh2';
+import { Node2 } from '../core/Node2'
 import { Color } from '../math/Color' 
 import { Texture } from './Texture';
 
@@ -114,7 +114,7 @@ export class Material2
      * @param shape - The shape to draw with this material
      * @param transform - The transform where the shape should be drawn
      */
-    draw(shape: Shape, transform: Transform2): void
+    draw(shape: Mesh2, transform: Node2): void
     {
         if(!this.visible || shape.vertexCount == 0)
             return;

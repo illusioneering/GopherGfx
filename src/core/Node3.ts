@@ -12,11 +12,11 @@ export enum IntersectionMode3 {
     AXIS_ALIGNED_BOUNDING_BOX
 }
 
-export class Transform3 {
+export class Node3 {
     /*
     An array of child transforms that are attached to this transform.
     */
-    public children: Array<Transform3>;
+    public children: Array<Node3>;
 
     /**
     The position of this transform in 3D space.
@@ -51,7 +51,7 @@ export class Transform3 {
     
     The parent transform of this transform. Null if this transform has no parent.
     */
-    public parent: Transform3 | null;
+    public parent: Node3 | null;
     /**
     The bounding box of this transform.
     */
@@ -70,7 +70,7 @@ export class Transform3 {
     public boundingVolumeMaterial: BoundingVolumeMaterial | null;
 
     /**
-    Constructs a new Transform3 object.
+    Constructs a new Node3 object.
     */
     constructor() {
         this.children = [];
@@ -98,21 +98,21 @@ export class Transform3 {
     @param camera - The camera used to view the scene.
     @param lightManager - The light manager used to manage the lights in the scene.
     */
-    draw(parent: Transform3, camera: Camera, lightManager: LightManager): void {
+    draw(parent: Node3, camera: Camera, lightManager: LightManager): void {
         if (!this.visible)
             return;
 
         if (this.drawBoundingVolume && this.boundingVolumeMaterial)
             this.boundingVolumeMaterial.draw(this, this, camera, lightManager);
 
-        this.children.forEach((elem: Transform3) => {
+        this.children.forEach((elem: Node3) => {
             elem.draw(this, camera, lightManager);
         });
     }
 
     /**
-     * Traverses the scene graph starting from this Transform3 object and updates the world matrices of all
-     * Transform3 objects in the graph.
+     * Traverses the scene graph starting from this Node3 object and updates the world matrices of all
+     * Node3 objects in the graph.
      */
     traverseSceneGraph(): void {
         if (this.autoUpdateMatrix) {
@@ -127,13 +127,13 @@ export class Transform3 {
             this.worldMatrix.copy(this.matrix);
         }
 
-        this.children.forEach((elem: Transform3) => {
+        this.children.forEach((elem: Node3) => {
             elem.traverseSceneGraph();
         });
     }
 
     /**
-    Updates the world matrix of this Transform3 by computing the multiplication
+    Updates the world matrix of this Node3 by computing the multiplication
     of its local matrix with its parent's world matrix (if it has a parent).
     If autoUpdateMatrix is true, the local matrix is composed from the position,
     rotation and scale attributes.
@@ -156,17 +156,17 @@ export class Transform3 {
     }
 
     /**
-     * Adds a child Transform3 to the current Transform3
-     * @param child - The Transform3 to be added
+     * Adds a child Node3 to the current Node3
+     * @param child - The Node3 to be added
      */
-    add(child: Transform3) {
+    add(child: Node3) {
         this.children.push(child);
         child.parent = this;
     }
 
     /**
-     * Removes the current Transform3 from its parent Transform3 
-     * @returns true if the Transform3 was successfully removed, false otherwise
+     * Removes the current Node3 from its parent Node3 
+     * @returns true if the Node3 was successfully removed, false otherwise
      */
     remove(): boolean {
         if (this.parent == null)
@@ -176,11 +176,11 @@ export class Transform3 {
     }
 
     /**
-     * Removes the given child Transform3 from the current Transform3
-     * @param child - The Transform3 to be removed
-     * @returns The removed Transform3 if found, null otherwise
+     * Removes the given child Node3 from the current Node3
+     * @param child - The Node3 to be removed
+     * @returns The removed Node3 if found, null otherwise
      */
-    removeChild(child: Transform3): Transform3 | null {
+    removeChild(child: Node3): Node3 | null {
         const index = this.children.indexOf(child);
 
         if (index == -1) {
@@ -193,7 +193,7 @@ export class Transform3 {
         }
     }
     /**
-     * Sets lights on the children of the Transform3
+     * Sets lights on the children of the Node3
      * @param lightManager - The LightManager object
      */
     setLights(lightManager: LightManager): void {
@@ -239,7 +239,7 @@ export class Transform3 {
     }
 
     /**
-    * Rotates this Transform3 object by the given rotation vector
+    * Rotates this Node3 object by the given rotation vector
     * 
     * @param rotation - The Vector3 representing the rotation
     */
@@ -248,7 +248,7 @@ export class Transform3 {
     }
 
     /**
-    * Rotates this Transform3 object around the X-axis by the given angle
+    * Rotates this Node3 object around the X-axis by the given angle
     * 
     * @param angle - The angle to rotate by (in radians)
     */
@@ -258,7 +258,7 @@ export class Transform3 {
 
 
     /**
-     * Rotates this Transform3 object around the Y-axis by the given angle
+     * Rotates this Node3 object around the Y-axis by the given angle
      * 
      * @param angle - The angle to rotate by (in radians)
      */
@@ -267,7 +267,7 @@ export class Transform3 {
     }
 
     /**
-     * Rotates this Transform3 object around the Z-axis by the given angle
+     * Rotates this Node3 object around the Z-axis by the given angle
      * 
     * @param angle - The angle to rotate by (in radians)
     */
@@ -276,7 +276,7 @@ export class Transform3 {
     }
 
     /**
-    * Rotates this Transform3 object to look at the given target with the given up vector
+    * Rotates this Node3 object to look at the given target with the given up vector
     * 
     * @param target - The Vector3 representing the target
     * @param up - The Vector3 representing the up direction (defaults to Vector3.UP)
@@ -288,13 +288,13 @@ export class Transform3 {
     }
 
     /**
-     * Checks for intersection between this Transform3 and another
+     * Checks for intersection between this Node3 and another
      * 
-     * @param other - The other Transform3 object
+     * @param other - The other Node3 object
      * @param mode - The IntersectionMode3 to use for the comparison (default: BOUNDING_SPHERE)
      * @returns Whether or not the two objects intersect
      */
-    intersects(other: Transform3, mode = IntersectionMode3.BOUNDING_SPHERE): boolean {
+    intersects(other: Node3, mode = IntersectionMode3.BOUNDING_SPHERE): boolean {
         if (mode == IntersectionMode3.BOUNDING_SPHERE) {
             const thisSphere = new BoundingSphere();
             thisSphere.copy(this.boundingSphere);

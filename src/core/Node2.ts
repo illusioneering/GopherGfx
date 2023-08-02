@@ -10,21 +10,21 @@ export enum IntersectionMode2
 }
 
 /**
- * The Transform2 class is used to represent an object in two-dimensional space. 
+ * The Node2 class is used to represent an object in two-dimensional space. 
  * It stores information such as position, rotation, scale, visibility, and a reference to its parent object. 
  * It also contains a matrix to keep track of its transformation relative to its parent object.
  */
-export class Transform2
+export class Node2
 {
     /**
      * Array of children for this transform
      */
-    public children: Array<Transform2>;
+    public children: Array<Node2>;
 
     /**
      * Parent transform for this transform
      */
-    public parent: Transform2 | null;
+    public parent: Node2 | null;
 
     /**
      * Vector2 representing the position
@@ -78,7 +78,7 @@ export class Transform2
     public boundingCircle: BoundingCircle;
 
     /**
-     * Constructor for Transform2 class
+     * Constructor for Node2 class
      * 
      */
     constructor()
@@ -105,20 +105,20 @@ export class Transform2
     }
 
     /**
-     * Recursively draws the Transform2 object and its children
+     * Recursively draws the Node2 object and its children
      */
     draw(): void
     {
         if(!this.visible)
             return;
 
-        this.children.forEach((elem: Transform2) => {
+        this.children.forEach((elem: Node2) => {
             elem.draw();
         });
     }
 
     /**
-     * Traverses the scene graph starting from the current Transform2 object
+     * Traverses the scene graph starting from the current Node2 object
      */
     traverseSceneGraph(): void
     {
@@ -137,13 +137,13 @@ export class Transform2
             this.worldMatrix.copy(this.matrix);
         }
 
-        this.children.forEach((elem: Transform2) => {
+        this.children.forEach((elem: Node2) => {
             elem.traverseSceneGraph();
         });
     }
 
     /**
-     * Updates the world matrix of the current Transform2 object and its parent
+     * Updates the world matrix of the current Node2 object and its parent
      */
     updateWorldMatrix(): void
     {
@@ -165,20 +165,20 @@ export class Transform2
     }
 
     /**
-     * Adds a child Transform2 to the current Transform2
+     * Adds a child Node2 to the current Node2
      * 
-     * @param child - The child Transform2 to add
+     * @param child - The child Node2 to add
      */
-    add(child: Transform2) 
+    add(child: Node2) 
     {
         this.children.push(child);
         child.parent = this;
     }
 
     /**
-     * Removes the current Transform2 from its parent
+     * Removes the current Node2 from its parent
      * 
-     * @returns True if the Transform2 was successfully removed, false otherwise
+     * @returns True if the Node2 was successfully removed, false otherwise
      */
     remove(): boolean
     {
@@ -189,12 +189,12 @@ export class Transform2
     }
 
     /**
-     * Removes the specified child Transform2 from the current Transform2
+     * Removes the specified child Node2 from the current Node2
      * 
-     * @param child - The child Transform2 to remove
-     * @returns The removed Transform2, or null if it was not found
+     * @param child - The child Node2 to remove
+     * @returns The removed Node2, or null if it was not found
      */
-    removeChild(child: Transform2): Transform2 | null
+    removeChild(child: Node2): Node2 | null
     {
         const index = this.children.indexOf(child);
 
@@ -211,9 +211,9 @@ export class Transform2
     }
 
     /**
-     * Translates the current Transform2 by the specified Vector2
+     * Translates the current Node2 by the specified Vector2
      * 
-     * @param translation - The Vector2 to translate the Transform2
+     * @param translation - The Vector2 to translate the Node2
      */
     translate(translation: Vector2): void
     {
@@ -222,9 +222,9 @@ export class Transform2
     }
 
     /**
-     * Translates the position of a Transform2 along the X-axis
+     * Translates the position of a Node2 along the X-axis
      * 
-     * @param distance - The distance to translate the Transform2 by
+     * @param distance - The distance to translate the Node2 by
      */
     translateX(distance: number): void
     {
@@ -233,9 +233,9 @@ export class Transform2
     }
 
     /**
-     * Translates the position of a Transform2 along the Y-axis
+     * Translates the position of a Node2 along the Y-axis
      * 
-     * @param distance - The distance to translate the Transform2 by
+     * @param distance - The distance to translate the Node2 by
      */
     translateY(distance: number): void
     {
@@ -264,13 +264,13 @@ export class Transform2
     }
 
     /**
-     * Checks if this Transform2 intersects another Transform2, using either a BoundingCircle or AxisAlignedBoundingBox
+     * Checks if this Node2 intersects another Node2, using either a BoundingCircle or AxisAlignedBoundingBox
      * 
-     * @param other - The Transform2 to check for intersection with 
+     * @param other - The Node2 to check for intersection with 
      * @param mode - The mode to use for intersection (defaults to BOUNDING_CIRCLE)
      * @returns A boolean indicating whether the two objects intersect
      */
-    intersects(other: Transform2, mode = IntersectionMode2.BOUNDING_CIRCLE): boolean
+    intersects(other: Node2, mode = IntersectionMode2.BOUNDING_CIRCLE): boolean
     {
         if(mode == IntersectionMode2.BOUNDING_CIRCLE)
         {

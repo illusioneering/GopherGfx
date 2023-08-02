@@ -1,10 +1,10 @@
-import { Mesh } from "./Mesh";
+import { Mesh3 } from "./Mesh3";
 import { BoundingBox3 } from "../../math/BoundingBox3";
 import { BoundingSphere } from "../../math/BoundingSphere";
 import { Vector3 } from "../../math/Vector3";
 import { MorphMaterial } from "../../materials/MorphMaterial";
 
-export class MorphMesh extends Mesh
+export class MorphMesh3 extends Mesh3
 {
     public morphAlpha: number;
     public morphTargetBoundingBox: BoundingBox3;

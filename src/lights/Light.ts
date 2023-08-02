@@ -1,7 +1,7 @@
 import { Vector3 } from "../math/Vector3";
 import { Color } from "../math/Color";
 import { LightManager } from "./LightManager";
-import { Transform3 } from "../core/Transform3";
+import { Node3 } from "../core/Node3";
 
 export enum LightType
 {
@@ -9,7 +9,7 @@ export enum LightType
     DIRECTIONAL
 }
 
-export abstract class Light extends Transform3
+export abstract class Light extends Node3
 {
     public ambientIntensity: Vector3;
     public diffuseIntensity: Vector3;
