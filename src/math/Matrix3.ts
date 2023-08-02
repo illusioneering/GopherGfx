@@ -239,6 +239,22 @@ export class Matrix3
     }
 
     /**
+     * Creates a new Matrix3 object with the same values as this Matrix3.
+     * 
+     * @returns A new Matrix3 object with the same values as this Matrix3.
+     */
+    clone(): Matrix3
+    {
+        const matrix = new Matrix3();
+        
+        for(let i=0; i < 9; i++)
+            matrix.mat[i] = this.mat[i];
+
+        return matrix;
+    }
+
+
+    /**
      * Returns the element at the specified row and column of the Matrix3.
      * 
      * @param row - The row of the element to return
@@ -318,6 +334,39 @@ export class Matrix3
         );
     }
 
+    /**
+     * Gets the translation vector of this Matrix3 object
+     * 
+     * @returns The Vector2 representing the translation vector
+     */
+    getTranslation(): Vector2
+    {
+        return new Vector2(this.mat[6], this.mat[7]);
+    }
+
+    /**
+     * Gets the rotation quaternion of this Matrix4 object
+     * 
+     * @returns The rotation angle in radians
+     */
+    getRotation(): number
+    {
+        return Math.atan2(this.mat[1], this.mat[0]);
+    }
+
+    /**
+     * Gets the scale vector of this Matrix3 object
+     * 
+     * @returns The Vector2 representing the scale vector
+     */
+    getScale(): Vector2
+    {
+        return new Vector2(
+            Math.sqrt(this.mat[0]*this.mat[0] + this.mat[1]*this.mat[1]),
+            Math.sqrt(this.mat[3]*this.mat[3] + this.mat[4]*this.mat[4])
+        );
+    }
+
     multiplyScalar(x: number): void
     {
         for(let i=0; i < 9; i++)
@@ -390,21 +439,5 @@ export class Matrix3
         this.setTranslation(position);
         this.multiply(Matrix3.makeRotation(rotation));
         this.multiply(Matrix3.makeScale(scale));
-    }
-
-    /**
-     * Decomposes this matrix into a position, rotation and scale.
-     * 
-     * @returns An array containing the position, rotation and scale of this matrix.
-     */
-    decompose(): [Vector2, number, Vector2]
-    {
-        const position = new Vector2();
-        const scale = new Vector2();
-        
-        position.setPositionFromMatrix(this);
-        scale.setScaleFromMatrix(this);
-
-        return [position, Math.atan2(this.mat[1], this.mat[0]), scale];
     }
 }

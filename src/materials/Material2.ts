@@ -123,7 +123,7 @@ export class Material2
         this.gl.useProgram(Material2.shader.getProgram());
 
         // Set the model matrix uniform
-        this.gl.uniformMatrix3fv(this.modelUniform, false, transform.worldMatrix.mat);
+        this.gl.uniformMatrix3fv(this.modelUniform, false, transform.getWorldMatrix().mat);
 
         // Set the material property uniforms
         this.gl.uniform4f(this.colorUniform, this.color.r, this.color.g, this.color.b, this.color.a);

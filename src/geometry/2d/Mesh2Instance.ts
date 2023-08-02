@@ -10,7 +10,7 @@ export class Mesh2Instance extends Node2
     /**
      * The "prototype" Mesh2 to base the Mesh2 instance off of
      */
-    public readonly baseMesh2: Mesh2;
+    public readonly baseMesh: Mesh2;
 
     /**
      * The material to draw this Mesh2 instance with
@@ -19,32 +19,33 @@ export class Mesh2Instance extends Node2
 
     /**
      * Create a new instance of a Mesh2.
-     * @param baseMesh2 Template Mesh2 to base this one off of
+     * @param baseMesh Template Mesh2 to base this one off of
      * @param copyTransform Copy the transform of the template Mesh2 into this Mesh2 instance
      */
-    constructor(baseMesh2: Mesh2, copyTransform = true)
+    constructor(baseMesh: Mesh2, copyTransform = true)
     {
         super();
-        this.baseMesh2 = baseMesh2;
-        this.boundingBox = baseMesh2.boundingBox;
-        this.boundingCircle = baseMesh2.boundingCircle;
-        this.material = baseMesh2.material;
+        this.baseMesh = baseMesh;
+        this.boundingBox = baseMesh.boundingBox;
+        this.boundingCircle = baseMesh.boundingCircle;
+        this.material = baseMesh.material;
         
         if(copyTransform)
         {
-            this.position.copy(baseMesh2.position);
-            this.rotation = baseMesh2.rotation;
-            this.scale.copy(baseMesh2.scale);
-            this.layer = baseMesh2.layer;
+            this.position.copy(baseMesh.getPosition());
+            this.rotation = baseMesh.getRotation();
+            this.scale.copy(baseMesh.getScale());
+            this.layer = baseMesh.layer;
+            this.localMatrixDirty = true;
         }
     }
 
     /**
      * @returns The template Mesh2 this instance is based upon.
      */
-    getBaseMesh2(): Mesh2
+    getBaseMesh(): Mesh2
     {
-        return this.baseMesh2;
+        return this.baseMesh;
     }
 
     /**
@@ -55,7 +56,7 @@ export class Mesh2Instance extends Node2
         if(!this.visible)
             return;
 
-        this.material.draw(this.baseMesh2, this);
+        this.material.draw(this.baseMesh, this);
 
         this.children.forEach((elem: Node2) => {
             elem.draw();

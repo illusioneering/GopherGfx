@@ -437,11 +437,11 @@ export class Matrix4
     }
 
 
-/**
- * Creates a new Matrix4 object with the same values as this Matrix4.
- * 
- * @returns A new Matrix4 object with the same values as this Matrix4.
- */
+    /**
+     * Creates a new Matrix4 object with the same values as this Matrix4.
+     * 
+     * @returns A new Matrix4 object with the same values as this Matrix4.
+     */
     clone(): Matrix4
     {
         const matrix = new Matrix4();
@@ -646,31 +646,31 @@ export class Matrix4
         );
     }
 
-/**
- * Gets the translation vector of this Matrix4 object
- * 
- * @returns The Vector3 representing the translation vector
- */
+    /**
+     * Gets the translation vector of this Matrix4 object
+     * 
+     * @returns The Vector3 representing the translation vector
+     */
     getTranslation(): Vector3
     {
         return new Vector3(this.mat[12], this.mat[13], this.mat[14]);
     }
 
-/**
- * Gets the rotation quaternion of this Matrix4 object
- * 
- * @returns The Quaternion representing the rotation
- */
+    /**
+     * Gets the rotation quaternion of this Matrix4 object
+     * 
+     * @returns The Quaternion representing the rotation
+     */
     getRotation(): Quaternion
     {
         return Quaternion.makeMatrix(this);
     }
 
-/**
- * Gets the scale vector of this Matrix4 object
- * 
- * @returns The Vector3 representing the scale vector
- */
+    /**
+     * Gets the scale vector of this Matrix4 object
+     * 
+     * @returns The Vector3 representing the scale vector
+     */
     getScale(): Vector3
     {
         return new Vector3(
@@ -1108,44 +1108,4 @@ export class Matrix4
         this.multiply(rotation.getMatrix());
         this.multiply(Matrix4.makeScale(scale));
     }
-
-    /**
-     * Decompose a Matrix4 object into a position, rotation, and scale
-     * 
-     * @returns A tuple containing the position, rotation, and scale of the Matrix4 object
-     */
-    // decompose(): [Vector3, Quaternion, Vector3]
-    // {
-    //     const position = new Vector3();
-    //     const rotation = new Quaternion();
-    //     const scale = new Vector3();
-
-    //     position.setPositionFromMatrix(this);
-    //     scale.setScaleFromMatrix(this);
-
-    //     const rotationMatrix = new Matrix4();
-    //     rotationMatrix.mat[0] = this.mat[0] / scale.x;
-    //     rotationMatrix.mat[1] = this.mat[1] / scale.x;
-    //     rotationMatrix.mat[2] = this.mat[2] / scale.x;
-    //     rotationMatrix.mat[3] = 0;
-
-    //     rotationMatrix.mat[4] = this.mat[4] / scale.y;
-    //     rotationMatrix.mat[5] = this.mat[5] / scale.y;
-    //     rotationMatrix.mat[6] = this.mat[6] / scale.y;
-    //     rotationMatrix.mat[7] = 0;
-
-    //     rotationMatrix.mat[8] = this.mat[8] / scale.z;
-    //     rotationMatrix.mat[9] = this.mat[9] / scale.z;
-    //     rotationMatrix.mat[10] = this.mat[10] / scale.z;
-    //     rotationMatrix.mat[11] = 0;
-
-    //     rotationMatrix.mat[12] = 0;
-    //     rotationMatrix.mat[13] = 0;
-    //     rotationMatrix.mat[14] = 0;
-    //     rotationMatrix.mat[15] = 1;
-
-    //     rotation.setMatrix(rotationMatrix);
-
-    //     return [position, rotation, scale];
-    // }
 }

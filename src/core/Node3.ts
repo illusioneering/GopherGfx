@@ -194,7 +194,6 @@ export class Node3
      */
     traverseSceneGraph(parentMatrixDirty = false): void 
     {
-        this.localMatrixDirty = true;
         const worldMatrixDirty = parentMatrixDirty || this.localMatrixDirty;
 
         if(this.localMatrixDirty) 

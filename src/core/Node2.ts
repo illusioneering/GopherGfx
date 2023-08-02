@@ -16,6 +16,34 @@ export enum IntersectionMode2
  */
 export class Node2
 {
+     /**
+     * Vector2 representing the position
+     */
+     protected position: Vector2;
+
+     /**
+      * Rotation of the transform in radians
+      */
+     protected rotation: number;
+ 
+     /**
+      * Vector2 representing the scale
+      */
+     protected scale: Vector2;
+
+    /**
+     * Matrix3 representing the transformation matrix in local space
+     */
+    protected localMatrix: Matrix3;
+
+    /**
+     * Matrix3 representing the transformation matrix in world space
+     */
+    protected worldMatrix: Matrix3;
+    
+
+    protected localMatrixDirty: boolean;
+
     /**
      * Array of children for this transform
      */
@@ -27,41 +55,10 @@ export class Node2
     public parent: Node2 | null;
 
     /**
-     * Vector2 representing the position
-     */
-    public position: Vector2;
-
-    /**
-     * Rotation of the transform in radians
-     */
-    public rotation: number;
-
-    /**
-     * Vector2 representing the scale
-     */
-    public scale: Vector2;
-
-
-    /**
      * Integer representing the layer of this transform
      */
     public layer: number;
 
-    /**
-     * Boolean indicating whether the matrix should be automatically updated
-     */
-    public autoUpdateMatrix: boolean;
-
-    /**
-     * Matrix3 representing the transformation matrix in local space
-     */
-    public matrix: Matrix3;
-
-    /**
-     * Matrix3 representing the transformation matrix in world space
-     */
-    public worldMatrix: Matrix3;
-    
     /**
      * Boolean indicating whether this transform should be rendered
      */
@@ -89,9 +86,9 @@ export class Node2
         this.rotation = 0;
         this.scale = new Vector2(1, 1);
 
-        this.autoUpdateMatrix = true;
-        this.matrix = new Matrix3();
+        this.localMatrix = new Matrix3();
         this.worldMatrix = new Matrix3();
+        this.localMatrixDirty = false;
 
         // default layer
         this.layer = 0;
@@ -102,6 +99,82 @@ export class Node2
 
         this.boundingBox = new BoundingBox2();
         this.boundingCircle = new BoundingCircle();
+    }
+
+    getPosition(): Vector2
+    {
+        return this.position.clone();
+    }
+
+    getRotation(): number
+    {
+        return this.rotation;
+    }
+
+    getScale(): Vector2
+    {
+        return this.scale.clone();
+    }
+
+    setPosition(position: Vector2): void
+    {
+        this.position.copy(position);
+        this.localMatrixDirty = true;
+    }
+
+    setPositionXY(x: number, y: number): void
+    {
+        this.position.set(x, y);
+        this.localMatrixDirty = true;
+    }
+
+    setRotation(rotation: number): void
+    {
+        this.rotation = rotation;
+        this.localMatrixDirty = true;
+    }
+
+    setScale(scale: Vector2): void
+    {
+        this.scale.copy(scale);
+        this.localMatrixDirty = true;
+    }
+
+    setScaleXY(x: number, y: number): void
+    {
+        this.scale.set(x, y);
+        this.localMatrixDirty = true;
+    }
+
+    getLocalMatrix(): Matrix3
+    {
+        if(this.localMatrixDirty)
+        {
+            this.localMatrix.compose(this.position, this.rotation, this.scale);
+            this.localMatrixDirty = false;
+        }
+
+        return this.localMatrix.clone();
+    }
+
+    setLocalMatrix(localMatrix: Matrix3): void
+    {
+        this.localMatrix.copy(localMatrix);
+        this.localMatrixDirty = false;
+        
+        this.position = this.localMatrix.getTranslation();
+        this.rotation = this.localMatrix.getRotation();
+        this.scale = this.localMatrix.getScale();
+    }
+
+    getWorldMatrix(): Matrix3
+    {
+        return this.worldMatrix.clone();
+    }
+
+    setWorldMatrix(worldMatrix: Matrix3): void
+    {
+        this.worldMatrix.copy(worldMatrix);
     }
 
     /**
@@ -120,25 +193,31 @@ export class Node2
     /**
      * Traverses the scene graph starting from the current Node2 object
      */
-    traverseSceneGraph(): void
+    traverseSceneGraph(parentMatrixDirty = false): void
     {
-        if(this.autoUpdateMatrix)
+        const worldMatrixDirty = parentMatrixDirty || this.localMatrixDirty;
+
+        if(this.localMatrixDirty) 
         {
-            this.matrix.compose(this.position, this.rotation, this.scale);
+            this.localMatrix.compose(this.position, this.rotation, this.scale);
+            this.localMatrixDirty = false;
         }
 
-        if(this.parent)
+        if(worldMatrixDirty)
         {
-            this.worldMatrix.copy(this.parent.worldMatrix);
-            this.worldMatrix.multiply(this.matrix);
-        }
-        else
-        {
-            this.worldMatrix.copy(this.matrix);
+            if(this.parent)
+            {
+                this.worldMatrix.copy(this.parent.worldMatrix);
+                this.worldMatrix.multiply(this.localMatrix);
+            }
+            else
+            {
+                this.worldMatrix.copy(this.localMatrix);
+            }
         }
 
         this.children.forEach((elem: Node2) => {
-            elem.traverseSceneGraph();
+            elem.traverseSceneGraph(worldMatrixDirty);
         });
     }
 
@@ -147,20 +226,21 @@ export class Node2
      */
     updateWorldMatrix(): void
     {
-        if(this.autoUpdateMatrix)
+        if(this.localMatrixDirty) 
         {
-            this.matrix.compose(this.position, this.rotation, this.scale);
+            this.localMatrix.compose(this.position, this.rotation, this.scale);
+            this.localMatrixDirty = false;
         }
-        
-        if(this.parent)
+
+        if (this.parent) 
         {
             this.parent.updateWorldMatrix();
             this.worldMatrix.copy(this.parent.worldMatrix);
-            this.worldMatrix.multiply(this.matrix);
+            this.worldMatrix.multiply(this.localMatrix);
         }
-        else
+        else 
         {
-            this.worldMatrix.copy(this.matrix);
+            this.worldMatrix.copy(this.localMatrix);
         }
     }
 
@@ -219,6 +299,7 @@ export class Node2
     {
         const localVector = Vector2.rotate(translation, this.rotation);
         this.position.add(localVector);
+        this.localMatrixDirty = true;
     }
 
     /**
@@ -230,6 +311,7 @@ export class Node2
     {
         const localVector = Vector2.rotate(new Vector2(distance, 0), this.rotation);
         this.position.add(localVector);
+        this.localMatrixDirty = true;
     }
 
     /**
@@ -241,6 +323,7 @@ export class Node2
     {
         const localVector = Vector2.rotate(new Vector2(0, distance), this.rotation);
         this.position.add(localVector);
+        this.localMatrixDirty = true;
     }
 
     /**
@@ -253,13 +336,15 @@ export class Node2
     {
         this.updateWorldMatrix();
         
-        const [worldPosition, worldRotation, worldScale] = this.worldMatrix.decompose();
+        const worldPosition = this.worldMatrix.getTranslation();
+        const worldRotation = this.worldMatrix.getRotation();
         const targetVector = Vector2.subtract(target, worldPosition);
 
         if(targetVector.length() > 0)
         {
             const worldLookVector = Vector2.rotate(lookVector, worldRotation);
             this.rotation += worldLookVector.angleBetweenSigned(targetVector);
+            this.localMatrixDirty = true;
         }
     }
 
