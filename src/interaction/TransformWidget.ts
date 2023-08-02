@@ -1,8 +1,8 @@
 import { GfxApp } from '../core/GfxApp';
 import { Node3 } from '../core/Node3';
-import { GeometryFactory } from '../geometry/GeometryFactory';
+import { Geometry3Factory } from '../geometry/Geometry3Factory';
+import { Line3 } from '../geometry/3d/Line3';
 import { Mesh3 } from '../geometry/3d/Mesh3';
-import { Axes3 } from '../geometry/3d/Axes3';
 import { UnlitMaterial } from '../materials/UnlitMaterial';
 import { Color } from '../math/Color';
 import { Plane3 } from '../math/Plane3';
@@ -12,7 +12,7 @@ import { Vector3 } from '../math/Vector3';
 
 export class TransformWidget extends Node3
 {
-    public axes: Axes3;
+    public axes: Line3;
     public thickAxes: Mesh3[];
     
     private deviceCoords: Vector2;
@@ -34,13 +34,13 @@ export class TransformWidget extends Node3
         this.deviceCoords = new Vector2();
         this.selectionPoint = new Vector3();
 
-        this.axes = new Axes3(lineLength);
+        this.axes = Geometry3Factory.createAxes(lineLength);
         this.add(this.axes);
 
         this.thickAxes = [];
-        this.thickAxes.push(GeometryFactory.createBox(lineLength, selectionWidth, selectionWidth));
-        this.thickAxes.push(GeometryFactory.createBox(selectionWidth, lineLength, selectionWidth));
-        this.thickAxes.push(GeometryFactory.createBox(selectionWidth, selectionWidth, lineLength));
+        this.thickAxes.push(Geometry3Factory.createBox(lineLength, selectionWidth, selectionWidth));
+        this.thickAxes.push(Geometry3Factory.createBox(selectionWidth, lineLength, selectionWidth));
+        this.thickAxes.push(Geometry3Factory.createBox(selectionWidth, selectionWidth, lineLength));
 
         this.thickAxes[0].position.set(lineLength/2, 0, 0);
         this.thickAxes[1].position.set(0, lineLength/2, 0);

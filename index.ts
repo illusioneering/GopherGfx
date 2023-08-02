@@ -5,18 +5,17 @@ export * from './src/core/Camera'
 export * from './src/core/Node2'
 export * from './src/core/Node3'
 
-export * from './src/geometry/GeometryFactory'
+export * from './src/geometry/Geometry2Factory'
+export * from './src/geometry/Geometry3Factory'
+
 export * from './src/geometry/3d/Mesh3'
 export * from './src/geometry/3d/MorphMesh3'
 export * from './src/geometry/3d/Mesh3Instance'
 export * from './src/geometry/3d/Line3'
-export * from './src/geometry/3d/Axes3'
+
 export * from './src/geometry/2d/Mesh2'
 export * from './src/geometry/2d/Mesh2Instance'
-export * from './src/geometry/2d/Rectangle'
-export * from './src/geometry/2d/Circle'
 export * from './src/geometry/2d/Line2'
-export * from './src/geometry/2d/Axes2'
 export * from './src/geometry/2d/Particles2'
 
 export * from './src/interaction/OrbitControls'

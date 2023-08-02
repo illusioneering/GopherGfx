@@ -2,7 +2,6 @@ import { Node2 } from "../../core/Node2";
 import { Vector2 } from "../../math/Vector2";
 import { Color } from "../../math/Color";
 import { GfxApp } from "../../core/GfxApp";
-import { BoundingBox2 } from "../../math/BoundingBox2";
 import { Material2 } from "../../materials/Material2";
 
 export enum LineMode2
@@ -59,25 +58,6 @@ export class Line2 extends Node2
         this.positionAttribute = Material2.shader.getAttribute(this.gl, 'position');
         this.colorAttribute = Material2.shader.getAttribute(this.gl, 'color');
         this.texCoordAttribute = Material2.shader.getAttribute(this.gl, 'texCoord');
-    }
-
-    /**
-     * Creates a Line object from a BoundingBox2 object
-     * 
-     * @param box - The BoundingBox2 object to create the Line from
-     */
-    createFromBox(box: BoundingBox2)
-    {      
-         const vertices: number[] = [];
-         vertices.push(box.min.x, box.min.y);
-         vertices.push(box.max.x, box.min.y);
-         vertices.push(box.max.x, box.max.y);
-         vertices.push(box.min.x, box.max.y);
-
-         this.setVertices(vertices);
-         this.createDefaultVertexColors();
-
-         this.lineMode = LineMode2.LINE_LOOP;
     }
 
     /**

@@ -5,7 +5,7 @@ import { Node3 } from '../core/Node3'
 import { LightManager } from '../lights/LightManager';
 import { Color } from '../math/Color' 
 import { Mesh3 } from '../geometry/3d/Mesh3';
-import { GeometryFactory } from '../geometry/GeometryFactory';
+import { Geometry3Factory } from '../geometry/Geometry3Factory';
 import { Line3 } from '../geometry/3d/Line3';
 import { BoundingBox3 } from '../math/BoundingBox3';
 
@@ -33,7 +33,7 @@ export class BoundingVolumeMaterial extends Material3
         this.mode = mode;
         this.color = Color.copy(color);
 
-        this.sphere = GeometryFactory.createSphere(1, 1);
+        this.sphere = Geometry3Factory.createSphere(1, 1);
 
         const boundingBox = new BoundingBox3();
         boundingBox.max.set(0.5, 0.5, 0.5);

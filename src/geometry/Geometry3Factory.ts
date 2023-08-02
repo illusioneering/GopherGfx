@@ -1,7 +1,8 @@
 import { Mesh3 } from './3d/Mesh3'
+import { Line3, LineMode3 } from './3d/Line3'
 import { Vector3 } from '../math/Vector3';
 
-export class GeometryFactory
+export class Geometry3Factory
 {
     public static createBox(width = 1, height = 1, depth = 1): Mesh3
     {
@@ -713,5 +714,50 @@ export class GeometryFactory
         }
 
         return [newVertices, newIndices];
+    }
+
+    public static createLine(startPoint: Vector3, endPoint: Vector3): Line3
+    {
+        const line = new Line3(LineMode3.LINES);
+
+        const vertices: number[] = [];
+        vertices.push(startPoint.x, startPoint.y, startPoint.z);
+        vertices.push(endPoint.x, endPoint.y, endPoint.z);
+
+        line.setVertices(vertices);
+        line.createDefaultVertexColors();
+
+        return line;
+    }
+
+    public static createAxes(size = 1): Line3
+    {
+        const axes = new Line3(LineMode3.LINES);
+        
+        const vertices: number[] = [];
+        const colors: number[] = [];
+
+         // X axis
+         vertices.push(0, 0, 0);
+         vertices.push(size, 0, 0);
+         colors.push(1, 0, 0, 1);
+         colors.push(1, 0, 0, 1);
+
+         // Y axis
+         vertices.push(0, 0, 0);
+         vertices.push(0, size, 0);
+         colors.push(0, 1, 0, 1);
+         colors.push(0, 1, 0, 1);
+
+         // Z axis
+         vertices.push(0, 0, 0);
+         vertices.push(0, 0, size);
+         colors.push(0, 0, 1, 1);
+         colors.push(0, 0, 1, 1);
+
+         axes.setVertices(vertices);
+         axes.setColors(colors);
+
+         return axes;
     }
 }
