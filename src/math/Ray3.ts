@@ -44,8 +44,9 @@ export class Ray
      */
     setPickRay(deviceCoords: Vector2, camera: Camera): void
     {
-        
-        const [worldPosition, worldRotation, worldScale] = camera.worldMatrix.decompose();
+        const worldMatrix = camera.getWorldMatrix();
+        const worldPosition = worldMatrix.getTranslation();
+        const worldRotation = worldMatrix.getRotation();
             
         this.origin.copy(worldPosition);
         this.direction.set(deviceCoords.x, deviceCoords.y, -1);
@@ -193,7 +194,7 @@ export class Ray
         const localIntersection = this.createLocalRay(transform).intersectsBox(transform.boundingBox);
         if(localIntersection)
         {
-            localIntersection.transform(transform.worldMatrix);
+            localIntersection.transform(transform.getWorldMatrix());
         }
         return localIntersection;
     }
@@ -209,7 +210,7 @@ export class Ray
         const localIntersection = this.createLocalRay(transform).intersectsSphere(transform.boundingSphere);
         if(localIntersection)
         {
-            localIntersection.transform(transform.worldMatrix);
+            localIntersection.transform(transform.getWorldMatrix());
         }
 
         return localIntersection;
@@ -237,7 +238,7 @@ export class Ray
         const result = localRay.intersectsTriangles(vertices, indices);
 
         if(result)
-            result.transform(mesh.worldMatrix);
+            result.transform(mesh.getWorldMatrix());
 
         return result;
     }
@@ -367,7 +368,10 @@ export class Ray
     {
         const localRay = new Ray(this.origin.clone(), this.direction.clone());
 
-        const [worldPosition, worldRotation, worldScale] = transform.worldMatrix.decompose();
+        const worldMatrix = transform.getWorldMatrix();
+        const worldPosition = worldMatrix.getTranslation();
+        const worldRotation = worldMatrix.getRotation();
+        const worldScale = worldMatrix.getScale();
 
         localRay.origin.subtract(worldPosition);
 

@@ -8,6 +8,9 @@ import { Mesh3 } from '../geometry/3d/Mesh3';
 import { Geometry3Factory } from '../geometry/Geometry3Factory';
 import { Line3 } from '../geometry/3d/Line3';
 import { BoundingBox3 } from '../math/BoundingBox3';
+import { Vector3 } from '../math/Vector3'
+import { Quaternion } from '../math/Quaternion';
+import { Matrix4 } from '../math/Matrix4';
 
 export enum BoundingVolumeMode
 {
@@ -52,19 +55,18 @@ export class BoundingVolumeMaterial extends Material3
     {
         if(this.mode == BoundingVolumeMode.ORIENTED_BOUNDING_BOX)
         {
-            this.box.position.copy(object.boundingBox.min);
-            this.box.position.add(object.boundingBox.max);
+            const boxPosition = Vector3.add(object.boundingBox.min, object.boundingBox.max);
+            boxPosition.multiplyScalar(0.5);
 
-            this.box.position.multiplyScalar(0.5);
-            this.box.scale.set(
+            const boxScale = new Vector3(
                 object.boundingBox.max.x - object.boundingBox.min.x,
                 object.boundingBox.max.y - object.boundingBox.min.y,
                 object.boundingBox.max.z - object.boundingBox.min.z
             );
 
-            this.box.matrix.compose(this.box.position, this.box.rotation, this.box.scale);
-            this.box.worldMatrix.copy(object.worldMatrix);
-            this.box.worldMatrix.multiply(this.box.matrix);
+            const boxLocalMatrix = Matrix4.compose(boxPosition, Quaternion.IDENTITY, boxScale);
+            this.box.setLocalMatrix(boxLocalMatrix);
+            this.box.setWorldMatrix(Matrix4.multiply(object.getWorldMatrix(), boxLocalMatrix));
 
             this.box.draw(object, camera, lightManager);
         }
@@ -73,30 +75,34 @@ export class BoundingVolumeMaterial extends Material3
             const abb = new BoundingBox3();
             abb.copy(object.boundingBox);
 
-            const [worldPosition, worldRotation, worldScale] = object.worldMatrix.decompose();
+            const worldMatrix = transform.getWorldMatrix();
+            const worldPosition = worldMatrix.getTranslation();
+            const worldRotation = worldMatrix.getRotation();
+            const worldScale = worldMatrix.getScale();
             abb.transform(worldPosition, worldRotation, worldScale);
 
-            this.box.position.copy(abb.min);
-            this.box.position.add(abb.max);
-            this.box.position.multiplyScalar(0.5);
-            this.box.scale.set(
+            const boxPosition = Vector3.add(abb.min, abb.max);
+            boxPosition.multiplyScalar(0.5);
+
+            const boxScale = new Vector3(
                 abb.max.x - abb.min.x,
                 abb.max.y - abb.min.y,
                 abb.max.z - abb.min.z
             );
 
-            this.box.matrix.compose(this.box.position, this.box.rotation, this.box.scale)
-            this.box.worldMatrix.copy(this.box.matrix);
+            const boxLocalMatrix = Matrix4.compose(boxPosition, Quaternion.IDENTITY, boxScale);
+            this.box.setLocalMatrix(boxLocalMatrix);
+            this.box.setWorldMatrix(boxLocalMatrix);
+
             this.box.draw(object, camera, lightManager);
         }
         else if(this.mode == BoundingVolumeMode.BOUNDING_SPHERE)
         {
-            this.sphere.position.copy(object.boundingSphere.center);
-            this.sphere.scale.set(object.boundingSphere.radius, object.boundingSphere.radius, object.boundingSphere.radius);
+            const sphereScale = new Vector3(object.boundingSphere.radius, object.boundingSphere.radius, object.boundingSphere.radius);
 
-            this.sphere.matrix.compose(this.sphere.position, this.sphere.rotation, this.sphere.scale);
-            this.sphere.worldMatrix.copy(object.worldMatrix);
-            this.sphere.worldMatrix.multiply(this.sphere.matrix);
+            const sphereLocalMatrix = Matrix4.compose(object.boundingSphere.center, Quaternion.IDENTITY, sphereScale);
+            this.sphere.setLocalMatrix(sphereLocalMatrix);
+            this.sphere.setWorldMatrix(Matrix4.multiply(object.getWorldMatrix(), sphereLocalMatrix));
 
             this.sphere.draw(object, camera, lightManager);
         }

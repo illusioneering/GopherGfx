@@ -583,9 +583,9 @@ export class MeshParser
         const rotation = node.getRotation();
         const scale = node.getScale();
 
-        transform.position.set(position[0], position[1], position[2]);
-        transform.rotation.set(rotation[0], rotation[1], rotation[2], rotation[3]);
-        transform.scale.set(scale[0], scale[1], scale[2]);
+        transform.setPositionXYZ(position[0], position[1], position[2]);
+        transform.setRotationXYZW(rotation[0], rotation[1], rotation[2], rotation[3]);
+        transform.setScaleXYZ(scale[0], scale[1], scale[2]);
         
         parentTransform.add(transform);
     

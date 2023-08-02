@@ -163,14 +163,12 @@ export class Geometry3Factory
     {
         const mesh = this.createBox();
 
-        mesh.position.copy(startPoint);
+        mesh.setPosition(startPoint);
         mesh.lookAt(endPoint);
 
         const distance = Vector3.distanceBetween(startPoint, endPoint);
         mesh.translateZ(-distance/2);
-        mesh.scale.x = thickness;
-        mesh.scale.y = thickness;
-        mesh.scale.z = distance;
+        mesh.setScaleXYZ(thickness, thickness, distance);
     
         return mesh;
     }

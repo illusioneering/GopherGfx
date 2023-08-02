@@ -20,7 +20,7 @@
 <ul class="tsd-hierarchy">
 <li><span class="target">Ray</span></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/d8f60d1/src/math/Ray.ts#L10">src/math/Ray.ts:10</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/7b1668f/src/math/Ray3.ts#L10">src/math/Ray3.ts:10</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -39,7 +39,7 @@
 <h3 class="tsd-index-heading">Methods</h3>
 <div class="tsd-index-list"><a href="Ray.html#createLocalRay" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="#FF4DB8" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12" id="icon-2048-path"></rect><path d="M9.162 16V7.24H10.578L11.514 10.072C11.602 10.328 11.674 10.584 11.73 10.84C11.794 11.088 11.842 11.28 11.874 11.416C11.906 11.28 11.954 11.088 12.018 10.84C12.082 10.584 12.154 10.324 12.234 10.06L13.122 7.24H14.538V16H13.482V12.82C13.482 12.468 13.49 12.068 13.506 11.62C13.53 11.172 13.558 10.716 13.59 10.252C13.622 9.78 13.654 9.332 13.686 8.908C13.726 8.476 13.762 8.1 13.794 7.78L12.366 12.16H11.334L9.894 7.78C9.934 8.092 9.97 8.456 10.002 8.872C10.042 9.28 10.078 9.716 10.11 10.18C10.142 10.636 10.166 11.092 10.182 11.548C10.206 12.004 10.218 12.428 10.218 12.82V16H9.162Z" fill="var(--color-text)" id="icon-2048-text"></path></svg><span>create<wbr/>Local<wbr/>Ray</span></a>
 <a href="Ray.html#intersectsBox" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>intersects<wbr/>Box</span></a>
-<a href="Ray.html#intersectsMesh" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>intersects<wbr/>Mesh</span></a>
+<a href="Ray.html#intersectsMesh3" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>intersects<wbr/>Mesh3</span></a>
 <a href="Ray.html#intersectsOrientedBoundingBox" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>intersects<wbr/>Oriented<wbr/>Bounding<wbr/>Box</span></a>
 <a href="Ray.html#intersectsOrientedBoundingSphere" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>intersects<wbr/>Oriented<wbr/>Bounding<wbr/>Sphere</span></a>
 <a href="Ray.html#intersectsPlane" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>intersects<wbr/>Plane</span></a>
@@ -71,25 +71,25 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Ray.html" class="tsd-signature-type" data-tsd-kind="Class">Ray</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/d8f60d1/src/math/Ray.ts#L21">src/math/Ray.ts:21</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/7b1668f/src/math/Ray3.ts#L21">src/math/Ray3.ts:21</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Properties</h2>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="direction" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>direction</span><a href="#direction" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">direction<span class="tsd-signature-symbol">:</span> <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/d8f60d1/src/math/Ray.ts#L13">src/math/Ray.ts:13</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/7b1668f/src/math/Ray3.ts#L13">src/math/Ray3.ts:13</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="origin" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>origin</span><a href="#origin" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">origin<span class="tsd-signature-symbol">:</span> <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/d8f60d1/src/math/Ray.ts#L12">src/math/Ray.ts:12</a></li></ul></aside></section></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/7b1668f/src/math/Ray3.ts#L12">src/math/Ray3.ts:12</a></li></ul></aside></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Methods</h2>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="createLocalRay" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>create<wbr/>Local<wbr/>Ray</span><a href="#createLocalRay" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-<li class="tsd-signature tsd-anchor-link" id="createLocalRay.createLocalRay-1">create<wbr/>Local<wbr/>Ray<span class="tsd-signature-symbol">(</span>transform<span class="tsd-signature-symbol">: </span><a href="Transform3.html" class="tsd-signature-type" data-tsd-kind="Class">Transform3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Ray.html" class="tsd-signature-type" data-tsd-kind="Class">Ray</a><a href="#createLocalRay.createLocalRay-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="createLocalRay.createLocalRay-1">create<wbr/>Local<wbr/>Ray<span class="tsd-signature-symbol">(</span>transform<span class="tsd-signature-symbol">: </span><a href="Node3.html" class="tsd-signature-type" data-tsd-kind="Class">Node3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Ray.html" class="tsd-signature-type" data-tsd-kind="Class">Ray</a><a href="#createLocalRay.createLocalRay-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Creates a new Ray object in the local space of a given Transform</p>
 
@@ -99,12 +99,12 @@
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>transform: <a href="Transform3.html" class="tsd-signature-type" data-tsd-kind="Class">Transform3</a></h5>
+<h5>transform: <a href="Node3.html" class="tsd-signature-type" data-tsd-kind="Class">Node3</a></h5>
 <div class="tsd-comment tsd-typography"><p>The Transform object to create the local ray from</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Ray.html" class="tsd-signature-type" data-tsd-kind="Class">Ray</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/d8f60d1/src/math/Ray.ts#L366">src/math/Ray.ts:366</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/7b1668f/src/math/Ray3.ts#L367">src/math/Ray3.ts:367</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="intersectsBox" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>intersects<wbr/>Box</span><a href="#intersectsBox" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -124,11 +124,11 @@ Reference: <a href="https://www.scratchapixel.com/lessons/3d-basic-rendering/min
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/d8f60d1/src/math/Ray.ts#L130">src/math/Ray.ts:130</a></li></ul></aside></li></ul></section>
-<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="intersectsMesh" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><span>intersects<wbr/>Mesh</span><a href="#intersectsMesh" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/7b1668f/src/math/Ray3.ts#L131">src/math/Ray3.ts:131</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="intersectsMesh3" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>intersects<wbr/>Mesh3</span><a href="#intersectsMesh3" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-<li class="tsd-signature tsd-anchor-link" id="intersectsMesh.intersectsMesh-1">intersects<wbr/>Mesh<span class="tsd-signature-symbol">(</span>mesh<span class="tsd-signature-symbol">: </span><a href="Mesh.html" class="tsd-signature-type" data-tsd-kind="Class">Mesh</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><a href="#intersectsMesh.intersectsMesh-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="intersectsMesh3.intersectsMesh3-1">intersects<wbr/>Mesh3<span class="tsd-signature-symbol">(</span>mesh<span class="tsd-signature-symbol">: </span><a href="Mesh3.html" class="tsd-signature-type" data-tsd-kind="Class">Mesh3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><a href="#intersectsMesh3.intersectsMesh3-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Computes a brute force intersection test between a ray and a mesh</p>
 
@@ -138,16 +138,16 @@ Reference: <a href="https://www.scratchapixel.com/lessons/3d-basic-rendering/min
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>mesh: <a href="Mesh.html" class="tsd-signature-type" data-tsd-kind="Class">Mesh</a></h5>
+<h5>mesh: <a href="Mesh3.html" class="tsd-signature-type" data-tsd-kind="Class">Mesh3</a></h5>
 <div class="tsd-comment tsd-typography"><p>The mesh to test the intersection against</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/d8f60d1/src/math/Ray.ts#L224">src/math/Ray.ts:224</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/7b1668f/src/math/Ray3.ts#L225">src/math/Ray3.ts:225</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="intersectsOrientedBoundingBox" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>intersects<wbr/>Oriented<wbr/>Bounding<wbr/>Box</span><a href="#intersectsOrientedBoundingBox" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-<li class="tsd-signature tsd-anchor-link" id="intersectsOrientedBoundingBox.intersectsOrientedBoundingBox-1">intersects<wbr/>Oriented<wbr/>Bounding<wbr/>Box<span class="tsd-signature-symbol">(</span>transform<span class="tsd-signature-symbol">: </span><a href="Transform3.html" class="tsd-signature-type" data-tsd-kind="Class">Transform3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><a href="#intersectsOrientedBoundingBox.intersectsOrientedBoundingBox-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="intersectsOrientedBoundingBox.intersectsOrientedBoundingBox-1">intersects<wbr/>Oriented<wbr/>Bounding<wbr/>Box<span class="tsd-signature-symbol">(</span>transform<span class="tsd-signature-symbol">: </span><a href="Node3.html" class="tsd-signature-type" data-tsd-kind="Class">Node3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><a href="#intersectsOrientedBoundingBox.intersectsOrientedBoundingBox-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Checks if the Ray intersects an Oriented Bounding Box</p>
 
@@ -157,16 +157,16 @@ Reference: <a href="https://www.scratchapixel.com/lessons/3d-basic-rendering/min
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>transform: <a href="Transform3.html" class="tsd-signature-type" data-tsd-kind="Class">Transform3</a></h5>
+<h5>transform: <a href="Node3.html" class="tsd-signature-type" data-tsd-kind="Class">Node3</a></h5>
 <div class="tsd-comment tsd-typography"><p>The Transform of the Oriented Bounding Box</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/d8f60d1/src/math/Ray.ts#L191">src/math/Ray.ts:191</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/7b1668f/src/math/Ray3.ts#L192">src/math/Ray3.ts:192</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="intersectsOrientedBoundingSphere" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>intersects<wbr/>Oriented<wbr/>Bounding<wbr/>Sphere</span><a href="#intersectsOrientedBoundingSphere" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-<li class="tsd-signature tsd-anchor-link" id="intersectsOrientedBoundingSphere.intersectsOrientedBoundingSphere-1">intersects<wbr/>Oriented<wbr/>Bounding<wbr/>Sphere<span class="tsd-signature-symbol">(</span>transform<span class="tsd-signature-symbol">: </span><a href="Transform3.html" class="tsd-signature-type" data-tsd-kind="Class">Transform3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><a href="#intersectsOrientedBoundingSphere.intersectsOrientedBoundingSphere-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="intersectsOrientedBoundingSphere.intersectsOrientedBoundingSphere-1">intersects<wbr/>Oriented<wbr/>Bounding<wbr/>Sphere<span class="tsd-signature-symbol">(</span>transform<span class="tsd-signature-symbol">: </span><a href="Node3.html" class="tsd-signature-type" data-tsd-kind="Class">Node3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><a href="#intersectsOrientedBoundingSphere.intersectsOrientedBoundingSphere-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Computes the intersection between a ray and an oriented bounding sphere</p>
 
@@ -176,16 +176,16 @@ Reference: <a href="https://www.scratchapixel.com/lessons/3d-basic-rendering/min
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>transform: <a href="Transform3.html" class="tsd-signature-type" data-tsd-kind="Class">Transform3</a></h5>
+<h5>transform: <a href="Node3.html" class="tsd-signature-type" data-tsd-kind="Class">Node3</a></h5>
 <div class="tsd-comment tsd-typography"><p>The transformation of the bounding sphere</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/d8f60d1/src/math/Ray.ts#L207">src/math/Ray.ts:207</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/7b1668f/src/math/Ray3.ts#L208">src/math/Ray3.ts:208</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="intersectsPlane" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>intersects<wbr/>Plane</span><a href="#intersectsPlane" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-<li class="tsd-signature tsd-anchor-link" id="intersectsPlane.intersectsPlane-1">intersects<wbr/>Plane<span class="tsd-signature-symbol">(</span>plane<span class="tsd-signature-symbol">: </span><a href="Plane.html" class="tsd-signature-type" data-tsd-kind="Class">Plane</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><a href="#intersectsPlane.intersectsPlane-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="intersectsPlane.intersectsPlane-1">intersects<wbr/>Plane<span class="tsd-signature-symbol">(</span>plane<span class="tsd-signature-symbol">: </span><a href="Plane3.html" class="tsd-signature-type" data-tsd-kind="Class">Plane3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><a href="#intersectsPlane.intersectsPlane-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Checks if the Ray intersects a Plane
 Reference: <a href="https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-plane-and-ray-disk-intersection">https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-plane-and-ray-disk-intersection</a></p>
@@ -196,12 +196,12 @@ Reference: <a href="https://www.scratchapixel.com/lessons/3d-basic-rendering/min
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>plane: <a href="Plane.html" class="tsd-signature-type" data-tsd-kind="Class">Plane</a></h5>
+<h5>plane: <a href="Plane3.html" class="tsd-signature-type" data-tsd-kind="Class">Plane3</a></h5>
 <div class="tsd-comment tsd-typography"><p>The Plane to check for intersection</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/d8f60d1/src/math/Ray.ts#L64">src/math/Ray.ts:64</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/7b1668f/src/math/Ray3.ts#L65">src/math/Ray3.ts:65</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="intersectsSphere" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>intersects<wbr/>Sphere</span><a href="#intersectsSphere" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -221,7 +221,7 @@ Reference: <a href="https://www.scratchapixel.com/lessons/3d-basic-rendering/min
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/d8f60d1/src/math/Ray.ts#L93">src/math/Ray.ts:93</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/7b1668f/src/math/Ray3.ts#L94">src/math/Ray3.ts:94</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="intersectsTriangle" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>intersects<wbr/>Triangle</span><a href="#intersectsTriangle" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -249,7 +249,7 @@ Reference: <a href="https://www.scratchapixel.com/lessons/3d-basic-rendering/min
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/d8f60d1/src/math/Ray.ts#L315">src/math/Ray.ts:315</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/7b1668f/src/math/Ray3.ts#L316">src/math/Ray3.ts:316</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="intersectsTriangles" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>intersects<wbr/>Triangles</span><a href="#intersectsTriangles" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -272,7 +272,7 @@ Reference: <a href="https://www.scratchapixel.com/lessons/3d-basic-rendering/min
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/d8f60d1/src/math/Ray.ts#L253">src/math/Ray.ts:253</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/7b1668f/src/math/Ray3.ts#L254">src/math/Ray3.ts:254</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="set" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>set</span><a href="#set" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -293,7 +293,7 @@ Reference: <a href="https://www.scratchapixel.com/lessons/3d-basic-rendering/min
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/d8f60d1/src/math/Ray.ts#L33">src/math/Ray.ts:33</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/7b1668f/src/math/Ray3.ts#L33">src/math/Ray3.ts:33</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="setPickRay" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>set<wbr/>Pick<wbr/>Ray</span><a href="#setPickRay" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -314,7 +314,7 @@ Reference: <a href="https://www.scratchapixel.com/lessons/3d-basic-rendering/min
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/d8f60d1/src/math/Ray.ts#L45">src/math/Ray.ts:45</a></li></ul></aside></li></ul></section></section></div>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/7b1668f/src/math/Ray3.ts#L45">src/math/Ray3.ts:45</a></li></ul></aside></li></ul></section></section></div>
 <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 <div class="tsd-navigation settings">
 <details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
@@ -345,7 +345,7 @@ Reference: <a href="https://www.scratchapixel.com/lessons/3d-basic-rendering/min
 <li class="tsd-kind-property tsd-parent-kind-class"><a href="Ray.html#origin" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>origin</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class"><a href="Ray.html#createLocalRay" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>create<wbr/>Local<wbr/>Ray</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class"><a href="Ray.html#intersectsBox" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>intersects<wbr/>Box</a></li>
-<li class="tsd-kind-method tsd-parent-kind-class"><a href="Ray.html#intersectsMesh" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>intersects<wbr/>Mesh</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class"><a href="Ray.html#intersectsMesh3" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>intersects<wbr/>Mesh3</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class"><a href="Ray.html#intersectsOrientedBoundingBox" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>intersects<wbr/>Oriented<wbr/>Bounding<wbr/>Box</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class"><a href="Ray.html#intersectsOrientedBoundingSphere" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>intersects<wbr/>Oriented<wbr/>Bounding<wbr/>Sphere</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class"><a href="Ray.html#intersectsPlane" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>intersects<wbr/>Plane</a></li>

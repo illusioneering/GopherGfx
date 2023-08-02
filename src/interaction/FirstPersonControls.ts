@@ -167,7 +167,7 @@ export class FirstPersonControls
         const target = new Vector3(0, 0, -1);
         target.rotate(this.targetOrbitX);
         target.rotate(this.targetOrbitY);
-        target.add(this.camera.position);
+        target.add(this.camera.getPosition());
         this.camera.lookAt(target, Vector3.UP);
         
         // Translate the camera based on the keyboard input
@@ -185,11 +185,11 @@ export class FirstPersonControls
             }
             else
             {
-                const translation = Vector3.rotate(moveDirectionNormalized, this.camera.rotation);
+                const translation = Vector3.rotate(moveDirectionNormalized, this.camera.getRotation());
                 translation.y = 0;
                 translation.normalize();
                 translation.multiplyScalar(this.translationSpeed * deltaTime);
-                this.camera.position.add(translation);
+                this.camera.setPosition(Vector3.add(this.camera.getPosition(), translation));
             }
             this.hasMoved = true;
         }

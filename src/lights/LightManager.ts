@@ -48,7 +48,7 @@ export class LightManager
     {
         this.lights.forEach((light: Light) => {
 
-            const [worldPosition, worldRotation, worldScale] = light.worldMatrix.decompose();
+            const worldPosition = light.getWorldMatrix().getTranslation();
             this.lightPositions.push(worldPosition.x, worldPosition.y, worldPosition.z);
             this.lightTypes.push(light.getType());
 

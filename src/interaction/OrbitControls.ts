@@ -170,12 +170,13 @@ export class OrbitControls
  */
     private updateCamera(): void 
     {
-        this.camera.rotation.copy(this.cameraOrbitY);
-        this.camera.rotation.multiply(this.cameraOrbitX);
+        this.camera.setRotation(Quaternion.multiply(this.cameraOrbitY, this.cameraOrbitX));
+       
+        const cameraPosition = new Vector3(0, 0, this.distance);
+        cameraPosition.rotate(this.camera.getRotation());
+        cameraPosition.add(this.targetPoint);
+        this.camera.setPosition(cameraPosition);
 
-        this.camera.position.set(0, 0, this.distance);
-        this.camera.position.rotate(this.camera.rotation);
-        this.camera.position.add(this.targetPoint);
     }
 
 /**
