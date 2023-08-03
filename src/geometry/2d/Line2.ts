@@ -76,7 +76,7 @@ export class Line2 extends Node2
         this.gl.disableVertexAttribArray(this.texCoordAttribute);
 
         // Set the model matrix uniform
-        this.gl.uniformMatrix3fv(this.modelUniform, false, this.worldMatrix.mat);
+        this.gl.uniformMatrix3fv(this.modelUniform, false, this.localToWorldMatrix.mat);
 
         // Set the material property uniforms
         this.gl.uniform4f(this.colorUniform, this.color.r, this.color.g, this.color.b, this.color.a);

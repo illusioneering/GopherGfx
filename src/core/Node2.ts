@@ -19,31 +19,31 @@ export class Node2
      /**
      * Vector2 representing the position
      */
-     protected position: Vector2;
+     protected _position: Vector2;
 
      /**
       * Rotation of the transform in radians
       */
-     protected rotation: number;
+     protected _rotation: number;
  
      /**
       * Vector2 representing the scale
       */
-     protected scale: Vector2;
+     protected _scale: Vector2;
 
     /**
      * Matrix3 representing the transformation matrix in local space
      */
-    protected localMatrix: Matrix3;
+    protected _localToParentMatrix: Matrix3;
+
+    protected localMatrixDirty: boolean;
+    protected localMatrixUpdated: boolean;
 
     /**
      * Matrix3 representing the transformation matrix in world space
      */
-    protected worldMatrix: Matrix3;
+    public localToWorldMatrix: Matrix3;
     
-
-    protected localMatrixDirty: boolean;
-
     /**
      * Array of children for this transform
      */
@@ -82,13 +82,15 @@ export class Node2
     {
         this.children = [];
 
-        this.position = new Vector2();
-        this.rotation = 0;
-        this.scale = new Vector2(1, 1);
+        this._position = new Vector2();
+        this._rotation = 0;
+        this._scale = new Vector2(1, 1);
 
-        this.localMatrix = new Matrix3();
-        this.worldMatrix = new Matrix3();
+        this._localToParentMatrix = new Matrix3();
         this.localMatrixDirty = false;
+        this.localMatrixUpdated = false;
+
+        this.localToWorldMatrix = new Matrix3();
 
         // default layer
         this.layer = 0;
@@ -101,80 +103,79 @@ export class Node2
         this.boundingCircle = new BoundingCircle();
     }
 
-    getPosition(): Vector2
+    public get position()
     {
-        return this.position.clone();
-    }
-
-    getRotation(): number
-    {
-        return this.rotation;
-    }
-
-    getScale(): Vector2
-    {
-        return this.scale.clone();
-    }
-
-    setPosition(position: Vector2): void
-    {
-        this.position.copy(position);
+        if(this.localMatrixUpdated)
+        {
+            // to be added
+            // decompose matrix
+            this.localMatrixUpdated = false;
+        }
+        
         this.localMatrixDirty = true;
+        return this._position;
     }
 
-    setPositionXY(x: number, y: number): void
+    public set position(value: Vector2)
     {
-        this.position.set(x, y);
         this.localMatrixDirty = true;
+        this._position = value;
     }
 
-    setRotation(rotation: number): void
+    public get rotation()
     {
-        this.rotation = rotation;
-        this.localMatrixDirty = true;
+        if(this.localMatrixUpdated)
+        {
+            // to be added
+            // decompose matrix
+            this.localMatrixUpdated = false;
+        }
+
+        return this._rotation;
     }
 
-    setScale(scale: Vector2): void
+    public set rotation(value: number)
     {
-        this.scale.copy(scale);
         this.localMatrixDirty = true;
+        this._rotation = value;
     }
 
-    setScaleXY(x: number, y: number): void
+    public get scale()
     {
-        this.scale.set(x, y);
+        if(this.localMatrixUpdated)
+        {
+            // to be added
+            // decompose matrix
+            this.localMatrixUpdated = false;
+        }
+
         this.localMatrixDirty = true;
+        return this._scale;
     }
 
-    getLocalMatrix(): Matrix3
+    public set scale(value: Vector2)
+    {
+        this.localMatrixDirty = true;
+        this._scale = value;
+    }
+
+    public get localToParentMatrix()
     {
         if(this.localMatrixDirty)
         {
-            this.localMatrix.compose(this.position, this.rotation, this.scale);
+            this._localToParentMatrix.compose(this._position, this._rotation, this._scale);
             this.localMatrixDirty = false;
         }
 
-        return this.localMatrix.clone();
+        this.localMatrixUpdated = true;
+        return this._localToParentMatrix;
     }
 
-    setLocalMatrix(localMatrix: Matrix3): void
+    public set localToParentMatrix(matrix: Matrix3)
     {
-        this.localMatrix.copy(localMatrix);
         this.localMatrixDirty = false;
-        
-        this.position = this.localMatrix.getTranslation();
-        this.rotation = this.localMatrix.getRotation();
-        this.scale = this.localMatrix.getScale();
-    }
-
-    getWorldMatrix(): Matrix3
-    {
-        return this.worldMatrix.clone();
-    }
-
-    setWorldMatrix(worldMatrix: Matrix3): void
-    {
-        this.worldMatrix.copy(worldMatrix);
+        this.localMatrixUpdated = true;
+        this._localToParentMatrix = matrix;   
     }
 
     /**
@@ -199,7 +200,7 @@ export class Node2
 
         if(this.localMatrixDirty) 
         {
-            this.localMatrix.compose(this.position, this.rotation, this.scale);
+            this._localToParentMatrix.compose(this._position, this._rotation, this._scale);
             this.localMatrixDirty = false;
         }
 
@@ -207,12 +208,12 @@ export class Node2
         {
             if(this.parent)
             {
-                this.worldMatrix.copy(this.parent.worldMatrix);
-                this.worldMatrix.multiply(this.localMatrix);
+                this.localToWorldMatrix.copy(this.parent.localToWorldMatrix);
+                this.localToWorldMatrix.multiply(this._localToParentMatrix);
             }
             else
             {
-                this.worldMatrix.copy(this.localMatrix);
+                this.localToWorldMatrix.copy(this._localToParentMatrix);
             }
         }
 
@@ -228,19 +229,19 @@ export class Node2
     {
         if(this.localMatrixDirty) 
         {
-            this.localMatrix.compose(this.position, this.rotation, this.scale);
+            this._localToParentMatrix.compose(this._position, this._rotation, this._scale);
             this.localMatrixDirty = false;
         }
 
         if (this.parent) 
         {
             this.parent.updateWorldMatrix();
-            this.worldMatrix.copy(this.parent.worldMatrix);
-            this.worldMatrix.multiply(this.localMatrix);
+            this.localToWorldMatrix.copy(this.parent.localToWorldMatrix);
+            this.localToWorldMatrix.multiply(this._localToParentMatrix);
         }
         else 
         {
-            this.worldMatrix.copy(this.localMatrix);
+            this.localToWorldMatrix.copy(this._localToParentMatrix);
         }
     }
 
@@ -291,42 +292,6 @@ export class Node2
     }
 
     /**
-     * Translates the current Node2 by the specified Vector2
-     * 
-     * @param translation - The Vector2 to translate the Node2
-     */
-    translate(translation: Vector2): void
-    {
-        const localVector = Vector2.rotate(translation, this.rotation);
-        this.position.add(localVector);
-        this.localMatrixDirty = true;
-    }
-
-    /**
-     * Translates the position of a Node2 along the X-axis
-     * 
-     * @param distance - The distance to translate the Node2 by
-     */
-    translateX(distance: number): void
-    {
-        const localVector = Vector2.rotate(new Vector2(distance, 0), this.rotation);
-        this.position.add(localVector);
-        this.localMatrixDirty = true;
-    }
-
-    /**
-     * Translates the position of a Node2 along the Y-axis
-     * 
-     * @param distance - The distance to translate the Node2 by
-     */
-    translateY(distance: number): void
-    {
-        const localVector = Vector2.rotate(new Vector2(0, distance), this.rotation);
-        this.position.add(localVector);
-        this.localMatrixDirty = true;
-    }
-
-    /**
      * Looks at a target vector with the given look vector
      * 
      * @param target - The vector to look at
@@ -334,10 +299,14 @@ export class Node2
      */
     lookAt(target: Vector2, lookVector = Vector2.UP): void
     {
+        // TO BE CHANGED
+        // Construct matrix directly
+        // Matrix decomposition is unnecessary
+
         this.updateWorldMatrix();
         
-        const worldPosition = this.worldMatrix.getTranslation();
-        const worldRotation = this.worldMatrix.getRotation();
+        const worldPosition = this.localToWorldMatrix.getTranslation();
+        const worldRotation = this.localToWorldMatrix.getRotation();
         const targetVector = Vector2.subtract(target, worldPosition);
 
         if(targetVector.length() > 0)
@@ -357,15 +326,19 @@ export class Node2
      */
     intersects(other: Node2, mode = IntersectionMode2.BOUNDING_CIRCLE): boolean
     {
+        // TO BE CHANGED
+        // Use the transformation matrix instead of position and scale
+        // Add a parameter to specify local or world coordinate frame
+
         if(mode == IntersectionMode2.BOUNDING_CIRCLE)
         {
             const thisCircle = new BoundingCircle();
             thisCircle.copy(this.boundingCircle);
-            thisCircle.transform(this.position, this.scale);
+            thisCircle.transform(this._position, this._scale);
 
             const otherCircle = new BoundingCircle();
             otherCircle.copy(other.boundingCircle);
-            otherCircle.transform(other.position, other.scale);
+            otherCircle.transform(other._position, other._scale);
 
             return thisCircle.intersects(otherCircle);
         }
@@ -373,11 +346,11 @@ export class Node2
         {
             const thisBox = new BoundingBox2();
             thisBox.copy(this.boundingBox);
-            thisBox.transform(this.position, this.rotation, this.scale);
+            thisBox.transform(this._position, this._rotation, this._scale);
 
             const otherBox = new BoundingBox2();
             otherBox.copy(other.boundingBox);
-            otherBox.transform(other.position, other.rotation, other.scale);
+            otherBox.transform(other._position, other._rotation, other._scale);
 
             return thisBox.intersects(otherBox);
         }

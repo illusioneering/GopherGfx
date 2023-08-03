@@ -153,7 +153,7 @@ export class Particles2 extends Node2
          this.gl.useProgram(Particles2.shader.getProgram());
 
          // Set the model matrix uniform
-         this.gl.uniformMatrix3fv(this.modelUniform, false, this.worldMatrix.mat);
+         this.gl.uniformMatrix3fv(this.modelUniform, false, this.localToWorldMatrix.mat);
  
          // Set the material property uniforms
          this.gl.uniform4f(this.colorUniform, 

@@ -32,9 +32,9 @@ export class Mesh2Instance extends Node2
         
         if(copyTransform)
         {
-            this.position.copy(baseMesh.getPosition());
-            this.rotation = baseMesh.getRotation();
-            this.scale.copy(baseMesh.getScale());
+            this.position.copy(baseMesh.position);
+            this.rotation = baseMesh.rotation;
+            this.scale.copy(baseMesh.scale);
             this.layer = baseMesh.layer;
             this.localMatrixDirty = true;
         }
