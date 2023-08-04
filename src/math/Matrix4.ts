@@ -324,6 +324,26 @@ export class Matrix4
         return matrix;
     }
 
+    public static transformPoint(m: Matrix4, v: Vector3): Vector3
+    {
+        const result = new Vector3();
+        const w = 1 / (m.mat[3]*v.x + m.mat[7]*v.y + m.mat[11]*v.z + m.mat[15]);
+        result.x = w * (m.mat[0]*v.x + m.mat[4]*v.y + m.mat[8]*v.z + m.mat[12]);
+        result.y = w * (m.mat[1]*v.x + m.mat[5]*v.y + m.mat[9]*v.z + m.mat[13]);
+        result.z = w * (m.mat[2]*v.x + m.mat[6]*v.y + m.mat[10]*v.z + m.mat[14]);
+        return result;
+    }
+
+    public static transformVector(m: Matrix4, v: Vector3): Vector3
+    {
+        const result = new Vector3();
+        const w = 1 / (m.mat[3]*v.x + m.mat[7]*v.y + m.mat[11]*v.z);
+        result.x = w * (m.mat[0]*v.x + m.mat[4]*v.y + m.mat[8]*v.z);
+        result.y = w * (m.mat[1]*v.x + m.mat[5]*v.y + m.mat[9]*v.z);
+        result.z = w * (m.mat[2]*v.x + m.mat[6]*v.y + m.mat[10]*v.z);
+        return result;
+    }
+
 
 /**
  * Constructs a Matrix4 object with a 4x4 identity matrix
@@ -1095,17 +1115,37 @@ export class Matrix4
     }
 
     
-/**
- * Compose a Matrix4 object from a position, rotation, and scale
- * 
- * @param position - The position of the Matrix4 object (default Vector3.ZERO)
- * @param rotation - The rotation of the Matrix4 object (default Quaternion.IDENTITY)
- * @param scale - The scale of the Matrix4 object (default Vector3.ONE)
- */
+    /**
+     * Compose a Matrix4 object from a position, rotation, and scale
+     * 
+     * @param position - The position of the Matrix4 object (default Vector3.ZERO)
+     * @param rotation - The rotation of the Matrix4 object (default Quaternion.IDENTITY)
+     * @param scale - The scale of the Matrix4 object (default Vector3.ONE)
+     */
     compose(position = Vector3.ZERO, rotation = Quaternion.IDENTITY, scale = Vector3.ONE): void
     {
         this.setTranslation(position);
         this.multiply(rotation.getMatrix());
         this.multiply(Matrix4.makeScale(scale));
+    }
+
+    transformPoint(v: Vector3): Vector3
+    {
+        const result = new Vector3();
+        const w = 1 / (this.mat[3]*v.x + this.mat[7]*v.y + this.mat[11]*v.z + this.mat[15]);
+        result.x = w * (this.mat[0]*v.x + this.mat[4]*v.y + this.mat[8]*v.z + this.mat[12]);
+        result.y = w * (this.mat[1]*v.x + this.mat[5]*v.y + this.mat[9]*v.z + this.mat[13]);
+        result.z = w * (this.mat[2]*v.x + this.mat[6]*v.y + this.mat[10]*v.z + this.mat[14]);
+        return result;
+    }
+
+    transformVector(v: Vector3): Vector3
+    {
+        const result = new Vector3();
+        const w = 1 / (this.mat[3]*v.x + this.mat[7]*v.y + this.mat[11]*v.z);
+        result.x = w * (this.mat[0]*v.x + this.mat[4]*v.y + this.mat[8]*v.z);
+        result.y = w * (this.mat[1]*v.x + this.mat[5]*v.y + this.mat[9]*v.z);
+        result.z = w * (this.mat[2]*v.x + this.mat[6]*v.y + this.mat[10]*v.z);
+        return result;
     }
 }

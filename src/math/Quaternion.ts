@@ -191,6 +191,24 @@ export class Quaternion
         q.slerp(q1, q2, alpha);
         return q;
     }
+
+    public static rotate(v: Vector3, q: Quaternion): Vector3
+    {
+        // Extract the vector part of the quaternion
+        const u = new Vector3(q.x, q.y, q.z);
+
+        // vprime = 2.0f * dot(u, v) * u
+        const result = Vector3.multiplyScalar(u, 2 * u.dot(v));
+
+        // + (s*s - dot(u, u)) * v
+        result.add(Vector3.multiplyScalar(v, q.w * q.w - u.dot(u)));
+
+        const crossUV = Vector3.cross(u, v);
+        crossUV.multiplyScalar(2 * q.w);
+        result.add(crossUV);
+
+        return result;
+    }
     
     public x: number;
     public y: number;
@@ -622,5 +640,23 @@ export class Quaternion
             this.y = startScale * temp.y + endScale * this.y;
             this.z = startScale * temp.y + endScale * this.z;
         }
+    }
+
+    public rotate(v: Vector3): Vector3
+    {
+        // Extract the vector part of the quaternion
+        const u = new Vector3(this.x, this.y, this.z);
+
+        // vprime = 2.0f * dot(u, v) * u
+        const result = Vector3.multiplyScalar(u, 2 * u.dot(v));
+
+        // + (s*s - dot(u, u)) * v
+        result.add(Vector3.multiplyScalar(v, this.w * this.w - u.dot(u)));
+
+        const crossUV = Vector3.cross(u, v);
+        crossUV.multiplyScalar(2 * this.w);
+        result.add(crossUV);
+
+        return result;
     }
 }

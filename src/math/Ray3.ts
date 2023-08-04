@@ -50,7 +50,7 @@ export class Ray
             
         this.origin.copy(worldPosition);
         this.direction.set(deviceCoords.x, deviceCoords.y, -1);
-        this.direction.transform(camera.projectionMatrix.inverse());
+        this.direction.transformPoint(camera.projectionMatrix.inverse());
         this.direction.rotate(worldRotation);
         this.direction.normalize();
     }
@@ -194,7 +194,7 @@ export class Ray
         const localIntersection = this.createLocalRay(transform).intersectsBox(transform.boundingBox);
         if(localIntersection)
         {
-            localIntersection.transform(transform.getWorldMatrix());
+            localIntersection.transformPoint(transform.getWorldMatrix());
         }
         return localIntersection;
     }
@@ -210,7 +210,7 @@ export class Ray
         const localIntersection = this.createLocalRay(transform).intersectsSphere(transform.boundingSphere);
         if(localIntersection)
         {
-            localIntersection.transform(transform.getWorldMatrix());
+            localIntersection.transformPoint(transform.getWorldMatrix());
         }
 
         return localIntersection;
@@ -238,7 +238,7 @@ export class Ray
         const result = localRay.intersectsTriangles(vertices, indices);
 
         if(result)
-            result.transform(mesh.getWorldMatrix());
+            result.transformPoint(mesh.getWorldMatrix());
 
         return result;
     }

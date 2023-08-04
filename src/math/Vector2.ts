@@ -190,10 +190,12 @@ export class Vector2
      * @param m - The Matrix3 to transform the Vector2 by
      * @returns The transformed Vector2
      */
-    public static transform(v: Vector2, m: Matrix3): Vector2
+    public static transformPoint(v: Vector2, m: Matrix3): Vector2
     {
-        const result = new Vector2(v.x, v.y);
-        result.transform(m);
+        const result = new Vector2();
+        const w = 1 / (m.mat[2]*v.x + m.mat[5]*v.y + m.mat[8]);
+        result.x = w * (m.mat[0]*v.x + m.mat[3]*v.y + m.mat[6]);
+        result.y = w * (m.mat[1]*v.x + m.mat[4]*v.y + m.mat[7]);
         return result;
     }
 
@@ -206,8 +208,10 @@ export class Vector2
      */
     public static transformVector(v: Vector2, m: Matrix3): Vector2
     {
-        const result = new Vector2(v.x, v.y);
-        result.transformVector(m);
+        const result = new Vector2();
+        const w = 1 / (m.mat[2]*v.x + m.mat[5]*v.y);
+        result.x = w * (m.mat[0]*v.x + m.mat[3]*v.y);
+        result.y = w * (m.mat[1]*v.x + m.mat[4]*v.y);
         return result;
     }
 
@@ -393,7 +397,7 @@ export class Vector2
      * 
      * @param m - The Matrix3 to transform this Vector2 with
      */
-    transform(m: Matrix3): void
+    transformPoint(m: Matrix3): void
     {
         const v = this.clone();
         const w = 1 / (m.mat[2]*v.x + m.mat[5]*v.y + m.mat[8]);

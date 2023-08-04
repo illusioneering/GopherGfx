@@ -116,7 +116,7 @@ export class MorphMaterial extends Material3
         // Set the camera uniforms
         const worldMatrix = transform.getWorldMatrix();
         const cameraPosition = new Vector3();
-        cameraPosition.transform(camera.getWorldMatrix());
+        cameraPosition.transformPoint(camera.getWorldMatrix());
         this.gl.uniform3f(this.eyePositionUniform, cameraPosition.x, cameraPosition.y, cameraPosition.z);
         this.gl.uniformMatrix4fv(this.modelUniform, false, worldMatrix.mat);
         this.gl.uniformMatrix4fv(this.viewUniform, false, camera.viewMatrix.mat);

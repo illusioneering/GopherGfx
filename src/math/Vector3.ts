@@ -272,10 +272,13 @@ export class Vector3
      * @param m - The Matrix4 object to transform the Vector3 by
      * @returns A new Vector3 object that represents the result of transforming point v by m
      */
-    public static transform(v: Vector3, m: Matrix4): Vector3
+    public static transformPoint(v: Vector3, m: Matrix4): Vector3
     {
-        const result = new Vector3(v.x, v.y, v.z);
-        result.transform(m);
+        const result = new Vector3();
+        const w = 1 / (m.mat[3]*v.x + m.mat[7]*v.y + m.mat[11]*v.z + m.mat[15]);
+        result.x = w * (m.mat[0]*v.x + m.mat[4]*v.y + m.mat[8]*v.z + m.mat[12]);
+        result.y = w * (m.mat[1]*v.x + m.mat[5]*v.y + m.mat[9]*v.z + m.mat[13]);
+        result.z = w * (m.mat[2]*v.x + m.mat[6]*v.y + m.mat[10]*v.z + m.mat[14]);
         return result;
     }
 
@@ -288,8 +291,11 @@ export class Vector3
      */
     public static transformVector(v: Vector3, m: Matrix4): Vector3
     {
-        const result = new Vector3(v.x, v.y, v.z);
-        result.transformVector(m);
+        const result = new Vector3();
+        const w = 1 / (m.mat[3]*v.x + m.mat[7]*v.y + m.mat[11]*v.z);
+        result.x = w * (m.mat[0]*v.x + m.mat[4]*v.y + m.mat[8]*v.z);
+        result.y = w * (m.mat[1]*v.x + m.mat[5]*v.y + m.mat[9]*v.z);
+        result.z = w * (m.mat[2]*v.x + m.mat[6]*v.y + m.mat[10]*v.z);
         return result;
     }
 
@@ -515,7 +521,7 @@ export class Vector3
      *
      * @param m - The Matrix4 to transform this Vector3
      */
-    transform(m: Matrix4): void
+    transformPoint(m: Matrix4): void
     {
         const v = this.clone();
         const w = 1 / (m.mat[3]*v.x + m.mat[7]*v.y + m.mat[11]*v.z + m.mat[15]);
@@ -545,7 +551,20 @@ export class Vector3
      */
     rotate(q: Quaternion): void
     {
-        this.copy(Vector3.rotate(this, q));
+        // Extract the vector part of the quaternion
+        const u = new Vector3(q.x, q.y, q.z);
+
+        // vprime = 2.0f * dot(u, v) * u
+        const result = Vector3.multiplyScalar(u, 2 * u.dot(this));
+
+        // + (s*s - dot(u, u)) * v
+        result.add(Vector3.multiplyScalar(this, q.w * q.w - u.dot(u)));
+
+        const crossUV = Vector3.cross(u, this);
+        crossUV.multiplyScalar(2 * q.w);
+        result.add(crossUV);
+
+        this.copy(result);
     }
 
     /**
