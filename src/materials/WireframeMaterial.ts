@@ -49,7 +49,7 @@ export class WireframeMaterial extends Material3
         this.gl.useProgram(WireframeMaterial.shader.getProgram());
 
         // Set the uniform matrices
-        this.gl.uniformMatrix4fv(this.modelViewUniform, false, Matrix4.multiply(transform.getWorldMatrix(), camera.viewMatrix).mat);
+        this.gl.uniformMatrix4fv(this.modelViewUniform, false, Matrix4.multiply(camera.viewMatrix, transform.getWorldMatrix()).mat);
         this.gl.uniformMatrix4fv(this.projectionUniform, false, camera.projectionMatrix.mat);
         this.gl.uniform4f(this.colorUniform, this.color.r, this.color.g, this.color.b, this.color.a);
 

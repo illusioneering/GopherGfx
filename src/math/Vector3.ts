@@ -517,6 +517,16 @@ export class Vector3
     }
 
     /**
+     * Inverts a Vector3 object and returns the result as a new Vector3 object
+     *
+     */
+    inverse(): Vector3
+    {
+        return new Vector3(-this.x, -this.y, -this.z);
+    }
+
+
+    /**
      * Transforms this Vector3 instance as a point with a given Matrix4
      *
      * @param m - The Matrix4 to transform this Vector3

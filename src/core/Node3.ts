@@ -206,8 +206,8 @@ export class Node3
         {
             if(this.parent)
             {
-                this.worldMatrix.copy(this.parent.worldMatrix);
-                this.worldMatrix.multiply(this.localMatrix);
+                this.worldMatrix.copy(this.localMatrix);
+                this.worldMatrix.premultiply(this.parent.worldMatrix);
             }
             else
             {
@@ -236,8 +236,8 @@ export class Node3
         if (this.parent) 
         {
             this.parent.updateWorldMatrix();
-            this.worldMatrix.copy(this.parent.worldMatrix);
-            this.worldMatrix.multiply(this.localMatrix);
+            this.worldMatrix.copy(this.localMatrix);
+            this.worldMatrix.premultiply(this.parent.worldMatrix);
         }
         else 
         {

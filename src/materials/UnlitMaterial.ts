@@ -63,7 +63,7 @@ export class UnlitMaterial extends Material3
         this.gl.useProgram(UnlitMaterial.shader.getProgram());
 
         // Set the camera uniforms
-        this.gl.uniformMatrix4fv(this.modelViewUniform, false, Matrix4.multiply(transform.getWorldMatrix(), camera.viewMatrix).mat);
+        this.gl.uniformMatrix4fv(this.modelViewUniform, false, Matrix4.multiply(camera.viewMatrix, transform.getWorldMatrix()).mat);
         this.gl.uniformMatrix4fv(this.projectionUniform, false, camera.projectionMatrix.mat);
 
         // Set the material property uniforms

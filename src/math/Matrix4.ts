@@ -20,22 +20,35 @@ export class Matrix4
  * @param m2 - The second Matrix4 object
  * @returns The result of the multiplication of the two input matrices
  */
-    static multiply(m1: Matrix4, m2: Matrix4): Matrix4
+    static multiply(lhs: Matrix4, rhs: Matrix4): Matrix4
     {
-        const m = new Matrix4();
-        m.mat[0] = 0;
-        m.mat[5] = 0;
-        m.mat[10] = 0;
-        m.mat[15] = 0;
+         // This implementation is several orders of magnitude faster than using nested loops
+         const m = new Matrix4();
+        
+        // Column 0
+        m.mat[0] = rhs.mat[0] * lhs.mat[0] + rhs.mat[1] * lhs.mat[4] + rhs.mat[2] * lhs.mat[8] + rhs.mat[3] * lhs.mat[12];
+        m.mat[1] = rhs.mat[0] * lhs.mat[1] + rhs.mat[1] * lhs.mat[5] + rhs.mat[2] * lhs.mat[9] + rhs.mat[3] * lhs.mat[13];
+        m.mat[2] = rhs.mat[0] * lhs.mat[2] + rhs.mat[1] * lhs.mat[6] + rhs.mat[2] * lhs.mat[10] + rhs.mat[3] * lhs.mat[14];
+        m.mat[3] = rhs.mat[0] * lhs.mat[3] + rhs.mat[1] * lhs.mat[7] + rhs.mat[2] * lhs.mat[11] + rhs.mat[3] * lhs.mat[15];
 
-        for (let r = 0; r < 4; r++) {
-            for (let c = 0; c < 4; c++) {
-                for (let i = 0; i < 4; i++) {
-                    m.mat[r*4+c] += m1.mat[r*4+i] * m2.mat[i*4+c];
-                }
-            }
-        }
+        // Column 1
+        m.mat[4] = rhs.mat[4] * lhs.mat[0] + rhs.mat[5] * lhs.mat[4] + rhs.mat[6] * lhs.mat[8] + rhs.mat[7] * lhs.mat[12];
+        m.mat[5] = rhs.mat[4] * lhs.mat[1] + rhs.mat[5] * lhs.mat[5] + rhs.mat[6] * lhs.mat[9] + rhs.mat[7] * lhs.mat[13];
+        m.mat[6] = rhs.mat[4] * lhs.mat[2] + rhs.mat[5] * lhs.mat[6] + rhs.mat[6] * lhs.mat[10] + rhs.mat[7] * lhs.mat[14];
+        m.mat[7] = rhs.mat[4] * lhs.mat[3] + rhs.mat[5] * lhs.mat[7] + rhs.mat[6] * lhs.mat[11] + rhs.mat[7] * lhs.mat[15];
 
+        // Column 2
+        m.mat[8] = rhs.mat[8] * lhs.mat[0] + rhs.mat[9] * lhs.mat[4] + rhs.mat[10] * lhs.mat[8] + rhs.mat[11] * lhs.mat[12];
+        m.mat[9] = rhs.mat[8] * lhs.mat[1] + rhs.mat[9] * lhs.mat[5] + rhs.mat[10] * lhs.mat[9] + rhs.mat[11] * lhs.mat[13];
+        m.mat[10] = rhs.mat[8] * lhs.mat[2] + rhs.mat[9] * lhs.mat[6] + rhs.mat[10] * lhs.mat[10] + rhs.mat[11] * lhs.mat[14];
+        m.mat[11] = rhs.mat[8] * lhs.mat[3] + rhs.mat[9] * lhs.mat[7] + rhs.mat[10] * lhs.mat[11] + rhs.mat[11] * lhs.mat[15];
+
+        // Column 3
+        m.mat[12] = rhs.mat[12] * lhs.mat[0] + rhs.mat[13] * lhs.mat[4] + rhs.mat[14] * lhs.mat[8] + rhs.mat[15] * lhs.mat[12];
+        m.mat[13] = rhs.mat[12] * lhs.mat[1] + rhs.mat[13] * lhs.mat[5] + rhs.mat[14] * lhs.mat[9] + rhs.mat[15] * lhs.mat[13];
+        m.mat[14] = rhs.mat[12] * lhs.mat[2] + rhs.mat[13] * lhs.mat[6] + rhs.mat[14] * lhs.mat[10] + rhs.mat[15] * lhs.mat[14];
+        m.mat[15] = rhs.mat[12] * lhs.mat[3] + rhs.mat[13] * lhs.mat[7] + rhs.mat[14] * lhs.mat[11] + rhs.mat[15] * lhs.mat[15];
+ 
         return m;
     }
 
@@ -252,9 +265,12 @@ export class Matrix4
  */
     public static compose(position = Vector3.ZERO, rotation = Quaternion.IDENTITY, scale = Vector3.UP): Matrix4
     {
-        const matrix = new Matrix4();
-        matrix.compose(position, rotation, scale);
-        return matrix;
+        const m = Matrix4.makeRotation(rotation);
+        m.multiply(Matrix4.makeScale(scale));
+        m.mat[12] = position.x;
+        m.mat[13] = position.y;
+        m.mat[14] = position.z;
+        return m;
     }
 
 /**
@@ -267,9 +283,30 @@ export class Matrix4
  */
     public static lookAt(eye: Vector3, target: Vector3, up: Vector3): Matrix4
     {
-        const matrix = new Matrix4();
-        matrix.lookAt(eye, target, up);
-        return matrix;
+        const z = Vector3.subtract(eye, target);
+        z.normalize();
+
+        const x = Vector3.cross(up, z);
+        x.normalize();
+
+        const y = Vector3.cross(z, x);
+        y.normalize();
+
+        const rotation = Matrix4.fromColumnMajor(
+            x.x, x.y, x.z, 0.0,
+            y.x, y.y, y.z, 0.0,
+            z.x, z.y, z.z, 0.0,
+            0.0, 0.0, 0.0, 1.0,
+        );
+
+        const translation = Matrix4.fromColumnMajor(
+            1.0, 0.0, 0.0, 0.0,
+            0.0, 1.0, 0.0, 0.0,
+            0.0, 0.0, 1.0, 0.0,
+            eye.x, eye.y, eye.z, 1.0 
+        );
+
+        return Matrix4.multiply(translation, rotation);
     }
 
 /**
@@ -496,26 +533,72 @@ export class Matrix4
        this.mat[col*4 + row] = value;
     }
 
-/**
- * Multiplies this Matrix4 with the given Matrix4, and sets this Matrix4 to the result.
- * 
- * @param m - The Matrix4 to multiply with.
- */
-    multiply(m: Matrix4): void
+    /**
+     * Multiplies this Matrix4 with another Matrix4 on the right hand side, and sets this Matrix4 to the result.
+     * 
+     * @param rhs - The Matrix4 to multiply with.
+     */
+    multiply(rhs: Matrix4): void
     {
-        const temp = Matrix4.multiply(m, this);
-        this.copy(temp);
+        const lhs = this.clone();
+
+        // Column 0
+        this.mat[0] = rhs.mat[0] * lhs.mat[0] + rhs.mat[1] * lhs.mat[4] + rhs.mat[2] * lhs.mat[8] + rhs.mat[3] * lhs.mat[12];
+        this.mat[1] = rhs.mat[0] * lhs.mat[1] + rhs.mat[1] * lhs.mat[5] + rhs.mat[2] * lhs.mat[9] + rhs.mat[3] * lhs.mat[13];
+        this.mat[2] = rhs.mat[0] * lhs.mat[2] + rhs.mat[1] * lhs.mat[6] + rhs.mat[2] * lhs.mat[10] + rhs.mat[3] * lhs.mat[14];
+        this.mat[3] = rhs.mat[0] * lhs.mat[3] + rhs.mat[1] * lhs.mat[7] + rhs.mat[2] * lhs.mat[11] + rhs.mat[3] * lhs.mat[15];
+        
+        // Column 1
+        this.mat[4] = rhs.mat[4] * lhs.mat[0] + rhs.mat[5] * lhs.mat[4] + rhs.mat[6] * lhs.mat[8] + rhs.mat[7] * lhs.mat[12];
+        this.mat[5] = rhs.mat[4] * lhs.mat[1] + rhs.mat[5] * lhs.mat[5] + rhs.mat[6] * lhs.mat[9] + rhs.mat[7] * lhs.mat[13];
+        this.mat[6] = rhs.mat[4] * lhs.mat[2] + rhs.mat[5] * lhs.mat[6] + rhs.mat[6] * lhs.mat[10] + rhs.mat[7] * lhs.mat[14];
+        this.mat[7] = rhs.mat[4] * lhs.mat[3] + rhs.mat[5] * lhs.mat[7] + rhs.mat[6] * lhs.mat[11] + rhs.mat[7] * lhs.mat[15];
+
+        // Column 2
+        this.mat[8] = rhs.mat[8] * lhs.mat[0] + rhs.mat[9] * lhs.mat[4] + rhs.mat[10] * lhs.mat[8] + rhs.mat[11] * lhs.mat[12];
+        this.mat[9] = rhs.mat[8] * lhs.mat[1] + rhs.mat[9] * lhs.mat[5] + rhs.mat[10] * lhs.mat[9] + rhs.mat[11] * lhs.mat[13];
+        this.mat[10] = rhs.mat[8] * lhs.mat[2] + rhs.mat[9] * lhs.mat[6] + rhs.mat[10] * lhs.mat[10] + rhs.mat[11] * lhs.mat[14];
+        this.mat[11] = rhs.mat[8] * lhs.mat[3] + rhs.mat[9] * lhs.mat[7] + rhs.mat[10] * lhs.mat[11] + rhs.mat[11] * lhs.mat[15];
+
+        // Column 3
+        this.mat[12] = rhs.mat[12] * lhs.mat[0] + rhs.mat[13] * lhs.mat[4] + rhs.mat[14] * lhs.mat[8] + rhs.mat[15] * lhs.mat[12];
+        this.mat[13] = rhs.mat[12] * lhs.mat[1] + rhs.mat[13] * lhs.mat[5] + rhs.mat[14] * lhs.mat[9] + rhs.mat[15] * lhs.mat[13];
+        this.mat[14] = rhs.mat[12] * lhs.mat[2] + rhs.mat[13] * lhs.mat[6] + rhs.mat[14] * lhs.mat[10] + rhs.mat[15] * lhs.mat[14];
+        this.mat[15] = rhs.mat[12] * lhs.mat[3] + rhs.mat[13] * lhs.mat[7] + rhs.mat[14] * lhs.mat[11] + rhs.mat[15] * lhs.mat[15];
     }
 
-/**
- * Multiplies the given Matrix4 with this Matrix4, and sets this Matrix4 to the result.
- * 
- * @param m - The Matrix4 to multiply with.
- */    
-    premultiply(m: Matrix4): void
+    /**
+     * Multiplies the given Matrix4 with another Matrix4 on the left hand side, and sets this Matrix4 to the result.
+     * 
+     * @param lhs - The Matrix4 to multiply with.
+     */    
+    premultiply(lhs: Matrix4): void
     {
-        const temp = Matrix4.multiply(this, m);
-        this.copy(temp);
+        const rhs = this.clone();
+
+        // Column 0
+        this.mat[0] = rhs.mat[0] * lhs.mat[0] + rhs.mat[1] * lhs.mat[4] + rhs.mat[2] * lhs.mat[8] + rhs.mat[3] * lhs.mat[12];
+        this.mat[1] = rhs.mat[0] * lhs.mat[1] + rhs.mat[1] * lhs.mat[5] + rhs.mat[2] * lhs.mat[9] + rhs.mat[3] * lhs.mat[13];
+        this.mat[2] = rhs.mat[0] * lhs.mat[2] + rhs.mat[1] * lhs.mat[6] + rhs.mat[2] * lhs.mat[10] + rhs.mat[3] * lhs.mat[14];
+        this.mat[3] = rhs.mat[0] * lhs.mat[3] + rhs.mat[1] * lhs.mat[7] + rhs.mat[2] * lhs.mat[11] + rhs.mat[3] * lhs.mat[15];
+        
+        // Column 1
+        this.mat[4] = rhs.mat[4] * lhs.mat[0] + rhs.mat[5] * lhs.mat[4] + rhs.mat[6] * lhs.mat[8] + rhs.mat[7] * lhs.mat[12];
+        this.mat[5] = rhs.mat[4] * lhs.mat[1] + rhs.mat[5] * lhs.mat[5] + rhs.mat[6] * lhs.mat[9] + rhs.mat[7] * lhs.mat[13];
+        this.mat[6] = rhs.mat[4] * lhs.mat[2] + rhs.mat[5] * lhs.mat[6] + rhs.mat[6] * lhs.mat[10] + rhs.mat[7] * lhs.mat[14];
+        this.mat[7] = rhs.mat[4] * lhs.mat[3] + rhs.mat[5] * lhs.mat[7] + rhs.mat[6] * lhs.mat[11] + rhs.mat[7] * lhs.mat[15];
+
+        // Column 2
+        this.mat[8] = rhs.mat[8] * lhs.mat[0] + rhs.mat[9] * lhs.mat[4] + rhs.mat[10] * lhs.mat[8] + rhs.mat[11] * lhs.mat[12];
+        this.mat[9] = rhs.mat[8] * lhs.mat[1] + rhs.mat[9] * lhs.mat[5] + rhs.mat[10] * lhs.mat[9] + rhs.mat[11] * lhs.mat[13];
+        this.mat[10] = rhs.mat[8] * lhs.mat[2] + rhs.mat[9] * lhs.mat[6] + rhs.mat[10] * lhs.mat[10] + rhs.mat[11] * lhs.mat[14];
+        this.mat[11] = rhs.mat[8] * lhs.mat[3] + rhs.mat[9] * lhs.mat[7] + rhs.mat[10] * lhs.mat[11] + rhs.mat[11] * lhs.mat[15];
+
+        // Column 3
+        this.mat[12] = rhs.mat[12] * lhs.mat[0] + rhs.mat[13] * lhs.mat[4] + rhs.mat[14] * lhs.mat[8] + rhs.mat[15] * lhs.mat[12];
+        this.mat[13] = rhs.mat[12] * lhs.mat[1] + rhs.mat[13] * lhs.mat[5] + rhs.mat[14] * lhs.mat[9] + rhs.mat[15] * lhs.mat[13];
+        this.mat[14] = rhs.mat[12] * lhs.mat[2] + rhs.mat[13] * lhs.mat[6] + rhs.mat[14] * lhs.mat[10] + rhs.mat[15] * lhs.mat[14];
+        this.mat[15] = rhs.mat[12] * lhs.mat[3] + rhs.mat[13] * lhs.mat[7] + rhs.mat[14] * lhs.mat[11] + rhs.mat[15] * lhs.mat[15];
     }
 
 /**
@@ -756,13 +839,13 @@ export class Matrix4
         );
     }
 
-/**
- * Sets the Matrix4 object to a look-at transformation
- * 
- * @param eye - The position of the eye
- * @param target - The target of the eye
- * @param up - The vector defining "up" (default Vector3.UP)
- */
+    /**
+     * Sets the Matrix4 object to a look-at transformation
+     * 
+     * @param eye - The position of the eye
+     * @param target - The target of the eye
+     * @param up - The vector defining "up" (default Vector3.UP)
+     */
     lookAt(eye: Vector3, target: Vector3, up = Vector3.UP): void
     {
         const z = Vector3.subtract(eye, target);
@@ -774,15 +857,21 @@ export class Matrix4
         const y = Vector3.cross(z, x);
         y.normalize();
 
-        const rotation = Matrix4.fromRowMajor(
-            x.x, y.x, z.x, 0,
-            x.y, y.y, z.y, 0,
-            x.z, y.z, z.z, 0,
-            0, 0, 0, 1
+        this.setColumnMajor(
+            x.x, x.y, x.z, 0.0,
+            y.x, y.y, y.z, 0.0,
+            z.x, z.y, z.z, 0.0,
+            0.0, 0.0, 0.0, 1.0,
         );
 
-        const translation = Matrix4.makeTranslation(eye);
-        this.copy(Matrix4.multiply(rotation, translation));
+        const translation = Matrix4.fromColumnMajor(
+            1.0, 0.0, 0.0, 0.0,
+            0.0, 1.0, 0.0, 0.0,
+            0.0, 0.0, 1.0, 0.0,
+            eye.x, eye.y, eye.z, 1.0 
+        );
+
+        this.premultiply(translation);
     }
 
 /**
@@ -1124,9 +1213,12 @@ export class Matrix4
      */
     compose(position = Vector3.ZERO, rotation = Quaternion.IDENTITY, scale = Vector3.ONE): void
     {
-        this.setTranslation(position);
-        this.multiply(rotation.getMatrix());
+        this.setRotation(rotation);
         this.multiply(Matrix4.makeScale(scale));
+
+        this.mat[12] = position.x;
+        this.mat[13] = position.y;
+        this.mat[14] = position.z;
     }
 
     transformPoint(v: Vector3): Vector3
