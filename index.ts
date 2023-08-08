@@ -14,7 +14,6 @@ export * from './src/geometry/3d/Mesh3Instance'
 export * from './src/geometry/3d/Line3'
 
 export * from './src/geometry/2d/Mesh2'
-export * from './src/geometry/2d/Mesh2Instance'
 export * from './src/geometry/2d/Line2'
 export * from './src/geometry/2d/Particles2'
 

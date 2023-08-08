@@ -338,4 +338,29 @@ export class Mesh2 extends Node2
             });
         }
     }
+
+    public createInstance(copyTransform = true): Mesh2
+    {
+        const instance = new Mesh2();
+        instance.positionBuffer = this.positionBuffer;
+        instance.colorBuffer = this.colorBuffer;
+        instance.texCoordBuffer = this.texCoordBuffer;
+        instance.customBuffers = this.customBuffers;
+        instance.vertexCount = this.vertexCount;
+        instance.material = this.material;
+        instance.boundingBox = this.boundingBox;
+        instance.boundingCircle = this.boundingCircle;
+
+        if(copyTransform)
+        {
+            instance.position.copy(this.position);
+            instance.rotation = this.rotation;
+            instance.scale.copy(this.scale);
+            instance.localToWorldMatrix.copy(this.localToWorldMatrix);
+            instance.localMatrixDirty = this.localMatrixDirty;
+            instance.layer = this.layer;
+        }
+
+        return instance;
+    }
 }
