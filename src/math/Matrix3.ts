@@ -483,8 +483,8 @@ export class Matrix3
      */
     compose(position = Vector2.ZERO, rotation = 0, scale = Vector2.ONE): void
     {
-        this.setRotation(rotation);
-        this.multiply(Matrix3.makeScale(scale));
+        this.setScale(scale);
+        this.premultiply(Matrix3.makeRotation(rotation));
 
         this.mat[6] = position.x;
         this.mat[7] = position.y;

@@ -165,6 +165,34 @@ export class Quaternion
     }
 
     /**
+     * Creates a quaternion that rotates the vector `eye` to point towards `target`
+     * 
+     * @param eye - The vector representing the starting point
+     * @param target - The vector representing the target point
+     * @param up - The vector representing the up direction (defaults to Vector3.UP)
+     */
+    public static lookAt(eye: Vector3, target: Vector3, up = Vector3.UP): Quaternion
+    {
+        const z = Vector3.subtract(eye, target);
+        z.normalize();
+
+        const x = Vector3.cross(up, z);
+        x.normalize();
+
+        const y = Vector3.cross(z, x);
+        y.normalize();
+
+        const m = new Matrix4();
+        m.setRowMajor(
+            x.x, y.x, z.x, 0,
+            x.y, y.y, z.y, 0,
+            x.z, y.z, z.z, 0,
+            0, 0, 0, 1
+        );
+        return Quaternion.makeMatrix(m);
+    }
+
+    /**
      * Create a quaternion from a given Matrix4 object
      * 
      * @param matrix - The Matrix4 object to use for creating the quaternion
@@ -548,7 +576,7 @@ export class Quaternion
     }
 
     /**
-     * Creates a quaternion that rotates the vector `eye` to point towards `target`
+     * Sets the quaternion to rotate the vector `eye` to point towards `target`
      * 
      * @param eye - The vector representing the starting point
      * @param target - The vector representing the target point

@@ -1,6 +1,7 @@
 import { Mesh3 } from './3d/Mesh3'
 import { Line3, LineMode3 } from './3d/Line3'
 import { Vector3 } from '../math/Vector3';
+import { Quaternion } from '../math/Quaternion';
 
 export class Geometry3Factory
 {
@@ -163,12 +164,13 @@ export class Geometry3Factory
     {
         const mesh = this.createBox();
 
-        mesh.setPosition(startPoint);
-        mesh.lookAt(endPoint);
+        const midpoint = Vector3.add(startPoint, endPoint);
+        midpoint.multiplyScalar(0.5);
+        mesh.position.copy(midpoint);
 
-        const distance = Vector3.distanceBetween(startPoint, endPoint);
-        mesh.translateZ(-distance/2);
-        mesh.setScaleXYZ(thickness, thickness, distance);
+        mesh.rotation.lookAt(midpoint, endPoint, Vector3.UP);
+
+        mesh.scale.set(thickness, thickness, Vector3.distanceBetween(startPoint, endPoint));
     
         return mesh;
     }

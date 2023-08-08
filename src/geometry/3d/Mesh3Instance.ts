@@ -22,9 +22,9 @@ export class Mesh3Instance extends Node3
         
         if(copyTransform)
         {
-            this.position.copy(baseMesh.getPosition());
-            this.rotation.copy(baseMesh.getRotation());
-            this.scale.copy(baseMesh.getScale());  
+            this.position.copy(baseMesh.position);
+            this.rotation.copy(baseMesh.rotation);
+            this.scale.copy(baseMesh.scale);  
             this.localMatrixDirty = true;
         }
     }

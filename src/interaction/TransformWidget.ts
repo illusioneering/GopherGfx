@@ -42,9 +42,9 @@ export class TransformWidget extends Node3
         this.thickAxes.push(Geometry3Factory.createBox(selectionWidth, lineLength, selectionWidth));
         this.thickAxes.push(Geometry3Factory.createBox(selectionWidth, selectionWidth, lineLength));
 
-        this.thickAxes[0].setPositionXYZ(lineLength/2, 0, 0);
-        this.thickAxes[1].setPositionXYZ(0, lineLength/2, 0);
-        this.thickAxes[2].setPositionXYZ(0, 0, lineLength/2);
+        this.thickAxes[0].position.set(lineLength/2, 0, 0);
+        this.thickAxes[1].position.set(0, lineLength/2, 0);
+        this.thickAxes[2].position.set(0, 0, lineLength/2);
 
         this.thickAxes[0].material = new UnlitMaterial();
         this.thickAxes[1].material = new UnlitMaterial();
@@ -103,31 +103,37 @@ export class TransformWidget extends Node3
         }
         else if(this.currentAxis == 0)
         {
-            const worldPosition = GfxApp.getInstance().camera.getWorldMatrix().getTranslation();
+            const worldPosition = GfxApp.getInstance().camera.localToWorldMatrix.getTranslation();
             const projectedPosition = ray.intersectsPlane(new Plane3(Vector3.ZERO, new Vector3(0, worldPosition.y, worldPosition.z)));
             if(projectedPosition)
             {
-                this.translateX(projectedPosition.x - this.selectionPoint.x);
+                const translation = new Vector3(projectedPosition.x - this.selectionPoint.x, 0, 0);
+                translation.rotate(this.rotation);
+                this.position.add(translation);
                 this.selectionPoint = projectedPosition;
             }
         }
         else if(this.currentAxis == 1)
         {
-            const worldPosition = GfxApp.getInstance().camera.getWorldMatrix().getTranslation();
+            const worldPosition = GfxApp.getInstance().camera.localToWorldMatrix.getTranslation();
             const projectedPosition = ray.intersectsPlane(new Plane3(Vector3.ZERO, new Vector3(worldPosition.x, 0, worldPosition.z)));
             if(projectedPosition)
             {
-                this.translateY(projectedPosition.y - this.selectionPoint.y);
+                const translation = new Vector3(0, projectedPosition.y - this.selectionPoint.y, 0);
+                translation.rotate(this.rotation);
+                this.position.add(translation);
                 this.selectionPoint = projectedPosition;
             }
         }
         else if(this.currentAxis == 2)
         {
-            const worldPosition = GfxApp.getInstance().camera.getWorldMatrix().getTranslation();
+            const worldPosition = GfxApp.getInstance().camera.localToWorldMatrix.getTranslation();
             const projectedPosition = ray.intersectsPlane(new Plane3(Vector3.ZERO, new Vector3(worldPosition.x, worldPosition.y, 0)));
             if(projectedPosition)
             {
-                this.translateZ(projectedPosition.z - this.selectionPoint.z);
+                const translation = new Vector3(0, 0, projectedPosition.z - this.selectionPoint.z);
+                translation.rotate(this.rotation);
+                this.position.add(translation);
                 this.selectionPoint = projectedPosition;
             }
         }
@@ -149,7 +155,7 @@ export class TransformWidget extends Node3
         {
             if(ray.intersectsOrientedBoundingBox(this.thickAxes[0]))
             {
-                const worldPosition = GfxApp.getInstance().camera.getWorldMatrix().getTranslation();
+                const worldPosition = GfxApp.getInstance().camera.localToWorldMatrix.getTranslation();
                 const projectedPosition = ray.intersectsPlane(new Plane3(Vector3.ZERO, new Vector3(0, worldPosition.y, worldPosition.z)));
 
                 if(projectedPosition)
@@ -163,7 +169,7 @@ export class TransformWidget extends Node3
 
             if(ray.intersectsOrientedBoundingBox(this.thickAxes[1]))
             {
-                const worldPosition = GfxApp.getInstance().camera.getWorldMatrix().getTranslation();
+                const worldPosition = GfxApp.getInstance().camera.localToWorldMatrix.getTranslation();
                 const projectedPosition = ray.intersectsPlane(new Plane3(Vector3.ZERO, new Vector3(worldPosition.x, 0, worldPosition.z)));
                 if(projectedPosition)
                 {
@@ -176,7 +182,7 @@ export class TransformWidget extends Node3
 
             if(ray.intersectsOrientedBoundingBox(this.thickAxes[2]))
             {
-                const worldPosition = GfxApp.getInstance().camera.getWorldMatrix().getTranslation();
+                const worldPosition = GfxApp.getInstance().camera.localToWorldMatrix.getTranslation();
                 const projectedPosition = ray.intersectsPlane(new Plane3(Vector3.ZERO, new Vector3(worldPosition.x, worldPosition.y, 0)));
 
                 if(projectedPosition)

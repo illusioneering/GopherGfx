@@ -206,14 +206,11 @@ export class Node2
 
         if(worldMatrixDirty)
         {
+            this.localToWorldMatrix.copy(this._localToParentMatrix);
+
             if(this.parent)
             {
-                this.localToWorldMatrix.copy(this.parent.localToWorldMatrix);
-                this.localToWorldMatrix.premultiply(this._localToParentMatrix);
-            }
-            else
-            {
-                this.localToWorldMatrix.copy(this._localToParentMatrix);
+                this.localToWorldMatrix.premultiply(this.parent.localToWorldMatrix);
             }
         }
 
@@ -233,15 +230,12 @@ export class Node2
             this.localMatrixDirty = false;
         }
 
+        this.localToWorldMatrix.copy(this._localToParentMatrix);
+
         if (this.parent) 
         {
-            this.parent.updateWorldMatrix();
-            this.localToWorldMatrix.copy(this.parent.localToWorldMatrix);
-            this.localToWorldMatrix.premultiply(this._localToParentMatrix);
-        }
-        else 
-        {
-            this.localToWorldMatrix.copy(this._localToParentMatrix);
+            this.parent.updateWorldMatrix();    
+            this.localToWorldMatrix.premultiply(this.parent.localToWorldMatrix);
         }
     }
 

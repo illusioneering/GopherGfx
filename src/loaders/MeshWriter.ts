@@ -206,9 +206,9 @@ export class MeshWriter
 
     private static createGLTFRecursive(transform: Node3, doc: Document, buffer: Buffer, node: Node)
     {
-        const position = transform.getPosition();
-        const rotation = transform.getRotation();
-        const scale = transform.getScale();
+        const position = transform.position;
+        const rotation = transform.rotation;
+        const scale = transform.scale;
         node.setTranslation([position.x, position.y, position.z]);
         node.setRotation([rotation.x, rotation.y, rotation.z, rotation.w]);
         node.setScale([scale.x, scale.y, scale.z]);

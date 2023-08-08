@@ -1213,8 +1213,8 @@ export class Matrix4
      */
     compose(position = Vector3.ZERO, rotation = Quaternion.IDENTITY, scale = Vector3.ONE): void
     {
-        this.setRotation(rotation);
-        this.multiply(Matrix4.makeScale(scale));
+        this.setScale(scale);
+        this.premultiply(Matrix4.makeRotation(rotation));
 
         this.mat[12] = position.x;
         this.mat[13] = position.y;

@@ -111,7 +111,7 @@ export class Line3 extends Node3
         this.gl.disableVertexAttribArray(this.texCoordAttribute);
 
         // Set the camera uniforms
-        this.gl.uniformMatrix4fv(this.modelViewUniform, false, Matrix4.multiply(camera.viewMatrix, this.worldMatrix).mat);
+        this.gl.uniformMatrix4fv(this.modelViewUniform, false, Matrix4.multiply(camera.viewMatrix, this.localToWorldMatrix).mat);
         this.gl.uniformMatrix4fv(this.projectionUniform, false, camera.projectionMatrix.mat);
 
         // Set the material property uniforms

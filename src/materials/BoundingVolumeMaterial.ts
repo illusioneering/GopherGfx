@@ -65,8 +65,8 @@ export class BoundingVolumeMaterial extends Material3
             );
 
             const boxLocalMatrix = Matrix4.compose(boxPosition, Quaternion.IDENTITY, boxScale);
-            this.box.setLocalMatrix(boxLocalMatrix);
-            this.box.setWorldMatrix(Matrix4.multiply(object.getWorldMatrix(), boxLocalMatrix));
+            this.box.localToParentMatrix.copy(boxLocalMatrix);
+            this.box.localToWorldMatrix.copy(Matrix4.multiply(object.localToWorldMatrix, boxLocalMatrix));
 
             this.box.draw(object, camera, lightManager);
         }
@@ -75,7 +75,7 @@ export class BoundingVolumeMaterial extends Material3
             const abb = new BoundingBox3();
             abb.copy(object.boundingBox);
 
-            const worldMatrix = transform.getWorldMatrix();
+            const worldMatrix = transform.localToWorldMatrix;
             const worldPosition = worldMatrix.getTranslation();
             const worldRotation = worldMatrix.getRotation();
             const worldScale = worldMatrix.getScale();
@@ -91,8 +91,8 @@ export class BoundingVolumeMaterial extends Material3
             );
 
             const boxLocalMatrix = Matrix4.compose(boxPosition, Quaternion.IDENTITY, boxScale);
-            this.box.setLocalMatrix(boxLocalMatrix);
-            this.box.setWorldMatrix(boxLocalMatrix);
+            this.box.localToParentMatrix.copy(boxLocalMatrix);
+            this.box.localToWorldMatrix.copy(boxLocalMatrix);
 
             this.box.draw(object, camera, lightManager);
         }
@@ -101,8 +101,8 @@ export class BoundingVolumeMaterial extends Material3
             const sphereScale = new Vector3(object.boundingSphere.radius, object.boundingSphere.radius, object.boundingSphere.radius);
 
             const sphereLocalMatrix = Matrix4.compose(object.boundingSphere.center, Quaternion.IDENTITY, sphereScale);
-            this.sphere.setLocalMatrix(sphereLocalMatrix);
-            this.sphere.setWorldMatrix(Matrix4.multiply(object.getWorldMatrix(), sphereLocalMatrix));
+            this.sphere.localToParentMatrix.copy(sphereLocalMatrix);
+            this.sphere.localToWorldMatrix.copy(Matrix4.multiply(object.localToWorldMatrix, sphereLocalMatrix));
 
             this.sphere.draw(object, camera, lightManager);
         }
