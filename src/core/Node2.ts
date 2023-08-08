@@ -209,7 +209,7 @@ export class Node2
             if(this.parent)
             {
                 this.localToWorldMatrix.copy(this.parent.localToWorldMatrix);
-                this.localToWorldMatrix.multiply(this._localToParentMatrix);
+                this.localToWorldMatrix.premultiply(this._localToParentMatrix);
             }
             else
             {
@@ -237,7 +237,7 @@ export class Node2
         {
             this.parent.updateWorldMatrix();
             this.localToWorldMatrix.copy(this.parent.localToWorldMatrix);
-            this.localToWorldMatrix.multiply(this._localToParentMatrix);
+            this.localToWorldMatrix.premultiply(this._localToParentMatrix);
         }
         else 
         {

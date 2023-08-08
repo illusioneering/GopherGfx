@@ -19,20 +19,20 @@ export class Matrix3
      * @param m2 - The second Matrix3 object to be multiplied
      * @returns A new Matrix3 object representing the product of m1 and m2
      */ 
-    static multiply(m1: Matrix3, m2: Matrix3): Matrix3
+    static multiply(lhs: Matrix3, rhs: Matrix3): Matrix3
     {
         // Code from https://webglfundamentals.org/webgl/lessons/webgl-2d-matrices.html
         const m = new Matrix3();
         
-        m.mat[0] = m1.mat[0] * m2.mat[0] + m1.mat[1] * m2.mat[3] + m1.mat[2] * m2.mat[6];
-        m.mat[1] = m1.mat[0] * m2.mat[1] + m1.mat[1] * m2.mat[4] + m1.mat[2] * m2.mat[7];
-        m.mat[2] = m1.mat[0] * m2.mat[2] + m1.mat[1] * m2.mat[5] + m1.mat[2] * m2.mat[8];
-        m.mat[3] = m1.mat[3] * m2.mat[0] + m1.mat[4] * m2.mat[3] + m1.mat[5] * m2.mat[6];
-        m.mat[4] = m1.mat[3] * m2.mat[1] + m1.mat[4] * m2.mat[4] + m1.mat[5] * m2.mat[7];
-        m.mat[5] = m1.mat[3] * m2.mat[2] + m1.mat[4] * m2.mat[5] + m1.mat[5] * m2.mat[8];
-        m.mat[6] = m1.mat[6] * m2.mat[0] + m1.mat[7] * m2.mat[3] + m1.mat[8] * m2.mat[6];
-        m.mat[7] = m1.mat[6] * m2.mat[1] + m1.mat[7] * m2.mat[4] + m1.mat[8] * m2.mat[7];
-        m.mat[8] = m1.mat[6] * m2.mat[2] + m1.mat[7] * m2.mat[5] + m1.mat[8] * m2.mat[8];
+        m.mat[0] = rhs.mat[0] * lhs.mat[0] + rhs.mat[1] * lhs.mat[3] + rhs.mat[2] * lhs.mat[6];
+        m.mat[1] = rhs.mat[0] * lhs.mat[1] + rhs.mat[1] * lhs.mat[4] + rhs.mat[2] * lhs.mat[7];
+        m.mat[2] = rhs.mat[0] * lhs.mat[2] + rhs.mat[1] * lhs.mat[5] + rhs.mat[2] * lhs.mat[8];
+        m.mat[3] = rhs.mat[3] * lhs.mat[0] + rhs.mat[4] * lhs.mat[3] + rhs.mat[5] * lhs.mat[6];
+        m.mat[4] = rhs.mat[3] * lhs.mat[1] + rhs.mat[4] * lhs.mat[4] + rhs.mat[5] * lhs.mat[7];
+        m.mat[5] = rhs.mat[3] * lhs.mat[2] + rhs.mat[4] * lhs.mat[5] + rhs.mat[5] * lhs.mat[8];
+        m.mat[6] = rhs.mat[6] * lhs.mat[0] + rhs.mat[7] * lhs.mat[3] + rhs.mat[8] * lhs.mat[6];
+        m.mat[7] = rhs.mat[6] * lhs.mat[1] + rhs.mat[7] * lhs.mat[4] + rhs.mat[8] * lhs.mat[7];
+        m.mat[8] = rhs.mat[6] * lhs.mat[2] + rhs.mat[7] * lhs.mat[5] + rhs.mat[8] * lhs.mat[8];
 
         return m;
     }
@@ -297,14 +297,43 @@ export class Matrix3
     }
 
     /**
-     * Multiplies the current matrix with another Matrix3
+     * Multiplies this Matrix4 with another Matrix3 on the right hand side, and sets this Matrix3 to the result.
      * 
-     * @param m - The Matrix3 to be multiplied with the current matrix
+     * @param rhs - The Matrix3 to multiply with.
      */
-    multiply(m: Matrix3): void
+    multiply(rhs: Matrix3): void
     {
-        const temp = Matrix3.multiply(m, this);
-        this.copy(temp);
+        const lhs = this.clone();
+
+        this.mat[0] = rhs.mat[0] * lhs.mat[0] + rhs.mat[1] * lhs.mat[3] + rhs.mat[2] * lhs.mat[6];
+        this.mat[1] = rhs.mat[0] * lhs.mat[1] + rhs.mat[1] * lhs.mat[4] + rhs.mat[2] * lhs.mat[7];
+        this.mat[2] = rhs.mat[0] * lhs.mat[2] + rhs.mat[1] * lhs.mat[5] + rhs.mat[2] * lhs.mat[8];
+        this.mat[3] = rhs.mat[3] * lhs.mat[0] + rhs.mat[4] * lhs.mat[3] + rhs.mat[5] * lhs.mat[6];
+        this.mat[4] = rhs.mat[3] * lhs.mat[1] + rhs.mat[4] * lhs.mat[4] + rhs.mat[5] * lhs.mat[7];
+        this.mat[5] = rhs.mat[3] * lhs.mat[2] + rhs.mat[4] * lhs.mat[5] + rhs.mat[5] * lhs.mat[8];
+        this.mat[6] = rhs.mat[6] * lhs.mat[0] + rhs.mat[7] * lhs.mat[3] + rhs.mat[8] * lhs.mat[6];
+        this.mat[7] = rhs.mat[6] * lhs.mat[1] + rhs.mat[7] * lhs.mat[4] + rhs.mat[8] * lhs.mat[7];
+        this.mat[8] = rhs.mat[6] * lhs.mat[2] + rhs.mat[7] * lhs.mat[5] + rhs.mat[8] * lhs.mat[8];
+    }
+
+    /**
+     * Multiplies this Matrix4 with another Matrix3 on the left hand side, and sets this Matrix3 to the result.
+     * 
+     * @param rhs - The Matrix3 to multiply with.
+     */
+    premultiply(lhs: Matrix3): void
+    {
+        const rhs = this.clone();
+
+        this.mat[0] = rhs.mat[0] * lhs.mat[0] + rhs.mat[1] * lhs.mat[3] + rhs.mat[2] * lhs.mat[6];
+        this.mat[1] = rhs.mat[0] * lhs.mat[1] + rhs.mat[1] * lhs.mat[4] + rhs.mat[2] * lhs.mat[7];
+        this.mat[2] = rhs.mat[0] * lhs.mat[2] + rhs.mat[1] * lhs.mat[5] + rhs.mat[2] * lhs.mat[8];
+        this.mat[3] = rhs.mat[3] * lhs.mat[0] + rhs.mat[4] * lhs.mat[3] + rhs.mat[5] * lhs.mat[6];
+        this.mat[4] = rhs.mat[3] * lhs.mat[1] + rhs.mat[4] * lhs.mat[4] + rhs.mat[5] * lhs.mat[7];
+        this.mat[5] = rhs.mat[3] * lhs.mat[2] + rhs.mat[4] * lhs.mat[5] + rhs.mat[5] * lhs.mat[8];
+        this.mat[6] = rhs.mat[6] * lhs.mat[0] + rhs.mat[7] * lhs.mat[3] + rhs.mat[8] * lhs.mat[6];
+        this.mat[7] = rhs.mat[6] * lhs.mat[1] + rhs.mat[7] * lhs.mat[4] + rhs.mat[8] * lhs.mat[7];
+        this.mat[8] = rhs.mat[6] * lhs.mat[2] + rhs.mat[7] * lhs.mat[5] + rhs.mat[8] * lhs.mat[8];
     }
 
     /**
@@ -454,9 +483,11 @@ export class Matrix3
      */
     compose(position = Vector2.ZERO, rotation = 0, scale = Vector2.ONE): void
     {
-        this.setTranslation(position);
-        this.multiply(Matrix3.makeRotation(rotation));
+        this.setRotation(rotation);
         this.multiply(Matrix3.makeScale(scale));
+
+        this.mat[6] = position.x;
+        this.mat[7] = position.y;
     }
 
     transformPoint(v: Vector2): Vector2
