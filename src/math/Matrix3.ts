@@ -154,9 +154,12 @@ export class Matrix3
      */ 
     public static compose(position = Vector2.ZERO, rotation = 0, scale = Vector2.ONE): Matrix3
     {
-        const matrix = new Matrix3();
-        matrix.compose(position, rotation, scale);
-        return matrix;
+        const m = Matrix3.makeScale(scale);
+        m.premultiply(Matrix3.makeRotation(rotation));
+
+        m.mat[6] = position.x;
+        m.mat[7] = position.y;
+        return m;
     }
 
     public static transformPoint(v: Vector2, m: Matrix3): Vector2
@@ -506,5 +509,27 @@ export class Matrix3
         result.x = w * (this.mat[0]*v.x + this.mat[3]*v.y);
         result.y = w * (this.mat[1]*v.x + this.mat[4]*v.y);
         return result;
+    }
+
+    getColumn(i: number): Vector2
+    {
+        return new Vector2(this.mat[i], this.mat[i+3]);
+    }
+
+    getRow(i: number): Vector2
+    {
+        return new Vector2(this.mat[i*3], this.mat[i*3+1]);
+    }
+
+    setColumn(col: number, v: Vector2): void
+    {
+        this.mat[col] = v.x;
+        this.mat[col+3] = v.y;
+    }
+
+    setRow(row: number, v: Vector2): void
+    {
+        this.mat[row*3] = v.x;
+        this.mat[row*3+1] = v.y;
     }
 }

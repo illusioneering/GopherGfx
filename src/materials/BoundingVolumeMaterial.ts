@@ -65,7 +65,7 @@ export class BoundingVolumeMaterial extends Material3
             );
 
             const boxLocalMatrix = Matrix4.compose(boxPosition, Quaternion.IDENTITY, boxScale);
-            this.box.localToParentMatrix.copy(boxLocalMatrix);
+            this.box.setLocalToParentMatrix(boxLocalMatrix, false);
             this.box.localToWorldMatrix.copy(Matrix4.multiply(object.localToWorldMatrix, boxLocalMatrix));
 
             this.box.draw(object, camera, lightManager);
@@ -91,7 +91,7 @@ export class BoundingVolumeMaterial extends Material3
             );
 
             const boxLocalMatrix = Matrix4.compose(boxPosition, Quaternion.IDENTITY, boxScale);
-            this.box.localToParentMatrix.copy(boxLocalMatrix);
+            this.box.setLocalToParentMatrix(boxLocalMatrix, false);
             this.box.localToWorldMatrix.copy(boxLocalMatrix);
 
             this.box.draw(object, camera, lightManager);
@@ -101,7 +101,7 @@ export class BoundingVolumeMaterial extends Material3
             const sphereScale = new Vector3(object.boundingSphere.radius, object.boundingSphere.radius, object.boundingSphere.radius);
 
             const sphereLocalMatrix = Matrix4.compose(object.boundingSphere.center, Quaternion.IDENTITY, sphereScale);
-            this.sphere.localToParentMatrix.copy(sphereLocalMatrix);
+            this.sphere.setLocalToParentMatrix(sphereLocalMatrix, false);
             this.sphere.localToWorldMatrix.copy(Matrix4.multiply(object.localToWorldMatrix, sphereLocalMatrix));
 
             this.sphere.draw(object, camera, lightManager);

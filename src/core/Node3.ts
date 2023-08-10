@@ -32,15 +32,19 @@ export class Node3
     /**
      * The local transformation matrix of this node.
      */
-    protected _localToParentMatrix: Matrix4;
+    protected localToParentMatrix: Matrix4;
 
-    protected localMatrixDirty: boolean;
-    protected localMatrixUpdated: boolean;
-    
     /**
      * The world transformation matrix of this node.
      */
     public localToWorldMatrix: Matrix4;
+
+    protected positionUpdated: boolean;
+    protected rotationUpdated: boolean;
+    protected scaleUpdated: boolean;
+    protected localMatrixUpdated: boolean;
+    protected worldMatrixDirty: boolean;
+    protected includesFlip: boolean;
 
     /*
     An array of child nodes that are attached to this nodes.
@@ -82,11 +86,15 @@ export class Node3
         this._rotation = new Quaternion();
         this._scale = new Vector3(1, 1, 1);
 
-        this._localToParentMatrix = new Matrix4();
-        this.localMatrixDirty = false;
-        this.localMatrixUpdated = false;
-
+        this.localToParentMatrix = new Matrix4();
         this.localToWorldMatrix = new Matrix4();
+
+        this.positionUpdated = false;
+        this.rotationUpdated = false;
+        this.scaleUpdated = false;
+        this.localMatrixUpdated = false;
+        this.worldMatrixDirty = false;
+        this.includesFlip = false;
 
         this.children = [];
         
@@ -104,18 +112,16 @@ export class Node3
     {
         if(this.localMatrixUpdated)
         {
-            // to be added
-            // decompose matrix
-            this.localMatrixUpdated = false;
+            this.decomposeLocalMatrix();
         }
         
-        this.localMatrixDirty = true;
+        this.positionUpdated = true;
         return this._position;
     }
 
     public set position(value: Vector3)
     {
-        this.localMatrixDirty = true;
+        this.positionUpdated = true;
         this._position = value;
     }
 
@@ -123,18 +129,16 @@ export class Node3
     {
         if(this.localMatrixUpdated)
         {
-            // to be added
-            // decompose matrix
-            this.localMatrixUpdated = false;
+            this.decomposeLocalMatrix();
         }
 
-        this.localMatrixDirty = true;
+        this.rotationUpdated = true;
         return this._rotation;
     }
 
     public set rotation(value: Quaternion)
     {
-        this.localMatrixDirty = true;
+        this.rotationUpdated = true;
         this._rotation = value;
     }
 
@@ -142,38 +146,31 @@ export class Node3
     {
         if(this.localMatrixUpdated)
         {
-            // to be added
-            // decompose matrix
-            this.localMatrixUpdated = false;
+            this.decomposeLocalMatrix();
         }
 
-        this.localMatrixDirty = true;
+        this.scaleUpdated = true;
         return this._scale;
     }
 
     public set scale(value: Vector3)
     {
-        this.localMatrixDirty = true;
+        this.scaleUpdated = true;
         this._scale = value;
     }
 
-    public get localToParentMatrix()
+    public getLocalToParentMatrix(): Matrix4
     {
-        if(this.localMatrixDirty)
-        {
-            this._localToParentMatrix.compose(this._position, this._rotation, this._scale);
-            this.localMatrixDirty = false;
-        }
-
-        this.localMatrixUpdated = true;
-        return this._localToParentMatrix;
+        this.composeLocalMatrix();
+        return this.localToParentMatrix.clone();
     }
 
-    public set localToParentMatrix(matrix: Matrix4)
+    public setLocalToParentMatrix(matrix: Matrix4, includesFlip: boolean): void
     {
-        this.localMatrixDirty = false;
         this.localMatrixUpdated = true;
-        this._localToParentMatrix = matrix;   
+        this.worldMatrixDirty = true;
+        this.includesFlip = includesFlip;
+        this.localToParentMatrix.copy(matrix);   
     }
 
     /**
@@ -182,22 +179,23 @@ export class Node3
      */
     traverseSceneGraph(parentMatrixDirty = false): void 
     {
-        const worldMatrixDirty = parentMatrixDirty || this.localMatrixDirty;
-
-        if(this.localMatrixDirty) 
+        const localMatrixDirty = this.positionUpdated || this.rotationUpdated || this.scaleUpdated;
+        if(localMatrixDirty) 
         {
-            this._localToParentMatrix.compose(this._position, this._rotation, this._scale);
-            this.localMatrixDirty = false;
+            this.composeLocalMatrix();
         }
 
+        const worldMatrixDirty = parentMatrixDirty || localMatrixDirty || this.worldMatrixDirty;
         if(worldMatrixDirty)
         {
-            this.localToWorldMatrix.copy(this._localToParentMatrix);
+            this.localToWorldMatrix.copy(this.localToParentMatrix);
 
             if(this.parent)
             {  
                 this.localToWorldMatrix.premultiply(this.parent.localToWorldMatrix);
             }
+
+            this.worldMatrixDirty = false;
         }
 
         this.children.forEach((elem: Node3) => {
@@ -212,19 +210,20 @@ export class Node3
     */
     updateWorldMatrix(): void 
     {
-        if(this.localMatrixDirty) 
+        if(this.positionUpdated || this.rotationUpdated || this.scaleUpdated) 
         {
-            this._localToParentMatrix.compose(this._position, this._rotation, this._scale);
-            this.localMatrixDirty = false;
+            this.composeLocalMatrix();
         }
 
-        this.localToWorldMatrix.copy(this._localToParentMatrix);
+        this.localToWorldMatrix.copy(this.localToParentMatrix);
 
         if (this.parent) 
         {
             this.parent.updateWorldMatrix();
             this.localToWorldMatrix.premultiply(this.parent.localToWorldMatrix);
         }
+
+        this.worldMatrixDirty = false;
     }
 
     /**
@@ -309,7 +308,7 @@ export class Node3
 
         const worldPosition = this.localToWorldMatrix.getTranslation();
         this.rotation.lookAt(worldPosition, target, up);
-        this.localMatrixDirty = true;
+        this.rotationUpdated = true;
     }
 
     /**
@@ -349,6 +348,123 @@ export class Node3
         }
         else {
             return false;
+        }
+    }
+
+    public composeLocalMatrix(): void
+    {
+        this.includesFlip = this.scale.x < 0 || this.scale.y < 0 || this.scale.z < 0;
+        this.positionUpdated = false;
+        this.rotationUpdated = false;
+        this.scaleUpdated = false;
+        this.localMatrixUpdated = false;
+        this.worldMatrixDirty = true;
+
+        this.localToParentMatrix.compose(this._position, this._rotation, this._scale);
+    }
+
+    public decomposeLocalMatrix(): void
+    {
+        this.positionUpdated = false;
+        this.rotationUpdated = false;
+        this.scaleUpdated = false;
+        this.localMatrixUpdated = false;
+
+        const matrixCopy = this.localToParentMatrix.clone();
+
+        // Extract translation component of the matrix
+        this._position.set(matrixCopy.mat[12], matrixCopy.mat[13], matrixCopy.mat[14]);
+        matrixCopy.mat[12] = 0;
+        matrixCopy.mat[13] = 0;
+        matrixCopy.mat[14] = 0;
+
+        // Zero out any projection components of the matrix
+        matrixCopy.mat[3] = 0;
+        matrixCopy.mat[7] = 0;
+        matrixCopy.mat[11] = 0;
+        matrixCopy.mat[15] = 1;
+
+        if(this.includesFlip)
+        {
+            // If the matrix includes negative scales, then the rotation and scale
+            // can be extracted using the polar decomposition method described here
+            // http://callumhay.blogspot.com/2010/10/decomposing-affine-transforms.html
+
+            // Extract the rotation component - this is done using polar decompostion, where
+            // we successively average the matrix with its inverse transpose until there is
+            // no/a very small difference between successive averages
+            let rotationMatrix = new Matrix4();
+            let count = 0;
+            let norm;
+            do 
+            {
+                const currentInverseTranspose = rotationMatrix.transpose();
+                currentInverseTranspose.invert();
+
+                // Go through every component in the matrices and find the next matrix
+                const nextRotationMatrix = new Matrix4();
+                for(let i=0; i<16; i++)
+                {
+                    nextRotationMatrix.mat[i] = 0.5 * (rotationMatrix.mat[i] + currentInverseTranspose.mat[i]);
+                }
+
+                norm = 0;
+
+                for (let i = 0; i < 3; i++) 
+                {
+                    const n = Math.abs(rotationMatrix.mat[i] - nextRotationMatrix.mat[i]) +
+                              Math.abs(rotationMatrix.mat[i+4] - nextRotationMatrix.mat[i+4]) +
+                              Math.abs(rotationMatrix.mat[i+8] - nextRotationMatrix.mat[i+8]);
+                    norm = Math.max(norm, n);
+                }
+
+                rotationMatrix = nextRotationMatrix;
+                count ++;
+            }
+            while(count < 100 && norm > Number.EPSILON);
+
+            // Set the quaternion based on the extracted rotation matrix
+            this._rotation.setMatrix(rotationMatrix);
+
+            // The scale is simply the removal of the rotation from the non-translated matrix
+            const scaleMatrix = Matrix4.multiply(rotationMatrix.inverse(), matrixCopy);
+            this._scale.set(scaleMatrix.mat[0], scaleMatrix.mat[5], scaleMatrix.mat[10]);
+
+            // Special consideration: if there's a single negative scale (all other combinations of negative 
+            // scales will be part of the rotation matrix), the determinant of the normalized rotation matrix
+            // will be < 0.  If this is the case we apply a negative to one arbitrary component of the scale.
+            const row0 = matrixCopy.getRow(0);
+            const row1 = matrixCopy.getRow(1);
+            const row2 = matrixCopy.getRow(2);
+            row0.normalize();
+            row1.normalize();
+            row2.normalize();
+
+            const normalizedRotationMatrix = new Matrix4();
+            normalizedRotationMatrix.setRow(0, row0);
+            normalizedRotationMatrix.setRow(1, row1);
+            normalizedRotationMatrix.setRow(2, row2);
+            if (normalizedRotationMatrix.determinant() < 0.0) 
+            {
+                this._scale.x *= -1;
+            }    
+        }
+        else
+        {
+            // If the matrix does not include negative scales
+            // then we can decompose the matrix more efficiently
+
+            // Extract scale component of the matrix
+            const sx = matrixCopy.getColumn(0).length();
+            const sy = matrixCopy.getColumn(1).length();
+            const sz = matrixCopy.getColumn(2).length();
+            this._scale.set(sx, sy, sz);
+
+            // Remove scale component from the matrix
+            matrixCopy.multiply(Matrix4.makeScale(new Vector3(1 / sx, 1 / sy, 1 / sz)));
+
+            // Set the rotation quaternion from the pure rotation matrix
+            this._rotation.setMatrix(matrixCopy);
         }
     }
 }

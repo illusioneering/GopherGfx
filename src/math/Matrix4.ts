@@ -265,8 +265,8 @@ export class Matrix4
  */
     public static compose(position = Vector3.ZERO, rotation = Quaternion.IDENTITY, scale = Vector3.UP): Matrix4
     {
-        const m = Matrix4.makeRotation(rotation);
-        m.multiply(Matrix4.makeScale(scale));
+        const m = Matrix4.makeScale(scale);
+        m.premultiply(Matrix4.makeRotation(rotation));
         m.mat[12] = position.x;
         m.mat[13] = position.y;
         m.mat[14] = position.z;
@@ -1239,5 +1239,29 @@ export class Matrix4
         result.y = w * (this.mat[1]*v.x + this.mat[5]*v.y + this.mat[9]*v.z);
         result.z = w * (this.mat[2]*v.x + this.mat[6]*v.y + this.mat[10]*v.z);
         return result;
+    }
+
+    getColumn(i: number): Vector3
+    {
+        return new Vector3(this.mat[i], this.mat[i+4], this.mat[i+8]);
+    }
+
+    getRow(i: number): Vector3
+    {
+        return new Vector3(this.mat[i*4], this.mat[i*4+1], this.mat[i*4+2]);
+    }
+
+    setColumn(col: number, v: Vector3): void
+    {
+        this.mat[col] = v.x;
+        this.mat[col+4] = v.y;
+        this.mat[col+8] = v.z;
+    }
+
+    setRow(row: number, v: Vector3): void
+    {
+        this.mat[row*4] = v.x;
+        this.mat[row*4+1] = v.y;
+        this.mat[row*4+2] = v.z;
     }
 }
