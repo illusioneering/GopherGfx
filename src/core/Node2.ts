@@ -34,15 +34,16 @@ export class Node2
     /**
      * Matrix3 representing the transformation matrix in local space
      */
-    protected _localToParentMatrix: Matrix3;
-
-    protected localMatrixDirty: boolean;
-    protected localMatrixUpdated: boolean;
+    protected localToParentMatrix: Matrix3;
 
     /**
      * Matrix3 representing the transformation matrix in world space
      */
     public localToWorldMatrix: Matrix3;
+
+    protected localMatrixDirty: boolean;
+    protected localMatrixUpdated: boolean;
+    protected worldMatrixDirty: boolean;
     
     /**
      * Array of children for this transform
@@ -86,11 +87,12 @@ export class Node2
         this._rotation = 0;
         this._scale = new Vector2(1, 1);
 
-        this._localToParentMatrix = new Matrix3();
+        this.localToParentMatrix = new Matrix3();
+        this.localToWorldMatrix = new Matrix3();
+
         this.localMatrixDirty = false;
         this.localMatrixUpdated = false;
-
-        this.localToWorldMatrix = new Matrix3();
+        this.worldMatrixDirty = false;
 
         // default layer
         this.layer = 0;
@@ -107,9 +109,7 @@ export class Node2
     {
         if(this.localMatrixUpdated)
         {
-            // to be added
-            // decompose matrix
-            this.localMatrixUpdated = false;
+            this.decomposeLocalMatrix();
         }
         
         this.localMatrixDirty = true;
@@ -126,11 +126,10 @@ export class Node2
     {
         if(this.localMatrixUpdated)
         {
-            // to be added
-            // decompose matrix
-            this.localMatrixUpdated = false;
+            this.decomposeLocalMatrix();
         }
 
+        this.localMatrixDirty = true;
         return this._rotation;
     }
 
@@ -144,9 +143,7 @@ export class Node2
     {
         if(this.localMatrixUpdated)
         {
-            // to be added
-            // decompose matrix
-            this.localMatrixUpdated = false;
+            this.decomposeLocalMatrix();
         }
 
         this.localMatrixDirty = true;
@@ -159,23 +156,17 @@ export class Node2
         this._scale = value;
     }
 
-    public get localToParentMatrix()
+    public getLocalToParentMatrix(): Matrix3
     {
-        if(this.localMatrixDirty)
-        {
-            this._localToParentMatrix.compose(this._position, this._rotation, this._scale);
-            this.localMatrixDirty = false;
-        }
-
-        this.localMatrixUpdated = true;
-        return this._localToParentMatrix;
+        this.composeLocalMatrix();
+        return this.localToParentMatrix.clone();
     }
 
-    public set localToParentMatrix(matrix: Matrix3)
+    public setLocalToParentMatrix(matrix: Matrix3): void
     {
-        this.localMatrixDirty = false;
+        this.localToParentMatrix.copy(matrix);  
         this.localMatrixUpdated = true;
-        this._localToParentMatrix = matrix;   
+        this.worldMatrixDirty = true;
     }
 
     /**
@@ -196,22 +187,23 @@ export class Node2
      */
     traverseSceneGraph(parentMatrixDirty = false): void
     {
-        const worldMatrixDirty = parentMatrixDirty || this.localMatrixDirty;
+        const worldMatrixDirty = parentMatrixDirty || this.localMatrixDirty || this.worldMatrixDirty;
 
         if(this.localMatrixDirty) 
         {
-            this._localToParentMatrix.compose(this._position, this._rotation, this._scale);
-            this.localMatrixDirty = false;
+            this.composeLocalMatrix();
         }
 
         if(worldMatrixDirty)
         {
-            this.localToWorldMatrix.copy(this._localToParentMatrix);
+            this.localToWorldMatrix.copy(this.localToParentMatrix);
 
             if(this.parent)
-            {
+            {  
                 this.localToWorldMatrix.premultiply(this.parent.localToWorldMatrix);
             }
+
+            this.worldMatrixDirty = false;
         }
 
         this.children.forEach((elem: Node2) => {
@@ -222,21 +214,22 @@ export class Node2
     /**
      * Updates the world matrix of the current Node2 object and its parent
      */
-    updateWorldMatrix(): void
+    updateWorldMatrix(): void 
     {
         if(this.localMatrixDirty) 
         {
-            this._localToParentMatrix.compose(this._position, this._rotation, this._scale);
-            this.localMatrixDirty = false;
+            this.composeLocalMatrix();
         }
 
-        this.localToWorldMatrix.copy(this._localToParentMatrix);
+        this.localToWorldMatrix.copy(this.localToParentMatrix);
 
         if (this.parent) 
         {
-            this.parent.updateWorldMatrix();    
+            this.parent.updateWorldMatrix();
             this.localToWorldMatrix.premultiply(this.parent.localToWorldMatrix);
         }
+
+        this.worldMatrixDirty = false;
     }
 
     /**
@@ -352,5 +345,22 @@ export class Node2
         {
             return false;
         }
+    }
+
+    public composeLocalMatrix(): void
+    {
+        this.localMatrixDirty = false;
+        this.localMatrixUpdated = false;
+        this.worldMatrixDirty = true;
+
+        this.localToParentMatrix.compose(this._position, this._rotation, this._scale);
+    }
+
+    public decomposeLocalMatrix(): void
+    {
+        this.localMatrixDirty = false;
+        this.localMatrixUpdated = false;
+        
+        // to be implemented
     }
 }
