@@ -9,6 +9,11 @@ export enum IntersectionMode2
     AXIS_ALIGNED_BOUNDING_BOX
 }
 
+export enum CoordinateSpace2 {
+    LOCAL_SPACE,
+    WORLD_SPACE
+}
+
 /**
  * The Node2 class is used to represent an object in two-dimensional space. 
  * It stores information such as position, rotation, scale, visibility, and a reference to its parent object. 
@@ -314,23 +319,31 @@ export class Node2
      * @param target - The vector to look at
      * @param lookVector - The vector used to determine the look direction (defaults to Vector2.UP)
      */
-    lookAt(target: Vector2, lookVector = Vector2.UP): void
+    lookAt(target: Vector2, lookVector = Vector2.UP, coordinateSpace = CoordinateSpace2.LOCAL_SPACE): void
     {
-        // TO BE CHANGED
-        // Construct matrix directly
-        // Matrix decomposition is unnecessary
-
-        this.updateWorldMatrix();
-        
-        const worldPosition = this.localToWorldMatrix.getTranslation();
-        const worldRotation = this.localToWorldMatrix.getRotation();
-        const targetVector = Vector2.subtract(target, worldPosition);
-
-        if(targetVector.length() > 0)
+        if(coordinateSpace == CoordinateSpace2.LOCAL_SPACE)
         {
-            const worldLookVector = Vector2.rotate(lookVector, worldRotation);
-            this.rotation += worldLookVector.angleBetweenSigned(targetVector);
-            this.localMatrixDirty = true;
+            const targetVector = Vector2.subtract(target, this.position);
+
+            if(targetVector.length() > 0)
+            {
+                this._rotation = lookVector.angleBetweenSigned(targetVector);
+                this.localMatrixDirty = true;
+            }
+        }
+        else
+        {
+            this.updateWorldMatrix();
+
+            const worldPosition = this.localToWorldMatrix.getTranslation();
+            const targetVector = Vector2.subtract(target, worldPosition);
+
+            if(targetVector.length() > 0)
+            {
+                const worldLookVector = this.localToWorldMatrix.transformVector(lookVector);
+                this._rotation += worldLookVector.angleBetweenSigned(targetVector);
+                this.localMatrixDirty = true;
+            }
         }
     }
 

@@ -12,6 +12,11 @@ export enum IntersectionMode3 {
     AXIS_ALIGNED_BOUNDING_BOX
 }
 
+export enum CoordinateSpace3 {
+    LOCAL_SPACE,
+    WORLD_SPACE
+}
+
 export class Node3
  {
     /**
@@ -294,17 +299,20 @@ export class Node3
     * @param target - The Vector3 representing the target in world space
     * @param up - The Vector3 representing the up direction (defaults to Vector3.UP)
     */
-    lookAt(target: Vector3, up = Vector3.UP): void {
-
-        // TO BE CHANGED
-        // Construct matrix directly
-        // Matrix decomposition is unnecessary
-
-        this.updateWorldMatrix();
-
-        const worldPosition = this.localToWorldMatrix.getTranslation();
-        this.rotation.lookAt(worldPosition, target, up);
-        this.localMatrixDirty = true;
+    lookAt(target: Vector3, up = Vector3.UP, coordinateSpace = CoordinateSpace3.LOCAL_SPACE): void
+    {
+        if(coordinateSpace == CoordinateSpace3.LOCAL_SPACE)
+        {
+            this._rotation.lookAt(this.position, target, up);
+            this.localMatrixDirty = true;
+        }
+        else
+        {
+            this.updateWorldMatrix();
+            const worldPosition = this.localToWorldMatrix.getTranslation();
+            this._rotation.lookAt(worldPosition, target, up);
+            this.localMatrixDirty = true;
+        }
     }
 
     /**

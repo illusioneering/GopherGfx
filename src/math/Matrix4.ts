@@ -374,7 +374,7 @@ export class Matrix4
     public static transformVector(m: Matrix4, v: Vector3): Vector3
     {
         const result = new Vector3();
-        const w = 1 / (m.mat[3]*v.x + m.mat[7]*v.y + m.mat[11]*v.z);
+        const w = 1 / (m.mat[3]*v.x + m.mat[7]*v.y + m.mat[11]*v.z + m.mat[15]);
         result.x = w * (m.mat[0]*v.x + m.mat[4]*v.y + m.mat[8]*v.z);
         result.y = w * (m.mat[1]*v.x + m.mat[5]*v.y + m.mat[9]*v.z);
         result.z = w * (m.mat[2]*v.x + m.mat[6]*v.y + m.mat[10]*v.z);
@@ -1234,7 +1234,7 @@ export class Matrix4
     transformVector(v: Vector3): Vector3
     {
         const result = new Vector3();
-        const w = 1 / (this.mat[3]*v.x + this.mat[7]*v.y + this.mat[11]*v.z);
+        const w = 1 / (this.mat[3]*v.x + this.mat[7]*v.y + this.mat[11]*v.z + this.mat[15]);
         result.x = w * (this.mat[0]*v.x + this.mat[4]*v.y + this.mat[8]*v.z);
         result.y = w * (this.mat[1]*v.x + this.mat[5]*v.y + this.mat[9]*v.z);
         result.z = w * (this.mat[2]*v.x + this.mat[6]*v.y + this.mat[10]*v.z);
