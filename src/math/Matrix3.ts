@@ -144,6 +144,16 @@ export class Matrix3
         );
     }
 
+    public static makeShear(shear: Vector2): Matrix3
+    {
+        // Construct a 2D shear matrix from the X and Y shear angles in radians
+        return Matrix3.fromRowMajor(
+            1, Math.tan(shear.x), 0,
+            Math.tan(shear.y), 1, 0,
+            0, 0, 1
+        );
+    }
+
     /**
      * Creates a Matrix3 object from position, rotation, and scale
      * 
@@ -384,6 +394,16 @@ export class Matrix3
         );
     }
 
+    setShear(shear: Vector2): void
+    {
+        // Construct a 2D shear matrix from the X and Y shear angles in radians
+        this.setRowMajor(
+            1, Math.tan(shear.x), 0,
+            Math.tan(shear.y), 1, 0,
+            0, 0, 1
+        );
+    }
+
     /**
      * Gets the translation vector of this Matrix3 object
      * 
@@ -416,6 +436,20 @@ export class Matrix3
             Math.sqrt(this.mat[3]*this.mat[3] + this.mat[4]*this.mat[4])
         );
     }
+    
+    /**
+     * Gets the shear angles of this Matrix3 object
+     * 
+     * @returns The Vector2 containing the X and Y shear angles
+     */
+    getShear(): Vector2
+    {
+        return new Vector2(
+            Math.atan2(this.mat[3], this.mat[4]),
+            Math.atan2(this.mat[1], this.mat[0])
+        );
+    }
+    
 
     multiplyScalar(x: number): void
     {
@@ -484,9 +518,15 @@ export class Matrix3
      * @param rotation - The angle to rotate by, in radians
      * @param scale - The Vector2 representing the scale to apply
      */
-    compose(position = Vector2.ZERO, rotation = 0, scale = Vector2.ONE): void
+    compose(position: Vector2, rotation: number, scale: Vector2, shear: Vector2 | null): void
     {
         this.setScale(scale);
+
+        if(shear)
+        {
+            this.premultiply(Matrix3.makeShear(shear));
+        }
+
         this.premultiply(Matrix3.makeRotation(rotation));
 
         this.mat[6] = position.x;
@@ -531,5 +571,58 @@ export class Matrix3
     {
         this.mat[row*3] = v.x;
         this.mat[row*3+1] = v.y;
+    }
+
+    decompose(): [Vector2, number, Vector2, Vector2 | null]
+    {
+        const position = new Vector2();
+        let rotation = 0;
+        const scale = new Vector2();
+
+        // Extract translation component of the matrix
+        position.set(this.mat[6], this.mat[7]);
+
+        // https://github.com/wisec/DOMinator/blob/master/layout/style/nsStyleAnimation.cpp#L946
+        let a = this.mat[0];
+        let b = this.mat[1];
+        let c = this.mat[3];
+        let d = this.mat[4];
+
+        // singular matrix
+        if (a * d == b * c) 
+        { 
+            return [position, rotation, scale, null];
+        }
+
+        scale.x = Math.sqrt(a * a + b * b);
+        a /= scale.x;
+        b /= scale.x;
+
+        let xyShear = a * c + b * d;
+        c -= a * xyShear;
+        d -= b * xyShear;
+
+        scale.y = Math.sqrt(c * c + d * d);
+        c /= scale.y;
+        d /= scale.y;
+        xyShear /= scale.y;
+
+        // a*d - b*c should now be 1 or -1
+        if (a * d < b * c) 
+        {
+            a = -a;
+            b = -b;
+            c = -c;
+            d = -d;
+            xyShear = -xyShear;
+            scale.x = -scale.x;
+        }
+
+        rotation = Math.atan2(b, a);
+
+        if(Math.abs(xyShear) < 0.0001)
+            return [position, rotation, scale, null];
+        else
+            return [position, rotation, scale, new Vector2(Math.atan(xyShear), 0)];
     }
 }

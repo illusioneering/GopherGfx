@@ -1211,7 +1211,7 @@ export class Matrix4
      * @param rotation - The rotation of the Matrix4 object (default Quaternion.IDENTITY)
      * @param scale - The scale of the Matrix4 object (default Vector3.ONE)
      */
-    compose(position = Vector3.ZERO, rotation = Quaternion.IDENTITY, scale = Vector3.ONE): void
+    compose(position: Vector3, rotation: Quaternion, scale: Vector3): void
     {
         this.setScale(scale);
         this.premultiply(Matrix4.makeRotation(rotation));
@@ -1263,5 +1263,111 @@ export class Matrix4
         this.mat[row*4] = v.x;
         this.mat[row*4+1] = v.y;
         this.mat[row*4+2] = v.z;
+    }
+
+    decompose(containsNegScale: boolean): [Vector3, Quaternion, Vector3]
+    {
+        const position = new Vector3();
+        const rotation = new Quaternion();
+        const scale = new Vector3();
+
+        const matrixCopy = this.clone();
+
+        // Extract translation component of the matrix
+        position.set(matrixCopy.mat[12], matrixCopy.mat[13], matrixCopy.mat[14]);
+        matrixCopy.mat[12] = 0;
+        matrixCopy.mat[13] = 0;
+        matrixCopy.mat[14] = 0;
+
+        // Zero out any projection components of the matrix
+        matrixCopy.mat[3] = 0;
+        matrixCopy.mat[7] = 0;
+        matrixCopy.mat[11] = 0;
+        matrixCopy.mat[15] = 1;
+
+        if(containsNegScale)
+        {
+            // If the matrix includes negative scales, then the rotation and scale
+            // can be extracted using the polar decomposition method described here
+            // http://callumhay.blogspot.com/2010/10/decomposing-affine-transforms.html
+
+            // Extract the rotation component - this is done using polar decompostion, where
+            // we successively average the matrix with its inverse transpose until there is
+            // no/a very small difference between successive averages
+            let rotationMatrix = new Matrix4();
+            let count = 0;
+            let norm;
+            do 
+            {
+                const currentInverseTranspose = rotationMatrix.transpose();
+                currentInverseTranspose.invert();
+
+                // Go through every component in the matrices and find the next matrix
+                const nextRotationMatrix = new Matrix4();
+                for(let i=0; i<16; i++)
+                {
+                    nextRotationMatrix.mat[i] = 0.5 * (rotationMatrix.mat[i] + currentInverseTranspose.mat[i]);
+                }
+
+                norm = 0;
+
+                for (let i = 0; i < 3; i++) 
+                {
+                    const n = Math.abs(rotationMatrix.mat[i] - nextRotationMatrix.mat[i]) +
+                              Math.abs(rotationMatrix.mat[i+4] - nextRotationMatrix.mat[i+4]) +
+                              Math.abs(rotationMatrix.mat[i+8] - nextRotationMatrix.mat[i+8]);
+                    norm = Math.max(norm, n);
+                }
+
+                rotationMatrix = nextRotationMatrix;
+                count ++;
+            }
+            while(count < 100 && norm > Number.EPSILON);
+
+            // Set the quaternion based on the extracted rotation matrix
+            rotation.setMatrix(rotationMatrix);
+
+            // The scale is simply the removal of the rotation from the non-translated matrix
+            const scaleMatrix = Matrix4.multiply(rotationMatrix.inverse(), matrixCopy);
+            scale.set(scaleMatrix.mat[0], scaleMatrix.mat[5], scaleMatrix.mat[10]);
+
+            // Special consideration: if there's a single negative scale (all other combinations of negative 
+            // scales will be part of the rotation matrix), the determinant of the normalized rotation matrix
+            // will be < 0.  If this is the case we apply a negative to one arbitrary component of the scale.
+            const row0 = matrixCopy.getRow(0);
+            const row1 = matrixCopy.getRow(1);
+            const row2 = matrixCopy.getRow(2);
+            row0.normalize();
+            row1.normalize();
+            row2.normalize();
+
+            const normalizedRotationMatrix = new Matrix4();
+            normalizedRotationMatrix.setRow(0, row0);
+            normalizedRotationMatrix.setRow(1, row1);
+            normalizedRotationMatrix.setRow(2, row2);
+            if (normalizedRotationMatrix.determinant() < 0.0) 
+            {
+                scale.x *= -1;
+            }    
+        }
+        else
+        {
+            // If the matrix does not include negative scales
+            // then we can decompose the matrix more efficiently
+
+            // Extract scale component of the matrix
+            const sx = matrixCopy.getColumn(0).length();
+            const sy = matrixCopy.getColumn(1).length();
+            const sz = matrixCopy.getColumn(2).length();
+            scale.set(sx, sy, sz);
+
+            // Remove scale component from the matrix
+            matrixCopy.multiply(Matrix4.makeScale(new Vector3(1 / sx, 1 / sy, 1 / sz)));
+
+            // Set the rotation quaternion from the pure rotation matrix
+            rotation.setMatrix(matrixCopy);
+        }
+
+        return [position, rotation, scale];
     }
 }

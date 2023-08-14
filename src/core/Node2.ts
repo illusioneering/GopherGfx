@@ -31,6 +31,8 @@ export class Node2
       */
      protected _scale: Vector2;
 
+     protected _shear: Vector2 | null;
+
     /**
      * Matrix3 representing the transformation matrix in local space
      */
@@ -86,6 +88,7 @@ export class Node2
         this._position = new Vector2();
         this._rotation = 0;
         this._scale = new Vector2(1, 1);
+        this._shear = null;
 
         this.localToParentMatrix = new Matrix3();
         this.localToWorldMatrix = new Matrix3();
@@ -154,6 +157,33 @@ export class Node2
     {
         this.localMatrixDirty = true;
         this._scale = value;
+    }
+
+    public get shear()
+    {
+        if(this.localMatrixUpdated)
+        {
+            this.decomposeLocalMatrix();
+        }
+
+        if(!this._shear)
+        {
+            this._shear = new Vector2();
+        }
+
+        this.localMatrixDirty = true;
+        return this._shear;
+    }
+
+    public set shear(value: Vector2)
+    {
+        if(!this._shear)
+        {
+            this._shear = new Vector2();
+        }
+
+        this.localMatrixDirty = true;
+        this._shear = value;
     }
 
     public getLocalToParentMatrix(): Matrix3
@@ -353,7 +383,7 @@ export class Node2
         this.localMatrixUpdated = false;
         this.worldMatrixDirty = true;
 
-        this.localToParentMatrix.compose(this._position, this._rotation, this._scale);
+        this.localToParentMatrix.compose(this._position, this._rotation, this._scale, this._shear);
     }
 
     public decomposeLocalMatrix(): void
@@ -361,6 +391,6 @@ export class Node2
         this.localMatrixDirty = false;
         this.localMatrixUpdated = false;
         
-        // to be implemented
+        [this._position, this._rotation, this._scale, this._shear] = this.localToParentMatrix.decompose();
     }
 }
