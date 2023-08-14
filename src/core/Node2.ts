@@ -193,7 +193,11 @@ export class Node2
 
     public getLocalToParentMatrix(): Matrix3
     {
-        this.composeLocalMatrix();
+        if(this.localMatrixDirty)
+        {
+            this.composeLocalMatrix();
+        }
+        
         return this.localToParentMatrix.clone();
     }
 
