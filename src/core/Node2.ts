@@ -9,7 +9,8 @@ export enum IntersectionMode2
     AXIS_ALIGNED_BOUNDING_BOX
 }
 
-export enum CoordinateSpace2 {
+export enum CoordinateSpace2
+{
     LOCAL_SPACE,
     WORLD_SPACE
 }
@@ -102,6 +103,9 @@ export class Node2
      */
     public worldBoundingCircle: BoundingCircle;
 
+    public localBoundsDirty: boolean;
+    public worldBoundsDirty: boolean;
+
     /**
      * Constructor for Node2 class
      * 
@@ -135,6 +139,9 @@ export class Node2
         this.localBoundingCircle = new BoundingCircle();
         this.worldBoundingBox = new BoundingBox2();
         this.worldBoundingCircle = new BoundingCircle();
+
+        this.localBoundsDirty = false;
+        this.worldBoundsDirty = false;
     }
 
     public get position()
@@ -230,11 +237,7 @@ export class Node2
         this.localToParentMatrix.copy(matrix);  
         this.localMatrixUpdated = true;
         this.worldMatrixDirty = true;
-
-        this.localBoundingBox.copy(this.boundingBox);
-        this.localBoundingBox.transform(this.localToParentMatrix);
-        this.localBoundingCircle.copy(this.boundingCircle);
-        this.localBoundingCircle.transform(this.localToParentMatrix);
+        this.localBoundsDirty = true;
     }
 
     /**
@@ -271,10 +274,7 @@ export class Node2
                 this.localToWorldMatrix.premultiply(this.parent.localToWorldMatrix);
             }
 
-            this.worldBoundingBox.copy(this.boundingBox);
-            this.worldBoundingBox.transform(this.localToWorldMatrix);
-            this.worldBoundingCircle.copy(this.boundingCircle);
-            this.worldBoundingCircle.transform(this.localToWorldMatrix)
+            this.worldBoundsDirty = true;
             this.worldMatrixDirty = false;
         }
 
@@ -301,10 +301,7 @@ export class Node2
             this.localToWorldMatrix.premultiply(this.parent.localToWorldMatrix);
         }
 
-        this.worldBoundingBox.copy(this.boundingBox);
-        this.worldBoundingBox.transform(this.localToWorldMatrix);
-        this.worldBoundingCircle.copy(this.boundingCircle);
-        this.worldBoundingCircle.transform(this.localToWorldMatrix)
+        this.worldBoundsDirty = true;
         this.worldMatrixDirty = false;
     }
 
@@ -393,13 +390,8 @@ export class Node2
         this.localMatrixDirty = false;
         this.localMatrixUpdated = false;
         this.worldMatrixDirty = true;
-
+        this.localBoundsDirty = true;
         this.localToParentMatrix.compose(this._position, this._rotation, this._scale, this._shear);
-
-        this.localBoundingBox.copy(this.boundingBox);
-        this.localBoundingBox.transform(this.localToParentMatrix);
-        this.localBoundingCircle.copy(this.boundingCircle);
-        this.localBoundingCircle.transform(this.localToParentMatrix);
     }
 
     public decomposeLocalMatrix(): void
@@ -428,6 +420,24 @@ export class Node2
             if(other.localMatrixDirty)
                 other.composeLocalMatrix();
 
+            if(this.localBoundsDirty)
+            {
+                this.localBoundingBox.copy(this.boundingBox);
+                this.localBoundingBox.transform(this.localToParentMatrix);
+                this.localBoundingCircle.copy(this.boundingCircle);
+                this.localBoundingCircle.transform(this.localToParentMatrix);
+                this.localBoundsDirty = false;
+            }
+
+            if(other.localBoundsDirty)
+            {
+                other.localBoundingBox.copy(other.boundingBox);
+                other.localBoundingBox.transform(other.localToParentMatrix);
+                other.localBoundingCircle.copy(other.boundingCircle);
+                other.localBoundingCircle.transform(other.localToParentMatrix);
+                other.localBoundsDirty = false;
+            }
+
             if(mode == IntersectionMode2.BOUNDING_CIRCLE)
                 return this.localBoundingCircle.intersects(other.localBoundingCircle);
             else if(mode == IntersectionMode2.AXIS_ALIGNED_BOUNDING_BOX)
@@ -442,6 +452,24 @@ export class Node2
 
             if(this.localMatrixDirty || this.worldMatrixDirty)
                 other.updateWorldMatrix();
+
+            if(this.worldBoundsDirty)
+            {
+                this.worldBoundingBox.copy(this.boundingBox);
+                this.worldBoundingBox.transform(this.localToWorldMatrix);
+                this.worldBoundingCircle.copy(this.boundingCircle);
+                this.worldBoundingCircle.transform(this.localToWorldMatrix)
+                this.worldBoundsDirty = false;
+            }
+
+            if(other.worldBoundsDirty)
+            {
+                other.worldBoundingBox.copy(other.boundingBox);
+                other.worldBoundingBox.transform(other.localToWorldMatrix);
+                other.worldBoundingCircle.copy(other.boundingCircle);
+                other.worldBoundingCircle.transform(other.localToWorldMatrix)
+                other.worldBoundsDirty = false;
+            }
 
             if(mode == IntersectionMode2.BOUNDING_CIRCLE)
                 return this.worldBoundingCircle.intersects(other.worldBoundingCircle);

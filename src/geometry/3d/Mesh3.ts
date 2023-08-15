@@ -403,6 +403,9 @@ export class Mesh3 extends Node3
 
         this.boundingBox.computeBounds(vertices);
         this.boundingSphere.computeBounds(vertices, this.boundingBox);
+        
+        this.localBoundsDirty = true;
+        this.worldBoundsDirty = true;
     }
 
     public mergeSharedVertices(): void

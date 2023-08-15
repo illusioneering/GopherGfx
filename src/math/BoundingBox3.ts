@@ -92,7 +92,6 @@ export class BoundingBox3
             return true;
     }
 
-    
     /**
      * Computes the minimum and maximum Vector3 objects for the BoundingBox3 from a given array of vertices
      * 

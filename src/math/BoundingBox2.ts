@@ -77,4 +77,51 @@ export class BoundingBox2
         else
             return true;
     }
+
+    /**
+     * Computes the minimum and maximum Vector2 objects for the BoundingBox2 from a given array of vertices
+     * 
+     * @param vertices - An array of Vector2 or number objects with the vertices
+     */
+    computeBounds(vertices: Vector2[] | number[]): void
+    {
+        if(typeof vertices[0] === 'number')
+        {
+            const vArray = vertices as number[];
+
+            this.max.set(vArray[0], vArray[1]);
+            this.min.set(vArray[0], vArray[1]);
+            
+            for(let i=0; i < vArray.length; i+=3)
+            {
+                if(vArray[i] > this.max.x)
+                    this.max.x = vArray[i];
+                if(vArray[i] < this.min.x)
+                    this.min.x = vArray[i];
+
+                if(vArray[i+1] > this.max.y)
+                    this.max.y = vArray[i+1];
+                if(vArray[i+1] < this.min.y)
+                    this.min.y = vArray[i+1];
+            }
+        }
+        else
+        {
+            this.max.copy((vertices as Vector2[])[0]);
+            this.min.copy((vertices as Vector2[])[0]);
+
+            (vertices as Vector2[]).forEach((elem: Vector2) =>
+            {
+                if(elem.x > this.max.x)
+                    this.max.x = elem.x;
+                if(elem.x < this.min.x)
+                    this.min.x = elem.x;
+
+                if(elem.y > this.max.y)
+                    this.max.y = elem.y;
+                if(elem.y < this.min.y)
+                    this.min.y =elem.y;
+            });
+        }
+    }
 }

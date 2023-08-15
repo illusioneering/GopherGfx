@@ -270,73 +270,11 @@ export class Mesh2 extends Node2
         if(vertices.length == 0)
             return;
 
-        if(typeof vertices[0] === 'number')
-        {
-            const vArray = vertices as number[];
+        this.boundingBox.computeBounds(vertices);
+        this.boundingCircle.computeBounds(vertices, this.boundingBox);
 
-            this.boundingBox.max.set(vArray[0], vArray[1]);
-            this.boundingBox.min.set(vArray[0], vArray[1]);
-            
-            for(let i=0; i < vArray.length; i+=3)
-            {
-                if(vArray[i] > this.boundingBox.max.x)
-                    this.boundingBox.max.x = vArray[i];
-                if(vArray[i] < this.boundingBox.min.x)
-                    this.boundingBox.min.x = vArray[i];
-
-                if(vArray[i+1] > this.boundingBox.max.y)
-                    this.boundingBox.max.y = vArray[i+1];
-                if(vArray[i+1] < this.boundingBox.min.y)
-                    this.boundingBox.min.y = vArray[i+1];
-            }
-        }
-        else
-        {
-            this.boundingBox.max.copy((vertices as Vector2[])[0]);
-            this.boundingBox.min.copy((vertices as Vector2[])[0]);
-
-            (vertices as Vector2[]).forEach((elem: Vector2) =>
-            {
-                if(elem.x > this.boundingBox.max.x)
-                    this.boundingBox.max.x = elem.x;
-                if(elem.x < this.boundingBox.min.x)
-                    this.boundingBox.min.x = elem.x;
-
-                if(elem.y > this.boundingBox.max.y)
-                    this.boundingBox.max.y = elem.y;
-                if(elem.y < this.boundingBox.min.y)
-                    this.boundingBox.min.y =elem.y;
-            });
-        }
-
-        this.boundingCircle.center.copy(this.boundingBox.min);
-        this.boundingCircle.center.add(this.boundingBox.max);
-        this.boundingCircle.center.multiplyScalar(0.5);
-        this.boundingCircle.radius = 0;
-        if(typeof vertices[0] === 'number')
-        {
-            const vArray = vertices as number[];
-            for(let i=0; i < vArray.length; i+=3)
-            {
-                const distance = Math.sqrt(
-                    (vArray[i] - this.boundingCircle.center.x) * (vArray[i] - this.boundingCircle.center.x) +
-                    (vArray[i+1] - this.boundingCircle.center.y) * (vArray[i+1] - this.boundingCircle.center.y)
-                );
-                
-                if(distance > this.boundingCircle.radius)
-                    this.boundingCircle.radius = distance;
-            }
-        }
-        else
-        {
-            (vertices as Vector2[]).forEach((elem: Vector2) =>
-            {
-                const distance = elem.distanceTo(this.boundingCircle.center);
-
-                if(distance > this.boundingCircle.radius)
-                    this.boundingCircle.radius = distance;
-            });
-        }
+        this.localBoundsDirty = true;
+        this.worldBoundsDirty = true;
     }
 
     public createInstance(copyTransform = true): Mesh2
