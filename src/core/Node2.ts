@@ -86,22 +86,22 @@ export class Node2
     /**
      * Bounding box in this transform's local coordinate space
      */
-    public localBoundingBox: BoundingBox2;
+    public _localBoundingBox: BoundingBox2;
 
     /**
      * Bounding circle in this transform's local coordinate space
      */
-    public localBoundingCircle: BoundingCircle;
+    public _localBoundingCircle: BoundingCircle;
 
     /**
      * Bounding box in the world coordinate space
      */
-    public worldBoundingBox: BoundingBox2;
+    public _worldBoundingBox: BoundingBox2;
 
     /**
      * Bounding box in the world coordinate space
      */
-    public worldBoundingCircle: BoundingCircle;
+    public _worldBoundingCircle: BoundingCircle;
 
     public localBoundsDirty: boolean;
     public worldBoundsDirty: boolean;
@@ -135,10 +135,10 @@ export class Node2
 
         this.boundingBox = new BoundingBox2();
         this.boundingCircle = new BoundingCircle();
-        this.localBoundingBox = new BoundingBox2();
-        this.localBoundingCircle = new BoundingCircle();
-        this.worldBoundingBox = new BoundingBox2();
-        this.worldBoundingCircle = new BoundingCircle();
+        this._localBoundingBox = new BoundingBox2();
+        this._localBoundingCircle = new BoundingCircle();
+        this._worldBoundingBox = new BoundingBox2();
+        this._worldBoundingCircle = new BoundingCircle();
 
         this.localBoundsDirty = false;
         this.worldBoundsDirty = false;
@@ -238,6 +238,66 @@ export class Node2
         this.localMatrixUpdated = true;
         this.worldMatrixDirty = true;
         this.localBoundsDirty = true;
+    }
+
+    public get localBoundingBox()
+    {
+        if(this.localBoundsDirty)
+        {
+            this.updateLocalBounds();
+        }
+
+        return this._localBoundingBox;
+    }
+
+    public set localBoundingBox(value: BoundingBox2)
+    {
+        this._localBoundingBox = value;
+    }
+
+    public get localBoundingCircle()
+    {
+        if(this.localBoundsDirty)
+        {
+            this.updateLocalBounds();
+        }
+
+        return this._localBoundingCircle;
+    }
+
+    public set localBoundingSphere(value: BoundingCircle)
+    {
+        this._localBoundingCircle = value;
+    }
+
+    public get worldBoundingBox()
+    {
+        if(this.worldBoundsDirty)
+        {
+            this.updateWorldBounds();
+        }
+
+        return this._worldBoundingBox;
+    }
+
+    public set worldBoundingBox(value: BoundingBox2)
+    {
+        this._worldBoundingBox = value;
+    }
+
+    public get worldBoundingCircle()
+    {
+        if(this.worldBoundsDirty)
+        {
+            this.updateWorldBounds();
+        }
+
+        return this._worldBoundingCircle;
+    }
+
+    public set worldBoundingSphere(value: BoundingCircle)
+    {
+        this._worldBoundingCircle = value;
     }
 
     /**
@@ -402,6 +462,24 @@ export class Node2
         [this._position, this._rotation, this._scale, this._shear] = this.localToParentMatrix.decompose();
     }
 
+    updateLocalBounds(): void
+    {
+        this._localBoundingBox.copy(this.boundingBox);
+        this._localBoundingBox.transform(this.localToParentMatrix);
+        this._localBoundingCircle.copy(this.boundingCircle);
+        this._localBoundingCircle.transform(this.localToParentMatrix);
+        this.localBoundsDirty = false;
+    }
+
+    updateWorldBounds(): void
+    {
+        this._worldBoundingBox.copy(this.boundingBox);
+        this._worldBoundingBox.transform(this.localToWorldMatrix);
+        this._worldBoundingCircle.copy(this.boundingCircle);
+        this._worldBoundingCircle.transform(this.localToWorldMatrix)
+        this.worldBoundsDirty = false;
+    }
+
     /**
      * Checks if this Node2 intersects another Node2, using either a BoundingCircle or AxisAlignedBoundingBox
      * 
@@ -421,27 +499,15 @@ export class Node2
                 other.composeLocalMatrix();
 
             if(this.localBoundsDirty)
-            {
-                this.localBoundingBox.copy(this.boundingBox);
-                this.localBoundingBox.transform(this.localToParentMatrix);
-                this.localBoundingCircle.copy(this.boundingCircle);
-                this.localBoundingCircle.transform(this.localToParentMatrix);
-                this.localBoundsDirty = false;
-            }
+                this.updateLocalBounds();
 
             if(other.localBoundsDirty)
-            {
-                other.localBoundingBox.copy(other.boundingBox);
-                other.localBoundingBox.transform(other.localToParentMatrix);
-                other.localBoundingCircle.copy(other.boundingCircle);
-                other.localBoundingCircle.transform(other.localToParentMatrix);
-                other.localBoundsDirty = false;
-            }
-
+                other.updateLocalBounds();
+   
             if(mode == IntersectionMode2.BOUNDING_CIRCLE)
-                return this.localBoundingCircle.intersects(other.localBoundingCircle);
+                return this._localBoundingCircle.intersects(other._localBoundingCircle);
             else if(mode == IntersectionMode2.AXIS_ALIGNED_BOUNDING_BOX)
-                return this.localBoundingBox.intersects(other.localBoundingBox);
+                return this._localBoundingBox.intersects(other._localBoundingBox);
             else
                 return false;
         }
@@ -454,27 +520,15 @@ export class Node2
                 other.updateWorldMatrix();
 
             if(this.worldBoundsDirty)
-            {
-                this.worldBoundingBox.copy(this.boundingBox);
-                this.worldBoundingBox.transform(this.localToWorldMatrix);
-                this.worldBoundingCircle.copy(this.boundingCircle);
-                this.worldBoundingCircle.transform(this.localToWorldMatrix)
-                this.worldBoundsDirty = false;
-            }
+                this.updateWorldBounds();
 
             if(other.worldBoundsDirty)
-            {
-                other.worldBoundingBox.copy(other.boundingBox);
-                other.worldBoundingBox.transform(other.localToWorldMatrix);
-                other.worldBoundingCircle.copy(other.boundingCircle);
-                other.worldBoundingCircle.transform(other.localToWorldMatrix)
-                other.worldBoundsDirty = false;
-            }
+                other.updateWorldBounds();
 
             if(mode == IntersectionMode2.BOUNDING_CIRCLE)
-                return this.worldBoundingCircle.intersects(other.worldBoundingCircle);
+                return this._worldBoundingCircle.intersects(other._worldBoundingCircle);
             else if(mode == IntersectionMode2.AXIS_ALIGNED_BOUNDING_BOX)
-                return this.worldBoundingBox.intersects(other.worldBoundingBox);
+                return this._worldBoundingBox.intersects(other._worldBoundingBox);
             else
                 return false;
         }
