@@ -17,8 +17,6 @@ export class Mesh3Instance extends Node3
         this.boundingBox = baseMesh.boundingBox;
         this.boundingSphere = baseMesh.boundingSphere;
         this.visible = baseMesh.visible;
-        this.drawBoundingVolume = baseMesh.drawBoundingVolume;
-        this.boundingVolumeMaterial = baseMesh.boundingVolumeMaterial;
         
         if(copyTransform)
         {
@@ -39,9 +37,6 @@ export class Mesh3Instance extends Node3
             return;
 
         this.material.draw(this.baseMesh, this, camera, lightManager);
-
-        if(this.drawBoundingVolume && this.boundingVolumeMaterial)
-            this.boundingVolumeMaterial.draw(this, this, camera, lightManager);
 
         this.children.forEach((elem: Node3) => {
             elem.draw(this, camera, lightManager);

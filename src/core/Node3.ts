@@ -5,7 +5,6 @@ import { Camera } from "./Camera";
 import { LightManager } from "../lights/LightManager";
 import { BoundingBox3 } from "../math/BoundingBox3";
 import { BoundingSphere } from "../math/BoundingSphere"
-import { BoundingVolumeMaterial } from "../materials/BoundingVolumeMaterial";
 
 export enum IntersectionMode3 {
     BOUNDING_SPHERE,
@@ -98,16 +97,6 @@ export class Node3
     public worldBoundsDirty: boolean;
 
     /**
-    Whether to draw the bounding volume of this transform.
-    */
-    public drawBoundingVolume: boolean;
-
-    /**
-    The material to use for drawing the bounding volume of this transform.
-    */
-    public boundingVolumeMaterial: BoundingVolumeMaterial | null;
-
-    /**
     Constructs a new Node3 object.
     */
     constructor() 
@@ -138,9 +127,6 @@ export class Node3
 
         this.localBoundsDirty = false;
         this.worldBoundsDirty = false;
-
-        this.drawBoundingVolume = false;
-        this.boundingVolumeMaterial = null;
     }
 
     public get position()
@@ -315,9 +301,6 @@ export class Node3
     draw(parent: Node3, camera: Camera, lightManager: LightManager): void {
         if (!this.visible)
             return;
-
-        if (this.drawBoundingVolume && this.boundingVolumeMaterial)
-            this.boundingVolumeMaterial.draw(this, this, camera, lightManager);
 
         this.children.forEach((elem: Node3) => {
             elem.draw(this, camera, lightManager);

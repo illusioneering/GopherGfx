@@ -130,9 +130,6 @@ export class Line3 extends Node3
         // Draw the lines
         this.gl.drawArrays(this.glLineMode(), 0, this.vertexCount);
 
-        if(this.drawBoundingVolume && this.boundingVolumeMaterial)
-            this.boundingVolumeMaterial.draw(this, this, camera, lightManager);
-
         this.children.forEach((elem: Node3) => {
             elem.draw(this, camera, lightManager);
         });
