@@ -414,7 +414,8 @@ export class Node2
      * Checks if this Node2 intersects another Node2, using either a BoundingCircle or AxisAlignedBoundingBox
      * 
      * @param other - The Node2 to check for intersection with 
-     * @param mode - The mode to use for intersection (defaults to BOUNDING_CIRCLE)
+     * @param mode - The IntersectionMode2 to use for the comparison (default: BOUNDING_CIRCLE)
+     * @param space - The CoordinateSpace2 to use for the comparison (default: LOCAL_SPACE)
      * @returns A boolean indicating whether the two objects intersect
      */
     intersects(other: Node2, mode = IntersectionMode2.BOUNDING_CIRCLE, space = CoordinateSpace2.LOCAL_SPACE): boolean

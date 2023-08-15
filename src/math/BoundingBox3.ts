@@ -1,4 +1,4 @@
-import { Quaternion } from "./Quaternion";
+import { Matrix4 } from "./Matrix4";
 import { Vector3 } from "./Vector3"
 
 export class BoundingBox3 
@@ -26,18 +26,14 @@ export class BoundingBox3
         this.max.copy(box.max);
     }
 
-/**
- * Transforms the min and max properties of the BoundingBox3 object by scaling, rotating and translating the box
- * 
- * @param translation - The Vector3 object representing the translation
- * @param rotation - The Quaternion object representing the rotation
- * @param scale - The Vector3 object representing the scale
- */
-    transform(translation: Vector3, rotation: Quaternion, scale: Vector3)
+    /**
+     * Transforms the BoundingBox3 using a transformation matrix
+     * 
+     * @param m - The transformation matrix
+     */
+    transform(m: Matrix4)
     {
-        this.min.multiply(scale);
-        this.max.multiply(scale);
-
+        // Compute new axis-aligned bounding box
         const corners: Vector3[] = [];
         corners.push(new Vector3(this.min.x, this.min.y, this.min.z));
         corners.push(new Vector3(this.min.x, this.min.y, this.max.z));
@@ -48,13 +44,12 @@ export class BoundingBox3
         corners.push(new Vector3(this.max.x, this.max.y, this.min.z));
         corners.push(new Vector3(this.max.x, this.max.y, this.max.z));
 
-        corners.forEach((v: Vector3)=>{
-            v.rotate(rotation);
+        corners.forEach((p: Vector3)=>{
+            p.transformPoint(m);
         });
 
         this.min.copy(corners[0]);
         this.max.copy(corners[0]);
-
         for(let i=1; i < corners.length; i++)
         {
             this.min.x = Math.min(this.min.x, corners[i].x);
@@ -65,17 +60,14 @@ export class BoundingBox3
             this.max.y = Math.max(this.max.y, corners[i].y);
             this.max.z = Math.max(this.max.z, corners[i].z);
         }
-        
-        this.min.add(translation);
-        this.max.add(translation);
     }
 
-/**
- * Checks if this BoundingBox3 object intersects with the provided BoundingBox3 object
- * 
- * @param box - The BoundingBox3 object to check intersection against
- * @returns True if the boxes intersect, false otherwise
- */
+    /**
+     * Checks if this BoundingBox3 object intersects with the provided BoundingBox3 object
+     * 
+     * @param box - The BoundingBox3 object to check intersection against
+     * @returns True if the boxes intersect, false otherwise
+     */
     intersects(box: BoundingBox3): boolean
     {
         const thisCenter = Vector3.add(this.max, this.min);
@@ -101,11 +93,11 @@ export class BoundingBox3
     }
 
     
-/**
- * Computes the minimum and maximum Vector3 objects for the BoundingBox3 from a given array of vertices
- * 
- * @param vertices - An array of Vector3 or number objects with the vertices
- */
+    /**
+     * Computes the minimum and maximum Vector3 objects for the BoundingBox3 from a given array of vertices
+     * 
+     * @param vertices - An array of Vector3 or number objects with the vertices
+     */
     computeBounds(vertices: Vector3[] | number[]): void
     {
         if(typeof vertices[0] === 'number')

@@ -63,18 +63,42 @@ export class Node3
     The parent transform of this transform. Null if this transform has no parent.
     */
     public parent: Node3 | null;
+
     /**
-    The bounding box of this transform.
+    The bounding box in vertex coordinate space
     */
     public boundingBox: BoundingBox3;
+
     /**
-    The bounding sphere of this transform.
+    The bounding sphere in vertex coordinate space
     */
     public boundingSphere: BoundingSphere;
+
+    /**
+     * Bounding box in this transform's local coordinate space
+     */
+    public localBoundingBox: BoundingBox3;
+
+    /**
+     * Bounding circle in this transform's local coordinate space
+     */
+    public localBoundingSphere: BoundingSphere;
+
+    /**
+     * Bounding box in the world coordinate space
+     */
+    public worldBoundingBox: BoundingBox3;
+
+    /**
+     * Bounding box in the world coordinate space
+     */
+    public worldBoundingSphere: BoundingSphere;
+
     /**
     Whether to draw the bounding volume of this transform.
     */
     public drawBoundingVolume: boolean;
+
     /**
     The material to use for drawing the bounding volume of this transform.
     */
@@ -104,6 +128,10 @@ export class Node3
 
         this.boundingBox = new BoundingBox3();
         this.boundingSphere = new BoundingSphere();
+        this.localBoundingBox = new BoundingBox3();
+        this.localBoundingSphere = new BoundingSphere();
+        this.worldBoundingBox = new BoundingBox3();
+        this.worldBoundingSphere = new BoundingSphere();
 
         this.drawBoundingVolume = false;
         this.boundingVolumeMaterial = null;
@@ -176,6 +204,11 @@ export class Node3
         this.localMatrixUpdated = true;
         this.localMatrixNegScale = includesNegScale; 
         this.worldMatrixDirty = true;
+
+        this.localBoundingBox.copy(this.boundingBox);
+        this.localBoundingBox.transform(this.localToParentMatrix);
+        this.localBoundingSphere.copy(this.boundingSphere);
+        this.localBoundingSphere.transform(this.localToParentMatrix);
     }
 
     /**
@@ -200,6 +233,10 @@ export class Node3
                 this.localToWorldMatrix.premultiply(this.parent.localToWorldMatrix);
             }
 
+            this.worldBoundingBox.copy(this.boundingBox);
+            this.worldBoundingBox.transform(this.localToWorldMatrix);
+            this.worldBoundingSphere.copy(this.boundingSphere);
+            this.worldBoundingSphere.transform(this.localToWorldMatrix)
             this.worldMatrixDirty = false;
         }
 
@@ -228,7 +265,11 @@ export class Node3
             this.localToWorldMatrix.premultiply(this.parent.localToWorldMatrix);
         }
 
-        this.worldMatrixDirty = false;
+        this.worldBoundingBox.copy(this.boundingBox);
+        this.worldBoundingBox.transform(this.localToWorldMatrix);
+        this.worldBoundingSphere.copy(this.boundingSphere);
+        this.worldBoundingSphere.transform(this.localToWorldMatrix)
+        this.worldMatrixDirty = false;  
     }
 
     /**
@@ -319,46 +360,6 @@ export class Node3
         }
     }
 
-    /**
-     * Checks for intersection between this Node3 and another
-     * 
-     * @param other - The other Node3 object
-     * @param mode - The IntersectionMode3 to use for the comparison (default: BOUNDING_SPHERE)
-     * @returns Whether or not the two objects intersect
-     */
-    intersects(other: Node3, mode = IntersectionMode3.BOUNDING_SPHERE): boolean {
-
-        // TO BE CHANGED
-        // Use the transformation matrix instead of position and scale
-        // Add a parameter to specify local or world coordinate frame
-
-        if (mode == IntersectionMode3.BOUNDING_SPHERE) {
-            const thisSphere = new BoundingSphere();
-            thisSphere.copy(this.boundingSphere);
-            thisSphere.transform(this.position, this.scale);
-
-            const otherSphere = new BoundingSphere();
-            otherSphere.copy(other.boundingSphere);
-            otherSphere.transform(other.position, other.scale);
-
-            return thisSphere.intersects(otherSphere);
-        }
-        else if (mode == IntersectionMode3.AXIS_ALIGNED_BOUNDING_BOX) {
-            const thisBox = new BoundingBox3();
-            thisBox.copy(this.boundingBox);
-            thisBox.transform(this.position, this.rotation, this.scale);
-
-            const otherBox = new BoundingBox3();
-            otherBox.copy(other.boundingBox);
-            otherBox.transform(other.position, other.rotation, other.scale);
-
-            return thisBox.intersects(otherBox);
-        }
-        else {
-            return false;
-        }
-    }
-
     public composeLocalMatrix(): void
     {
         this.localMatrixNegScale = this._scale.x < 0 || this._scale.y < 0 || this._scale.z < 0;
@@ -367,6 +368,11 @@ export class Node3
         this.worldMatrixDirty = true;
 
         this.localToParentMatrix.compose(this._position, this._rotation, this._scale);
+
+        this.localBoundingBox.copy(this.boundingBox);
+        this.localBoundingBox.transform(this.localToParentMatrix);
+        this.localBoundingSphere.copy(this.boundingSphere);
+        this.localBoundingSphere.transform(this.localToParentMatrix);
     }
 
     public decomposeLocalMatrix(): void
@@ -375,5 +381,47 @@ export class Node3
         this.localMatrixUpdated = false;
 
         [this._position, this._rotation, this._scale] = this.localToParentMatrix.decompose(this.localMatrixNegScale);
+    }
+
+    /**
+     * Checks for intersection between this Node3 and another
+     * 
+     * @param other - The other Node3 object
+     * @param mode - The IntersectionMode3 to use for the comparison (default: BOUNDING_SPHERE)
+     * @param space - The CoordinateSpace3 to use for the comparison (default: LOCAL_SPACE)
+     * @returns Whether or not the two objects intersect
+     */
+    intersects(other: Node3, mode = IntersectionMode3.BOUNDING_SPHERE, space = CoordinateSpace3.LOCAL_SPACE): boolean 
+    {
+        if(space == CoordinateSpace3.LOCAL_SPACE)
+        {
+            if(this.localMatrixDirty)
+                this.composeLocalMatrix();
+
+            if(other.localMatrixDirty)
+                other.composeLocalMatrix();
+
+            if(mode == IntersectionMode3.BOUNDING_SPHERE)
+                return this.localBoundingSphere.intersects(other.localBoundingSphere);
+            else if(mode == IntersectionMode3.AXIS_ALIGNED_BOUNDING_BOX)
+                return this.localBoundingBox.intersects(other.localBoundingBox);
+            else
+                return false;
+        }
+        else
+        {
+            if(this.localMatrixDirty || this.worldMatrixDirty)
+                this.updateWorldMatrix();
+
+            if(this.localMatrixDirty || this.worldMatrixDirty)
+                other.updateWorldMatrix();
+
+            if(mode == IntersectionMode3.BOUNDING_SPHERE)
+                return this.worldBoundingSphere.intersects(other.worldBoundingSphere);
+            else if(mode == IntersectionMode3.AXIS_ALIGNED_BOUNDING_BOX)
+                return this.worldBoundingBox.intersects(other.worldBoundingBox);
+            else
+                return false;
+        }
     }
 }

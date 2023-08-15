@@ -53,59 +53,60 @@ export class BoundingVolumeMaterial extends Material3
 
     draw(object: Node3, transform: Node3, camera: Camera, lightManager: LightManager): void
     {
-        if(this.mode == BoundingVolumeMode.ORIENTED_BOUNDING_BOX)
-        {
-            const boxPosition = Vector3.add(object.boundingBox.min, object.boundingBox.max);
-            boxPosition.multiplyScalar(0.5);
+        // to be fixed
+        // if(this.mode == BoundingVolumeMode.ORIENTED_BOUNDING_BOX)
+        // {
+        //     const boxPosition = Vector3.add(object.boundingBox.min, object.boundingBox.max);
+        //     boxPosition.multiplyScalar(0.5);
 
-            const boxScale = new Vector3(
-                object.boundingBox.max.x - object.boundingBox.min.x,
-                object.boundingBox.max.y - object.boundingBox.min.y,
-                object.boundingBox.max.z - object.boundingBox.min.z
-            );
+        //     const boxScale = new Vector3(
+        //         object.boundingBox.max.x - object.boundingBox.min.x,
+        //         object.boundingBox.max.y - object.boundingBox.min.y,
+        //         object.boundingBox.max.z - object.boundingBox.min.z
+        //     );
 
-            const boxLocalMatrix = Matrix4.compose(boxPosition, Quaternion.IDENTITY, boxScale);
-            this.box.setLocalToParentMatrix(boxLocalMatrix, false);
-            this.box.localToWorldMatrix.copy(Matrix4.multiply(object.localToWorldMatrix, boxLocalMatrix));
+        //     const boxLocalMatrix = Matrix4.compose(boxPosition, Quaternion.IDENTITY, boxScale);
+        //     this.box.setLocalToParentMatrix(boxLocalMatrix, false);
+        //     this.box.localToWorldMatrix.copy(Matrix4.multiply(object.localToWorldMatrix, boxLocalMatrix));
 
-            this.box.draw(object, camera, lightManager);
-        }
-        else if(this.mode == BoundingVolumeMode.AXIS_ALIGNED_BOUNDING_BOX)
-        {
-            const abb = new BoundingBox3();
-            abb.copy(object.boundingBox);
+        //     this.box.draw(object, camera, lightManager);
+        // }
+        // else if(this.mode == BoundingVolumeMode.AXIS_ALIGNED_BOUNDING_BOX)
+        // {
+        //     const abb = new BoundingBox3();
+        //     abb.copy(object.boundingBox);
 
-            const worldMatrix = transform.localToWorldMatrix;
-            const worldPosition = worldMatrix.getTranslation();
-            const worldRotation = worldMatrix.getRotation();
-            const worldScale = worldMatrix.getScale();
-            abb.transform(worldPosition, worldRotation, worldScale);
+        //     const worldMatrix = transform.localToWorldMatrix;
+        //     const worldPosition = worldMatrix.getTranslation();
+        //     const worldRotation = worldMatrix.getRotation();
+        //     const worldScale = worldMatrix.getScale();
+        //     abb.transform(worldPosition, worldRotation, worldScale);
 
-            const boxPosition = Vector3.add(abb.min, abb.max);
-            boxPosition.multiplyScalar(0.5);
+        //     const boxPosition = Vector3.add(abb.min, abb.max);
+        //     boxPosition.multiplyScalar(0.5);
 
-            const boxScale = new Vector3(
-                abb.max.x - abb.min.x,
-                abb.max.y - abb.min.y,
-                abb.max.z - abb.min.z
-            );
+        //     const boxScale = new Vector3(
+        //         abb.max.x - abb.min.x,
+        //         abb.max.y - abb.min.y,
+        //         abb.max.z - abb.min.z
+        //     );
 
-            const boxLocalMatrix = Matrix4.compose(boxPosition, Quaternion.IDENTITY, boxScale);
-            this.box.setLocalToParentMatrix(boxLocalMatrix, false);
-            this.box.localToWorldMatrix.copy(boxLocalMatrix);
+        //     const boxLocalMatrix = Matrix4.compose(boxPosition, Quaternion.IDENTITY, boxScale);
+        //     this.box.setLocalToParentMatrix(boxLocalMatrix, false);
+        //     this.box.localToWorldMatrix.copy(boxLocalMatrix);
 
-            this.box.draw(object, camera, lightManager);
-        }
-        else if(this.mode == BoundingVolumeMode.BOUNDING_SPHERE)
-        {
-            const sphereScale = new Vector3(object.boundingSphere.radius, object.boundingSphere.radius, object.boundingSphere.radius);
+        //     this.box.draw(object, camera, lightManager);
+        // }
+        // else if(this.mode == BoundingVolumeMode.BOUNDING_SPHERE)
+        // {
+        //     const sphereScale = new Vector3(object.boundingSphere.radius, object.boundingSphere.radius, object.boundingSphere.radius);
 
-            const sphereLocalMatrix = Matrix4.compose(object.boundingSphere.center, Quaternion.IDENTITY, sphereScale);
-            this.sphere.setLocalToParentMatrix(sphereLocalMatrix, false);
-            this.sphere.localToWorldMatrix.copy(Matrix4.multiply(object.localToWorldMatrix, sphereLocalMatrix));
+        //     const sphereLocalMatrix = Matrix4.compose(object.boundingSphere.center, Quaternion.IDENTITY, sphereScale);
+        //     this.sphere.setLocalToParentMatrix(sphereLocalMatrix, false);
+        //     this.sphere.localToWorldMatrix.copy(Matrix4.multiply(object.localToWorldMatrix, sphereLocalMatrix));
 
-            this.sphere.draw(object, camera, lightManager);
-        }
+        //     this.sphere.draw(object, camera, lightManager);
+        // }
     }
 
     setColor(color: Color): void

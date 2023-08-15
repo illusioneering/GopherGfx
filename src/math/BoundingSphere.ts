@@ -1,5 +1,6 @@
 import { BoundingBox3 } from "./BoundingBox3";
 import { Vector3 } from "./Vector3"
+import { Matrix4 } from "./Matrix4";
 
 export class BoundingSphere 
 {
@@ -26,29 +27,28 @@ export class BoundingSphere
         this.radius = circle.radius;
     }
 
-/**
- * Transforms the BoundingSphere by the given translation and scale
- * 
- * @param translation - The translation Vector3
- * @param scale - The scale Vector3
- */
-    transform(translation: Vector3, scale: Vector3)
+    /**
+     * Transforms the BoundingCircle using a transformation matrix
+     * 
+     * @param m - The transformation matrix
+     */
+    transform(m: Matrix4)
     {
-        this.center.multiply(scale);
-        this.center.add(translation);
+        // Compute new local bounding circle center
+        this.center.add(m.getTranslation());
         
-        if(scale.x >= scale.y)
-            this.radius *= scale.x;
-        else
-            this.radius *= scale.y;
+        // Compute new local bounding circle radius
+        const radiusVector = new Vector3(this.radius, 0);
+        radiusVector.transformVector(m);
+        this.radius = radiusVector.length();
     }
 
- /**
- * Checks if the given BoundingSphere intersects with the current one
- * 
- * @param circle - The BoundingSphere to check against
- * @returns True if the two BoundingSpheres intersect, false otherwise
- */
+    /**
+     * Checks if the given BoundingSphere intersects with the current one
+     * 
+     * @param circle - The BoundingSphere to check against
+     * @returns True if the two BoundingSpheres intersect, false otherwise
+     */
    intersects(circle: BoundingSphere): boolean
     {
         const distance = this.center.distanceTo(circle.center);
