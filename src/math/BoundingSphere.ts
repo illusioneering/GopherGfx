@@ -59,12 +59,12 @@ export class BoundingSphere
             return false;
     }
 
-/**
- * Computes the bounds of the BoundingSphere from the given vertices
- * 
- * @param vertices - The array of Vector3 or number objects representing the vertices
- * @param boundingBox - The BoundingBox3 object to use when computing the bounds
- */
+    /**
+     * Computes the bounds of the BoundingSphere from the given vertices
+     * 
+     * @param vertices - The array of Vector3 or number objects representing the vertices
+     * @param boundingBox - The BoundingBox3 object to use when computing the bounds
+     */
     computeBounds(vertices: Vector3[] | number[], boundingBox: BoundingBox3): void
     {
         this.center.copy(boundingBox.min);

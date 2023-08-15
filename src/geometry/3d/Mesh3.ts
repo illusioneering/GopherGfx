@@ -489,4 +489,34 @@ export class Mesh3 extends Node3
         this.setTextureCoordinates(newUVs);
         this.setIndices(newIndices);
     }
+
+    public createInstance(copyTransform = true): Mesh3
+    {
+        const instance = new Mesh3();
+        instance.positionBuffer = this.positionBuffer;
+        instance.normalBuffer = this.normalBuffer;
+        instance.colorBuffer = this.colorBuffer;
+        instance.indexBuffer = this.indexBuffer;
+        instance.texCoordBuffer = this.texCoordBuffer;
+        instance.vertexCount = this.vertexCount;
+        instance.triangleCount = this.triangleCount;
+        instance.material = this.material;
+        instance.visible = this.visible;
+        instance.boundingBox = this.boundingBox;
+        instance.boundingSphere = this.boundingSphere;
+        instance.localBoundsDirty = true;
+        instance.worldBoundsDirty = true;
+
+        if(copyTransform)
+        {
+            instance._position.copy(this._position);
+            instance._rotation = this._rotation;
+            instance._scale.copy(this._scale);
+            instance.localToWorldMatrix.copy(this.localToWorldMatrix);
+            instance.localMatrixDirty = this.localMatrixDirty;
+            instance.worldMatrixDirty = true;
+        }
+
+        return instance;
+    }
 }

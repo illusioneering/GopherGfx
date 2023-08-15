@@ -286,16 +286,25 @@ export class Mesh2 extends Node2
         instance.customBuffers = this.customBuffers;
         instance.vertexCount = this.vertexCount;
         instance.material = this.material;
+        instance.visible = this.visible;
         instance.boundingBox = this.boundingBox;
         instance.boundingCircle = this.boundingCircle;
-
+        instance.localBoundsDirty = true;
+        instance.worldBoundsDirty = true;
+        
         if(copyTransform)
         {
-            instance.position.copy(this.position);
-            instance.rotation = this.rotation;
-            instance.scale.copy(this.scale);
+            instance._position.copy(this._position);
+            instance._rotation = this._rotation;
+            instance._scale.copy(this._scale);
+            if(this._shear)
+            {
+                instance._shear = new Vector2();
+                instance._shear.copy(this._shear);
+            }
             instance.localToWorldMatrix.copy(this.localToWorldMatrix);
             instance.localMatrixDirty = this.localMatrixDirty;
+            instance.worldMatrixDirty = true;
             instance.layer = this.layer;
         }
 

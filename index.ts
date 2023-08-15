@@ -10,7 +10,6 @@ export * from './src/geometry/Geometry3Factory'
 
 export * from './src/geometry/3d/Mesh3'
 export * from './src/geometry/3d/MorphMesh3'
-export * from './src/geometry/3d/Mesh3Instance'
 export * from './src/geometry/3d/Line3'
 
 export * from './src/geometry/2d/Mesh2'
