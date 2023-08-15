@@ -88,7 +88,7 @@ export class PhongMaterial extends Material3
         this.texCoordAttribute = PhongMaterial.shader.getAttribute(this.gl, 'texCoord');   
     }
 
-    draw(mesh: Mesh3, transform: Node3, camera: Camera, lightManager: LightManager): void
+    draw(mesh: Mesh3, camera: Camera, lightManager: LightManager): void
     {
         if(!this.visible || mesh.triangleCount == 0)
             return;
@@ -99,7 +99,7 @@ export class PhongMaterial extends Material3
         this.gl.useProgram(PhongMaterial.shader.getProgram());
 
         // Set the camera uniforms
-        const worldMatrix = transform.localToWorldMatrix;
+        const worldMatrix = mesh.localToWorldMatrix;
         const cameraPosition = new Vector3();
         cameraPosition.transformPoint(camera.localToWorldMatrix);
         this.gl.uniform3f(this.eyePositionUniform, cameraPosition.x, cameraPosition.y, cameraPosition.z);

@@ -102,7 +102,7 @@ export class MorphMaterial extends Material3
         this.wireframe = false;
     }
 
-    draw(mesh: Mesh3, transform: Node3, camera: Camera, lightManager: LightManager): void
+    draw(mesh: Mesh3, camera: Camera, lightManager: LightManager): void
     {
         if(!(mesh instanceof MorphMesh3) || !this.visible || mesh.triangleCount == 0)
             return;
@@ -114,7 +114,7 @@ export class MorphMaterial extends Material3
         this.gl.useProgram(MorphMaterial.shader.getProgram());
 
         // Set the camera uniforms
-        const worldMatrix = transform.localToWorldMatrix;
+        const worldMatrix = mesh.localToWorldMatrix;
         const cameraPosition = new Vector3();
         cameraPosition.transformPoint(camera.localToWorldMatrix);
         this.gl.uniform3f(this.eyePositionUniform, cameraPosition.x, cameraPosition.y, cameraPosition.z);

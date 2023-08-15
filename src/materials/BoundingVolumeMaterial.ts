@@ -51,7 +51,7 @@ export class BoundingVolumeMaterial extends Material3
         this.sphere.material = this.wireframeMaterial;
     }
 
-    draw(object: Node3, transform: Node3, camera: Camera, lightManager: LightManager): void
+    draw(object: Node3, camera: Camera, lightManager: LightManager): void
     {
         // to be fixed
         // if(this.mode == BoundingVolumeMode.ORIENTED_BOUNDING_BOX)

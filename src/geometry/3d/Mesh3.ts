@@ -58,7 +58,7 @@ export class Mesh3 extends Node3
         if(!this.visible)
             return;
 
-        this.material.draw(this, this, camera, lightManager);
+        this.material.draw(this, camera, lightManager);
 
         this.children.forEach((elem: Node3) => {
             elem.draw(this, camera, lightManager);

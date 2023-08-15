@@ -38,7 +38,7 @@ export class WireframeMaterial extends Material3
         this.colorUniform = WireframeMaterial.shader.getUniform(this.gl, 'color');
     }
 
-    draw(mesh: Mesh3, transform: Node3, camera: Camera, lightManager: LightManager): void
+    draw(mesh: Mesh3, camera: Camera, lightManager: LightManager): void
     {
         if(!this.visible || mesh.triangleCount == 0)
             return;
@@ -49,7 +49,7 @@ export class WireframeMaterial extends Material3
         this.gl.useProgram(WireframeMaterial.shader.getProgram());
 
         // Set the uniform matrices
-        this.gl.uniformMatrix4fv(this.modelViewUniform, false, Matrix4.multiply(camera.viewMatrix, transform.localToWorldMatrix).mat);
+        this.gl.uniformMatrix4fv(this.modelViewUniform, false, Matrix4.multiply(camera.viewMatrix, mesh.localToWorldMatrix).mat);
         this.gl.uniformMatrix4fv(this.projectionUniform, false, camera.projectionMatrix.mat);
         this.gl.uniform4f(this.colorUniform, this.color.r, this.color.g, this.color.b, this.color.a);
 

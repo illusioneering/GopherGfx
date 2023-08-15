@@ -52,7 +52,7 @@ export class UnlitMaterial extends Material3
         this.texCoordAttribute = UnlitMaterial.shader.getAttribute(this.gl, 'texCoord');   
     }
 
-    draw(mesh: Mesh3, transform: Node3, camera: Camera, lightManager: LightManager): void
+    draw(mesh: Mesh3, camera: Camera, lightManager: LightManager): void
     {
         if(!this.visible || mesh.triangleCount == 0)
             return;
@@ -63,7 +63,7 @@ export class UnlitMaterial extends Material3
         this.gl.useProgram(UnlitMaterial.shader.getProgram());
 
         // Set the camera uniforms
-        this.gl.uniformMatrix4fv(this.modelViewUniform, false, Matrix4.multiply(camera.viewMatrix, transform.localToWorldMatrix).mat);
+        this.gl.uniformMatrix4fv(this.modelViewUniform, false, Matrix4.multiply(camera.viewMatrix, mesh.localToWorldMatrix).mat);
         this.gl.uniformMatrix4fv(this.projectionUniform, false, camera.projectionMatrix.mat);
 
         // Set the material property uniforms

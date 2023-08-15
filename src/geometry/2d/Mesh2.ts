@@ -68,7 +68,7 @@ export class Mesh2 extends Node2
         if(!this.visible)
             return;
 
-        this.material.draw(this, this);
+        this.material.draw(this);
 
         this.children.forEach((elem: Node2) => {
             elem.draw();

@@ -114,7 +114,7 @@ export class Material2
      * @param shape - The shape to draw with this material
      * @param transform - The transform where the shape should be drawn
      */
-    draw(shape: Mesh2, transform: Node2): void
+    draw(shape: Mesh2): void
     {
         if(!this.visible || shape.vertexCount == 0)
             return;
@@ -123,13 +123,13 @@ export class Material2
         this.gl.useProgram(Material2.shader.getProgram());
 
         // Set the model matrix uniform
-        this.gl.uniformMatrix3fv(this.modelUniform, false, transform.localToWorldMatrix.mat);
+        this.gl.uniformMatrix3fv(this.modelUniform, false, shape.localToWorldMatrix.mat);
 
         // Set the material property uniforms
         this.gl.uniform4f(this.colorUniform, this.color.r, this.color.g, this.color.b, this.color.a);
 
         // Set the layer uniform
-        this.gl.uniform1f(this.layerUniform, transform.layer);
+        this.gl.uniform1f(this.layerUniform, shape.layer);
 
         // Set the vertex colors
         this.gl.enableVertexAttribArray(this.colorAttribute);

@@ -42,7 +42,7 @@ export abstract class Material3
             this.gl.cullFace(this.gl.FRONT);
     }
 
-    abstract draw(object: Mesh3, transform: Node3, camera: Camera, lightManager: LightManager): void;
+    abstract draw(object: Mesh3, camera: Camera, lightManager: LightManager): void;
     abstract setColor(color: Color): void;
     abstract getColor(): Color;
 }
