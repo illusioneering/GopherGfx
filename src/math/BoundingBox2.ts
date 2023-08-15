@@ -27,33 +27,27 @@ export class BoundingBox2
     }
 
     /**
-     * Transforms the BoundingBox2 with a translation, rotation, and scale
+     * Transforms the BoundingBox2 using a transformation matrix
      * 
-     * @param translation - The translation vector
-     * @param rotation - The rotation (in radians)
-     * @param scale - The scaling vector
+     * @param m - The transformation matrix
      */
-    transform(translation: Vector2, rotation: number, scale: Vector2)
+    transform(m: Matrix3)
     {
-        this.min.multiply(scale);
-        this.max.multiply(scale);
-        
+        // Compute new axis-aligned bounding box
         const topLeft = new Vector2(this.min.x, this.max.y);
         const topRight = new Vector2(this.max.x, this.max.y);
         const bottomLeft = new Vector2(this.min.x, this.min.y);
         const bottomRight = new Vector2(this.max.x, this.min.y);
-        topLeft.rotate(rotation);
-        topRight.rotate(rotation);
-        bottomLeft.rotate(rotation);
-        bottomRight.rotate(rotation);
+
+        topLeft.transformPoint(m);
+        topRight.transformPoint(m);
+        bottomLeft.transformPoint(m);
+        bottomRight.transformPoint(m);
 
         this.min.x = Math.min(topLeft.x, Math.min(topRight.x, Math.min(bottomLeft.x, bottomRight.x)));
         this.min.y = Math.min(topLeft.y, Math.min(topRight.y, Math.min(bottomLeft.y, bottomRight.y)));
         this.max.x = Math.max(topLeft.x, Math.max(topRight.x, Math.max(bottomLeft.x, bottomRight.x)));
         this.max.y = Math.max(topLeft.y, Math.max(topRight.y, Math.max(bottomLeft.y, bottomRight.y)));
-
-        this.min.add(translation);
-        this.max.add(translation);
     }
 
     /**

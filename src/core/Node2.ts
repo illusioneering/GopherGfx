@@ -73,14 +73,34 @@ export class Node2
     public visible: boolean;
 
     /**
-     * Bounding box for this transform
+     * Bounding box in vertex coordinate space
      */
     public boundingBox: BoundingBox2;
 
     /**
-     * Bounding circle object for this transform
+     * Bounding circle in vertex coordinate space
      */
     public boundingCircle: BoundingCircle;
+
+    /**
+     * Bounding box in this transform's local coordinate space
+     */
+    public localBoundingBox: BoundingBox2;
+
+    /**
+     * Bounding circle in this transform's local coordinate space
+     */
+    public localBoundingCircle: BoundingCircle;
+
+    /**
+     * Bounding box in the world coordinate space
+     */
+    public worldBoundingBox: BoundingBox2;
+
+    /**
+     * Bounding box in the world coordinate space
+     */
+    public worldBoundingCircle: BoundingCircle;
 
     /**
      * Constructor for Node2 class
@@ -111,6 +131,10 @@ export class Node2
 
         this.boundingBox = new BoundingBox2();
         this.boundingCircle = new BoundingCircle();
+        this.localBoundingBox = new BoundingBox2();
+        this.localBoundingCircle = new BoundingCircle();
+        this.worldBoundingBox = new BoundingBox2();
+        this.worldBoundingCircle = new BoundingCircle();
     }
 
     public get position()
@@ -206,6 +230,11 @@ export class Node2
         this.localToParentMatrix.copy(matrix);  
         this.localMatrixUpdated = true;
         this.worldMatrixDirty = true;
+
+        this.localBoundingBox.copy(this.boundingBox);
+        this.localBoundingBox.transform(this.localToParentMatrix);
+        this.localBoundingCircle.copy(this.boundingCircle);
+        this.localBoundingCircle.transform(this.localToParentMatrix);
     }
 
     /**
@@ -242,6 +271,10 @@ export class Node2
                 this.localToWorldMatrix.premultiply(this.parent.localToWorldMatrix);
             }
 
+            this.worldBoundingBox.copy(this.boundingBox);
+            this.worldBoundingBox.transform(this.localToWorldMatrix);
+            this.worldBoundingCircle.copy(this.boundingCircle);
+            this.worldBoundingCircle.transform(this.localToWorldMatrix)
             this.worldMatrixDirty = false;
         }
 
@@ -268,6 +301,10 @@ export class Node2
             this.localToWorldMatrix.premultiply(this.parent.localToWorldMatrix);
         }
 
+        this.worldBoundingBox.copy(this.boundingBox);
+        this.worldBoundingBox.transform(this.localToWorldMatrix);
+        this.worldBoundingCircle.copy(this.boundingCircle);
+        this.worldBoundingCircle.transform(this.localToWorldMatrix)
         this.worldMatrixDirty = false;
     }
 
@@ -351,49 +388,6 @@ export class Node2
         }
     }
 
-    /**
-     * Checks if this Node2 intersects another Node2, using either a BoundingCircle or AxisAlignedBoundingBox
-     * 
-     * @param other - The Node2 to check for intersection with 
-     * @param mode - The mode to use for intersection (defaults to BOUNDING_CIRCLE)
-     * @returns A boolean indicating whether the two objects intersect
-     */
-    intersects(other: Node2, mode = IntersectionMode2.BOUNDING_CIRCLE): boolean
-    {
-        // TO BE CHANGED
-        // Use the transformation matrix instead of position and scale
-        // Add a parameter to specify local or world coordinate frame
-
-        if(mode == IntersectionMode2.BOUNDING_CIRCLE)
-        {
-            const thisCircle = new BoundingCircle();
-            thisCircle.copy(this.boundingCircle);
-            thisCircle.transform(this._position, this._scale);
-
-            const otherCircle = new BoundingCircle();
-            otherCircle.copy(other.boundingCircle);
-            otherCircle.transform(other._position, other._scale);
-
-            return thisCircle.intersects(otherCircle);
-        }
-        else if(mode == IntersectionMode2.AXIS_ALIGNED_BOUNDING_BOX)
-        {
-            const thisBox = new BoundingBox2();
-            thisBox.copy(this.boundingBox);
-            thisBox.transform(this._position, this._rotation, this._scale);
-
-            const otherBox = new BoundingBox2();
-            otherBox.copy(other.boundingBox);
-            otherBox.transform(other._position, other._rotation, other._scale);
-
-            return thisBox.intersects(otherBox);
-        }
-        else
-        {
-            return false;
-        }
-    }
-
     public composeLocalMatrix(): void
     {
         this.localMatrixDirty = false;
@@ -401,6 +395,11 @@ export class Node2
         this.worldMatrixDirty = true;
 
         this.localToParentMatrix.compose(this._position, this._rotation, this._scale, this._shear);
+
+        this.localBoundingBox.copy(this.boundingBox);
+        this.localBoundingBox.transform(this.localToParentMatrix);
+        this.localBoundingCircle.copy(this.boundingCircle);
+        this.localBoundingCircle.transform(this.localToParentMatrix);
     }
 
     public decomposeLocalMatrix(): void
@@ -409,5 +408,46 @@ export class Node2
         this.localMatrixUpdated = false;
         
         [this._position, this._rotation, this._scale, this._shear] = this.localToParentMatrix.decompose();
+    }
+
+    /**
+     * Checks if this Node2 intersects another Node2, using either a BoundingCircle or AxisAlignedBoundingBox
+     * 
+     * @param other - The Node2 to check for intersection with 
+     * @param mode - The mode to use for intersection (defaults to BOUNDING_CIRCLE)
+     * @returns A boolean indicating whether the two objects intersect
+     */
+    intersects(other: Node2, mode = IntersectionMode2.BOUNDING_CIRCLE, space = CoordinateSpace2.LOCAL_SPACE): boolean
+    {
+        if(space == CoordinateSpace2.LOCAL_SPACE)
+        {
+            if(this.localMatrixDirty)
+                this.composeLocalMatrix();
+
+            if(other.localMatrixDirty)
+                other.composeLocalMatrix();
+
+            if(mode == IntersectionMode2.BOUNDING_CIRCLE)
+                return this.localBoundingCircle.intersects(other.localBoundingCircle);
+            else if(mode == IntersectionMode2.AXIS_ALIGNED_BOUNDING_BOX)
+                return this.localBoundingBox.intersects(other.localBoundingBox);
+            else
+                return false;
+        }
+        else
+        {
+            if(this.localMatrixDirty || this.worldMatrixDirty)
+                this.updateWorldMatrix();
+
+            if(this.localMatrixDirty || this.worldMatrixDirty)
+                other.updateWorldMatrix();
+
+            if(mode == IntersectionMode2.BOUNDING_CIRCLE)
+                return this.worldBoundingCircle.intersects(other.worldBoundingCircle);
+            else if(mode == IntersectionMode2.AXIS_ALIGNED_BOUNDING_BOX)
+                return this.worldBoundingBox.intersects(other.worldBoundingBox);
+            else
+                return false;
+        }
     }
 }
