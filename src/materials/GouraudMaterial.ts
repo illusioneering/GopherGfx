@@ -133,9 +133,17 @@ export class GouraudMaterial extends Material3
         this.gl.vertexAttribPointer(this.normalAttribute, 3, this.gl.FLOAT, false, 0, 0);
 
         // Set the vertex colors
-        this.gl.enableVertexAttribArray(this.colorAttribute);
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, mesh.colorBuffer);
-        this.gl.vertexAttribPointer(this.colorAttribute, 4, this.gl.FLOAT, false, 0, 0);
+        if(mesh.hasVertexColors)
+        {
+            this.gl.enableVertexAttribArray(this.colorAttribute);
+            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, mesh.colorBuffer);
+            this.gl.vertexAttribPointer(this.colorAttribute, 4, this.gl.FLOAT, false, 0, 0);
+        }
+        else
+        {
+            this.gl.disableVertexAttribArray(this.colorAttribute);
+            this.gl.vertexAttrib4f(this.colorAttribute, 1, 1, 1, 1);
+        }
 
         if(this.texture)
         {

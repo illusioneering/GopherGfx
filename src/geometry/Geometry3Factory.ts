@@ -156,7 +156,6 @@ export class Geometry3Factory
         mesh.setNormals(normals);
         mesh.setIndices(indices);
         mesh.setTextureCoordinates(uvs);
-        mesh.createDefaultVertexColors();
         return mesh;
     }
 
@@ -264,7 +263,6 @@ export class Geometry3Factory
         mesh.setNormals(normals);
         mesh.setIndices(indices);
         mesh.setTextureCoordinates(uvs);
-        mesh.createDefaultVertexColors();
         return mesh;
     }
 
@@ -355,7 +353,6 @@ export class Geometry3Factory
         mesh.setNormals(normals);
         mesh.setIndices(indices);
         mesh.setTextureCoordinates(uvs);
-        mesh.createDefaultVertexColors();
         return mesh;
     }
 
@@ -397,7 +394,6 @@ export class Geometry3Factory
         mesh.setNormals(normals);
         mesh.setIndices(indices);
         mesh.setTextureCoordinates(uvs);
-        mesh.createDefaultVertexColors();
         return mesh;
     }
 
@@ -623,7 +619,6 @@ export class Geometry3Factory
         mesh.setNormals(normals);
         mesh.setIndices(indices);
         mesh.setTextureCoordinates(texCoords);
-        mesh.createDefaultVertexColors();
         return mesh;
     }
 
@@ -725,7 +720,6 @@ export class Geometry3Factory
         vertices.push(endPoint.x, endPoint.y, endPoint.z);
 
         line.setVertices(vertices);
-        line.createDefaultVertexColors();
 
         return line;
     }

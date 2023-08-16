@@ -34,6 +34,11 @@ export class Line3 extends Node3
     private positionAttribute: number;
     private colorAttribute: number;
     private texCoordAttribute: number;
+
+    /**
+     * Flag that determines whether to use vertex colors.
+     */
+    public hasVertexColors: boolean;
     
     constructor(lineMode = LineMode3.LINE_STRIP)
     {
@@ -56,6 +61,8 @@ export class Line3 extends Node3
         this.positionAttribute = UnlitMaterial.shader.getAttribute(this.gl, 'position');
         this.colorAttribute = UnlitMaterial.shader.getAttribute(this.gl, 'color');
         this.texCoordAttribute = UnlitMaterial.shader.getAttribute(this.gl, 'texCoord');   
+
+        this.hasVertexColors = false;
     }
 
     createFromBox(box: BoundingBox3)
@@ -93,7 +100,6 @@ export class Line3 extends Node3
          vertices.push(box.min.x, box.max.y, box.max.z);
 
          this.setVertices(vertices);
-         this.createDefaultVertexColors();
 
          this.lineMode = LineMode3.LINES;
     }
@@ -118,9 +124,17 @@ export class Line3 extends Node3
         this.gl.uniform4f(this.colorUniform, this.color.r, this.color.g, this.color.b, this.color.a);
 
         // Set the vertex colors
-        this.gl.enableVertexAttribArray(this.colorAttribute);
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.colorBuffer);
-        this.gl.vertexAttribPointer(this.colorAttribute, 4, this.gl.FLOAT, false, 0, 0);
+        if(this.hasVertexColors)
+        {
+            this.gl.enableVertexAttribArray(this.colorAttribute);
+            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.colorBuffer);
+            this.gl.vertexAttribPointer(this.colorAttribute, 4, this.gl.FLOAT, false, 0, 0);
+        }
+        else
+        {
+            this.gl.disableVertexAttribArray(this.colorAttribute);
+            this.gl.vertexAttrib4f(this.colorAttribute, 1, 1, 1, 1);
+        } 
 
         // Set the vertex positions
         this.gl.enableVertexAttribArray(this.positionAttribute);
@@ -184,6 +198,12 @@ export class Line3 extends Node3
                 
                 this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(cArray), usage);
             }
+
+            this.hasVertexColors = true;
+        }
+        else
+        {
+            this.hasVertexColors = false;
         }
     }
 

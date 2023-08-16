@@ -42,10 +42,6 @@ export class MeshParser
         mesh.setNormals(normals);
         mesh.setIndices(indices);
 
-        // If the file did not contain vertex colors, then assign a default color
-        if(colors.length == 0)
-            mesh.createDefaultVertexColors();
-
         // If we have per vertex UVs, asign them to the mesh
         if(uvs.length / 2 == vertices.length / 3)
             mesh.setTextureCoordinates(uvs);
@@ -319,10 +315,6 @@ export class MeshParser
         mesh.setNormals(normals);
         mesh.setIndices(indices);
 
-        // If the file did not contain vertex colors, then assign a default color
-        if(colors.length == 0)
-            mesh.createDefaultVertexColors();
-
         // If we have per vertex UVs, asign them to the mesh
         if(uvs.length / 2 == vertices.length / 3)
             mesh.setTextureCoordinates(uvs);
@@ -515,10 +507,6 @@ export class MeshParser
         mesh.setColors(colors);
         mesh.setNormals(normals);
         mesh.setIndices(indices);
-
-        // If the file did not contain vertex colors, then assign a default color
-        if(colors.length == 0)
-            mesh.createDefaultVertexColors();
 
         // If we have per vertex UVs, asign them to the mesh
         if(uvs.length / 2 == vertices.length / 3)

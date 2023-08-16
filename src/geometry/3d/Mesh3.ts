@@ -29,6 +29,11 @@ export class Mesh3 extends Node3
 
     public material: Material3;
 
+    /**
+     * Flag that determines whether to use vertex colors.
+     */
+    public hasVertexColors: boolean;
+
     constructor()
     {
         super();
@@ -51,6 +56,8 @@ export class Mesh3 extends Node3
         this.texCoordCache = null;
 
         this.material = new GouraudMaterial();
+
+        this.hasVertexColors = false;
     }
 
     draw(parent: Node3, camera: Camera, lightManager: LightManager): void
@@ -191,6 +198,12 @@ export class Mesh3 extends Node3
                 else
                     this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(cArray), this.gl.STATIC_DRAW);
             }
+
+            this.hasVertexColors = true;
+        }
+        else
+        {
+            this.hasVertexColors = false;
         }
     }
 
