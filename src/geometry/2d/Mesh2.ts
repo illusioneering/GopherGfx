@@ -40,6 +40,11 @@ export class Mesh2 extends Node2
      * Material to draw the Mesh2 with.
      */
     public material: Material2;
+
+    /**
+     * Flag that determines whether to use vertex colors.
+     */
+    public hasVertexColors: boolean;
     
     /**
      * Construct a new 2D Mesh2
@@ -55,6 +60,7 @@ export class Mesh2 extends Node2
         this.texCoordBuffer = this.gl.createBuffer();
         this.customBuffers = [];
         this.vertexCount = 0;
+        this.hasVertexColors = false;
 
         // default material
         this.material = new Material2();
@@ -136,6 +142,12 @@ export class Mesh2 extends Node2
                 
                 this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(cArray), usage);
             }
+
+            this.hasVertexColors = true;
+        }
+        else
+        {
+            this.hasVertexColors = false;
         }
     }
 
@@ -285,6 +297,7 @@ export class Mesh2 extends Node2
         instance.texCoordBuffer = this.texCoordBuffer;
         instance.customBuffers = this.customBuffers;
         instance.vertexCount = this.vertexCount;
+        instance.hasVertexColors = this.hasVertexColors;
         instance.material = this.material;
         instance.visible = this.visible;
         instance.boundingBox = this.boundingBox;

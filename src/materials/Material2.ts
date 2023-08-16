@@ -1,12 +1,11 @@
 // @ts-ignore
-import shapeVertexShader from '../shaders/shape.vert'
+import shapeVertexShader from '../shaders/material2.vert'
 // @ts-ignore
-import shapeFragmentShader from '../shaders/shape.frag'
+import shapeFragmentShader from '../shaders/material2.frag'
 
 import { GfxApp } from '../core/GfxApp';
 import { ShaderProgram } from './ShaderProgram';
 import { Mesh2 } from '../geometry/2d/Mesh2';
-import { Node2 } from '../core/Node2'
 import { Color } from '../math/Color' 
 import { Texture } from './Texture';
 
@@ -114,31 +113,39 @@ export class Material2
      * @param shape - The shape to draw with this material
      * @param transform - The transform where the shape should be drawn
      */
-    draw(shape: Mesh2): void
+    draw(mesh: Mesh2): void
     {
-        if(!this.visible || shape.vertexCount == 0)
+        if(!this.visible || mesh.vertexCount == 0)
             return;
 
         // Switch to this shader
         this.gl.useProgram(Material2.shader.getProgram());
 
         // Set the model matrix uniform
-        this.gl.uniformMatrix3fv(this.modelUniform, false, shape.localToWorldMatrix.mat);
+        this.gl.uniformMatrix3fv(this.modelUniform, false, mesh.localToWorldMatrix.mat);
 
         // Set the material property uniforms
         this.gl.uniform4f(this.colorUniform, this.color.r, this.color.g, this.color.b, this.color.a);
 
         // Set the layer uniform
-        this.gl.uniform1f(this.layerUniform, shape.layer);
+        this.gl.uniform1f(this.layerUniform, mesh.layer);
 
         // Set the vertex colors
-        this.gl.enableVertexAttribArray(this.colorAttribute);
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, shape.colorBuffer);
-        this.gl.vertexAttribPointer(this.colorAttribute, 4, this.gl.FLOAT, false, 0, 0);
+        if(mesh.hasVertexColors)
+        {
+            this.gl.enableVertexAttribArray(this.colorAttribute);
+            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, mesh.colorBuffer);
+            this.gl.vertexAttribPointer(this.colorAttribute, 4, this.gl.FLOAT, false, 0, 0);
+        }
+        else
+        {
+            this.gl.disableVertexAttribArray(this.colorAttribute);
+            this.gl.vertexAttrib4f(this.colorAttribute, 1, 1, 1, 1);
+        }
 
         // Set the vertex positions
         this.gl.enableVertexAttribArray(this.positionAttribute);
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, shape.positionBuffer);
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, mesh.positionBuffer);
         this.gl.vertexAttribPointer(this.positionAttribute, 2, this.gl.FLOAT, false, 0, 0);
 
         if(this.texture)
@@ -153,7 +160,7 @@ export class Material2
 
             // Set the texture coordinates
             this.gl.enableVertexAttribArray(this.texCoordAttribute);
-            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, shape.texCoordBuffer);
+            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, mesh.texCoordBuffer);
             this.gl.vertexAttribPointer(this.texCoordAttribute, 2, this.gl.FLOAT, false, 0, 0);
         }
         else
@@ -164,6 +171,6 @@ export class Material2
         }
 
         // Draw the shape
-        this.gl.drawArrays(this.drawMode, 0, shape.vertexCount);
+        this.gl.drawArrays(this.drawMode, 0, mesh.vertexCount);
     }
 }

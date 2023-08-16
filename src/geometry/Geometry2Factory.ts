@@ -25,7 +25,6 @@ export class Geometry2Factory
         
         mesh.setVertices(vertices);
         mesh.setTextureCoordinates(uvs);
-        mesh.createDefaultVertexColors();
 
         return mesh;
     }
@@ -46,7 +45,6 @@ export class Geometry2Factory
 
         mesh.setVertices(vertices);
         mesh.setTextureCoordinates(uvs);
-        mesh.createDefaultVertexColors();
 
         return mesh;
     }
@@ -85,7 +83,6 @@ export class Geometry2Factory
         vertices.push(endPoint.x, endPoint.y);
 
         line.setVertices(vertices);
-        line.createDefaultVertexColors();
 
         return line;
     }
@@ -101,7 +98,6 @@ export class Geometry2Factory
         vertices.push(box.min.x, box.max.y);
 
         line.setVertices(vertices);
-        line.createDefaultVertexColors();
 
         return line;
     }

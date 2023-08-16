@@ -33,6 +33,11 @@ export class Line2 extends Node2
     private positionAttribute: number;
     private colorAttribute: number;
     private texCoordAttribute: number;
+
+    /**
+     * Flag that determines whether to use vertex colors.
+     */
+    public hasVertexColors: boolean;
  
     /**
      * Creates an instance of Line2.
@@ -58,6 +63,8 @@ export class Line2 extends Node2
         this.positionAttribute = Material2.shader.getAttribute(this.gl, 'position');
         this.colorAttribute = Material2.shader.getAttribute(this.gl, 'color');
         this.texCoordAttribute = Material2.shader.getAttribute(this.gl, 'texCoord');
+
+        this.hasVertexColors = false;
     }
 
     /**
@@ -85,9 +92,17 @@ export class Line2 extends Node2
         this.gl.uniform1f(this.layerUniform, this.layer);
 
         // Set the vertex colors
-        this.gl.enableVertexAttribArray(this.colorAttribute);
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.colorBuffer);
-        this.gl.vertexAttribPointer(this.colorAttribute, 4, this.gl.FLOAT, false, 0, 0);
+        if(this.hasVertexColors)
+        {
+            this.gl.enableVertexAttribArray(this.colorAttribute);
+            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.colorBuffer);
+            this.gl.vertexAttribPointer(this.colorAttribute, 4, this.gl.FLOAT, false, 0, 0);
+        }
+        else
+        {
+            this.gl.disableVertexAttribArray(this.colorAttribute);
+            this.gl.vertexAttrib4f(this.colorAttribute, 1, 1, 1, 1);
+        } 
 
         // Set the vertex positions
         this.gl.enableVertexAttribArray(this.positionAttribute);
@@ -160,6 +175,12 @@ export class Line2 extends Node2
                 
                 this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(cArray), usage);
             }
+
+            this.hasVertexColors = true;
+        }
+        else
+        {
+            this.hasVertexColors = false;
         }
     }
 

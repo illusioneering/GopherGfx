@@ -178,9 +178,18 @@ export class Particles2 extends Node2
          this.gl.vertexAttribDivisor(this.particleSizeAttribute, 1);
  
          // Set the vertex colors
-         this.gl.enableVertexAttribArray(this.vertColorAttribute);
-         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.baseParticle.colorBuffer);
-         this.gl.vertexAttribPointer(this.vertColorAttribute, 4, this.gl.FLOAT, false, 0, 0);
+        if(this.baseParticle.hasVertexColors)
+        {
+            this.gl.enableVertexAttribArray(this.vertColorAttribute);
+            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.baseParticle.colorBuffer);
+            this.gl.vertexAttribPointer(this.vertColorAttribute, 4, this.gl.FLOAT, false, 0, 0);
+        }
+        else
+        {
+            this.gl.disableVertexAttribArray(this.vertColorAttribute);
+            this.gl.vertexAttrib4f(this.vertColorAttribute, 1, 1, 1, 1);
+        }
+
  
          // Set the vertex positions
          this.gl.enableVertexAttribArray(this.vertPositionAttribute);
