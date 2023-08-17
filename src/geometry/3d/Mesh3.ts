@@ -523,8 +523,9 @@ export class Mesh3 extends Node3
         if(copyTransform)
         {
             instance._position.copy(this._position);
-            instance._rotation = this._rotation;
+            instance._rotation.copy(this._rotation);
             instance._scale.copy(this._scale);
+            instance.localToParentMatrix.copy(this.localToParentMatrix);
             instance.localToWorldMatrix.copy(this.localToWorldMatrix);
             instance.localMatrixDirty = this.localMatrixDirty;
             instance.worldMatrixDirty = true;

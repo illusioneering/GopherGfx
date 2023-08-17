@@ -315,6 +315,7 @@ export class Mesh2 extends Node2
                 instance._shear = new Vector2();
                 instance._shear.copy(this._shear);
             }
+            instance.localToParentMatrix.copy(this.localToParentMatrix);
             instance.localToWorldMatrix.copy(this.localToWorldMatrix);
             instance.localMatrixDirty = this.localMatrixDirty;
             instance.worldMatrixDirty = true;
