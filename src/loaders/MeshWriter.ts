@@ -13,19 +13,33 @@ export class MeshWriter
         output += '\n';
 
         const vertices = mesh.getVertices();
-        const colors = mesh.getColors();
         const normals = mesh.getNormals();
         const uvs = mesh.getTextureCoordinates();
         const indices = mesh.getIndices();
 
-        for(let i = 0; i < mesh.vertexCount; i++)
+        if(mesh.hasVertexColors)
         {
-            output += 'v ' + vertices[i*3].toFixed(6) + ' '  + vertices[i*3+1].toFixed(6) + ' '  + vertices[i*3+2].toFixed(6) + ' ' +
-                colors[i*4].toFixed(6) + ' '  + colors[i*4+1].toFixed(6) + ' '  + colors[i*4+2].toFixed(6) + '\n';
+            const colors = mesh.getColors();
+            for(let i = 0; i < mesh.vertexCount; i++)
+            {
+                output += 'v ' + vertices[i*3].toFixed(6) + ' '  + vertices[i*3+1].toFixed(6) + ' '  + vertices[i*3+2].toFixed(6) + ' ' +
+                    colors[i*4].toFixed(6) + ' '  + colors[i*4+1].toFixed(6) + ' '  + colors[i*4+2].toFixed(6) + '\n';
 
-            output += 'vn ' + normals[i*3].toFixed(6) + ' '  + normals[i*3+1].toFixed(6) + ' '  + normals[i*3+2].toFixed(6) + '\n';
-            output += 'vt ' + uvs[i*2].toFixed(6) + ' '  + uvs[i*2+1].toFixed(6) + '\n';
+                output += 'vn ' + normals[i*3].toFixed(6) + ' '  + normals[i*3+1].toFixed(6) + ' '  + normals[i*3+2].toFixed(6) + '\n';
+                output += 'vt ' + uvs[i*2].toFixed(6) + ' '  + uvs[i*2+1].toFixed(6) + '\n';
+            }
         }
+        else
+        {
+            for(let i = 0; i < mesh.vertexCount; i++)
+            {
+                output += 'v ' + vertices[i*3].toFixed(6) + ' '  + vertices[i*3+1].toFixed(6) + ' '  + vertices[i*3+2].toFixed(6) + '\n';
+
+                output += 'vn ' + normals[i*3].toFixed(6) + ' '  + normals[i*3+1].toFixed(6) + ' '  + normals[i*3+2].toFixed(6) + '\n';
+                output += 'vt ' + uvs[i*2].toFixed(6) + ' '  + uvs[i*2+1].toFixed(6) + '\n';
+            }
+        }
+        
 
         output += '\n';
 
@@ -41,9 +55,12 @@ export class MeshWriter
     {
         const vertices = mesh.getVertices();
         const normals = mesh.getNormals();
-        const colors = mesh.getColors();
         const uvs = mesh.getTextureCoordinates();
         const indices = mesh.getIndices();
+
+        let colors: number[] = [];
+        if(mesh.hasVertexColors)
+            colors = mesh.getColors();
 
         let header = 'ply\n';
 
@@ -70,10 +87,13 @@ export class MeshWriter
         header += 'property float texture_u\n';
         header += 'property float texture_v\n';
         
-        header += 'property uchar red\n';
-        header += 'property uchar green\n';
-        header += 'property uchar blue\n';
-        header += 'property uchar alpha\n';
+        if(mesh.hasVertexColors)
+        {
+            header += 'property uchar red\n';
+            header += 'property uchar green\n';
+            header += 'property uchar blue\n';
+            header += 'property uchar alpha\n';
+        }
 
         header += 'element face ' + mesh.triangleCount + '\n';
         header += 'property list uchar int vertex_indices\n'
@@ -124,17 +144,20 @@ export class MeshWriter
                 view.setFloat32(byteCounter, uvs[i*2+1], true); 
                 byteCounter+=4;
 
-                view.setUint8(byteCounter, Math.floor(colors[i*4]*255)); 
-                byteCounter+=1;
+                if(mesh.hasVertexColors)
+                {
+                    view.setUint8(byteCounter, Math.floor(colors[i*4]*255)); 
+                    byteCounter+=1;
 
-                view.setUint8(byteCounter, Math.floor(colors[i*4+1]*255)); 
-                byteCounter+=1;
+                    view.setUint8(byteCounter, Math.floor(colors[i*4+1]*255)); 
+                    byteCounter+=1;
 
-                view.setUint8(byteCounter, Math.floor(colors[i*4+2]*255)); 
-                byteCounter+=1;
+                    view.setUint8(byteCounter, Math.floor(colors[i*4+2]*255)); 
+                    byteCounter+=1;
 
-                view.setUint8(byteCounter, Math.floor(colors[i*4+3]*255)); 
-                byteCounter+=1;
+                    view.setUint8(byteCounter, Math.floor(colors[i*4+3]*255)); 
+                    byteCounter+=1;
+                }
             }
 
             for(let i = 0; i <  mesh.triangleCount; i++)
@@ -162,9 +185,12 @@ export class MeshWriter
             {
                 output += vertices[i*3].toFixed(6) + ' '  + vertices[i*3+1].toFixed(6) + ' '  + vertices[i*3+2].toFixed(6);
                 output += ' ' + normals[i*3].toFixed(6) + ' '  + normals[i*3+1].toFixed(6) + ' '  + normals[i*3+2].toFixed(6);
+
                 output += ' ' + uvs[i*2].toFixed(6) + ' '  + uvs[i*2+1].toFixed(6);
-                output += ' ' + Math.floor(colors[i*4]*255) + ' '  + Math.floor(colors[i*4+1]*255) + ' '  + Math.floor(colors[i*4+2]*255) + ' '  + Math.floor(colors[i*4+3]*255);
-                output += '\n';
+                if(mesh.hasVertexColors)
+                    output += ' ' + Math.floor(colors[i*4]*255) + ' '  + Math.floor(colors[i*4+1]*255) + ' '  + Math.floor(colors[i*4+2]*255) + ' '  + Math.floor(colors[i*4+3]*255);
+                
+                    output += '\n';
             }
 
             for(let i = 0; i < indices.length; i+=3)
@@ -217,55 +243,59 @@ export class MeshWriter
         {
             const vertices = transform.getVertices();
             const normals = transform.getNormals();
-            const colors = transform.getColors();
             const uvs = transform.getTextureCoordinates();
             const indices = transform.getIndices();
 
             const mesh = doc.createMesh();
             node.setMesh(mesh);
 
+            const primitive = doc.createPrimitive();
+
             const gltfPosition = doc
                 .createAccessor()
                 .setArray(new Float32Array(vertices))
                 .setType("VEC3")
                 .setBuffer(buffer);
+            primitive.setAttribute("POSITION", gltfPosition);
 
             const gltfNormals = doc
                 .createAccessor()
                 .setArray(new Float32Array(normals))
                 .setType("VEC3")
                 .setBuffer(buffer);
+            primitive.setAttribute("NORMAL", gltfNormals);
 
-            const gltfColors = doc
-                .createAccessor()
-                .setArray(new Float32Array(colors))
-                .setType("VEC4")
-                .setBuffer(buffer);
+            if(transform.hasVertexColors)
+            {
+                const colors = transform.getColors();
+                
+                const gltfColors = doc
+                    .createAccessor()
+                    .setArray(new Float32Array(colors))
+                    .setType("VEC4")
+                    .setBuffer(buffer);
+                primitive.setAttribute("COLOR_0", gltfColors);
+            }
 
             const gltfUVs = doc
                 .createAccessor()
                 .setArray(new Float32Array(uvs))
                 .setType("VEC2")
                 .setBuffer(buffer);
+            primitive.setAttribute("TEXCOORD_0", gltfUVs);
 
             const gltfIndices = doc
                 .createAccessor()
                 .setArray(new Uint32Array(indices))
                 .setType("SCALAR")
                 .setBuffer(buffer);
+            primitive.setIndices(gltfIndices);
 
             const materialColor = transform.material.getColor();
             const material = doc.createMaterial()
                 .setBaseColorFactor([materialColor.r, materialColor.g, materialColor.b, materialColor.a]);
 
-            const primitive = doc
-                .createPrimitive()
-                .setAttribute("POSITION", gltfPosition)
-                .setAttribute("NORMAL", gltfNormals)
-                .setAttribute("COLOR_0", gltfColors)
-                .setAttribute("TEXCOORD_0", gltfUVs)
-                .setIndices(gltfIndices)
-                .setMaterial(material);
+            primitive.setMaterial(material);
 
             mesh.addPrimitive(primitive);
         }

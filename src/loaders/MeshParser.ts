@@ -38,9 +38,11 @@ export class MeshParser
         }
 
         mesh.setVertices(vertices);
-        mesh.setColors(colors);
         mesh.setNormals(normals);
         mesh.setIndices(indices);
+
+        if(colors.length > 0)
+            mesh.setColors(colors);
 
         // If we have per vertex UVs, asign them to the mesh
         if(uvs.length / 2 == vertices.length / 3)
@@ -60,7 +62,7 @@ export class MeshParser
         vertices.push(Number(line[1]));
         vertices.push(Number(line[2]));
 
-        if(line.length == 6)
+        if(line.length > 3)
         {
             colors.push(Number(line[3]));
             colors.push(Number(line[4]));
