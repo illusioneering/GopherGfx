@@ -6,7 +6,7 @@ import { Mesh3 } from '../geometry/3d/Mesh3';
 import { UnlitMaterial } from '../materials/UnlitMaterial';
 import { Color } from '../math/Color';
 import { Plane3 } from '../math/Plane3';
-import { Ray } from '../math/Ray3'
+import { Ray3 } from '../math/Ray3'
 import { Vector2 } from '../math/Vector2';
 import { Vector3 } from '../math/Vector3';
 
@@ -17,7 +17,7 @@ export class TransformWidget extends Node3
     
     private deviceCoords: Vector2;
     private currentAxis: number;
-    private selectionPoint: Vector3;
+    private selectionPlane: Plane3;
 
     /**
  * Constructor for the TransformWidget class
@@ -32,7 +32,7 @@ export class TransformWidget extends Node3
 
         this.currentAxis = -1;
         this.deviceCoords = new Vector2();
-        this.selectionPoint = new Vector3();
+        this.selectionPlane = new Plane3();
 
         this.axes = Geometry3Factory.createAxes(lineLength);
         this.add(this.axes);
@@ -79,7 +79,7 @@ export class TransformWidget extends Node3
  */
     update(deltaTime: number): void
     {
-        const ray = new Ray();
+        const ray = new Ray3();
         ray.setPickRay(this.deviceCoords, GfxApp.getInstance().camera);
 
         if(this.currentAxis == -1)
@@ -103,38 +103,35 @@ export class TransformWidget extends Node3
         }
         else if(this.currentAxis == 0)
         {
-            const worldPosition = GfxApp.getInstance().camera.localToWorldMatrix.getTranslation();
-            const projectedPosition = ray.intersectsPlane(new Plane3(Vector3.ZERO, new Vector3(0, worldPosition.y, worldPosition.z)));
+            const projectedPosition = ray.intersectsPlane(this.selectionPlane);
             if(projectedPosition)
             {
-                const translation = new Vector3(projectedPosition.x - this.selectionPoint.x, 0, 0);
+                const translation = new Vector3(projectedPosition.x - this.selectionPlane.point.x, 0, 0);
                 translation.rotate(this.rotation);
                 this.position.add(translation);
-                this.selectionPoint = projectedPosition;
+                this.selectionPlane.point = projectedPosition;
             }
         }
         else if(this.currentAxis == 1)
         {
-            const worldPosition = GfxApp.getInstance().camera.localToWorldMatrix.getTranslation();
-            const projectedPosition = ray.intersectsPlane(new Plane3(Vector3.ZERO, new Vector3(worldPosition.x, 0, worldPosition.z)));
+            const projectedPosition = ray.intersectsPlane(this.selectionPlane);
             if(projectedPosition)
             {
-                const translation = new Vector3(0, projectedPosition.y - this.selectionPoint.y, 0);
+                const translation = new Vector3(0, projectedPosition.y - this.selectionPlane.point.y, 0);
                 translation.rotate(this.rotation);
                 this.position.add(translation);
-                this.selectionPoint = projectedPosition;
+                this.selectionPlane.point = projectedPosition;
             }
         }
         else if(this.currentAxis == 2)
         {
-            const worldPosition = GfxApp.getInstance().camera.localToWorldMatrix.getTranslation();
-            const projectedPosition = ray.intersectsPlane(new Plane3(Vector3.ZERO, new Vector3(worldPosition.x, worldPosition.y, 0)));
+            const projectedPosition = ray.intersectsPlane(this.selectionPlane);
             if(projectedPosition)
             {
-                const translation = new Vector3(0, 0, projectedPosition.z - this.selectionPoint.z);
+                const translation = new Vector3(0, 0, projectedPosition.z - this.selectionPlane.point.z);
                 translation.rotate(this.rotation);
                 this.position.add(translation);
-                this.selectionPoint = projectedPosition;
+                this.selectionPlane.point = projectedPosition;
             }
         }
     }
@@ -148,49 +145,35 @@ export class TransformWidget extends Node3
     {
         this.deviceCoords = GfxApp.getInstance().getNormalizedDeviceCoordinates(event.x, event.y);
 
-        const ray = new Ray();
+        const ray = new Ray3();
         ray.setPickRay( this.deviceCoords, GfxApp.getInstance().camera);
 
         if(this.currentAxis == -1)
         {
-            if(ray.intersectsOrientedBoundingBox(this.thickAxes[0]))
+            const xAxisPosition = ray.intersectsOrientedBoundingBox(this.thickAxes[0]);
+            if(xAxisPosition)
             {
-                const worldPosition = GfxApp.getInstance().camera.localToWorldMatrix.getTranslation();
-                const projectedPosition = ray.intersectsPlane(new Plane3(Vector3.ZERO, new Vector3(0, worldPosition.y, worldPosition.z)));
-
-                if(projectedPosition)
-                {
-                    this.selectionPoint = projectedPosition;
-                    this.currentAxis = 0;
-                }
-
+                this.selectionPlane.point = xAxisPosition;
+                this.selectionPlane.normal = this.rotation.rotate(new Vector3(0, 0, 1));
+                this.currentAxis = 0;
                 return;
             }
 
-            if(ray.intersectsOrientedBoundingBox(this.thickAxes[1]))
+            const yAxisPosition = ray.intersectsOrientedBoundingBox(this.thickAxes[1]);
+            if(yAxisPosition)
             {
-                const worldPosition = GfxApp.getInstance().camera.localToWorldMatrix.getTranslation();
-                const projectedPosition = ray.intersectsPlane(new Plane3(Vector3.ZERO, new Vector3(worldPosition.x, 0, worldPosition.z)));
-                if(projectedPosition)
-                {
-                    this.selectionPoint = projectedPosition;
-                    this.currentAxis = 1;
-                }
-
+                this.selectionPlane.point = yAxisPosition;
+                this.selectionPlane.normal = this.rotation.rotate(new Vector3(0, 0, 1));
+                this.currentAxis = 1;
                 return;
             }
 
-            if(ray.intersectsOrientedBoundingBox(this.thickAxes[2]))
+            const zAxisPosition = ray.intersectsOrientedBoundingBox(this.thickAxes[2]);
+            if(zAxisPosition)
             {
-                const worldPosition = GfxApp.getInstance().camera.localToWorldMatrix.getTranslation();
-                const projectedPosition = ray.intersectsPlane(new Plane3(Vector3.ZERO, new Vector3(worldPosition.x, worldPosition.y, 0)));
-
-                if(projectedPosition)
-                {
-                    this.selectionPoint = projectedPosition;
-                    this.currentAxis = 2;
-                }
-
+                this.selectionPlane.point = zAxisPosition;
+                this.selectionPlane.normal = this.rotation.rotate(new Vector3(1, 0, 0));
+                this.currentAxis = 2;
                 return;
             }
         }

@@ -7,13 +7,13 @@ import { Camera } from '../core/Camera'
 import { Mesh3 } from '../geometry/3d/Mesh3'
 import { Node3 } from '../core/Node3'
 
-export class Ray 
+export class Ray3
 {
     public origin: Vector3;
     public direction: Vector3;
 
     /**
-     * Constructor of the Ray class
+     * Constructor of the Ray3 class
      * 
      * @param origin - The origin of the ray
      * @param direction - The direction of the ray
@@ -23,6 +23,19 @@ export class Ray
         this.origin = origin;
         this.direction = direction;
     }
+
+    /**
+     * Create a copy of the ray
+     * @returns Ray3 object containing a copy of the original ray
+     */
+    clone(): Ray3
+    {
+        const ray = new Ray3();
+        ray.origin.copy(this.origin);
+        ray.direction.copy(this.direction);
+        return ray;
+    }
+        
     
     /**
      * Sets the origin and direction of the Ray
@@ -45,13 +58,10 @@ export class Ray
     setPickRay(deviceCoords: Vector2, camera: Camera): void
     {
         const worldMatrix = camera.localToWorldMatrix;
-        const worldPosition = worldMatrix.getTranslation();
-        const worldRotation = worldMatrix.getRotation();
-            
-        this.origin.copy(worldPosition);
+        this.origin.copy(worldMatrix.getTranslation());
         this.direction.set(deviceCoords.x, deviceCoords.y, -1);
         this.direction.transformPoint(camera.projectionMatrix.inverse());
-        this.direction.rotate(worldRotation);
+        this.direction.transformVector(worldMatrix);
         this.direction.normalize();
     }
 
@@ -184,6 +194,17 @@ export class Ray
     }
 
     /**
+     * Checks if the Ray intersects an Axis-Aligned Bounding Box
+     * 
+     * @param transform - The Transform of the Axis-Aligned Bounding Box
+     * @returns A Vector3 containing the intersection point or null if there is no intersection
+     */
+    intersectsAxisAlignedBoundingBox(transform: Node3): Vector3 | null
+    {
+        return this.intersectsBox(transform.worldBoundingBox);
+    }
+
+    /**
      * Checks if the Ray intersects an Oriented Bounding Box
      * 
      * @param transform - The Transform of the Oriented Bounding Box
@@ -207,13 +228,7 @@ export class Ray
      */
     intersectsOrientedBoundingSphere(transform: Node3): Vector3 | null
     {
-        const localIntersection = this.createLocalRay(transform).intersectsSphere(transform.boundingSphere);
-        if(localIntersection)
-        {
-            localIntersection.transformPoint(transform.localToWorldMatrix);
-        }
-
-        return localIntersection;
+        return this.intersectsSphere(transform.worldBoundingSphere);
     }
 
     /**
@@ -364,30 +379,13 @@ export class Ray
      * @param transform - The Transform object to create the local ray from
      * @returns The ray in the local space of the Transform
      */
-    createLocalRay(transform: Node3): Ray
+    createLocalRay(transform: Node3): Ray3
     {
-        const localRay = new Ray(this.origin.clone(), this.direction.clone());
-
-        const worldMatrix = transform.localToWorldMatrix;
-        const worldPosition = worldMatrix.getTranslation();
-        const worldRotation = worldMatrix.getRotation();
-        const worldScale = worldMatrix.getScale();
-
-        localRay.origin.subtract(worldPosition);
-
-        const inverseRotation = worldRotation.inverse();
-        localRay.origin.rotate(inverseRotation);
-        localRay.direction.rotate(inverseRotation);
-
-        const scale = worldScale;
-        const inverseScale = new Vector3();
-        inverseScale.x = 1 / scale.x;
-        inverseScale.y = 1 / scale.y;
-        inverseScale.z = 1 / scale.z;
-        localRay.origin.multiply(inverseScale);
-        localRay.direction.multiply(inverseScale);
+        const localRay = this.clone();
+        const inverseWorldMatrix = transform.localToWorldMatrix.inverse();
+        localRay.origin.transformPoint(inverseWorldMatrix);
+        localRay.direction.transformVector(inverseWorldMatrix);
         localRay.direction.normalize();
-        
         return localRay;
     } 
 }
