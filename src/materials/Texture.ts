@@ -21,6 +21,18 @@ export class Texture
      */
     public id: number;
 
+    /** 
+     * The width of the original (non-mipmapped) texture image data or 'undefined' if
+     * the image has not yet completed loading.
+     */
+    public width: number | undefined;
+
+    /** 
+     * The height of the original (non-mipmapped) texture image data or 'undefined' if
+     * the image has not yet completed loading.
+     */
+    public height: number | undefined;
+
     /**
      * Create a new instance of a texture.
      * 
@@ -29,7 +41,7 @@ export class Texture
      * "./some-image.jpg"). Can be null to start out with, in which case the
      * texture will be empty.
      */
-    constructor(url: string | null = null)
+    constructor(source: string | null | ImageData = new ImageData(new Uint8ClampedArray([255, 0, 255, 255]), 1, 1))
     {
         this.gl  = GfxApp.getInstance().renderer.gl;
 
@@ -39,16 +51,25 @@ export class Texture
 
         this.gl.activeTexture(this.gl.TEXTURE0 + this.id);
         this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
-        this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, 1, 1, 0, this.gl.RGBA, 
-            this.gl.UNSIGNED_BYTE, new Uint8Array([255, 0, 255, 255]));
         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.REPEAT);
         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.REPEAT);
         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.NEAREST_MIPMAP_LINEAR);
         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
-        
-        if(url)
-        {
-            this.load(url);
+
+        if (source instanceof ImageData) {
+            this.width = source.width;
+            this.height = source.height;
+            this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.width, this.height, 0, this.gl.RGBA, 
+                this.gl.UNSIGNED_BYTE, source.data);
+        } else if (typeof source == "string") {
+            this.width = undefined;
+            this.height = undefined;
+            this.load(source);
+        } else {
+            this.width = 1;
+            this.height = 1;
+            this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.width, this.height, 0, this.gl.RGBA, 
+                this.gl.UNSIGNED_BYTE, new Uint8Array([255, 0, 255, 255]));  
         }
     }
 
@@ -80,9 +101,39 @@ export class Texture
     {
         GfxApp.getInstance().assetManager.loadedAssets.push(url);
 
+        this.width = image.width;
+        this.height = image.height;
         this.gl.activeTexture(this.gl.TEXTURE0 + this.id);
         this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
         this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, image);
+        this.gl.generateMipmap(this.gl.TEXTURE_2D);
+    }
+
+    /**
+     * Copies the pixel data from an ImageData source into the texture
+     * 
+     * @param imageData An ImageData object with the same width and height as the texture
+     */
+    setFullImageData(imageData: ImageData): void
+    {
+        this.gl.activeTexture(this.gl.TEXTURE0 + this.id);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
+        this.gl.texSubImage2D(this.gl.TEXTURE_2D, 0, 0, 0, imageData.width, imageData.height, this.gl.RGBA, this.gl.UNSIGNED_BYTE, imageData.data);
+        this.gl.generateMipmap(this.gl.TEXTURE_2D);
+    }
+
+    /**
+     * Copies the pixel data from an ImageData source into a portion of the texture, placing it as a sub-image within the texture
+     * 
+     * @param imageData An ImageData object with width and height that are the same size or smaller than the texture
+     * @param xOffset An offset in the x-direction within the texture where the top-left corner of imageData should be placed
+     * @param yOffset An offset in the y-direction within the texture where the top-left corner of imageData should be placed
+     */
+    setSubImageData(imageData: ImageData, xOffset: number, yOffset: number): void
+    {
+        this.gl.activeTexture(this.gl.TEXTURE0 + this.id);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
+        this.gl.texSubImage2D(this.gl.TEXTURE_2D, 0, xOffset, yOffset, imageData.width, imageData.height, this.gl.RGBA, this.gl.UNSIGNED_BYTE, imageData.data);
         this.gl.generateMipmap(this.gl.TEXTURE_2D);
     }
 
