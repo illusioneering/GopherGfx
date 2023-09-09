@@ -49,6 +49,49 @@ export class Geometry2Factory
         return mesh;
     }
 
+
+    /**
+     * Creates a pie slice (technically a sector) that spans the arc from startAngle moving counter-clockwise to stopAngle.
+     * @param radius Radius of the circle the pie slice is cut from
+     * @param startAngle The starting angle for the pie slice
+     * @param stopAngle The stopping angle
+     * @param radiansPerSegment Controls the tesselation of the triangle fan, defaults to the same resolution as
+     * Geometry2Factory.createCircle(), 50 segments per 2*PI.
+     * @returns A Mesh2 triangle fan to represent the sector
+     */
+    public static createPieSlice(radius = 0.5, startAngle = 0, stopAngle = Math.PI, radiansPerSegment = Math.PI / 25): Mesh2
+    {
+        const mesh = new Mesh2();
+        
+        mesh.material.drawMode = WebGL2RenderingContext.TRIANGLE_FAN;
+
+        const vertices = [0, 0];
+        const uvs = [0.5, 0.5];
+
+        while (stopAngle < startAngle) {
+            stopAngle += 2 * Math.PI;
+        }
+        const numSegments = Math.floor(stopAngle - startAngle) / radiansPerSegment;
+        const angleInc = (stopAngle - startAngle) / numSegments;
+        let angle = startAngle;
+        for (let i = 0; i <= numSegments; i++) {
+            vertices.push(Math.cos(angle) * radius, Math.sin(angle) * radius);
+            uvs.push((Math.cos(angle) + 1) / 2, (Math.sin(angle) - 1) / -2);
+            angle += angleInc;
+        }
+        if (angle != stopAngle) {
+            // if the total angle does not divide evenly by radiansPerSegment, add one final segment
+            angle = stopAngle;
+            vertices.push(Math.cos(angle) * radius, Math.sin(angle) * radius);
+            uvs.push((Math.cos(angle) + 1) / 2, (Math.sin(angle) - 1) / -2);
+        }
+
+        mesh.setVertices(vertices);
+        mesh.setTextureCoordinates(uvs);
+
+        return mesh;
+    }
+    
     public static createAxes(size = 1): Line2
     {
         const axes = new Line2(LineMode2.LINES);
