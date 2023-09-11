@@ -20,7 +20,7 @@ export class Text extends Texture
 /**
  * Constructor for Text class. The text is rendered using the browser's canvas element and
  * then copyied into a texture, so the parameters are based on what is understood by
- * [CanvasRenderingContext2D]{https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D}.
+ * [CanvasRenderingContext2D](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D).
  * Shortcuts are provided for fillStyle, backgroundStyle, and strokeStyle to use the gfx.Color
  * types if that is more convenient for your application.
  * 
@@ -28,18 +28,18 @@ export class Text extends Texture
  * @param width - The width of the text canvas
  * @param height - The height of the text canvas
  * @param font - The font style of the text. Can be a gfx.Color or see additional options for
- * [canvas.font]{https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/font}.
+ * [canvas.font](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/font).
  * @param fillStyle - The fill style of the text. Can be a gfx.Color or see additional options for
- * [canvas.fillStyle]{https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillStyle}.
+ * [canvas.fillStyle](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillStyle).
  * @param backgroundStyle - The fill style of the background. Can be a gfx.Color or see additional options for
- * [canvas.fillStyle]{https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillStyle}.
+ * [canvas.fillStyle](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillStyle).
  * @param strokeStyle - The stroke style of the text. Can be a gfx.Color or see additional options for
- * [canvas.strokeStyle]{https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/strokeStyle}.
+ * [canvas.strokeStyle](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/strokeStyle).
  * @param strokeWidth - The stroke width of the text. 
  * @param align - The alignment of the text.  See possible values in 
- * [canvas.textAlign]{https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/textAlign}
+ * [canvas.textAlign](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/textAlign)
  * @param baseline - The baseline of the text.  See possible values in
- * [canvas.textBaseline]{https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/textBaseline}.
+ * [canvas.textBaseline](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/textBaseline).
  */
     constructor(text: string, width: number, height: number, font = '24px monospace', 
                 fillStyle: string | Color = 'black', backgroundStyle: string | Color = '', strokeStyle: string | Color = '', strokeWidth = 1,
