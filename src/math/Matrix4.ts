@@ -1,25 +1,66 @@
 import { Vector3 } from "./Vector3";
 import { Quaternion } from "./Quaternion";
+import { MathUtils } from "./MathUtils";
 
+/**
+ * This class holds a 4x4 transformation matrix.  It includes routines for using the matrix to 
+ * transform points and vectors.  It includes routines for constructing many common types of matrices
+ * (see make*), for inverting the matrix, and for accessing the underlying 16-elements by row, column.
+ * 
+ * Most of the functions in the class are defined both as member functions that can be called on a specific
+ * instance of Vector3 *and* as static functions.  The static functions return a *new* result, leaving the
+ * original inputs unchanged, whereas, in general, member functions save the result in the matrix itself
+ * and return void:
+ * ```
+ * const T = Matrix4.makeTranslation(new Vector3(1, 2, 3));
+ * const R = Matrix4.makeRotationX(Math.PI);
+ * const S = Matrix4.makeScale(new Vector3(2, 2, 2));
+ * 
+ * // saves the result in M, leaving T, R, and S unchanged.
+ * const M = Matrix4.multiplyAll(T, R, S);
+ * 
+ * // each call to multiply overwrites the previous contents of M2 with the result of the multiplication
+ * const M2 = Matrix4.makeIdentity();
+ * M2.multiply(T);
+ * M2.multiply(R);
+ * M2.multiply(S); 
+ * ```
+ */
 export class Matrix4
 {
-/**
- * Static field with the identity matrix
- */
+    /**
+     * Static field to provide quick access to the identity matrix.
+     * (Note: Be careful not to change the value of this field!  It is marked readonly, but typescipt do not completely
+     * enforce this!)
+     * ```
+     * // Good use of IDENTITY:
+     * const M = gfx.Matrix4();
+     * if (M.equals(gfx.Matrix4.IDENTITY)) {
+     *   console.log("We have an identity matrix.")
+     * }
+     * 
+     * // Dangerous use of IDENTITY!!!!
+     * const M = gfx.Matrix4.IDENTITY;  // makes M a reference to gfx.Matrix4.IDENTITY
+     * M.set(3.0, 3, 3); // changes the underlying matrix in gfx.Matrix4.IDENTITY!
+     * 
+     * // Do this instead:
+     * const M = gfx.Matrix4.makeIdentity(); // create a new identity matrix M
+     * M.set(3.0, 3, 3);
+     */
     public static readonly IDENTITY = new Matrix4();
 
-/**
- * Array of 16 numbers representing the elements in the Matrix4
- */
+    /**
+     * Array of 16 numbers representing the elements in the Matrix4
+     */
     public mat: Array<number>;
 
-/**
- * Multiplies two Matrix4 objects and returns the result
- * 
- * @param m1 - The first Matrix4 object
- * @param m2 - The second Matrix4 object
- * @returns The result of the multiplication of the two input matrices
- */
+    /**
+     * Multiplies two Matrix4 objects and returns the result in a new matrix.
+     * 
+     * @param lhs - The first Matrix4 object
+     * @param rhs - The second Matrix4 object
+     * @returns A new matrix = lhs * rhs
+     */
     static multiply(lhs: Matrix4, rhs: Matrix4): Matrix4
     {
          // This implementation is several orders of magnitude faster than using nested loops
@@ -52,12 +93,38 @@ export class Matrix4
         return m;
     }
 
-/**
- * Creates a new Matrix4 object with the same values as the input matrix
- * 
- * @param m - The input Matrix4 object
- * @returns A new Matrix4 object with the same values as the input matrix
- */
+    /**
+     * Mn = M1 * M2 * M3 * ... * M(n-1):  Composes (i.e., multiplies) two or more 4x4 matrices together
+     * and returns the result in a new matrix.
+     * 
+     * (Remember, matrix multiplication is not commutitive; so, the order of the matrices is important!
+     * The order that transformations are applied to points and vectors is right-to-left.  To transform
+     * point p into p', as in the equation below, think of M(n-1) as being the first transformation to
+     * be applied to p and M1 as being the last transformation to be applied in order to produce p'.)
+     *  ```
+     *    p' = M1 * M2 * M3 * ... * M(n-1) * p
+     * ``` 
+     * @param m1 - The first (leftmost) Matrix4 object
+     * @param m2 - The next Matrix4 object
+     * @param mAdditional - Zero or more additional Matrix4 objects
+     * @returns A new Matrix4 object = m1 * m2 * ...
+     */
+    static multiplyAll(m1: Matrix4, m2: Matrix4, ...mAdditional: Matrix4[]): Matrix4
+    {
+        const result = m1.clone();
+        result.multiply(m2);
+        for (let i=0; i<mAdditional.length; i++) {
+            result.multiply(mAdditional[i])
+        }
+        return result;
+    }
+
+    /**
+     * Creates a new Matrix4 object with the same values as the input matrix
+     * 
+     * @param m - The input Matrix4 object
+     * @returns A new Matrix4 object with the same values as the input matrix
+     */
     static copy(m: Matrix4): Matrix4
     {
         const mat = new Matrix4();
@@ -65,27 +132,27 @@ export class Matrix4
         return mat;
     }
 
-/**
- * Creates a new Matrix4 object from the given values in row-major order
- * 
- * @param n1 - Element [0,0] in the matrix
- * @param n2 - Element [0,1] in the matrix
- * @param n3 - Element [0,2] in the matrix
- * @param n4 - Element [0,3] in the matrix
- * @param n5 - Element [1,0] in the matrix
- * @param n6 - Element [1,1] in the matrix
- * @param n7 - Element [1,2] in the matrix
- * @param n8 - Element [1,3] in the matrix
- * @param n9 - Element [2,0] in the matrix
- * @param n10 - Element [2,1] in the matrix
- * @param n11 - Element [2,2] in the matrix
- * @param n12 - Element [2,3] in the matrix
- * @param n13 - Element [3,0] in the matrix
- * @param n14 - Element [3,1] in the matrix
- * @param n15 - Element [3,2] in the matrix
- * @param n16 - Element [3,3] in the matrix
- * @returns A new Matrix4 object created from the given values
- */
+    /**
+     * Creates a new Matrix4 object from the given values in row-major order
+     * 
+     * @param n1 - Element [0,0] in the matrix
+     * @param n2 - Element [0,1] in the matrix
+     * @param n3 - Element [0,2] in the matrix
+     * @param n4 - Element [0,3] in the matrix
+     * @param n5 - Element [1,0] in the matrix
+     * @param n6 - Element [1,1] in the matrix
+     * @param n7 - Element [1,2] in the matrix
+     * @param n8 - Element [1,3] in the matrix
+     * @param n9 - Element [2,0] in the matrix
+     * @param n10 - Element [2,1] in the matrix
+     * @param n11 - Element [2,2] in the matrix
+     * @param n12 - Element [2,3] in the matrix
+     * @param n13 - Element [3,0] in the matrix
+     * @param n14 - Element [3,1] in the matrix
+     * @param n15 - Element [3,2] in the matrix
+     * @param n16 - Element [3,3] in the matrix
+     * @returns A new Matrix4 object created from the given values
+     */
     public static fromRowMajor(n1: number, n2: number, n3: number, n4: number, 
         n5: number, n6: number, n7: number, n8: number, 
         n9: number, n10: number, n11: number, n12: number, 
@@ -96,27 +163,27 @@ export class Matrix4
         return matrix;
     }
 
-/**
- * Creates a new Matrix4 object from the given values in column-major order
- * 
- * @param n1 - Element [0,0] in the matrix
- * @param n2 - Element [1,0] in the matrix
- * @param n3 - Element [2,0] in the matrix
- * @param n4 - Element [3,0] in the matrix
- * @param n5 - Element [0,1] in the matrix
- * @param n6 - Element [1,1] in the matrix
- * @param n7 - Element [2,1] in the matrix
- * @param n8 - Element [3,1] in the matrix
- * @param n9 - Element [0,2] in the matrix
- * @param n10 - Element [1,2] in the matrix
- * @param n11 - Element [2,2] in the matrix
- * @param n12 - Element [3,2] in the matrix
- * @param n13 - Element [0,3] in the matrix
- * @param n14 - Element [1,3] in the matrix
- * @param n15 - Element [2,3] in the matrix
- * @param n16 - Element [3,3] in the matrix
- * @returns A new Matrix4 object created from the given values
- */
+    /**
+     * Creates a new Matrix4 object from the given values in column-major order
+     * 
+     * @param n1 - Element [0,0] in the matrix
+     * @param n2 - Element [1,0] in the matrix
+     * @param n3 - Element [2,0] in the matrix
+     * @param n4 - Element [3,0] in the matrix
+     * @param n5 - Element [0,1] in the matrix
+     * @param n6 - Element [1,1] in the matrix
+     * @param n7 - Element [2,1] in the matrix
+     * @param n8 - Element [3,1] in the matrix
+     * @param n9 - Element [0,2] in the matrix
+     * @param n10 - Element [1,2] in the matrix
+     * @param n11 - Element [2,2] in the matrix
+     * @param n12 - Element [3,2] in the matrix
+     * @param n13 - Element [0,3] in the matrix
+     * @param n14 - Element [1,3] in the matrix
+     * @param n15 - Element [2,3] in the matrix
+     * @param n16 - Element [3,3] in the matrix
+     * @returns A new Matrix4 object created from the given values
+     */
     public static fromColumnMajor(n1: number, n2: number, n3: number, n4: number, 
         n5: number, n6: number, n7: number, n8: number, 
         n9: number, n10: number, n11: number, n12: number, 
@@ -127,11 +194,11 @@ export class Matrix4
         return matrix;
     }
 
-/**
- * Creates a new Matrix4 object with the identity matrix
- * 
- * @returns A new Matrix4 object with the identity matrix
- */    
+    /**
+     * Creates a new Matrix4 object with the identity matrix
+     * 
+     * @returns A new Matrix4 object with the identity matrix
+     */    
     public static makeIdentity(): Matrix4
     {
         return Matrix4.fromRowMajor(
@@ -142,12 +209,12 @@ export class Matrix4
         );
     }
 
-/**
- * Creates a new Matrix4 object for translation
- * 
- * @param v - The Vector3 object representing the translation vector
- * @returns A new Matrix4 object for translation
- */    
+    /**
+     * Creates a new Matrix4 object for translation
+     * 
+     * @param v - The Vector3 object representing the translation vector
+     * @returns A new Matrix4 object for translation
+     */    
     public static makeTranslation(v: Vector3): Matrix4
     {
         return Matrix4.fromRowMajor(
@@ -158,12 +225,12 @@ export class Matrix4
         );
     }
 
-/**
- * Creates a new Matrix4 object for rotation
- * 
- * @param rotation - The Quaternion object representing the rotation vector
- * @returns A new Matrix4 object for rotation
- */    
+    /**
+     * Creates a new Matrix4 object for rotation
+     * 
+     * @param rotation - The Quaternion object representing the rotation vector
+     * @returns A new Matrix4 object for rotation
+     */    
     public static makeRotation(rotation: Quaternion): Matrix4
     {
         const matrix = new Matrix4();
@@ -171,12 +238,12 @@ export class Matrix4
         return matrix;
     }
 
-/**
- * Creates a new Matrix4 object for rotation around the X axis
- * 
- * @param angle - The angle of rotation around the X axis
- * @returns A new Matrix4 object for rotation around the X axis
- */    
+    /**
+     * Creates a new Matrix4 object for rotation around the X axis
+     * 
+     * @param angle - The angle of rotation around the X axis
+     * @returns A new Matrix4 object for rotation around the X axis
+     */    
     public static makeRotationX(angle: number): Matrix4
     {
         const matrix = new Matrix4();
@@ -184,12 +251,12 @@ export class Matrix4
         return matrix;
     }
 
-/**
- * Creates a new Matrix4 object for rotation around the Y axis
- * 
- * @param angle - The angle of rotation around the Y axis
- * @returns A new Matrix4 object for rotation around the Y axis
- */
+    /**
+     * Creates a new Matrix4 object for rotation around the Y axis
+     * 
+     * @param angle - The angle of rotation around the Y axis
+     * @returns A new Matrix4 object for rotation around the Y axis
+     */
     public static makeRotationY(angle: number): Matrix4
     {
         const matrix = new Matrix4();
@@ -197,12 +264,12 @@ export class Matrix4
         return matrix;
     }
 
-/**
- * Creates a new Matrix4 object for rotation around the Z axis
- * 
- * @param angle - The angle of rotation around the Z axis
- * @returns A new Matrix4 object for rotation around the Z axis
- */
+    /**
+     * Creates a new Matrix4 object for rotation around the Z axis
+     * 
+     * @param angle - The angle of rotation around the Z axis
+     * @returns A new Matrix4 object for rotation around the Z axis
+     */
     public static makeRotationZ(angle: number): Matrix4
     {
         const matrix = new Matrix4();
@@ -211,13 +278,13 @@ export class Matrix4
     }
 
 
-/**
- * Creates a new Matrix4 object for rotation around an arbitrary axis
- * 
- * @param axis - The Vector3 object representing the axis of rotation
- * @param angle - The angle of rotation around the axis
- * @returns A new Matrix4 object for rotation around an arbitrary axis
- */
+    /**
+     * Creates a new Matrix4 object for rotation around an arbitrary axis
+     * 
+     * @param axis - The Vector3 object representing the axis of rotation
+     * @param angle - The angle of rotation around the axis
+     * @returns A new Matrix4 object for rotation around an arbitrary axis
+     */
     public static makeAxisAngle(axis: Vector3, angle: number): Matrix4
     {
         const matrix = new Matrix4();
@@ -226,15 +293,15 @@ export class Matrix4
     }
 
 
-/**
- * Creates a new Matrix4 object for rotation using Euler angles
- * 
- * @param x - The angle of rotation around the x axis
- * @param y - The angle of rotation around the y axis
- * @param z - The angle of rotation around the z axis
- * @param order - The order of the rotations (default is 'YZX')
- * @returns A new Matrix4 object for rotation using Euler angles
- */
+    /**
+     * Creates a new Matrix4 object for rotation using Euler angles
+     * 
+     * @param x - The angle of rotation around the x axis
+     * @param y - The angle of rotation around the y axis
+     * @param z - The angle of rotation around the z axis
+     * @param order - The order of the rotations (default is 'YZX')
+     * @returns A new Matrix4 object for rotation using Euler angles
+     */
     public static makeEulerAngles(x: number, y: number, z: number, order = 'YZX'): Matrix4
     {
         const dest = new Matrix4();
@@ -242,12 +309,12 @@ export class Matrix4
         return dest;
     }
 
-/**
- * Creates a new Matrix4 object for scaling
- * 
- * @param scale - The Vector3 object representing the scale vector
- * @returns A new Matrix4 object for scaling
- */
+    /**
+     * Creates a new Matrix4 object for scaling
+     * 
+     * @param scale - The Vector3 object representing the scale vector
+     * @returns A new Matrix4 object for scaling
+     */
     public static makeScale(scale: Vector3): Matrix4
     {
         const matrix = new Matrix4();
@@ -255,14 +322,14 @@ export class Matrix4
         return matrix;
     }
 
-/**
- * Creates a new Matrix4 object representing the combined transform of position, rotation and scale
- * 
- * @param position - The Vector3 object representing the position
- * @param rotation - The Quaternion object representing the rotation
- * @param scale - The Vector3 object representing the scale
- * @returns A new Matrix4 object representing the combined transform of position, rotation and scale
- */
+    /**
+     * Creates a new Matrix4 object representing the combined transform of position, rotation and scale
+     * 
+     * @param position - The Vector3 object representing the position
+     * @param rotation - The Quaternion object representing the rotation
+     * @param scale - The Vector3 object representing the scale
+     * @returns A new Matrix4 object representing the combined transform of position, rotation and scale
+     */
     public static compose(position = Vector3.ZERO, rotation = Quaternion.IDENTITY, scale = Vector3.UP): Matrix4
     {
         const m = Matrix4.makeScale(scale);
@@ -273,20 +340,24 @@ export class Matrix4
         return m;
     }
 
-/**
- * Creates a new Matrix4 object for the view matrix of a camera
- * 
- * @param eye - The Vector3 object representing the position of the camera
- * @param target - The Vector3 object representing the target of the camera
- * @param up - The Vector3 object representing the up vector of the camera
- * @returns A new Matrix4 object for the view matrix of a camera
- */
-    public static lookAt(eye: Vector3, target: Vector3, up: Vector3): Matrix4
+    /**
+     * Creates a new Matrix4 object for the view matrix of a camera.  The matrix will position the camera
+     * at eyePoint and orient it to look directly toward the targetPoint so that the camera's look vector
+     * will be (targetPoint - eyePoint).  The camera's rotation around the look vector is controlled by 
+     * the upVector, which only needs to point roughly in the Up direction, i.e., it does not need to
+     * be completely perpendicular to the look vector.
+     * 
+     * @param eyePoint - The position of the camera
+     * @param targetPoint - A point that the camera should look directly toward
+     * @param upVector - The "up" direction for the camera
+     * @returns A new Matrix4 object for the view matrix of a camera
+     */
+    public static lookAt(eyePoint: Vector3, targetPoint: Vector3, upVector: Vector3): Matrix4
     {
-        const z = Vector3.subtract(eye, target);
+        const z = Vector3.subtract(eyePoint, targetPoint);
         z.normalize();
 
-        const x = Vector3.cross(up, z);
+        const x = Vector3.cross(upVector, z);
         x.normalize();
 
         const y = Vector3.cross(z, x);
@@ -303,23 +374,23 @@ export class Matrix4
             1.0, 0.0, 0.0, 0.0,
             0.0, 1.0, 0.0, 0.0,
             0.0, 0.0, 1.0, 0.0,
-            eye.x, eye.y, eye.z, 1.0 
+            eyePoint.x, eyePoint.y, eyePoint.z, 1.0 
         );
 
         return Matrix4.multiply(translation, rotation);
     }
 
-/**
- * Create an orthographic projection Matrix4 
- * 
- * @param left - Left coordinate of the viewing volume
- * @param right - Right coordinate of the viewing volume
- * @param bottom - Bottom coordinate of the viewing volume
- * @param top - Top coordinate of the viewing volume
- * @param near - Near clipping plane of the viewing volume
- * @param far - Far clipping plane of the viewing volume
- * @returns A Matrix4 representing an orthographic projection
- */
+    /**
+     * Create an orthographic projection Matrix4 
+     * 
+     * @param left - Left coordinate of the viewing volume
+     * @param right - Right coordinate of the viewing volume
+     * @param bottom - Bottom coordinate of the viewing volume
+     * @param top - Top coordinate of the viewing volume
+     * @param near - Near clipping plane of the viewing volume
+     * @param far - Far clipping plane of the viewing volume
+     * @returns A Matrix4 representing an orthographic projection
+     */
     public static makeOrthographic(left: number, right: number, bottom: number, top: number, near: number, far: number): Matrix4
     {
         const matrix = new Matrix4();
@@ -327,15 +398,15 @@ export class Matrix4
         return matrix;
     }
 
-/**
- * Create a perspective projection Matrix4 
- * 
- * @param fov - Field of view of the projection in radians
- * @param aspectRatio - Aspect ratio of the viewport (width / height)
- * @param near - Near clipping plane of the viewing volume
- * @param far - Far clipping plane of the viewing volume
- * @returns A Matrix4 representing a perspective projection
- */
+    /**
+     * Create a perspective projection Matrix4 
+     * 
+     * @param fov - Field of view of the projection in radians
+     * @param aspectRatio - Aspect ratio of the viewport (width / height)
+     * @param near - Near clipping plane of the viewing volume
+     * @param far - Far clipping plane of the viewing volume
+     * @returns A Matrix4 representing a perspective projection
+     */
     public static makePerspective(fov: number, aspectRatio: number, near: number, far: number): Matrix4
     {
         const matrix = new Matrix4();
@@ -343,17 +414,17 @@ export class Matrix4
         return matrix;
     }
 
-/**
- * Create a frustum projection Matrix4 
- * 
- * @param left - Left coordinate of the viewing volume
- * @param right - Right coordinate of the viewing volume
- * @param bottom - Bottom coordinate of the viewing volume
- * @param top - Top coordinate of the viewing volume
- * @param near - Near clipping plane of the viewing volume
- * @param far - Far clipping plane of the viewing volume
- * @returns A Matrix4 representing a frustum projection
- */
+    /**
+     * Create a frustum projection Matrix4 
+     * 
+     * @param left - Left coordinate of the viewing volume
+     * @param right - Right coordinate of the viewing volume
+     * @param bottom - Bottom coordinate of the viewing volume
+     * @param top - Top coordinate of the viewing volume
+     * @param near - Near clipping plane of the viewing volume
+     * @param far - Far clipping plane of the viewing volume
+     * @returns A Matrix4 representing a frustum projection
+     */
     public static makeFrustum(left: number, right: number, bottom: number, top: number, near: number, far: number): Matrix4
     {
         const matrix = new Matrix4();
@@ -361,16 +432,34 @@ export class Matrix4
         return matrix;
     }
 
-    public static transformPoint(m: Matrix4, v: Vector3): Vector3
+    /**
+     * Multiplies point p by a 4x4 transformation matrix and returns the result as a new point.  This has the effect of
+     * transforming p from m's local coordinate system to m's parent coordinate system.  The multiplication is done
+     * using homogeneous coordinates (p is treated as having a w=1 coordinate).
+     * 
+     * @param m A 4x4 transformation matrix
+     * @param p The original point
+     * @returns A new point transformed by m
+     */
+    public static transformPoint(m: Matrix4, p: Vector3): Vector3
     {
         const result = new Vector3();
-        const w = 1 / (m.mat[3]*v.x + m.mat[7]*v.y + m.mat[11]*v.z + m.mat[15]);
-        result.x = w * (m.mat[0]*v.x + m.mat[4]*v.y + m.mat[8]*v.z + m.mat[12]);
-        result.y = w * (m.mat[1]*v.x + m.mat[5]*v.y + m.mat[9]*v.z + m.mat[13]);
-        result.z = w * (m.mat[2]*v.x + m.mat[6]*v.y + m.mat[10]*v.z + m.mat[14]);
+        const w = 1 / (m.mat[3]*p.x + m.mat[7]*p.y + m.mat[11]*p.z + m.mat[15]);
+        result.x = w * (m.mat[0]*p.x + m.mat[4]*p.y + m.mat[8]*p.z + m.mat[12]);
+        result.y = w * (m.mat[1]*p.x + m.mat[5]*p.y + m.mat[9]*p.z + m.mat[13]);
+        result.z = w * (m.mat[2]*p.x + m.mat[6]*p.y + m.mat[10]*p.z + m.mat[14]);
         return result;
     }
 
+    /**
+     * Multiplies vector v by a 4x4 transformation matrix and returns the result as a new vector.  This has the effect of
+     * transforming v from m's local coordinate system to m's parent coordinate system.  The multiplication is done
+     * using homogeneous coordinates (p is treated as having a w=0 coordinate).
+     * 
+     * @param m A 4x4 transformation matrix
+     * @param v The original vector
+     * @returns A new vector transformed by m
+     */
     public static transformVector(m: Matrix4, v: Vector3): Vector3
     {
         const result = new Vector3();
@@ -382,9 +471,43 @@ export class Matrix4
     }
 
 
-/**
- * Constructs a Matrix4 object with a 4x4 identity matrix
- */    
+    /**
+     * Checks if all elements of two Matrix4 objects are exactly equal.
+     *
+     * @param m1 - The first matrix.
+     * @param m2 - The second matrix.
+     * @returns A boolean value indicating if the two matrices are equal
+     */
+    public static equals(m1: Matrix4, m2: Matrix4): boolean
+    {
+        for (let i=0; i<16; i++) {
+            if (m1.mat[i] != m2.mat[i]) 
+                return false;
+        }
+        return true;
+    }
+
+    /**
+     * Checks if all elements of two Matrix4 objects are equal within a small value of epsilon.
+     *
+     * @param m1 - The first matrix.
+     * @param m2 - The second matrix.
+     * @param epsilon - A small value of acceptable variance to account for numerical instability
+     * @returns A boolean value indicating if the two matrices are equal
+     */
+    public static fuzzyEquals(m1: Matrix4, m2: Matrix4, epsilon: number = MathUtils.EPSILON): boolean
+    {
+        for (let i=0; i<16; i++) {
+            if (Math.abs(m1.mat[i] - m2.mat[i]) < epsilon) 
+                return false;
+        }
+        return true;
+    }
+
+
+    /**
+     * Constructs a Matrix4 object with a 4x4 identity matrix
+     */    
     constructor()
     {
         this.mat = [ 
@@ -395,26 +518,26 @@ export class Matrix4
         ];
     }
 
-/**
- * Set the values of the Matrix4 in column-major order
- * 
- * @param n1 - Column 1, Row 1 value
- * @param n2 - Column 1, Row 2 value
- * @param n3 - Column 1, Row 3 value
- * @param n4 - Column 1, Row 4 value
- * @param n5 - Column 2, Row 1 value
- * @param n6 - Column 2, Row 2 value
- * @param n7 - Column 2, Row 3 value
- * @param n8 - Column 2, Row 4 value
- * @param n9 - Column 3, Row 1 value
- * @param n10 - Column 3, Row 2 value
- * @param n11 - Column 3, Row 3 value
- * @param n12 - Column 3, Row 4 value
- * @param n13 - Column 4, Row 1 value
- * @param n14 - Column 4, Row 2 value
- * @param n15 - Column 4, Row 3 value
- * @param n16 - Column 4, Row 4 value
- */
+    /**
+     * Set the values of the Matrix4 in column-major order
+     * 
+     * @param n1 - Column 1, Row 1 value
+     * @param n2 - Column 1, Row 2 value
+     * @param n3 - Column 1, Row 3 value
+     * @param n4 - Column 1, Row 4 value
+     * @param n5 - Column 2, Row 1 value
+     * @param n6 - Column 2, Row 2 value
+     * @param n7 - Column 2, Row 3 value
+     * @param n8 - Column 2, Row 4 value
+     * @param n9 - Column 3, Row 1 value
+     * @param n10 - Column 3, Row 2 value
+     * @param n11 - Column 3, Row 3 value
+     * @param n12 - Column 3, Row 4 value
+     * @param n13 - Column 4, Row 1 value
+     * @param n14 - Column 4, Row 2 value
+     * @param n15 - Column 4, Row 3 value
+     * @param n16 - Column 4, Row 4 value
+     */
     setColumnMajor(n1: number, n2: number, n3: number, n4: number, 
         n5: number, n6: number, n7: number, n8: number, 
         n9: number, n10: number, n11: number, n12: number, 
@@ -438,26 +561,26 @@ export class Matrix4
         this.mat[15] = n16;
     }
 
-/**
- * Set the values of the Matrix4 in row-major order
- * 
- * @param n1 - Column 1, Row 1 value
- * @param n2 - Column 1, Row 2 value
- * @param n3 - Column 1, Row 3 value
- * @param n4 - Column 1, Row 4 value
- * @param n5 - Column 2, Row 1 value
- * @param n6 - Column 2, Row 2 value
- * @param n7 - Column 2, Row 3 value
- * @param n8 - Column 2, Row 4 value
- * @param n9 - Column 3, Row 1 value
- * @param n10 - Column 3, Row 2 value
- * @param n11 - Column 3, Row 3 value
- * @param n12 - Column 3, Row 4 value
- * @param n13 - Column 4, Row 1 value
- * @param n14 - Column 4, Row 2 value
- * @param n15 - Column 4, Row 3 value
- * @param n16 - Column 4, Row 4 value
- */
+    /**
+     * Set the values of the Matrix4 in row-major order
+     * 
+     * @param n1 - Column 1, Row 1 value
+     * @param n2 - Column 1, Row 2 value
+     * @param n3 - Column 1, Row 3 value
+     * @param n4 - Column 1, Row 4 value
+     * @param n5 - Column 2, Row 1 value
+     * @param n6 - Column 2, Row 2 value
+     * @param n7 - Column 2, Row 3 value
+     * @param n8 - Column 2, Row 4 value
+     * @param n9 - Column 3, Row 1 value
+     * @param n10 - Column 3, Row 2 value
+     * @param n11 - Column 3, Row 3 value
+     * @param n12 - Column 3, Row 4 value
+     * @param n13 - Column 4, Row 1 value
+     * @param n14 - Column 4, Row 2 value
+     * @param n15 - Column 4, Row 3 value
+     * @param n16 - Column 4, Row 4 value
+     */
     setRowMajor(n1: number, n2: number, n3: number, n4: number, 
         n5: number, n6: number, n7: number, n8: number, 
         n9: number, n10: number, n11: number, n12: number, 
@@ -482,11 +605,11 @@ export class Matrix4
     }
 
 
-/**
- * Copy the values of another Matrix4 into this one
- * 
- * @param m - The Matrix4 object to copy from
- */
+    /**
+     * Copy the values of another Matrix4 into this one
+     * 
+     * @param m - The Matrix4 object to copy from
+     */
     copy(m: Matrix4): void
     {
         for(let i=0; i < 16; i++)
@@ -509,32 +632,33 @@ export class Matrix4
         return matrix;
     }
 
- /** 
- * Returns the element at the given row and column in this Matrix4.
- * 
- * @param row - The row of the element to return.
- * @param col - The column of the element to return.
- * @returns The element at the given row and column.
- */   
+    /** 
+     * Returns the element at the given row and column in this Matrix4.
+     * 
+     * @param row - The row of the element to return.
+     * @param col - The column of the element to return.
+     * @returns The element at the given row and column.
+     */   
     element(row: number, col: number): number
     {
         return this.mat[col*4 + row];
     }
 
-/**
- * Sets the element at the given row and column in this Matrix4.
- * 
- * @param value - The value to set at the given row and column.
- * @param row - The row of the element to set.
- * @param col - The column of the element to set.
- */    
+    /**
+     * Sets the element at the given row and column in this Matrix4.
+     * 
+     * @param value - The value to set at the given row and column.
+     * @param row - The row of the element to set.
+     * @param col - The column of the element to set.
+     */    
     set(value: number, row: number, col: number): void
     {
        this.mat[col*4 + row] = value;
     }
 
     /**
-     * Multiplies this Matrix4 with another Matrix4 on the right hand side, and sets this Matrix4 to the result.
+     * Multiplies this Matrix4 with another Matrix4 on the right hand side (i.e., this = this * rhs) and sets this
+     * Matrix4 to the result.
      * 
      * @param rhs - The Matrix4 to multiply with.
      */
@@ -568,7 +692,29 @@ export class Matrix4
     }
 
     /**
-     * Multiplies the given Matrix4 with another Matrix4 on the left hand side, and sets this Matrix4 to the result.
+     * this.mat = this.mat * M1 * M2 * ... * M(n-1):  Multiplies this matrix with one or more additional \
+     * 4x4 matrices.
+     * 
+     * (Remember, matrix multiplication is not commutitive; so, the order of the matrices is important!
+     * The order that transformations are applied to points and vectors is right-to-left.  To transform
+     * point p into p', as in the equation below, think of M(n-1) as being the first transformation to
+     * be applied to p and the current value of this.mat as being the last transformation to be applied
+     * in order to produce p'.)
+     *  ```
+     *    p' = this.mat * M1 * M2 * ... * M(n-1) * p
+     * ``` 
+     */
+    multiplyAll(m1: Matrix4, ...mAdditional: Matrix4[]): void
+    {
+        this.multiply(m1);
+        for (let i=0; i<mAdditional.length; i++) {
+            this.multiply(mAdditional[i])
+        }
+    }
+
+    /**
+     * Multiplies the given Matrix4 with another Matrix4 on the left hand side (i.e., this = lhs * this) and sets this Matrix4
+     *  to the result.
      * 
      * @param lhs - The Matrix4 to multiply with.
      */    
@@ -601,9 +747,9 @@ export class Matrix4
         this.mat[15] = rhs.mat[12] * lhs.mat[3] + rhs.mat[13] * lhs.mat[7] + rhs.mat[14] * lhs.mat[11] + rhs.mat[15] * lhs.mat[15];
     }
 
-/**
- * Sets this Matrix4 to the identity matrix.
- */    
+    /**
+     * Sets this Matrix4 to the identity matrix.
+     */    
     setIdentity(): void
     {
         this.setRowMajor(
@@ -614,11 +760,11 @@ export class Matrix4
         );
     }
 
-/**
- * Sets this Matrix4 to a translation matrix given a translation Vector3.
- * 
- * @param v - The translation Vector3.
- */    
+    /**
+     * Sets this Matrix4 to a translation matrix given a translation Vector3.
+     * 
+     * @param v - The translation Vector3.
+     */    
     setTranslation(v: Vector3): void
     {
         this.setRowMajor(
@@ -629,11 +775,11 @@ export class Matrix4
         );
     }
 
-/**
- * Sets this Matrix4 to a rotation matrix given a Quaternion.
- * 
- * @param rotation - The Quaternion to construct the rotation matrix with.
- */
+    /**
+     * Sets this Matrix4 to a rotation matrix given a Quaternion.
+     * 
+     * @param rotation - The Quaternion to construct the rotation matrix with.
+     */
     // based on http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToMatrix/index.htm
     setRotation(rotation: Quaternion): void
     {
@@ -660,11 +806,11 @@ export class Matrix4
         );
     }
 
-/**
- * Sets this Matrix4 to a rotation matrix around the X axis with the given angle in radians.
- * 
- * @param angle - The angle in radians.
- */
+    /**
+     * Sets this Matrix4 to a rotation matrix around the X axis with the given angle in radians.
+     * 
+     * @param angle - The angle in radians.
+     */
     setRotationX(angle: number): void
     {
         const cosTheta = Math.cos(angle);
@@ -678,11 +824,11 @@ export class Matrix4
         );
     }
 
-/**
- * Sets this Matrix4 to a rotation matrix around the Y axis with the given angle in radians.
- * 
- * @param angle - The angle in radians.
- */
+    /**
+     * Sets this Matrix4 to a rotation matrix around the Y axis with the given angle in radians.
+     * 
+     * @param angle - The angle in radians.
+     */
     setRotationY(angle: number): void
     {
         const cosTheta = Math.cos(angle);
@@ -696,11 +842,11 @@ export class Matrix4
         );
     }
 
-/**
- * Sets this Matrix4 to a rotation matrix around the Z axis with the given angle in radians.
- * 
- * @param angle - The angle in radians.
- */    
+    /**
+     * Sets this Matrix4 to a rotation matrix around the Z axis with the given angle in radians.
+     * 
+     * @param angle - The angle in radians.
+     */    
     setRotationZ(angle: number): void
     {
         const cosTheta = Math.cos(angle);
@@ -713,12 +859,12 @@ export class Matrix4
         );
     }
 
-/**
- * Set the axis angle for this Matrix4 object
- * 
- * @param axis - The Vector3 representing the axis
- * @param angle - The angle to set the axis to
- */    
+    /**
+     * Set the axis angle for this Matrix4 object
+     * 
+     * @param axis - The Vector3 representing the axis
+     * @param angle - The angle to set the axis to
+     */    
     setAxisAngle(axis: Vector3, angle: number): void
     {
         const c = Math.cos(angle);
@@ -734,11 +880,11 @@ export class Matrix4
 		);
     }
 
-/**
- * Set the scale of this Matrix4 object
- * 
- * @param scale - The Vector3 representing the scale to set
- */
+    /**
+     * Set the scale of this Matrix4 object
+     * 
+     * @param scale - The Vector3 representing the scale to set
+     */
     setScale(scale: Vector3): void
     {
         this.setRowMajor(
@@ -783,16 +929,16 @@ export class Matrix4
         );
     }
 
-/**
- * Sets an orthographic projection matrix on this Matrix4 object
- * 
- * @param left - The leftmost coordinate
- * @param right - The rightmost coordinate
- * @param bottom - The bottom coordinate
- * @param top - The top coordinate
- * @param near - The near coordinate
- * @param far - The far coordinate
- */
+    /**
+     * Sets an orthographic projection matrix on this Matrix4 object
+     * 
+     * @param left - The leftmost coordinate
+     * @param right - The rightmost coordinate
+     * @param bottom - The bottom coordinate
+     * @param top - The top coordinate
+     * @param near - The near coordinate
+     * @param far - The far coordinate
+     */
     setOrthographic(left: number, right: number, bottom: number, top: number, near: number, far: number): void
     {
         this.setRowMajor(
@@ -804,14 +950,14 @@ export class Matrix4
     }
 
 
-/**
- * Sets a perspective projection matrix on this Matrix4 object
- * 
- * @param fov - The field of view angle
- * @param aspectRatio - The aspect ratio of the view
- * @param near - The near coordinate
- * @param far - The far coordinate
- */
+    /**
+     * Sets a perspective projection matrix on this Matrix4 object
+     * 
+     * @param fov - The field of view angle
+     * @param aspectRatio - The aspect ratio of the view
+     * @param near - The near coordinate
+     * @param far - The far coordinate
+     */
     setPerspective(fov: number, aspectRatio: number, near: number, far: number): void
     {
         const yMax = near * Math.tan(fov * Math.PI / 360);
@@ -819,16 +965,16 @@ export class Matrix4
         this.setFrustum(-xMax, xMax, -yMax, yMax, near, far); 
     }
 
-/**
- * Sets a frustum projection matrix on this Matrix4 object
- * 
- * @param left - The leftmost coordinate
- * @param right - The rightmost coordinate
- * @param bottom - The bottom coordinate
- * @param top - The top coordinate
- * @param near - The near coordinate
- * @param far - The far coordinate
- */
+    /**
+     * Sets a frustum projection matrix on this Matrix4 object
+     * 
+     * @param left - The leftmost coordinate
+     * @param right - The rightmost coordinate
+     * @param bottom - The bottom coordinate
+     * @param top - The top coordinate
+     * @param near - The near coordinate
+     * @param far - The far coordinate
+     */
     setFrustum(left: number, right: number, bottom: number, top: number, near: number, far: number): void
     {
         this.setRowMajor(
@@ -840,11 +986,16 @@ export class Matrix4
     }
 
     /**
-     * Sets the Matrix4 object to a look-at transformation
+     * Sets the Matrix to a view matrix of a camera.  The matrix will position the camera
+     * at eyePoint and orient it to look directly toward the targetPoint so that the camera's look vector
+     * will be (targetPoint - eyePoint).  The camera's rotation around the look vector is controlled by 
+     * the upVector, which only needs to point roughly in the Up direction, i.e., it does not need to
+     * be completely perpendicular to the look vector.
      * 
-     * @param eye - The position of the eye
-     * @param target - The target of the eye
-     * @param up - The vector defining "up" (default Vector3.UP)
+     * @param eyePoint - The position of the camera
+     * @param targetPoint - A point that the camera should look directly toward
+     * @param upVector - The "up" direction for the camera
+     * @returns A new Matrix4 object for the view matrix of a camera
      */
     lookAt(eye: Vector3, target: Vector3, up = Vector3.UP): void
     {
@@ -874,22 +1025,22 @@ export class Matrix4
         this.premultiply(translation);
     }
 
-/**
- * Multiplies all elements of this Matrix4 object by a scalar
- * 
- * @param x - The scalar to multiply by
- */
+    /**
+     * Multiplies all elements of this Matrix4 object by a scalar
+     * 
+     * @param x - The scalar to multiply by
+     */
     multiplyScalar(x: number): void
     {
         for(let i=0; i < 16; i++)
             this.mat[i] *= x;
     }
 
-/**
- * Computes the determinant of the Matrix4 object 
- * 
- * @returns The determinant of the Matrix4 object
- */    
+    /**
+     * Computes the determinant of the Matrix4 object 
+     * 
+     * @returns The determinant of the Matrix4 object
+     */    
     // Code from http://www.euclideanspace.com/maths/algebra/matrix/functions/inverse/fourD/index.htm
     determinant(): number
     {
@@ -922,11 +1073,11 @@ export class Matrix4
         return determinant;
     }
 
-/**
- * Calculates the inverse of a Matrix4 object
- * 
- * @returns A Matrix4 object that is the inverse of the current Matrix4 object
- */
+    /**
+     * Calculates the inverse of a Matrix4 object
+     * 
+     * @returns A Matrix4 object that is the inverse of the current Matrix4 object
+     */
     // Code from http://www.euclideanspace.com/maths/algebra/matrix/functions/inverse/fourD/index.htm
     inverse(): Matrix4
     {
@@ -1052,9 +1203,9 @@ export class Matrix4
         return inverse;
     }
 
-/**
-* Computes the inverse of the Matrix4 object and sets the values of the current object
- */
+    /**
+     * Inverts the matix and writes the result back into this matrix.
+     */
     invert(): void
     {
         const inverseMatrix = this.inverse();
@@ -1076,14 +1227,14 @@ export class Matrix4
         );
     }
 
-/**
- * Sets the matrix's euler angles according to the specified order
- * 
- * @param x - The x-axis euler angle
- * @param y - The y-axis euler angle
- * @param z - The z-axis euler angle
- * @param order - The order in which the euler angles should be applied
- */
+    /**
+     * Sets the matrix to a rotation matrix defined by Euler angles.
+     * 
+     * @param x - The x-axis euler angle
+     * @param y - The y-axis euler angle
+     * @param z - The z-axis euler angle
+     * @param order - The order in which the euler angles should be applied
+     */
     // based on the implementation in three.js
     setEulerAngles(x: number, y: number, z: number, order = 'YZX'): void
     {
@@ -1205,7 +1356,8 @@ export class Matrix4
 
     
     /**
-     * Compose a Matrix4 object from a position, rotation, and scale
+     * Sets the matrix to a composition of three basic transformations (this = T * R * S), where 
+     * scale is applied first, then rotation, then translation.
      * 
      * @param position - The position of the Matrix4 object (default Vector3.ZERO)
      * @param rotation - The rotation of the Matrix4 object (default Quaternion.IDENTITY)
@@ -1221,16 +1373,32 @@ export class Matrix4
         this.mat[14] = position.z;
     }
 
-    transformPoint(v: Vector3): Vector3
+    /**
+     * Multiplies point p by this 4x4 transformation matrix and returns the result as a new point.  This has the effect of
+     * transforming p from the matrix's local coordinate system to its parent coordinate system.  The multiplication is done
+     * using homogeneous coordinates (p is treated as having a w=1 coordinate).
+     * 
+     * @param p The original point
+     * @returns A new point transformed by m
+     */
+    transformPoint(p: Vector3): Vector3
     {
         const result = new Vector3();
-        const w = 1 / (this.mat[3]*v.x + this.mat[7]*v.y + this.mat[11]*v.z + this.mat[15]);
-        result.x = w * (this.mat[0]*v.x + this.mat[4]*v.y + this.mat[8]*v.z + this.mat[12]);
-        result.y = w * (this.mat[1]*v.x + this.mat[5]*v.y + this.mat[9]*v.z + this.mat[13]);
-        result.z = w * (this.mat[2]*v.x + this.mat[6]*v.y + this.mat[10]*v.z + this.mat[14]);
+        const w = 1 / (this.mat[3]*p.x + this.mat[7]*p.y + this.mat[11]*p.z + this.mat[15]);
+        result.x = w * (this.mat[0]*p.x + this.mat[4]*p.y + this.mat[8]*p.z + this.mat[12]);
+        result.y = w * (this.mat[1]*p.x + this.mat[5]*p.y + this.mat[9]*p.z + this.mat[13]);
+        result.z = w * (this.mat[2]*p.x + this.mat[6]*p.y + this.mat[10]*p.z + this.mat[14]);
         return result;
     }
 
+    /**
+     * Multiplies vector v by this 4x4 transformation matrix and returns the result as a new vector.  This has the effect of
+     * transforming v from the matrix's local coordinate system to its parent coordinate system.  The multiplication is done
+     * using homogeneous coordinates (v is treated as having a w=0 coordinate).
+     * 
+     * @param v The original vector
+     * @returns A new vector transformed by m
+     */
     transformVector(v: Vector3): Vector3
     {
         const result = new Vector3();
@@ -1241,16 +1409,31 @@ export class Matrix4
         return result;
     }
 
+    /**
+     * Returns the first three elements of column i as a new Vector3.
+     * @param i The zero-based index of the column (0..3)
+     * @returns A new Vector3
+     */
     getColumn(i: number): Vector3
     {
         return new Vector3(this.mat[i], this.mat[i+4], this.mat[i+8]);
     }
 
+    /**
+     * Returns the first three elements of row i as a new Vector3.
+     * @param i The zero-based index of the row (0..3)
+     * @returns A new Vector3.
+     */
     getRow(i: number): Vector3
     {
         return new Vector3(this.mat[i*4], this.mat[i*4+1], this.mat[i*4+2]);
     }
 
+    /**
+     * Sets the first three elements of column i using the x, y, z components of the supplied vector.
+     * @param col The zero-based index of the column (0..3)
+     * @param v A vector containing the new values for the column
+     */
     setColumn(col: number, v: Vector3): void
     {
         this.mat[col] = v.x;
@@ -1258,6 +1441,11 @@ export class Matrix4
         this.mat[col+8] = v.z;
     }
 
+    /**
+     * Sets the first three elements of row i using the x, y, z components of the supplied vector.
+     * @param row The zero-based index of the row (0..3)
+     * @param v A vector containing the new values for the row
+     */
     setRow(row: number, v: Vector3): void
     {
         this.mat[row*4] = v.x;
@@ -1265,6 +1453,16 @@ export class Matrix4
         this.mat[row*4+2] = v.z;
     }
 
+    /**
+     * Decomposes the 4x4 transformation matrix into separate translation, rotation, and scale components such
+     * that the original matrix can be represented as a combination of transformations in the form T * R * S.
+     * The decomposition is straightforward (relatively efficient) if the matrix does not include a negative
+     * scale.  If the matrix includes a negative scale factor, a slower polar decomposition must be used,
+     * and the caller must explicitly set the containsNegScale to true.
+     * 
+     * @param containsNegScale Set to true if the matrix includes a negative scale factor.
+     * @returns An array of three elements [translation: Vector3, rotation: Quaternion, scale: Vector3]
+     */
     decompose(containsNegScale: boolean): [Vector3, Quaternion, Vector3]
     {
         const position = new Vector3();
@@ -1369,5 +1567,37 @@ export class Matrix4
         }
 
         return [position, rotation, scale];
+    }
+
+    /**
+     * Checks if every element of this Matrix4 is exactly equal to every element of the given Matrix4
+     *
+     * @param other - The other Matrix3 to compare to
+     * @returns A boolean value indicating if the two matrices are equal
+     */
+    equals(other: Matrix4): boolean
+    {
+        for (let i=0; i<16; i++) {
+            if (this.mat[i] != other.mat[i]) 
+                return false;
+        }
+        return true;
+    }
+
+    /**
+     * Checks if  every element of this Matrix4 is exactly equal (within a small value of epsilon) to
+     * every element of the given Matrix4  
+     *
+     * @param other - The other Matrix3 to compare to
+     * @param epsilon - A small value of acceptable variance to account for numerical instability
+     * @returns A boolean value indicating if the two matrices are equal
+     */
+    fuzzyEquals(other: Matrix4, epsilon: number = MathUtils.EPSILON): boolean
+    {
+        for (let i=0; i<16; i++) {
+            if (Math.abs(this.mat[i] - other.mat[i]) < epsilon) 
+                return false;
+        }
+        return true;
     }
 }

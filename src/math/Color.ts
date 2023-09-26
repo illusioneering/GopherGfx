@@ -1,3 +1,9 @@
+
+/**
+ * This class holds a color for computer graphics defined via four components (Red, Green, Blue, Alpha).
+ * Alpha is opacity (0.0 = completely transparent, 1.0 = completely opaque).  All components range from
+ * 0.0 to 1.0 in floating point.  
+ */
 export class Color
 {
 

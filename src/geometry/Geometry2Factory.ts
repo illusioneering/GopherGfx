@@ -3,6 +3,12 @@ import { Line2, LineMode2 } from './2d/Line2'
 import { Vector2 } from '../math/Vector2';
 import { BoundingBox2 } from "../math/BoundingBox2";
 
+/**
+ * This is a factory class for creating a variety of common geometries that can be drawn in a 2D scene.
+ * Most of these geometries are Mesh2s, meaning they are constructed from triangles, but there are also
+ * a few Line2 objects.  This factory is for creating simple 2D geometries (e.g., rectangles, circles)
+ * that are easily described by a mathematical function.
+ */
 export class Geometry2Factory
 {
     public static createBox(width = 1, height = 1): Mesh2

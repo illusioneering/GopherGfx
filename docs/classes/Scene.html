@@ -16,14 +16,42 @@
 <li><a href="Scene.html">Scene</a></li></ul>
 <h1>Class Scene</h1></div>
 <section class="tsd-panel tsd-comment">
-<div class="tsd-comment tsd-typography"><p>The Scene class represents a container for 3D and 2D objects.</p>
+<div class="tsd-comment tsd-typography"><p>The Scene class contains and organizes all of the 2D and 3D objects that GopherGfx can draw each frame.
+In computer graphics, the classic way to organize all these objects is in a graph data structure called
+a &quot;scene graph&quot;.  This Scene class actually contains two such scene graphs, one for all the 2D objects in
+the scene and one for all the 3D objects in the scene.  Each scene graph follows a tree structure with
+one root node (see root2d and root3d), and every object in the scene needs to be added to one of these
+root nodes, either as a direct child of the root node or a child of a child, or child of a child of a child,
+etc.</p>
+<p>For the 2D scene graph the base class for every object that can be added to the scene graph is Node2.  If
+you look at the Node2 class, you will see every Node2 has a postion, rotation, scale, and a number of other
+properties.</p>
+<p>For the 3D scene graph the base class for every object is Node3.  Again, each Node3 has a position, rotation,
+scale, etc.  It is possible to create Node3s directly, and the main reason for this would be to setup a 
+hierarchy of nodes in the scenegraph, for example</p>
+<pre><code><span class="hl-1">   </span><span class="hl-6">// add a node for the parent of a car geometry to the scene</span><br/><span class="hl-1">   </span><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">carParentNode</span><span class="hl-1"> = </span><span class="hl-0">new</span><span class="hl-1"> </span><span class="hl-3">Node3</span><span class="hl-1">();</span><br/><span class="hl-1">   </span><span class="hl-0">this</span><span class="hl-1">.</span><span class="hl-4">scene</span><span class="hl-1">.</span><span class="hl-3">add</span><span class="hl-1">(</span><span class="hl-4">carParentNode</span><span class="hl-1">);</span><br/><br/><span class="hl-1">   </span><span class="hl-6">// add child nodes to the carParentNode</span><br/><span class="hl-1">   </span><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">wheels</span><span class="hl-1"> = </span><span class="hl-0">new</span><span class="hl-1"> </span><span class="hl-3">Node3</span><span class="hl-1">();</span><br/><span class="hl-1">   </span><span class="hl-4">carParentNode</span><span class="hl-1">.</span><span class="hl-3">add</span><span class="hl-1">(</span><span class="hl-4">wheels</span><span class="hl-1">);</span><br/><span class="hl-1">   </span><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">doors</span><span class="hl-1"> = </span><span class="hl-0">new</span><span class="hl-1"> </span><span class="hl-3">Node3</span><span class="hl-1">();</span><br/><span class="hl-1">   </span><span class="hl-4">carParentNode</span><span class="hl-1">.</span><span class="hl-3">add</span><span class="hl-1">(</span><span class="hl-4">doors</span><span class="hl-1">);</span>
+</code></pre>
+<p>If you don&#39;t need a complex hierarchy, you may never deal directly with a Node3 and instead
+just work with subclasses of Node3, like Mesh3 and PointLight.  In the car example above, none of
+the Node3s that have been added so far actually draw anything because none of them are meshes.  They
+are just there for organization.  A next step in creating the car would be to add 4 cylinders Mesh3s
+under the wheels node, for example:</p>
+<pre><code><span class="hl-1">   </span><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">leftFrontWheel</span><span class="hl-1"> = </span><span class="hl-4">gfx</span><span class="hl-1">.</span><span class="hl-4">Geometry3Factory</span><span class="hl-1">.</span><span class="hl-3">createCylinder</span><span class="hl-1">(..);</span><br/><span class="hl-1">   </span><span class="hl-4">wheels</span><span class="hl-1">.</span><span class="hl-3">add</span><span class="hl-1">(</span><span class="hl-4">leftFrontWheel</span><span class="hl-1">);</span><br/><span class="hl-1">   </span><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">leftBackWheel</span><span class="hl-1"> = </span><span class="hl-4">gfx</span><span class="hl-1">.</span><span class="hl-4">Geometry3Factory</span><span class="hl-1">.</span><span class="hl-3">createCylinder</span><span class="hl-1">(..);</span><br/><span class="hl-1">   </span><span class="hl-4">wheels</span><span class="hl-1">.</span><span class="hl-3">add</span><span class="hl-1">(</span><span class="hl-4">leftBackWheel</span><span class="hl-1">);</span><br/><span class="hl-1">   </span><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">rightFrontWheel</span><span class="hl-1"> = </span><span class="hl-4">gfx</span><span class="hl-1">.</span><span class="hl-4">Geometry3Factory</span><span class="hl-1">.</span><span class="hl-3">createCylinder</span><span class="hl-1">(..);</span><br/><span class="hl-1">   </span><span class="hl-4">wheels</span><span class="hl-1">.</span><span class="hl-3">add</span><span class="hl-1">(</span><span class="hl-4">rightFrontWheel</span><span class="hl-1">);</span><br/><span class="hl-1">   </span><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">rightBackWheel</span><span class="hl-1"> = </span><span class="hl-4">gfx</span><span class="hl-1">.</span><span class="hl-4">Geometry3Factory</span><span class="hl-1">.</span><span class="hl-3">createCylinder</span><span class="hl-1">(..);</span><br/><span class="hl-1">   </span><span class="hl-4">wheels</span><span class="hl-1">.</span><span class="hl-3">add</span><span class="hl-1">(</span><span class="hl-4">rightBackWheel</span><span class="hl-1">);</span>
+</code></pre>
+<p>There are several benefits to using a hierarchy like this to organize our Meshes.  If we want to reposition
+the entire car in the scene, then we can change the position of the carParentNode and all of the wheels, doors,
+etc, will move because they are all children of the carParentNode.  We may also want to loop through all of
+the wheels of the car, for example, to make them spin, and we can do this by looping through all of the
+children of the &quot;wheels&quot; node.</p>
+<pre><code><span class="hl-1">   </span><span class="hl-7">for</span><span class="hl-1"> (</span><span class="hl-0">let</span><span class="hl-1"> </span><span class="hl-4">i</span><span class="hl-1">=</span><span class="hl-5">0</span><span class="hl-1">; </span><span class="hl-4">i</span><span class="hl-1">&lt;</span><span class="hl-4">wheels</span><span class="hl-1">.</span><span class="hl-4">children</span><span class="hl-1">.</span><span class="hl-4">length</span><span class="hl-1">; </span><span class="hl-4">i</span><span class="hl-1">++) {</span><br/><span class="hl-1">      </span><span class="hl-6">// note that wheels.children is an Array of Node3s, so accessing wheels.children[i] will give you a Node3</span><br/><span class="hl-1">      </span><span class="hl-10">childNode</span><span class="hl-1">: </span><span class="hl-4">gfx</span><span class="hl-1">.</span><span class="hl-4">Node3</span><span class="hl-1"> = </span><span class="hl-4">wheels</span><span class="hl-1">.</span><span class="hl-4">children</span><span class="hl-1">[</span><span class="hl-4">i</span><span class="hl-1">];</span><br/><span class="hl-1">      </span><span class="hl-6">// that is great if all we want to do is rotate the wheels becuase rotation is a property of every Node3</span><br/><span class="hl-1">      </span><span class="hl-4">childNode</span><span class="hl-1">.</span><span class="hl-4">rotation</span><span class="hl-1">.</span><span class="hl-3">multiply</span><span class="hl-1">(</span><span class="hl-4">Quaternion</span><span class="hl-1">.</span><span class="hl-3">makeRotationX</span><span class="hl-1">(</span><span class="hl-4">deltaTime</span><span class="hl-1"> * </span><span class="hl-4">angularVel</span><span class="hl-1">));</span><br/><br/><span class="hl-1">      </span><span class="hl-6">// in this case, we know that wheels.children[i] is also a Mesh3. if we want to change something about</span><br/><span class="hl-1">      </span><span class="hl-6">// the mesh, we must first cast wheels.children[i] to a Mesh3 using the keyword &quot;as&quot;.</span><br/><span class="hl-1">      </span><span class="hl-10">childNodeAsMesh</span><span class="hl-1">: </span><span class="hl-4">gfx</span><span class="hl-1">.</span><span class="hl-4">Mesh3</span><span class="hl-1"> = </span><span class="hl-4">wheels</span><span class="hl-1">.</span><span class="hl-4">children</span><span class="hl-1">[</span><span class="hl-4">i</span><span class="hl-1">] </span><span class="hl-7">as</span><span class="hl-1"> </span><span class="hl-11">gfx</span><span class="hl-1">.</span><span class="hl-11">Mesh3</span><span class="hl-1">;</span><br/><span class="hl-1">      </span><span class="hl-7">if</span><span class="hl-1"> (</span><span class="hl-4">childNodeAsMesh</span><span class="hl-1"> </span><span class="hl-0">instanceof</span><span class="hl-1"> </span><span class="hl-11">gfx</span><span class="hl-1">.</span><span class="hl-11">Mesh3</span><span class="hl-1">) {</span><br/><span class="hl-1">         </span><span class="hl-6">// the cast to a Mesh3 succeeded and we can now access any properties of the Mesh3</span><br/><span class="hl-1">         </span><span class="hl-4">childNodeAsMesh</span><span class="hl-1">.</span><span class="hl-4">material</span><span class="hl-1">.</span><span class="hl-3">setColor</span><span class="hl-1">(..);</span><br/><span class="hl-1">      }</span><br/><span class="hl-1">   }</span>
+</code></pre>
 </div></section>
 <section class="tsd-panel tsd-hierarchy">
 <h4>Hierarchy</h4>
 <ul class="tsd-hierarchy">
 <li><span class="target">Scene</span></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/core/Scene.ts#L9">src/core/Scene.ts:9</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/core/Scene.ts#L73">src/core/Scene.ts:73</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -54,7 +82,7 @@
 <li class="tsd-description">
 <h4 class="tsd-returns-title">Returns <a href="Scene.html" class="tsd-signature-type" data-tsd-kind="Class">Scene</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/core/Scene.ts#L26">src/core/Scene.ts:26</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/core/Scene.ts#L90">src/core/Scene.ts:90</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Properties</h2>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private"><a id="lightManager" class="tsd-anchor"></a>
@@ -63,21 +91,21 @@
 <div class="tsd-comment tsd-typography"><p>Manager for updating the lights in the scene.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/core/Scene.ts#L24">src/core/Scene.ts:24</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/core/Scene.ts#L88">src/core/Scene.ts:88</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="root2d" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>root2d</span><a href="#root2d" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">root2d<span class="tsd-signature-symbol">:</span> <a href="Node2.html" class="tsd-signature-type" data-tsd-kind="Class">Node2</a></div>
 <div class="tsd-comment tsd-typography"><p>The root node for all 2D elements in the scene.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/core/Scene.ts#L19">src/core/Scene.ts:19</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/core/Scene.ts#L83">src/core/Scene.ts:83</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="root3d" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>root3d</span><a href="#root3d" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">root3d<span class="tsd-signature-symbol">:</span> <a href="Node3.html" class="tsd-signature-type" data-tsd-kind="Class">Node3</a></div>
 <div class="tsd-comment tsd-typography"><p>The root node for all 3D elements in the scene.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/core/Scene.ts#L14">src/core/Scene.ts:14</a></li></ul></aside></section></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/core/Scene.ts#L78">src/core/Scene.ts:78</a></li></ul></aside></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Methods</h2>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="add" class="tsd-anchor"></a>
@@ -96,7 +124,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/core/Scene.ts#L60">src/core/Scene.ts:60</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/core/Scene.ts#L124">src/core/Scene.ts:124</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="draw" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>draw</span><a href="#draw" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -113,7 +141,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/core/Scene.ts#L37">src/core/Scene.ts:37</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/core/Scene.ts#L101">src/core/Scene.ts:101</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="traverseSceneGraph" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>traverse<wbr/>Scene<wbr/>Graph</span><a href="#traverseSceneGraph" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -123,7 +151,7 @@
 </div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/core/Scene.ts#L75">src/core/Scene.ts:75</a></li></ul></aside></li></ul></section></section></div>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/core/Scene.ts#L139">src/core/Scene.ts:139</a></li></ul></aside></li></ul></section></section></div>
 <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 <div class="tsd-navigation settings">
 <details class="tsd-index-accordion"><summary class="tsd-accordion-summary">

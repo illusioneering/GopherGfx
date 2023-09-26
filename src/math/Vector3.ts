@@ -1,63 +1,101 @@
+import { MathUtils } from './MathUtils';
 import { Matrix4 } from './Matrix4'
 import { Quaternion } from './Quaternion';
 
+/**
+ * This class holds the x,y,z components of a 3D point or vector.  It includes linear algebra routines for
+ * working with vectors (e.g., dot product, cross product).
+ * 
+ * Most of the functions in the class are defined both as member functions that can be called on a specific
+ * instance of Vector3 *and* as static functions.  The static functions return a *new* result, leaving the
+ * original inputs unchanged, whereas, in general, member functions save the result in this vector itself
+ * and return void:
+ * ```
+ * const v = new Vector3(1, 2, 3);
+ * const w = new Vector3(4, 5, 6);
+ * 
+ * // saves the result in n, v and w are unchanged.
+ * const n = Vector3.cross(v, w);
+ * 
+ * // saves the result in v and returns null.  v now becomes v crossed-with w.
+ * v.cross(w);
+ * ```
+ */
 export class Vector3
 {
     /**
-     * A Vector3 object with all zero values
+     * A static property to provide quick access to a Vector3 with all of its x,y,z components equal to zero.
+     * (Note: Be careful not to change the value of this field!  It is marked readonly, but typescipt do not completely
+     * enforce this!)
+     * ```
+     * // Good use of ZERO:
+     * const p = new Vector3();
+     * if (p.equals(Vector3.ZERO)) {
+     *   console.log("p is (0,0,0)")
+     * }
+     * 
+     * // Dangerous use of ZERO!!!!
+     * const p = Vector3.ZERO;  // makes p a reference to Vector3.ZERO
+     * p.add(new Vector3(1, 0, 0)); // changes Vector3.ZERO!
+     * 
+     * // Do this instead:
+     * const p = Vector3.copy(Vector3.ZERO); // or "new Vector3();" or another function that returns a NEW Vector3 object
+     * p.add(new Vector3(1, 0, 0));
      */
     public static readonly ZERO = new Vector3(0, 0, 0);
 
     /**
-     * A Vector3 object with all one values
+     * A Vector3 object with all one values.  (See note in the Vector3.ZERO docs for important usage info.)
      */
     public static readonly ONE = new Vector3(1, 1, 1);
 
     /**
-     * A Vector3 object that points up
+     * A Vector3 object that points up.  (See note in the Vector3.ZERO docs for important usage info.)
      */
     public static readonly UP = new Vector3(0, 1, 0);
 
     /**
-     * A Vector3 object that points down
+     * A Vector3 object that points down.  (See note in the Vector3.ZERO docs for important usage info.)
      */
     public static readonly DOWN = new Vector3(0, -1, 0);
 
     /**
-     * A Vector3 object that points left
+     * A Vector3 object that points left.  (See note in the Vector3.ZERO docs for important usage info.)
      */
     public static readonly LEFT = new Vector3(-1, 0, 0);
 
     /**
-     * A Vector3 object that points right
+     * A Vector3 object that points right.  (See note in the Vector3.ZERO docs for important usage info.)
      */
     public static readonly RIGHT = new Vector3(1, 0, 0);
 
     /**
-     * A Vector3 object that points forward
+     * A Vector3 object that points forward.  (See note in the Vector3.ZERO docs for important usage info.)
      */
     public static readonly FORWARD = new Vector3(0, 0, -1);
 
     /**
-     * A Vector3 object that points backward
+     * A Vector3 object that points backward.  (See note in the Vector3.ZERO docs for important usage info.)
      */
     public static readonly BACK = new Vector3(0, 0, 1);
 
     /**
-     * A Vector3 object that points along the x-axis
+     * A Vector3 object that points along the x-axis.  (See note in the Vector3.ZERO docs for important usage info.)
      */
     public static readonly X_AXIS = Vector3.RIGHT;
 
     /**
-     * A Vector3 object that points along the y-axis
+     * A Vector3 object that points along the y-axis.  (See note in the Vector3.ZERO docs for important usage info.)
      */
     public static readonly Y_AXIS = Vector3.UP;
 
     /**
-     * A Vector3 object that points along the z-axis
+     * A Vector3 object that points along the z-axis.  (See note in the Vector3.ZERO docs for important usage info.)
      */
     public static readonly Z_AXIS = Vector3.FORWARD;
 
+
+    
     /**
      * Copies the values of a Vector3 object
      * 
@@ -314,9 +352,39 @@ export class Vector3
         return result;
     }
 
+    /**
+     * Checks if the x,y,z components of two Vector3 objects are exactly equal.
+     *
+     * @param v1 - The first Vector3 object
+     * @param v2 - The second Vector3 object
+     * @returns A boolean value indicating if the Vector3 objects are equal
+     */
+    public static equals(v1: Vector3, v2: Vector3): boolean
+    {
+        return v1.x == v2.x && v1.y == v2.y && v1.z == v2.z;
+    }
+
+    /**
+     * Checks if the x,y,z components of two Vector3 objects are equal within a small value of epsilon.
+     *
+     * @param v1 - The first Vector3 object
+     * @param v2 - The second Vector3 object
+     * @param epsilon - A small value of acceptable variance to account for numerical instability
+     * @returns A boolean value indicating if the Vector3 objects are equal
+     */
+    public static fuzzyEquals(v1: Vector3, v2: Vector3, epsilon: number = MathUtils.EPSILON): boolean
+    {
+        return Math.abs(v1.x - v2.x) < epsilon && Math.abs(v1.y - v2.y) < epsilon && Math.abs(v1.z - v2.z) < epsilon;
+    }
+
+
+
     public x: number;
     public y: number;
     public z: number;
+
+
+
 
     /**
      * Constructs a Vector3 object from x, y, and z values
@@ -369,7 +437,7 @@ export class Vector3
     }
 
     /**
-     * Checks if this Vector3 is equal to the given Vector3
+     * Checks if the x,y,z components of this Vector3 are exactly equal to those of the given Vector3
      *
      * @param v - The Vector3 object to compare to
      * @returns A boolean value indicating if the Vector3 objects are equal
@@ -377,6 +445,19 @@ export class Vector3
     equals(v: Vector3): boolean
     {
         return this.x == v.x && this.y == v.y && this.z == v.z;
+    }
+
+    /**
+     * Checks if the x,y,z components of this Vector3 are equal (within a small value of epsilon) 
+     * to those of the given Vector3.
+     *
+     * @param v - The Vector3 object to compare to
+     * @param epsilon - A small value of acceptable variance to account for numerical instability
+     * @returns A boolean value indicating if the Vector3 objects are equal
+     */
+    fuzzyEquals(v: Vector3, epsilon: number = MathUtils.EPSILON): boolean
+    {
+        return Math.abs(this.x - v.x) < epsilon && Math.abs(this.y - v.y) < epsilon && Math.abs(this.z - v.z) < epsilon;
     }
 
     /**

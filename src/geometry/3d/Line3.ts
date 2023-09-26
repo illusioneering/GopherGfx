@@ -15,6 +15,17 @@ export enum LineMode3
     LINE_LOOP
 }
 
+/**
+ * The base class for 3D lines.  This class extends Node3 so it can be added directly
+ * to the GopherGfx 3D scene graph.  The class can draw line segments, line strips,
+ * and line loops.  The vertices are interpreted differently depending upon the 
+ * LineMode3 that is set.  WebGL only supports lines that are exactly 1 pixel
+ * thick.  These can look a bit strange in 3D scenes because the thickness of the
+ * line does not vary with the depth from the camera.  So, the lines that this 
+ * class can draw are most useful as quick debugging aids.  To draw a more substantial 
+ * "line" that actually behaves like it has some thickness in your 3D scene, you 
+ * need to construct your line using triangles.  
+ */
 export class Line3 extends Node3
 {
     protected readonly gl: WebGL2RenderingContext;

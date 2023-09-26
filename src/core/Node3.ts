@@ -16,6 +16,18 @@ export enum CoordinateSpace3 {
     WORLD_SPACE
 }
 
+/**
+ * This is the base class for all objects that can be added to a GopherGfx 3D scene.  It is named "Node"
+ * because the scene is stored in a graph data structure, so we think of every element in that graph
+ * as a "node" in the graph.  There is also a "Node2" base class for all objects that can be added to
+ * the 2D scene.  
+ * 
+ * Every object that can be added to a 3D scene (e.g., Lights, Mesh3s) will inherit from this base object.
+ * So, every object in the scene will have a position, rotation, scale, boundingBox, boundingSphere, 
+ * visibility, and all of the other properties listed in this class.
+ * 
+ * For more detail on how the scene graph works, see the documentation for the Scene class.
+ */
 export class Node3
  {
     /**

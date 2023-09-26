@@ -5,7 +5,12 @@ import { Material2 } from "../../materials/Material2";
 import { GfxApp } from "../../core/GfxApp";
 
 /**
- * Represents a 2D Mesh2. 
+ * The base class for 2D triangle meshes.  This class extends Node2 so it can be added directly
+ * to the GopherGfx 2D scene graph.  It is possible to create a new "empty" Mesh2 and then add
+ * triangles to it.  Most of the routines in the Geometry2Factory do this.  Use those to create
+ * a new Mesh2 for simple geometric shapes like circles and rectangles.  Those routines also 
+ * provide good examples of how to create your own custom mesh via code if you wish to create
+ * something more complex via programming.
  */
 export class Mesh2 extends Node2
 {

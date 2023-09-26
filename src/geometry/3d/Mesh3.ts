@@ -8,6 +8,15 @@ import { Camera } from "../../core/Camera";
 import { LightManager } from "../../lights/LightManager";
 import { GfxApp } from "../../core/GfxApp";
 
+/**
+ * The base class for 3D triangle meshes.  This class extends Node3 so it can be added directly
+ * to the GopherGfx 3D scene graph.  It is possible to create a new "empty" Mesh3 and then add
+ * triangles to it.  Most of the routines in the Geometry3Factory do this.  Use those to create
+ * a new Mesh3 for simple geometric shapes like spheres, cubes, etc.  Those routines also 
+ * provide good examples of how to create your own custom mesh via code if you wish to create
+ * something more complex via programming.  Triangle meshes can also be loaded from a variety 
+ * of 3D file formats using the MeshLoader class.
+ */
 export class Mesh3 extends Node3
 {
     protected readonly gl: WebGL2RenderingContext;

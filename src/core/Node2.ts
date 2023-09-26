@@ -16,9 +16,17 @@ export enum CoordinateSpace2
 }
 
 /**
- * The Node2 class is used to represent an object in two-dimensional space. 
- * It stores information such as position, rotation, scale, visibility, and a reference to its parent object. 
- * It also contains a matrix to keep track of its transformation relative to its parent object.
+ * This is the base class for all objects that can be added to a GopherGfx 2D scene.  It is named "Node"
+ * because the scene is stored in a graph data structure, so we think of every element in that graph
+ * as a "node" in the graph.  There is also a "Node3" base class for all objects that can be added to
+ * the 3D scene.  
+ * 
+ * Every object that can be added to a 2D scene (e.g., Mesh2s, Line2s) will inherit from this base object.
+ * So, every object in the scene will have a position, rotation, scale, boundingBox, boundingSphere, 
+ * visibility, and all of the other properties listed in this class.
+ * 
+ * For more detail on how the scene graph works, see the documentation for the Scene class.
+ * 
  */
 export class Node2
 {

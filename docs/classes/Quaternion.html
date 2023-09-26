@@ -15,12 +15,23 @@
 <li><a href="../modules.html">gophergfx</a></li>
 <li><a href="Quaternion.html">Quaternion</a></li></ul>
 <h1>Class Quaternion</h1></div>
+<section class="tsd-panel tsd-comment">
+<div class="tsd-comment tsd-typography"><p>This class holds a quaternion rotation.  It includes routines for using the quaternion to 
+rotate points and vectors.  It includes routines for constructing many common rotations and inverting
+the rotation as well as accessing the underlying x,y,z,w components of the quaterion.</p>
+<p>Most of the functions in the class are defined both as member functions that can be called on a specific
+instance of Quaternion <em>and</em> as static functions.  The static functions return a <em>new</em> result, leaving the
+original inputs unchanged, whereas, in general, member functions save the result in the quaternion itself
+and return void:</p>
+<pre><code><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">Q1</span><span class="hl-1"> = </span><span class="hl-4">Quaternion</span><span class="hl-1">.</span><span class="hl-3">makeRotationX</span><span class="hl-1">(</span><span class="hl-4">Math</span><span class="hl-1">.</span><span class="hl-2">PI</span><span class="hl-1">);</span><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">Q2</span><span class="hl-1"> = </span><span class="hl-4">Quaternion</span><span class="hl-1">.</span><span class="hl-3">makeRotationY</span><span class="hl-1">(</span><span class="hl-4">Math</span><span class="hl-1">.</span><span class="hl-2">PI</span><span class="hl-1">);</span><br/><br/><span class="hl-6">// save the result in Q3, leaving Q1 and Q2 unchanged</span><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">Q3</span><span class="hl-1"> = </span><span class="hl-4">Quaternion</span><span class="hl-1">.</span><span class="hl-3">multiply</span><span class="hl-1">(</span><span class="hl-2">Q1</span><span class="hl-1">, </span><span class="hl-2">Q2</span><span class="hl-1">);</span><br/><br/><span class="hl-6">// each call to multiply overwrites the previous contents of Q4 with the result of the multiplication</span><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">Q4</span><span class="hl-1"> = </span><span class="hl-4">Quaternion</span><span class="hl-1">.</span><span class="hl-3">makeRotationZ</span><span class="hl-1">(</span><span class="hl-4">Math</span><span class="hl-1">.</span><span class="hl-2">PI</span><span class="hl-1">);</span><br/><span class="hl-2">Q4</span><span class="hl-1">.</span><span class="hl-3">multiply</span><span class="hl-1">(</span><span class="hl-2">Q1</span><span class="hl-1">);</span><br/><span class="hl-2">Q4</span><span class="hl-1">.</span><span class="hl-3">multiply</span><span class="hl-1">(</span><span class="hl-2">Q2</span><span class="hl-1">);</span>
+</code></pre>
+</div></section>
 <section class="tsd-panel tsd-hierarchy">
 <h4>Hierarchy</h4>
 <ul class="tsd-hierarchy">
 <li><span class="target">Quaternion</span></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L4">src/math/Quaternion.ts:4</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L26">src/math/Quaternion.ts:26</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -82,7 +93,7 @@
 <ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
 <li class="tsd-signature tsd-anchor-link" id="constructor.new_Quaternion">new <wbr/>Quaternion<span class="tsd-signature-symbol">(</span>x<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, y<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, z<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, w<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a><a href="#constructor.new_Quaternion" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Creates a new Quaternion object</p>
+<div class="tsd-comment tsd-typography"><p>Creates a new Quaternion object with zero rotation (i.e., the identity quaternion)</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
@@ -105,36 +116,40 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L254">src/math/Quaternion.ts:254</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L307">src/math/Quaternion.ts:307</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Properties</h2>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="w" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>w</span><a href="#w" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">w<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L244">src/math/Quaternion.ts:244</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L296">src/math/Quaternion.ts:296</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="x" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>x</span><a href="#x" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">x<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L241">src/math/Quaternion.ts:241</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L293">src/math/Quaternion.ts:293</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="y" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>y</span><a href="#y" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">y<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L242">src/math/Quaternion.ts:242</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L294">src/math/Quaternion.ts:294</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="z" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>z</span><a href="#z" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">z<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L243">src/math/Quaternion.ts:243</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L295">src/math/Quaternion.ts:295</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="IDENTITY" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <code class="tsd-tag ts-flagReadonly">Readonly</code> <span>IDENTITY</span><a href="#IDENTITY" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">IDENTITY<span class="tsd-signature-symbol">:</span> <a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a><span class="tsd-signature-symbol"> = ...</span></div>
-<div class="tsd-comment tsd-typography"><p>A static property representing the identity quaternion (0, 0, 0, 1)</p>
+<div class="tsd-comment tsd-typography"><p>A static property to provide quick access to the identity quaternion (0, 0, 0, 1).
+(Note: Be careful not to change the value of this field!  It is marked readonly, but typescipt do not completely
+enforce this!)</p>
+<pre><code><span class="hl-6">// Good use of IDENTITY:</span><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">q</span><span class="hl-1"> = </span><span class="hl-3">Quaternion</span><span class="hl-1">();</span><br/><span class="hl-7">if</span><span class="hl-1"> (</span><span class="hl-4">q</span><span class="hl-1">.</span><span class="hl-3">equals</span><span class="hl-1">(</span><span class="hl-4">Quaternion</span><span class="hl-1">.</span><span class="hl-2">IDENTITY</span><span class="hl-1">)) {</span><br/><span class="hl-1">  </span><span class="hl-4">console</span><span class="hl-1">.</span><span class="hl-3">log</span><span class="hl-1">(</span><span class="hl-8">&quot;q equals the identity quaternion&quot;</span><span class="hl-1">)</span><br/><span class="hl-1">}</span><br/><br/><span class="hl-6">// Dangerous use of IDENTITY!!!!</span><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">q</span><span class="hl-1"> = </span><span class="hl-4">Quaternion</span><span class="hl-1">.</span><span class="hl-2">IDENTITY</span><span class="hl-1">;  </span><span class="hl-6">// makes q a reference to Quaternion.IDENTITY</span><br/><span class="hl-4">q</span><span class="hl-1">.</span><span class="hl-3">makeRotationZ</span><span class="hl-1">(</span><span class="hl-4">Math</span><span class="hl-1">.</span><span class="hl-2">PI</span><span class="hl-1">); </span><span class="hl-6">// changes Quaternion.IDENTITY!</span><br/><br/><span class="hl-6">// Do this instead:</span><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">q</span><span class="hl-1"> = </span><span class="hl-4">Quaternion</span><span class="hl-1">.</span><span class="hl-3">makeIdentity</span><span class="hl-1">(); </span><span class="hl-6">// create a new identity matrix M</span><br/><span class="hl-4">q</span><span class="hl-1">.</span><span class="hl-3">makeRotationZ</span><span class="hl-1">(</span><span class="hl-4">Math</span><span class="hl-1">.</span><span class="hl-2">PI</span><span class="hl-1">);</span>
+</code></pre>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L9">src/math/Quaternion.ts:9</a></li></ul></aside></section></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L47">src/math/Quaternion.ts:47</a></li></ul></aside></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Methods</h2>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="clone" class="tsd-anchor"></a>
@@ -142,19 +157,19 @@
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 <li class="tsd-signature tsd-anchor-link" id="clone.clone-1">clone<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a><a href="#clone.clone-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Clones this quaternion</p>
+<div class="tsd-comment tsd-typography"><p>Creates a new quaternion with the same values as this one</p>
 
 <h3>Returns</h3><p>A new quaternion with the same values as this one</p>
 </div>
 <h4 class="tsd-returns-title">Returns <a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L481">src/math/Quaternion.ts:481</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L534">src/math/Quaternion.ts:534</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="copy" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>copy</span><a href="#copy" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 <li class="tsd-signature tsd-anchor-link" id="copy.copy-1">copy<span class="tsd-signature-symbol">(</span>q<span class="tsd-signature-symbol">: </span><a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#copy.copy-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Copies the values of another quaternion into this one</p>
+<div class="tsd-comment tsd-typography"><p>Copies the x,y,z,w components of another quaternion into this one</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
@@ -165,66 +180,70 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L468">src/math/Quaternion.ts:468</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L521">src/math/Quaternion.ts:521</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="getMatrix" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Matrix</span><a href="#getMatrix" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 <li class="tsd-signature tsd-anchor-link" id="getMatrix.getMatrix-1">get<wbr/>Matrix<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Matrix4.html" class="tsd-signature-type" data-tsd-kind="Class">Matrix4</a><a href="#getMatrix.getMatrix-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Returns a 4x4 rotation matrix representation of this Quaternion</p>
+<div class="tsd-comment tsd-typography"><p>Converts this quaternion into an equivalent 4x4 rotation matrix and returns the result.</p>
 
 <h3>Returns</h3><p>A 4x4 rotation matrix representation of this Quaternion</p>
 </div>
 <h4 class="tsd-returns-title">Returns <a href="Matrix4.html" class="tsd-signature-type" data-tsd-kind="Class">Matrix4</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L551">src/math/Quaternion.ts:551</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L606">src/math/Quaternion.ts:606</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="inverse" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>inverse</span><a href="#inverse" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 <li class="tsd-signature tsd-anchor-link" id="inverse.inverse-1">inverse<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a><a href="#inverse.inverse-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Returns the inverse of this Quaternion</p>
+<div class="tsd-comment tsd-typography"><p>Computes the inverse of this quaternion and returns the result in a new quaternion.</p>
 
 <h3>Returns</h3><p>The inverse of this Quaternion</p>
 </div>
 <h4 class="tsd-returns-title">Returns <a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L541">src/math/Quaternion.ts:541</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L596">src/math/Quaternion.ts:596</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="invert" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>invert</span><a href="#invert" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 <li class="tsd-signature tsd-anchor-link" id="invert.invert-1">invert<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#invert.invert-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Inverts the Quaternion in place</p>
+<div class="tsd-comment tsd-typography"><p>Inverts the quaternion and save the result in this quaternion.</p>
 </div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L525">src/math/Quaternion.ts:525</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L580">src/math/Quaternion.ts:580</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="lookAt" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>look<wbr/>At</span><a href="#lookAt" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-<li class="tsd-signature tsd-anchor-link" id="lookAt.lookAt-1">look<wbr/>At<span class="tsd-signature-symbol">(</span>eye<span class="tsd-signature-symbol">: </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a>, target<span class="tsd-signature-symbol">: </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a>, up<span class="tsd-signature-symbol">?: </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#lookAt.lookAt-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="lookAt.lookAt-1">look<wbr/>At<span class="tsd-signature-symbol">(</span>eyePoint<span class="tsd-signature-symbol">: </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a>, targetPoint<span class="tsd-signature-symbol">: </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a>, upVector<span class="tsd-signature-symbol">?: </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#lookAt.lookAt-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Sets the quaternion to rotate the vector <code>eye</code> to point towards <code>target</code></p>
+<div class="tsd-comment tsd-typography"><p>Sets this quaternion to a rotation like that used to orient a camera.  The quaternion will rotate the 
+-Z direction (typically, the &quot;forward&quot; direction for objects and the default &quot;look&quot; direction for cameras)
+to point in the new &quot;look&quot; direction defined by the vector (targetPoint - eyePoint).  The up vector is used
+to further constrain the rotation.  The original Y direction will rotate to point, as much as possible,
+toward the upVector.</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>eye: <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h5>
-<div class="tsd-comment tsd-typography"><p>The vector representing the starting point</p>
+<h5>eyePoint: <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h5>
+<div class="tsd-comment tsd-typography"><p>The position of the camera or other object being oriented</p>
 </div></li>
 <li>
-<h5>target: <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h5>
-<div class="tsd-comment tsd-typography"><p>The vector representing the target point</p>
+<h5>targetPoint: <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h5>
+<div class="tsd-comment tsd-typography"><p>The point to look at</p>
 </div></li>
 <li>
-<h5>up: <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><span class="tsd-signature-symbol"> = Vector3.UP</span></h5>
-<div class="tsd-comment tsd-typography"><p>The vector representing the up direction (defaults to Vector3.UP)</p>
+<h5>upVector: <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><span class="tsd-signature-symbol"> = Vector3.UP</span></h5>
+<div class="tsd-comment tsd-typography"><p>The direction that the original +Y direction should rotate into (as closely as possible).</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L585">src/math/Quaternion.ts:585</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L652">src/math/Quaternion.ts:652</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="makeIdentity" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>make<wbr/>Identity</span><a href="#makeIdentity" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -236,14 +255,15 @@
 </div>
 <h4 class="tsd-returns-title">Returns <a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L93">src/math/Quaternion.ts:93</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L133">src/math/Quaternion.ts:133</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="multiply" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>multiply</span><a href="#multiply" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 <li class="tsd-signature tsd-anchor-link" id="multiply.multiply-1">multiply<span class="tsd-signature-symbol">(</span>q<span class="tsd-signature-symbol">: </span><a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#multiply.multiply-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Multiply this quaternion with the input quaternion
-This operation is not commutative, so order matters</p>
+<div class="tsd-comment tsd-typography"><p>Multiply this quaternion with the input quaternion and save the result in this quaternion.
+i.e., this = this * q  Quaternion multiplication is not commutative, so order matters.
+See premultiply() to do the multiplication in the opposite order.</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
@@ -254,24 +274,25 @@ This operation is not commutative, so order matters</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L492">src/math/Quaternion.ts:492</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L546">src/math/Quaternion.ts:546</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="normalize" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>normalize</span><a href="#normalize" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 <li class="tsd-signature tsd-anchor-link" id="normalize.normalize-1">normalize<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#normalize.normalize-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Normalize this quaternion</p>
+<div class="tsd-comment tsd-typography"><p>Normalize this quaternion and save the result in this quaternion.</p>
 </div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L511">src/math/Quaternion.ts:511</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L566">src/math/Quaternion.ts:566</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="premultiply" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>premultiply</span><a href="#premultiply" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 <li class="tsd-signature tsd-anchor-link" id="premultiply.premultiply-1">premultiply<span class="tsd-signature-symbol">(</span>q<span class="tsd-signature-symbol">: </span><a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#premultiply.premultiply-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Premultiply this quaternion with the input quaternion
-This operation is not commutative, so order matters</p>
+<div class="tsd-comment tsd-typography"><p>Premultiply this quaternion with the input quaternion and save the result in this quaternion.
+i.e., this = q * this.  This operation is not commutative, so order matters;  See multiply()
+to do the multiplication in the opposite order.</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
@@ -282,26 +303,32 @@ This operation is not commutative, so order matters</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L503">src/math/Quaternion.ts:503</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L558">src/math/Quaternion.ts:558</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="rotate" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>rotate</span><a href="#rotate" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 <li class="tsd-signature tsd-anchor-link" id="rotate.rotate-1">rotate<span class="tsd-signature-symbol">(</span>v<span class="tsd-signature-symbol">: </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><a href="#rotate.rotate-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Rotates a 3D point or 3D vector by this quaternion and returns the result in a new Vector3</p>
+
+<h3>Returns</h3><p>A new 3D point or 3D vector</p>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>v: <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h5></li></ul></div>
+<h5>v: <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h5>
+<div class="tsd-comment tsd-typography"><p>The original 3D point or 3D vector</p>
+</div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L673">src/math/Quaternion.ts:673</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L746">src/math/Quaternion.ts:746</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="set" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>set</span><a href="#set" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 <li class="tsd-signature tsd-anchor-link" id="set.set-1">set<span class="tsd-signature-symbol">(</span>x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, z<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, w<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#set.set-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Sets the quaternion to the given x, y, z, and w values</p>
+<div class="tsd-comment tsd-typography"><p>Sets the x,y,z,w components of the quaternion to the given x, y, z, and w values</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
@@ -324,20 +351,20 @@ This operation is not commutative, so order matters</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L270">src/math/Quaternion.ts:270</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L323">src/math/Quaternion.ts:323</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="setAxisAngle" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>set<wbr/>Axis<wbr/>Angle</span><a href="#setAxisAngle" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 <li class="tsd-signature tsd-anchor-link" id="setAxisAngle.setAxisAngle-1">set<wbr/>Axis<wbr/>Angle<span class="tsd-signature-symbol">(</span>axis<span class="tsd-signature-symbol">: </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a>, angle<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#setAxisAngle.setAxisAngle-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Sets the quaternion values using a (normalized) axis and an angle in radians</p>
+<div class="tsd-comment tsd-typography"><p>Sets the quaternion to a rotation around axis by angle radians.  Note, the axis parameter must be a unit vector.</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
 <h5>axis: <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h5>
-<div class="tsd-comment tsd-typography"><p>The axis of rotation</p>
+<div class="tsd-comment tsd-typography"><p>A unit vector that describes the axis of rotation</p>
 </div></li>
 <li>
 <h5>angle: <span class="tsd-signature-type">number</span></h5>
@@ -345,13 +372,13 @@ This operation is not commutative, so order matters</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L335">src/math/Quaternion.ts:335</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L388">src/math/Quaternion.ts:388</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="setEulerAngles" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>set<wbr/>Euler<wbr/>Angles</span><a href="#setEulerAngles" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 <li class="tsd-signature tsd-anchor-link" id="setEulerAngles.setEulerAngles-1">set<wbr/>Euler<wbr/>Angles<span class="tsd-signature-symbol">(</span>x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, z<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, order<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#setEulerAngles.setEulerAngles-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Sets the quaternion values using Euler angles</p>
+<div class="tsd-comment tsd-typography"><p>Sets the quaternion to the rotation specified by the provied Euler angles and order of rotation</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
@@ -374,7 +401,7 @@ This operation is not commutative, so order matters</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L356">src/math/Quaternion.ts:356</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L409">src/math/Quaternion.ts:409</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="setIdentity" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>set<wbr/>Identity</span><a href="#setIdentity" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -384,24 +411,24 @@ This operation is not commutative, so order matters</p>
 </div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L282">src/math/Quaternion.ts:282</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L335">src/math/Quaternion.ts:335</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="setMatrix" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>set<wbr/>Matrix</span><a href="#setMatrix" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 <li class="tsd-signature tsd-anchor-link" id="setMatrix.setMatrix-1">set<wbr/>Matrix<span class="tsd-signature-symbol">(</span>matrix<span class="tsd-signature-symbol">: </span><a href="Matrix4.html" class="tsd-signature-type" data-tsd-kind="Class">Matrix4</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#setMatrix.setMatrix-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Sets the quaternion from a rotation matrix</p>
+<div class="tsd-comment tsd-typography"><p>Sets the quaternion to a rotation equal to the one in the provided 4x4 rotation matrix</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
 <h5>matrix: <a href="Matrix4.html" class="tsd-signature-type" data-tsd-kind="Class">Matrix4</a></h5>
-<div class="tsd-comment tsd-typography"><p>The rotation matrix in homogeneous coordinates</p>
+<div class="tsd-comment tsd-typography"><p>A 4x4 rotation matrix</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L422">src/math/Quaternion.ts:422</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L475">src/math/Quaternion.ts:475</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="setRotationX" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>set<wbr/>RotationX</span><a href="#setRotationX" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -418,7 +445,7 @@ This operation is not commutative, so order matters</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L295">src/math/Quaternion.ts:295</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L348">src/math/Quaternion.ts:348</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="setRotationY" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>set<wbr/>RotationY</span><a href="#setRotationY" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -435,7 +462,7 @@ This operation is not commutative, so order matters</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L308">src/math/Quaternion.ts:308</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L361">src/math/Quaternion.ts:361</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="setRotationZ" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>set<wbr/>RotationZ</span><a href="#setRotationZ" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -452,13 +479,13 @@ This operation is not commutative, so order matters</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L322">src/math/Quaternion.ts:322</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L374">src/math/Quaternion.ts:374</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="slerp" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>slerp</span><a href="#slerp" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 <li class="tsd-signature tsd-anchor-link" id="slerp.slerp-1">slerp<span class="tsd-signature-symbol">(</span>q1<span class="tsd-signature-symbol">: </span><a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a>, q2<span class="tsd-signature-symbol">: </span><a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a>, alpha<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#slerp.slerp-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Interpolates between two quaternions, q1 and q2, based on the given <code>alpha</code> value</p>
+<div class="tsd-comment tsd-typography"><p>Sets this quaternion to an interpolation between two quaternions, q1 and q2, based on the given <code>alpha</code> value</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
@@ -477,13 +504,13 @@ This operation is not commutative, so order matters</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L613">src/math/Quaternion.ts:613</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L680">src/math/Quaternion.ts:680</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="copy-2" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>copy</span><a href="#copy-2" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 <li class="tsd-signature tsd-anchor-link" id="copy-2.copy-3">copy<span class="tsd-signature-symbol">(</span>q<span class="tsd-signature-symbol">: </span><a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a><a href="#copy-2.copy-3" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Copies a Quaternion object</p>
+<div class="tsd-comment tsd-typography"><p>Creates a new quaternion and copies the x,y,z,w values of the input into it.</p>
 
 <h3>Returns</h3><p>A new Quaternion object with the same values as q</p>
 </div>
@@ -496,13 +523,13 @@ This operation is not commutative, so order matters</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L17">src/math/Quaternion.ts:17</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L55">src/math/Quaternion.ts:55</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="inverse-2" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>inverse</span><a href="#inverse-2" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 <li class="tsd-signature tsd-anchor-link" id="inverse-2.inverse-3">inverse<span class="tsd-signature-symbol">(</span>q<span class="tsd-signature-symbol">: </span><a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a><a href="#inverse-2.inverse-3" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Inverts a Quaternion object</p>
+<div class="tsd-comment tsd-typography"><p>Returns a new quaternion that is the inverse (opposite rotation) of the input quaternion.</p>
 
 <h3>Returns</h3><p>A new Quaternion object representing the inverse of q</p>
 </div>
@@ -515,38 +542,42 @@ This operation is not commutative, so order matters</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L81">src/math/Quaternion.ts:81</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L121">src/math/Quaternion.ts:121</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="lookAt-2" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>look<wbr/>At</span><a href="#lookAt-2" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-<li class="tsd-signature tsd-anchor-link" id="lookAt-2.lookAt-3">look<wbr/>At<span class="tsd-signature-symbol">(</span>eye<span class="tsd-signature-symbol">: </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a>, target<span class="tsd-signature-symbol">: </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a>, up<span class="tsd-signature-symbol">?: </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a><a href="#lookAt-2.lookAt-3" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="lookAt-2.lookAt-3">look<wbr/>At<span class="tsd-signature-symbol">(</span>eyePoint<span class="tsd-signature-symbol">: </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a>, targetPoint<span class="tsd-signature-symbol">: </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a>, upVector<span class="tsd-signature-symbol">?: </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a><a href="#lookAt-2.lookAt-3" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Creates a quaternion that rotates the vector <code>eye</code> to point towards <code>target</code></p>
+<div class="tsd-comment tsd-typography"><p>Creates a new quaternion with a rotation like that used to orient a camera.  The quaternion will rotate the 
+-Z direction (typically, the &quot;forward&quot; direction for objects and the default &quot;look&quot; direction for cameras)
+to point in the new &quot;look&quot; direction defined by the vector (targetPoint - eyePoint).  The up vector is used
+to further constrain the rotation.  The original Y direction will rotate to point, as much as possible,
+toward the upVector.</p>
+
+<h3>Returns</h3><p>A new Quaternion that performs the specified rotation</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>eye: <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h5>
-<div class="tsd-comment tsd-typography"><p>The vector representing the starting point</p>
+<h5>eyePoint: <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h5>
+<div class="tsd-comment tsd-typography"><p>The position of the camera or other object being oriented</p>
 </div></li>
 <li>
-<h5>target: <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h5>
-<div class="tsd-comment tsd-typography"><p>The vector representing the target point</p>
+<h5>targetPoint: <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h5>
+<div class="tsd-comment tsd-typography"><p>The point to look at</p>
 </div></li>
 <li>
-<h5>up: <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><span class="tsd-signature-symbol"> = Vector3.UP</span></h5>
-<div class="tsd-comment tsd-typography"><p>The vector representing the up direction (defaults to Vector3.UP)</p>
-</div></li></ul></div>
+<h5>upVector: <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><span class="tsd-signature-symbol"> = Vector3.UP</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L174">src/math/Quaternion.ts:174</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L219">src/math/Quaternion.ts:219</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="makeAxisAngle" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>make<wbr/>Axis<wbr/>Angle</span><a href="#makeAxisAngle" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 <li class="tsd-signature tsd-anchor-link" id="makeAxisAngle.makeAxisAngle-1">make<wbr/>Axis<wbr/>Angle<span class="tsd-signature-symbol">(</span>axis<span class="tsd-signature-symbol">: </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a>, angle<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a><a href="#makeAxisAngle.makeAxisAngle-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Create a quaternion from a given axis and angle</p>
+<div class="tsd-comment tsd-typography"><p>Creates a new quaternion to represent a rotation of angle radians around axis.</p>
 
 <h3>Returns</h3><p>A new Quaternion</p>
 </div>
@@ -563,13 +594,13 @@ This operation is not commutative, so order matters</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L144">src/math/Quaternion.ts:144</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L184">src/math/Quaternion.ts:184</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="makeEulerAngles" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>make<wbr/>Euler<wbr/>Angles</span><a href="#makeEulerAngles" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 <li class="tsd-signature tsd-anchor-link" id="makeEulerAngles.makeEulerAngles-1">make<wbr/>Euler<wbr/>Angles<span class="tsd-signature-symbol">(</span>x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, z<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, order<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a><a href="#makeEulerAngles.makeEulerAngles-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Create a quaternion from given Euler angles</p>
+<div class="tsd-comment tsd-typography"><p>Creates a new quaternion from given Euler angles</p>
 
 <h3>Returns</h3><p>A new Quaternion</p>
 </div>
@@ -594,26 +625,26 @@ This operation is not commutative, so order matters</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L160">src/math/Quaternion.ts:160</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L200">src/math/Quaternion.ts:200</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="makeMatrix" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>make<wbr/>Matrix</span><a href="#makeMatrix" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 <li class="tsd-signature tsd-anchor-link" id="makeMatrix.makeMatrix-1">make<wbr/>Matrix<span class="tsd-signature-symbol">(</span>matrix<span class="tsd-signature-symbol">: </span><a href="Matrix4.html" class="tsd-signature-type" data-tsd-kind="Class">Matrix4</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a><a href="#makeMatrix.makeMatrix-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Create a quaternion from a given Matrix4 object</p>
+<div class="tsd-comment tsd-typography"><p>Creates a new quaternion with the same rotation as in the provided 4x4 transformation matrix.</p>
 
-<h3>Returns</h3><p>A new Quaternion</p>
+<h3>Returns</h3><p>A new Quaternion that specifies the same rotation</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
 <h5>matrix: <a href="Matrix4.html" class="tsd-signature-type" data-tsd-kind="Class">Matrix4</a></h5>
-<div class="tsd-comment tsd-typography"><p>The Matrix4 object to use for creating the quaternion</p>
+<div class="tsd-comment tsd-typography"><p>A 4x4 transformation matrix that includes a rotation.</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L201">src/math/Quaternion.ts:201</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L246">src/math/Quaternion.ts:246</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="makeRotationX" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>make<wbr/>RotationX</span><a href="#makeRotationX" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -632,7 +663,7 @@ This operation is not commutative, so order matters</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L104">src/math/Quaternion.ts:104</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L144">src/math/Quaternion.ts:144</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="makeRotationY" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>make<wbr/>RotationY</span><a href="#makeRotationY" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -651,7 +682,7 @@ This operation is not commutative, so order matters</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L117">src/math/Quaternion.ts:117</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L157">src/math/Quaternion.ts:157</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="makeRotationZ" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>make<wbr/>RotationZ</span><a href="#makeRotationZ" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -670,14 +701,15 @@ This operation is not commutative, so order matters</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L130">src/math/Quaternion.ts:130</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L170">src/math/Quaternion.ts:170</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="multiply-2" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>multiply</span><a href="#multiply-2" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 <li class="tsd-signature tsd-anchor-link" id="multiply-2.multiply-3">multiply<span class="tsd-signature-symbol">(</span>q1<span class="tsd-signature-symbol">: </span><a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a>, q2<span class="tsd-signature-symbol">: </span><a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a><a href="#multiply-2.multiply-3" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Multiplies two Quaternion objects together
-This operation is not commutative, so order matters</p>
+<div class="tsd-comment tsd-typography"><p>Multiplies two Quaternion objects together and returns a new quaternion = q1 * q2
+Note: multiplication of quaternions is not commutative, so order matters.  See
+premultiply() to do the opposite order, or just switch the order of the arguments.</p>
 
 <h3>Returns</h3><p>A new Quaternion object representing the product of q1 and q2</p>
 </div>
@@ -694,13 +726,13 @@ This operation is not commutative, so order matters</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L30">src/math/Quaternion.ts:30</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L69">src/math/Quaternion.ts:69</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="normalize-2" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>normalize</span><a href="#normalize-2" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 <li class="tsd-signature tsd-anchor-link" id="normalize-2.normalize-3">normalize<span class="tsd-signature-symbol">(</span>q<span class="tsd-signature-symbol">: </span><a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a><a href="#normalize-2.normalize-3" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Normalizes a Quaternion object</p>
+<div class="tsd-comment tsd-typography"><p>Returns a new quaternion that is a normalized version of the input quaternion.</p>
 
 <h3>Returns</h3><p>A new Quaternion object with normalized values</p>
 </div>
@@ -713,14 +745,15 @@ This operation is not commutative, so order matters</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L68">src/math/Quaternion.ts:68</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L108">src/math/Quaternion.ts:108</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="premultiply-2" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>premultiply</span><a href="#premultiply-2" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 <li class="tsd-signature tsd-anchor-link" id="premultiply-2.premultiply-3">premultiply<span class="tsd-signature-symbol">(</span>q1<span class="tsd-signature-symbol">: </span><a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a>, q2<span class="tsd-signature-symbol">: </span><a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a><a href="#premultiply-2.premultiply-3" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Premultiplies two Quaternion objects
-This operation is not commutative, so order matters</p>
+<div class="tsd-comment tsd-typography"><p>Premultiplies two Quaternion objects and returns a new quaternion = q2 * q1
+Note: multiplication of quaternions is not commutative, so order matters.  See
+multiply() to do the opposite order, or just switch the order of the arguments.</p>
 
 <h3>Returns</h3><p>A new Quaternion object which is the result of the premultiplication of the two input Quaternion objects</p>
 </div>
@@ -737,28 +770,36 @@ This operation is not commutative, so order matters</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L50">src/math/Quaternion.ts:50</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L90">src/math/Quaternion.ts:90</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="rotate-2" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>rotate</span><a href="#rotate-2" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 <li class="tsd-signature tsd-anchor-link" id="rotate-2.rotate-3">rotate<span class="tsd-signature-symbol">(</span>v<span class="tsd-signature-symbol">: </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a>, q<span class="tsd-signature-symbol">: </span><a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><a href="#rotate-2.rotate-3" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Rotates a 3D point or 3D vector by the specified quaternion and returns the result in a new Vector3</p>
+
+<h3>Returns</h3><p>A new 3D point or 3D vector</p>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>v: <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h5></li>
+<h5>v: <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h5>
+<div class="tsd-comment tsd-typography"><p>The original 3D point or 3D vector</p>
+</div></li>
 <li>
-<h5>q: <a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a></h5></li></ul></div>
+<h5>q: <a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a></h5>
+<div class="tsd-comment tsd-typography"><p>The rotation to apply</p>
+</div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L223">src/math/Quaternion.ts:223</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L275">src/math/Quaternion.ts:275</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="slerp-2" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>slerp</span><a href="#slerp-2" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 <li class="tsd-signature tsd-anchor-link" id="slerp-2.slerp-3">slerp<span class="tsd-signature-symbol">(</span>q1<span class="tsd-signature-symbol">: </span><a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a>, q2<span class="tsd-signature-symbol">: </span><a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a>, alpha<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a><a href="#slerp-2.slerp-3" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Computes a Quaternion from two input Quaternions using spherical linear interpolation</p>
+<div class="tsd-comment tsd-typography"><p>Returns a Quaternion from two input Quaternions using spherical linear interpolation.</p>
 
 <h3>Returns</h3><p>A new Quaternion representing the slerp between q1 and q2</p>
 </div>
@@ -779,7 +820,7 @@ This operation is not commutative, so order matters</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Quaternion.ts#L216">src/math/Quaternion.ts:216</a></li></ul></aside></li></ul></section></section></div>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Quaternion.ts#L261">src/math/Quaternion.ts:261</a></li></ul></aside></li></ul></section></section></div>
 <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 <div class="tsd-navigation settings">
 <details class="tsd-index-accordion"><summary class="tsd-accordion-summary">

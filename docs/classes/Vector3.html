@@ -15,12 +15,22 @@
 <li><a href="../modules.html">gophergfx</a></li>
 <li><a href="Vector3.html">Vector3</a></li></ul>
 <h1>Class Vector3</h1></div>
+<section class="tsd-panel tsd-comment">
+<div class="tsd-comment tsd-typography"><p>This class holds the x,y,z components of a 3D point or vector.  It includes linear algebra routines for
+working with vectors (e.g., dot product, cross product).</p>
+<p>Most of the functions in the class are defined both as member functions that can be called on a specific
+instance of Vector3 <em>and</em> as static functions.  The static functions return a <em>new</em> result, leaving the
+original inputs unchanged, whereas, in general, member functions save the result in this vector itself
+and return void:</p>
+<pre><code><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">v</span><span class="hl-1"> = </span><span class="hl-0">new</span><span class="hl-1"> </span><span class="hl-3">Vector3</span><span class="hl-1">(</span><span class="hl-5">1</span><span class="hl-1">, </span><span class="hl-5">2</span><span class="hl-1">, </span><span class="hl-5">3</span><span class="hl-1">);</span><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">w</span><span class="hl-1"> = </span><span class="hl-0">new</span><span class="hl-1"> </span><span class="hl-3">Vector3</span><span class="hl-1">(</span><span class="hl-5">4</span><span class="hl-1">, </span><span class="hl-5">5</span><span class="hl-1">, </span><span class="hl-5">6</span><span class="hl-1">);</span><br/><br/><span class="hl-6">// saves the result in n, v and w are unchanged.</span><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">n</span><span class="hl-1"> = </span><span class="hl-4">Vector3</span><span class="hl-1">.</span><span class="hl-3">cross</span><span class="hl-1">(</span><span class="hl-4">v</span><span class="hl-1">, </span><span class="hl-4">w</span><span class="hl-1">);</span><br/><br/><span class="hl-6">// saves the result in v and returns null.  v now becomes v crossed-with w.</span><br/><span class="hl-4">v</span><span class="hl-1">.</span><span class="hl-3">cross</span><span class="hl-1">(</span><span class="hl-4">w</span><span class="hl-1">);</span>
+</code></pre>
+</div></section>
 <section class="tsd-panel tsd-hierarchy">
 <h4>Hierarchy</h4>
 <ul class="tsd-hierarchy">
 <li><span class="target">Vector3</span></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L4">src/math/Vector3.ts:4</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L24">src/math/Vector3.ts:24</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -59,6 +69,7 @@
 <a href="Vector3.html#divideScalar" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>divide<wbr/>Scalar</span></a>
 <a href="Vector3.html#dot" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>dot</span></a>
 <a href="Vector3.html#equals" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>equals</span></a>
+<a href="Vector3.html#fuzzyEquals" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>fuzzy<wbr/>Equals</span></a>
 <a href="Vector3.html#inverse" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>inverse</span></a>
 <a href="Vector3.html#invert" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>invert</span></a>
 <a href="Vector3.html#length" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>length</span></a>
@@ -82,6 +93,8 @@
 <a href="Vector3.html#divide-2" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>divide</span></a>
 <a href="Vector3.html#divideScalar-2" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>divide<wbr/>Scalar</span></a>
 <a href="Vector3.html#dot-2" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>dot</span></a>
+<a href="Vector3.html#equals-2" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>equals</span></a>
+<a href="Vector3.html#fuzzyEquals-2" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>fuzzy<wbr/>Equals</span></a>
 <a href="Vector3.html#inverse-2" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>inverse</span></a>
 <a href="Vector3.html#lerp-2" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>lerp</span></a>
 <a href="Vector3.html#multiply-2" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>multiply</span></a>
@@ -119,101 +132,105 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L328">src/math/Vector3.ts:328</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L396">src/math/Vector3.ts:396</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Properties</h2>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="x" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>x</span><a href="#x" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">x<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L317">src/math/Vector3.ts:317</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L382">src/math/Vector3.ts:382</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="y" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>y</span><a href="#y" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">y<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L318">src/math/Vector3.ts:318</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L383">src/math/Vector3.ts:383</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="z" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>z</span><a href="#z" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">z<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L319">src/math/Vector3.ts:319</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L384">src/math/Vector3.ts:384</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="BACK" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <code class="tsd-tag ts-flagReadonly">Readonly</code> <span>BACK</span><a href="#BACK" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">BACK<span class="tsd-signature-symbol">:</span> <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><span class="tsd-signature-symbol"> = ...</span></div>
-<div class="tsd-comment tsd-typography"><p>A Vector3 object that points backward</p>
+<div class="tsd-comment tsd-typography"><p>A Vector3 object that points backward.  (See note in the Vector3.ZERO docs for important usage info.)</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L44">src/math/Vector3.ts:44</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L80">src/math/Vector3.ts:80</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="DOWN" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <code class="tsd-tag ts-flagReadonly">Readonly</code> <span>DOWN</span><a href="#DOWN" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">DOWN<span class="tsd-signature-symbol">:</span> <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><span class="tsd-signature-symbol"> = ...</span></div>
-<div class="tsd-comment tsd-typography"><p>A Vector3 object that points down</p>
+<div class="tsd-comment tsd-typography"><p>A Vector3 object that points down.  (See note in the Vector3.ZERO docs for important usage info.)</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L24">src/math/Vector3.ts:24</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L60">src/math/Vector3.ts:60</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="FORWARD" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <code class="tsd-tag ts-flagReadonly">Readonly</code> <span>FORWARD</span><a href="#FORWARD" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">FORWARD<span class="tsd-signature-symbol">:</span> <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><span class="tsd-signature-symbol"> = ...</span></div>
-<div class="tsd-comment tsd-typography"><p>A Vector3 object that points forward</p>
+<div class="tsd-comment tsd-typography"><p>A Vector3 object that points forward.  (See note in the Vector3.ZERO docs for important usage info.)</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L39">src/math/Vector3.ts:39</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L75">src/math/Vector3.ts:75</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="LEFT" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <code class="tsd-tag ts-flagReadonly">Readonly</code> <span>LEFT</span><a href="#LEFT" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">LEFT<span class="tsd-signature-symbol">:</span> <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><span class="tsd-signature-symbol"> = ...</span></div>
-<div class="tsd-comment tsd-typography"><p>A Vector3 object that points left</p>
+<div class="tsd-comment tsd-typography"><p>A Vector3 object that points left.  (See note in the Vector3.ZERO docs for important usage info.)</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L29">src/math/Vector3.ts:29</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L65">src/math/Vector3.ts:65</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="ONE" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <code class="tsd-tag ts-flagReadonly">Readonly</code> <span>ONE</span><a href="#ONE" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">ONE<span class="tsd-signature-symbol">:</span> <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><span class="tsd-signature-symbol"> = ...</span></div>
-<div class="tsd-comment tsd-typography"><p>A Vector3 object with all one values</p>
+<div class="tsd-comment tsd-typography"><p>A Vector3 object with all one values.  (See note in the Vector3.ZERO docs for important usage info.)</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L14">src/math/Vector3.ts:14</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L50">src/math/Vector3.ts:50</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="RIGHT" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <code class="tsd-tag ts-flagReadonly">Readonly</code> <span>RIGHT</span><a href="#RIGHT" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">RIGHT<span class="tsd-signature-symbol">:</span> <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><span class="tsd-signature-symbol"> = ...</span></div>
-<div class="tsd-comment tsd-typography"><p>A Vector3 object that points right</p>
+<div class="tsd-comment tsd-typography"><p>A Vector3 object that points right.  (See note in the Vector3.ZERO docs for important usage info.)</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L34">src/math/Vector3.ts:34</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L70">src/math/Vector3.ts:70</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="UP" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <code class="tsd-tag ts-flagReadonly">Readonly</code> <span>UP</span><a href="#UP" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">UP<span class="tsd-signature-symbol">:</span> <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><span class="tsd-signature-symbol"> = ...</span></div>
-<div class="tsd-comment tsd-typography"><p>A Vector3 object that points up</p>
+<div class="tsd-comment tsd-typography"><p>A Vector3 object that points up.  (See note in the Vector3.ZERO docs for important usage info.)</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L19">src/math/Vector3.ts:19</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L55">src/math/Vector3.ts:55</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="X_AXIS" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <code class="tsd-tag ts-flagReadonly">Readonly</code> <span>X_<wbr/>AXIS</span><a href="#X_AXIS" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">X_<wbr/>AXIS<span class="tsd-signature-symbol">:</span> <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><span class="tsd-signature-symbol"> = Vector3.RIGHT</span></div>
-<div class="tsd-comment tsd-typography"><p>A Vector3 object that points along the x-axis</p>
+<div class="tsd-comment tsd-typography"><p>A Vector3 object that points along the x-axis.  (See note in the Vector3.ZERO docs for important usage info.)</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L49">src/math/Vector3.ts:49</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L85">src/math/Vector3.ts:85</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="Y_AXIS" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <code class="tsd-tag ts-flagReadonly">Readonly</code> <span>Y_<wbr/>AXIS</span><a href="#Y_AXIS" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">Y_<wbr/>AXIS<span class="tsd-signature-symbol">:</span> <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><span class="tsd-signature-symbol"> = Vector3.UP</span></div>
-<div class="tsd-comment tsd-typography"><p>A Vector3 object that points along the y-axis</p>
+<div class="tsd-comment tsd-typography"><p>A Vector3 object that points along the y-axis.  (See note in the Vector3.ZERO docs for important usage info.)</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L54">src/math/Vector3.ts:54</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L90">src/math/Vector3.ts:90</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="ZERO" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <code class="tsd-tag ts-flagReadonly">Readonly</code> <span>ZERO</span><a href="#ZERO" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">ZERO<span class="tsd-signature-symbol">:</span> <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><span class="tsd-signature-symbol"> = ...</span></div>
-<div class="tsd-comment tsd-typography"><p>A Vector3 object with all zero values</p>
+<div class="tsd-comment tsd-typography"><p>A static property to provide quick access to a Vector3 with all of its x,y,z components equal to zero.
+(Note: Be careful not to change the value of this field!  It is marked readonly, but typescipt do not completely
+enforce this!)</p>
+<pre><code><span class="hl-6">// Good use of ZERO:</span><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">p</span><span class="hl-1"> = </span><span class="hl-0">new</span><span class="hl-1"> </span><span class="hl-3">Vector3</span><span class="hl-1">();</span><br/><span class="hl-7">if</span><span class="hl-1"> (</span><span class="hl-4">p</span><span class="hl-1">.</span><span class="hl-3">equals</span><span class="hl-1">(</span><span class="hl-4">Vector3</span><span class="hl-1">.</span><span class="hl-2">ZERO</span><span class="hl-1">)) {</span><br/><span class="hl-1">  </span><span class="hl-4">console</span><span class="hl-1">.</span><span class="hl-3">log</span><span class="hl-1">(</span><span class="hl-8">&quot;p is (0,0,0)&quot;</span><span class="hl-1">)</span><br/><span class="hl-1">}</span><br/><br/><span class="hl-6">// Dangerous use of ZERO!!!!</span><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">p</span><span class="hl-1"> = </span><span class="hl-4">Vector3</span><span class="hl-1">.</span><span class="hl-2">ZERO</span><span class="hl-1">;  </span><span class="hl-6">// makes p a reference to Vector3.ZERO</span><br/><span class="hl-4">p</span><span class="hl-1">.</span><span class="hl-3">add</span><span class="hl-1">(</span><span class="hl-0">new</span><span class="hl-1"> </span><span class="hl-3">Vector3</span><span class="hl-1">(</span><span class="hl-5">1</span><span class="hl-1">, </span><span class="hl-5">0</span><span class="hl-1">, </span><span class="hl-5">0</span><span class="hl-1">)); </span><span class="hl-6">// changes Vector3.ZERO!</span><br/><br/><span class="hl-6">// Do this instead:</span><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">p</span><span class="hl-1"> = </span><span class="hl-4">Vector3</span><span class="hl-1">.</span><span class="hl-3">copy</span><span class="hl-1">(</span><span class="hl-4">Vector3</span><span class="hl-1">.</span><span class="hl-2">ZERO</span><span class="hl-1">); </span><span class="hl-6">// or &quot;new Vector3();&quot; or another function that returns a NEW Vector3 object</span><br/><span class="hl-4">p</span><span class="hl-1">.</span><span class="hl-3">add</span><span class="hl-1">(</span><span class="hl-0">new</span><span class="hl-1"> </span><span class="hl-3">Vector3</span><span class="hl-1">(</span><span class="hl-5">1</span><span class="hl-1">, </span><span class="hl-5">0</span><span class="hl-1">, </span><span class="hl-5">0</span><span class="hl-1">));</span>
+</code></pre>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L9">src/math/Vector3.ts:9</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L45">src/math/Vector3.ts:45</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="Z_AXIS" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <code class="tsd-tag ts-flagReadonly">Readonly</code> <span>Z_<wbr/>AXIS</span><a href="#Z_AXIS" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">Z_<wbr/>AXIS<span class="tsd-signature-symbol">:</span> <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><span class="tsd-signature-symbol"> = Vector3.FORWARD</span></div>
-<div class="tsd-comment tsd-typography"><p>A Vector3 object that points along the z-axis</p>
+<div class="tsd-comment tsd-typography"><p>A Vector3 object that points along the z-axis.  (See note in the Vector3.ZERO docs for important usage info.)</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L59">src/math/Vector3.ts:59</a></li></ul></aside></section></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L95">src/math/Vector3.ts:95</a></li></ul></aside></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Methods</h2>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="add" class="tsd-anchor"></a>
@@ -232,7 +249,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L387">src/math/Vector3.ts:387</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L468">src/math/Vector3.ts:468</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="angleBetween" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>angle<wbr/>Between</span><a href="#angleBetween" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -251,7 +268,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L586">src/math/Vector3.ts:586</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L667">src/math/Vector3.ts:667</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="clone" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>clone</span><a href="#clone" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -263,7 +280,7 @@
 </div>
 <h4 class="tsd-returns-title">Returns <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L366">src/math/Vector3.ts:366</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L434">src/math/Vector3.ts:434</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="copy" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>copy</span><a href="#copy" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -280,7 +297,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L354">src/math/Vector3.ts:354</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L422">src/math/Vector3.ts:422</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="cross" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>cross</span><a href="#cross" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -297,7 +314,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L446">src/math/Vector3.ts:446</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L527">src/math/Vector3.ts:527</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="distanceTo" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>distance<wbr/>To</span><a href="#distanceTo" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -316,7 +333,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L600">src/math/Vector3.ts:600</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L681">src/math/Vector3.ts:681</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="divide" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>divide</span><a href="#divide" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -333,7 +350,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L423">src/math/Vector3.ts:423</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L504">src/math/Vector3.ts:504</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="divideScalar" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>divide<wbr/>Scalar</span><a href="#divideScalar" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -350,7 +367,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L473">src/math/Vector3.ts:473</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L554">src/math/Vector3.ts:554</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="dot" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>dot</span><a href="#dot" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -369,13 +386,13 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L436">src/math/Vector3.ts:436</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L517">src/math/Vector3.ts:517</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="equals" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>equals</span><a href="#equals" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 <li class="tsd-signature tsd-anchor-link" id="equals.equals-1">equals<span class="tsd-signature-symbol">(</span>v<span class="tsd-signature-symbol">: </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><a href="#equals.equals-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Checks if this Vector3 is equal to the given Vector3</p>
+<div class="tsd-comment tsd-typography"><p>Checks if the x,y,z components of this Vector3 are exactly equal to those of the given Vector3</p>
 
 <h3>Returns</h3><p>A boolean value indicating if the Vector3 objects are equal</p>
 </div>
@@ -388,7 +405,31 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L377">src/math/Vector3.ts:377</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L445">src/math/Vector3.ts:445</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="fuzzyEquals" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>fuzzy<wbr/>Equals</span><a href="#fuzzyEquals" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+<li class="tsd-signature tsd-anchor-link" id="fuzzyEquals.fuzzyEquals-1">fuzzy<wbr/>Equals<span class="tsd-signature-symbol">(</span>v<span class="tsd-signature-symbol">: </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a>, epsilon<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><a href="#fuzzyEquals.fuzzyEquals-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Checks if the x,y,z components of this Vector3 are equal (within a small value of epsilon) 
+to those of the given Vector3.</p>
+
+<h3>Returns</h3><p>A boolean value indicating if the Vector3 objects are equal</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>v: <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h5>
+<div class="tsd-comment tsd-typography"><p>The Vector3 object to compare to</p>
+</div></li>
+<li>
+<h5>epsilon: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = MathUtils.EPSILON</span></h5>
+<div class="tsd-comment tsd-typography"><p>A small value of acceptable variance to account for numerical instability</p>
+</div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L458">src/math/Vector3.ts:458</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="inverse" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>inverse</span><a href="#inverse" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -398,7 +439,7 @@
 </div>
 <h4 class="tsd-returns-title">Returns <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L523">src/math/Vector3.ts:523</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L604">src/math/Vector3.ts:604</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="invert" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>invert</span><a href="#invert" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -408,7 +449,7 @@
 </div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L512">src/math/Vector3.ts:512</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L593">src/math/Vector3.ts:593</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="length" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>length</span><a href="#length" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -420,7 +461,7 @@
 </div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L485">src/math/Vector3.ts:485</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L566">src/math/Vector3.ts:566</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="lerp" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>lerp</span><a href="#lerp" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -445,7 +486,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L640">src/math/Vector3.ts:640</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L721">src/math/Vector3.ts:721</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="multiply" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>multiply</span><a href="#multiply" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -462,7 +503,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L411">src/math/Vector3.ts:411</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L492">src/math/Vector3.ts:492</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="multiplyScalar" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>multiply<wbr/>Scalar</span><a href="#multiplyScalar" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -479,7 +520,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L461">src/math/Vector3.ts:461</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L542">src/math/Vector3.ts:542</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="normalize" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>normalize</span><a href="#normalize" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -489,7 +530,7 @@
 </div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L494">src/math/Vector3.ts:494</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L575">src/math/Vector3.ts:575</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="reflect" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>reflect</span><a href="#reflect" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -504,7 +545,7 @@
 <h5>normal: <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L652">src/math/Vector3.ts:652</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L733">src/math/Vector3.ts:733</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="rotate" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>rotate</span><a href="#rotate" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -521,7 +562,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L562">src/math/Vector3.ts:562</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L643">src/math/Vector3.ts:643</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="set" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>set</span><a href="#set" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -546,7 +587,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L342">src/math/Vector3.ts:342</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L410">src/math/Vector3.ts:410</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="setPositionFromMatrix" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>set<wbr/>Position<wbr/>From<wbr/>Matrix</span><a href="#setPositionFromMatrix" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -563,7 +604,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L614">src/math/Vector3.ts:614</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L695">src/math/Vector3.ts:695</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="setScaleFromMatrix" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>set<wbr/>Scale<wbr/>From<wbr/>Matrix</span><a href="#setScaleFromMatrix" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -580,7 +621,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L626">src/math/Vector3.ts:626</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L707">src/math/Vector3.ts:707</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="subtract" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>subtract</span><a href="#subtract" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -597,7 +638,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L399">src/math/Vector3.ts:399</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L480">src/math/Vector3.ts:480</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="transformPoint" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>transform<wbr/>Point</span><a href="#transformPoint" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -614,7 +655,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L534">src/math/Vector3.ts:534</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L615">src/math/Vector3.ts:615</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="transformVector" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>transform<wbr/>Vector</span><a href="#transformVector" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -631,7 +672,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L548">src/math/Vector3.ts:548</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L629">src/math/Vector3.ts:629</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="add-2" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>add</span><a href="#add-2" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -654,7 +695,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L90">src/math/Vector3.ts:90</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L128">src/math/Vector3.ts:128</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="angleBetween-2" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>angle<wbr/>Between</span><a href="#angleBetween-2" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -677,7 +718,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L209">src/math/Vector3.ts:209</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L247">src/math/Vector3.ts:247</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="copy-2" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>copy</span><a href="#copy-2" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -696,7 +737,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L67">src/math/Vector3.ts:67</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L105">src/math/Vector3.ts:105</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="cross-2" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>cross</span><a href="#cross-2" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -719,7 +760,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L150">src/math/Vector3.ts:150</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L188">src/math/Vector3.ts:188</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="distanceBetween" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>distance<wbr/>Between</span><a href="#distanceBetween" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -742,7 +783,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L221">src/math/Vector3.ts:221</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L259">src/math/Vector3.ts:259</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="divide-2" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>divide</span><a href="#divide-2" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -765,7 +806,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L126">src/math/Vector3.ts:126</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L164">src/math/Vector3.ts:164</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="divideScalar-2" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>divide<wbr/>Scalar</span><a href="#divideScalar-2" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -788,7 +829,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L178">src/math/Vector3.ts:178</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L216">src/math/Vector3.ts:216</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="dot-2" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>dot</span><a href="#dot-2" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -811,7 +852,57 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L138">src/math/Vector3.ts:138</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L176">src/math/Vector3.ts:176</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="equals-2" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>equals</span><a href="#equals-2" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+<li class="tsd-signature tsd-anchor-link" id="equals-2.equals-3">equals<span class="tsd-signature-symbol">(</span>v1<span class="tsd-signature-symbol">: </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a>, v2<span class="tsd-signature-symbol">: </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><a href="#equals-2.equals-3" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Checks if the x,y,z components of two Vector3 objects are exactly equal.</p>
+
+<h3>Returns</h3><p>A boolean value indicating if the Vector3 objects are equal</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>v1: <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h5>
+<div class="tsd-comment tsd-typography"><p>The first Vector3 object</p>
+</div></li>
+<li>
+<h5>v2: <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h5>
+<div class="tsd-comment tsd-typography"><p>The second Vector3 object</p>
+</div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L362">src/math/Vector3.ts:362</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="fuzzyEquals-2" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>fuzzy<wbr/>Equals</span><a href="#fuzzyEquals-2" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+<li class="tsd-signature tsd-anchor-link" id="fuzzyEquals-2.fuzzyEquals-3">fuzzy<wbr/>Equals<span class="tsd-signature-symbol">(</span>v1<span class="tsd-signature-symbol">: </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a>, v2<span class="tsd-signature-symbol">: </span><a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a>, epsilon<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><a href="#fuzzyEquals-2.fuzzyEquals-3" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Checks if the x,y,z components of two Vector3 objects are equal within a small value of epsilon.</p>
+
+<h3>Returns</h3><p>A boolean value indicating if the Vector3 objects are equal</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>v1: <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h5>
+<div class="tsd-comment tsd-typography"><p>The first Vector3 object</p>
+</div></li>
+<li>
+<h5>v2: <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h5>
+<div class="tsd-comment tsd-typography"><p>The second Vector3 object</p>
+</div></li>
+<li>
+<h5>epsilon: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = MathUtils.EPSILON</span></h5>
+<div class="tsd-comment tsd-typography"><p>A small value of acceptable variance to account for numerical instability</p>
+</div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L375">src/math/Vector3.ts:375</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="inverse-2" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>inverse</span><a href="#inverse-2" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -830,7 +921,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L78">src/math/Vector3.ts:78</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L116">src/math/Vector3.ts:116</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="lerp-2" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>lerp</span><a href="#lerp-2" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -857,7 +948,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L259">src/math/Vector3.ts:259</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L297">src/math/Vector3.ts:297</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="multiply-2" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>multiply</span><a href="#multiply-2" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -880,7 +971,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L114">src/math/Vector3.ts:114</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L152">src/math/Vector3.ts:152</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="multiplyScalar-2" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>multiply<wbr/>Scalar</span><a href="#multiplyScalar-2" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -903,7 +994,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L166">src/math/Vector3.ts:166</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L204">src/math/Vector3.ts:204</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="normalize-2" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>normalize</span><a href="#normalize-2" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -923,7 +1014,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L190">src/math/Vector3.ts:190</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L228">src/math/Vector3.ts:228</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="reflect-2" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>reflect</span><a href="#reflect-2" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -946,7 +1037,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L309">src/math/Vector3.ts:309</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L347">src/math/Vector3.ts:347</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="rotate-2" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>rotate</span><a href="#rotate-2" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -969,7 +1060,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L233">src/math/Vector3.ts:233</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L271">src/math/Vector3.ts:271</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="subtract-2" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>subtract</span><a href="#subtract-2" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -992,7 +1083,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L102">src/math/Vector3.ts:102</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L140">src/math/Vector3.ts:140</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="transformPoint-2" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>transform<wbr/>Point</span><a href="#transformPoint-2" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -1015,7 +1106,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L275">src/math/Vector3.ts:275</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L313">src/math/Vector3.ts:313</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="transformVector-2" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>transform<wbr/>Vector</span><a href="#transformVector-2" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -1038,7 +1129,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/dfkumn/GopherGfx/blob/5f9def6/src/math/Vector3.ts#L292">src/math/Vector3.ts:292</a></li></ul></aside></li></ul></section></section></div>
+<li>Defined in <a href="https://github.com/illusioneering/GopherGfx/blob/655373e/src/math/Vector3.ts#L330">src/math/Vector3.ts:330</a></li></ul></aside></li></ul></section></section></div>
 <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 <div class="tsd-navigation settings">
 <details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
@@ -1089,6 +1180,7 @@
 <li class="tsd-kind-method tsd-parent-kind-class"><a href="Vector3.html#divideScalar" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>divide<wbr/>Scalar</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class"><a href="Vector3.html#dot" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>dot</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class"><a href="Vector3.html#equals" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>equals</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class"><a href="Vector3.html#fuzzyEquals" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>fuzzy<wbr/>Equals</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class"><a href="Vector3.html#inverse" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>inverse</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class"><a href="Vector3.html#invert" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>invert</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class"><a href="Vector3.html#length" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>length</a></li>
@@ -1112,6 +1204,8 @@
 <li class="tsd-kind-method tsd-parent-kind-class"><a href="Vector3.html#divide-2" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>divide</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class"><a href="Vector3.html#divideScalar-2" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>divide<wbr/>Scalar</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class"><a href="Vector3.html#dot-2" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>dot</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class"><a href="Vector3.html#equals-2" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>equals</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class"><a href="Vector3.html#fuzzyEquals-2" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>fuzzy<wbr/>Equals</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class"><a href="Vector3.html#inverse-2" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>inverse</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class"><a href="Vector3.html#lerp-2" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>lerp</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class"><a href="Vector3.html#multiply-2" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>multiply</a></li>

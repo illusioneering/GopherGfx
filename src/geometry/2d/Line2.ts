@@ -11,8 +11,12 @@ export enum LineMode2
     LINE_LOOP
 }
 
-/** 
- * Represents a 2D line.
+/**
+ * The base class for 2D lines.  This class extends Node2 so it can be added directly
+ * to the GopherGfx 2D scene graph.  The class can draw line segments, line strips,
+ * and line loops.  The vertices are interpreted differently depending upon the 
+ * LineMode2 that is set.  WebGL only supports lines that are exactly 1 pixel
+ * thick.  To draw a more substantial "line", you need to draw the line using triangles.
  */
 export class Line2 extends Node2
 {

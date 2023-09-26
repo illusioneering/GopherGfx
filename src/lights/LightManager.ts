@@ -1,5 +1,12 @@
 import { Light } from './Light'
 
+/**
+ * This class is used each frame as a temporary data structure to pass a complete list of
+ * lights that have been added to the scene to any shader programs.  You should not add or
+ * clear lights directly via this class.  Instead, create a new AmbientLight, 
+ * DirectionalLight, and/or PointLight object and add it to the scene the same way you would
+ * with a Mesh3 or other scene object.
+ */
 export class LightManager
 {
     public lights: Light[];

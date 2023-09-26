@@ -1,15 +1,53 @@
 import { Vector3 } from "./Vector3";
 import { Matrix4 } from "./Matrix4";
 
+/**
+ * This class holds a quaternion rotation.  It includes routines for using the quaternion to 
+ * rotate points and vectors.  It includes routines for constructing many common rotations and inverting
+ * the rotation as well as accessing the underlying x,y,z,w components of the quaterion.
+ * 
+ * Most of the functions in the class are defined both as member functions that can be called on a specific
+ * instance of Quaternion *and* as static functions.  The static functions return a *new* result, leaving the
+ * original inputs unchanged, whereas, in general, member functions save the result in the quaternion itself
+ * and return void:
+ * ```
+ * const Q1 = Quaternion.makeRotationX(Math.PI);
+ * const Q2 = Quaternion.makeRotationY(Math.PI);
+ * 
+ * // save the result in Q3, leaving Q1 and Q2 unchanged
+ * const Q3 = Quaternion.multiply(Q1, Q2);
+ * 
+ * // each call to multiply overwrites the previous contents of Q4 with the result of the multiplication
+ * const Q4 = Quaternion.makeRotationZ(Math.PI);
+ * Q4.multiply(Q1);
+ * Q4.multiply(Q2);
+ * ```
+ */
 export class Quaternion
 {
     /**
-     * A static property representing the identity quaternion (0, 0, 0, 1)
+     * A static property to provide quick access to the identity quaternion (0, 0, 0, 1).
+     * (Note: Be careful not to change the value of this field!  It is marked readonly, but typescipt do not completely
+     * enforce this!)
+     * ```
+     * // Good use of IDENTITY:
+     * const q = Quaternion();
+     * if (q.equals(Quaternion.IDENTITY)) {
+     *   console.log("q equals the identity quaternion")
+     * }
+     * 
+     * // Dangerous use of IDENTITY!!!!
+     * const q = Quaternion.IDENTITY;  // makes q a reference to Quaternion.IDENTITY
+     * q.makeRotationZ(Math.PI); // changes Quaternion.IDENTITY!
+     * 
+     * // Do this instead:
+     * const q = Quaternion.makeIdentity(); // create a new identity matrix M
+     * q.makeRotationZ(Math.PI);
      */
     public static readonly IDENTITY: Quaternion = new Quaternion();
 
     /**
-     * Copies a Quaternion object
+     * Creates a new quaternion and copies the x,y,z,w values of the input into it.
      * 
      * @param q - The Quaternion object to copy
      * @returns A new Quaternion object with the same values as q
@@ -20,8 +58,9 @@ export class Quaternion
     }
 
     /**
-     * Multiplies two Quaternion objects together
-     * This operation is not commutative, so order matters
+     * Multiplies two Quaternion objects together and returns a new quaternion = q1 * q2
+     * Note: multiplication of quaternions is not commutative, so order matters.  See
+     * premultiply() to do the opposite order, or just switch the order of the arguments.
      * 
      * @param q1 - The first Quaternion object
      * @param q2 - The second Quaternion object
@@ -40,8 +79,9 @@ export class Quaternion
     }
 
     /**
-     * Premultiplies two Quaternion objects
-     * This operation is not commutative, so order matters
+     * Premultiplies two Quaternion objects and returns a new quaternion = q2 * q1
+     * Note: multiplication of quaternions is not commutative, so order matters.  See
+     * multiply() to do the opposite order, or just switch the order of the arguments.
      * 
      * @param q1 - The first Quaternion object
      * @param q2 - The second Quaternion object
@@ -60,7 +100,7 @@ export class Quaternion
     }
 
     /**
-     * Normalizes a Quaternion object
+     * Returns a new quaternion that is a normalized version of the input quaternion.
      * 
      * @param q - The Quaternion object to normalize
      * @returns A new Quaternion object with normalized values
@@ -73,7 +113,7 @@ export class Quaternion
     }
 
     /**
-     * Inverts a Quaternion object
+     * Returns a new quaternion that is the inverse (opposite rotation) of the input quaternion.
      * 
      * @param q - The Quaternion object to invert
      * @returns A new Quaternion object representing the inverse of q
@@ -135,7 +175,7 @@ export class Quaternion
     }
 
     /**
-     * Create a quaternion from a given axis and angle
+     * Creates a new quaternion to represent a rotation of angle radians around axis.
      * 
      * @param axis - The axis to rotate around
      * @param angle - The angle of rotation
@@ -149,7 +189,7 @@ export class Quaternion
     }
 
     /**
-     * Create a quaternion from given Euler angles
+     * Creates a new quaternion from given Euler angles
      * 
      * @param x - The x-axis rotation angle
      * @param y - The y-axis rotation angle
@@ -165,18 +205,23 @@ export class Quaternion
     }
 
     /**
-     * Creates a quaternion that rotates the vector `eye` to point towards `target`
+     * Creates a new quaternion with a rotation like that used to orient a camera.  The quaternion will rotate the 
+     * -Z direction (typically, the "forward" direction for objects and the default "look" direction for cameras)
+     * to point in the new "look" direction defined by the vector (targetPoint - eyePoint).  The up vector is used
+     * to further constrain the rotation.  The original Y direction will rotate to point, as much as possible,
+     * toward the upVector.
      * 
-     * @param eye - The vector representing the starting point
-     * @param target - The vector representing the target point
-     * @param up - The vector representing the up direction (defaults to Vector3.UP)
+     * @param eyePoint - The position of the camera or other object being oriented
+     * @param targetPoint - The point to look at
+     * @param up - The direction that the original +Y direction should rotate into (as closely as possible).
+     * @returns A new Quaternion that performs the specified rotation
      */
-    public static lookAt(eye: Vector3, target: Vector3, up = Vector3.UP): Quaternion
+    public static lookAt(eyePoint: Vector3, targetPoint: Vector3, upVector = Vector3.UP): Quaternion
     {
-        const z = Vector3.subtract(eye, target);
+        const z = Vector3.subtract(eyePoint, targetPoint);
         z.normalize();
 
-        const x = Vector3.cross(up, z);
+        const x = Vector3.cross(upVector, z);
         x.normalize();
 
         const y = Vector3.cross(z, x);
@@ -193,10 +238,10 @@ export class Quaternion
     }
 
     /**
-     * Create a quaternion from a given Matrix4 object
+     * Creates a new quaternion with the same rotation as in the provided 4x4 transformation matrix.
      * 
-     * @param matrix - The Matrix4 object to use for creating the quaternion
-     * @returns A new Quaternion
+     * @param matrix - A 4x4 transformation matrix that includes a rotation.
+     * @returns A new Quaternion that specifies the same rotation
      */
     public static makeMatrix(matrix: Matrix4): Quaternion
     {
@@ -206,7 +251,7 @@ export class Quaternion
     }
 
     /**
-     * Computes a Quaternion from two input Quaternions using spherical linear interpolation
+     * Returns a Quaternion from two input Quaternions using spherical linear interpolation.
      * 
      * @param q1 - The first Quaternion
      * @param q2 - The second Quaternion
@@ -220,6 +265,13 @@ export class Quaternion
         return q;
     }
 
+    /**
+     * Rotates a 3D point or 3D vector by the specified quaternion and returns the result in a new Vector3
+     * 
+     * @param v The original 3D point or 3D vector
+     * @param q The rotation to apply
+     * @returns A new 3D point or 3D vector
+     */
     public static rotate(v: Vector3, q: Quaternion): Vector3
     {
         // Extract the vector part of the quaternion
@@ -243,8 +295,9 @@ export class Quaternion
     public z: number;
     public w: number;
 
+
     /**
-     * Creates a new Quaternion object
+     * Creates a new Quaternion object with zero rotation (i.e., the identity quaternion)
      * 
      * @param x - The x component of the Quaternion
      * @param y - The y component of the Quaternion
@@ -260,7 +313,7 @@ export class Quaternion
     }
 
     /**
-     * Sets the quaternion to the given x, y, z, and w values
+     * Sets the x,y,z,w components of the quaternion to the given x, y, z, and w values
      * 
      * @param x - The x value
      * @param y - The y value
@@ -313,7 +366,6 @@ export class Quaternion
         this.z = 0;
     }
 
-    
     /**
      * Sets the quaternion to a rotation around the z axis
      * 
@@ -328,8 +380,9 @@ export class Quaternion
     }
 
     /**
-     * Sets the quaternion values using a (normalized) axis and an angle in radians
-     * @param axis - The axis of rotation
+     * Sets the quaternion to a rotation around axis by angle radians.  Note, the axis parameter must be a unit vector.
+     * 
+     * @param axis - A unit vector that describes the axis of rotation
      * @param angle - The angle of rotation in radians
      */
     setAxisAngle(axis: Vector3, angle: number): void
@@ -346,7 +399,7 @@ export class Quaternion
     }
 
     /**
-     * Sets the quaternion values using Euler angles
+     * Sets the quaternion to the rotation specified by the provied Euler angles and order of rotation
      * 
      * @param x - The x-axis rotation angle in radians
      * @param y - The y-axis rotation angle in radians
@@ -415,9 +468,9 @@ export class Quaternion
     }
 
     /**
-     * Sets the quaternion from a rotation matrix
+     * Sets the quaternion to a rotation equal to the one in the provided 4x4 rotation matrix
      * 
-     * @param matrix - The rotation matrix in homogeneous coordinates
+     * @param matrix - A 4x4 rotation matrix
      */
     setMatrix(matrix: Matrix4): void
     {
@@ -461,7 +514,7 @@ export class Quaternion
     }
 
     /**
-     * Copies the values of another quaternion into this one
+     * Copies the x,y,z,w components of another quaternion into this one
      * 
      * @param q - The quaternion to copy
      */
@@ -474,7 +527,7 @@ export class Quaternion
     }
 
     /**
-     * Clones this quaternion
+     * Creates a new quaternion with the same values as this one
      * 
      * @returns A new quaternion with the same values as this one
      */
@@ -484,8 +537,9 @@ export class Quaternion
     }
 
     /**
-     * Multiply this quaternion with the input quaternion
-     * This operation is not commutative, so order matters
+     * Multiply this quaternion with the input quaternion and save the result in this quaternion.
+     * i.e., this = this * q  Quaternion multiplication is not commutative, so order matters.
+     * See premultiply() to do the multiplication in the opposite order.
      * 
      * @param q - The quaternion to multiply with
      */
@@ -495,8 +549,9 @@ export class Quaternion
     }
 
     /**
-     * Premultiply this quaternion with the input quaternion
-     * This operation is not commutative, so order matters
+     * Premultiply this quaternion with the input quaternion and save the result in this quaternion.
+     * i.e., this = q * this.  This operation is not commutative, so order matters;  See multiply()
+     * to do the multiplication in the opposite order.
      * 
      * @param q - The quaternion to premultiply with
      */
@@ -506,7 +561,7 @@ export class Quaternion
     }
 
     /**
-     * Normalize this quaternion
+     * Normalize this quaternion and save the result in this quaternion.
      */
     normalize(): void
     {
@@ -520,7 +575,7 @@ export class Quaternion
     }
 
     /**
-     * Inverts the Quaternion in place
+     * Inverts the quaternion and save the result in this quaternion.
      */
     invert(): void
     {
@@ -534,7 +589,7 @@ export class Quaternion
     }
 
     /**
-     * Returns the inverse of this Quaternion
+     * Computes the inverse of this quaternion and returns the result in a new quaternion.
      * 
      * @returns The inverse of this Quaternion
      */
@@ -544,7 +599,7 @@ export class Quaternion
     }
 
     /**
-     * Returns a 4x4 rotation matrix representation of this Quaternion
+     * Converts this quaternion into an equivalent 4x4 rotation matrix and returns the result.
      * 
      * @returns A 4x4 rotation matrix representation of this Quaternion
      */
@@ -582,12 +637,24 @@ export class Quaternion
      * @param target - The vector representing the target point
      * @param up - The vector representing the up direction (defaults to Vector3.UP)
      */
-    lookAt(eye: Vector3, target: Vector3, up = Vector3.UP): void
+
+    /**
+     * Sets this quaternion to a rotation like that used to orient a camera.  The quaternion will rotate the 
+     * -Z direction (typically, the "forward" direction for objects and the default "look" direction for cameras)
+     * to point in the new "look" direction defined by the vector (targetPoint - eyePoint).  The up vector is used
+     * to further constrain the rotation.  The original Y direction will rotate to point, as much as possible,
+     * toward the upVector.
+     * 
+     * @param eyePoint - The position of the camera or other object being oriented
+     * @param targetPoint - The point to look at
+     * @param upVector - The direction that the original +Y direction should rotate into (as closely as possible).
+     */
+    lookAt(eyePoint: Vector3, targetPoint: Vector3, upVector = Vector3.UP): void
     {
-        const z = Vector3.subtract(eye, target);
+        const z = Vector3.subtract(eyePoint, targetPoint);
         z.normalize();
 
-        const x = Vector3.cross(up, z);
+        const x = Vector3.cross(upVector, z);
         x.normalize();
 
         const y = Vector3.cross(z, x);
@@ -604,7 +671,7 @@ export class Quaternion
     }
 
     /**
-     * Interpolates between two quaternions, q1 and q2, based on the given `alpha` value
+     * Sets this quaternion to an interpolation between two quaternions, q1 and q2, based on the given `alpha` value
      * 
      * @param q1 - The starting quaternion
      * @param q2 - The ending quaternion
@@ -670,6 +737,12 @@ export class Quaternion
         }
     }
 
+    /**
+     * Rotates a 3D point or 3D vector by this quaternion and returns the result in a new Vector3
+     * 
+     * @param v The original 3D point or 3D vector
+     * @returns A new 3D point or 3D vector
+     */
     public rotate(v: Vector3): Vector3
     {
         // Extract the vector part of the quaternion

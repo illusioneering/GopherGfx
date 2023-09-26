@@ -3,6 +3,14 @@ import { Line3, LineMode3 } from './3d/Line3'
 import { Vector3 } from '../math/Vector3';
 import { Quaternion } from '../math/Quaternion';
 
+/**
+ * This is a factory class for creating a variety of common geometries that can be drawn in a 3D scene.
+ * Most of these geometries are Mesh3s, meaning they are constructed from triangles, but there are also
+ * a few Line3 objects.  If you have a really complex 3D model, like an animated character, that geometry
+ * will probably be stored in a 3D model file that can be loaded with the MeshLoader class.  In contrast
+ * this factory is for creating simple geometries (cubes, spheres, cylinders, cones) that can be easily 
+ * described by a mathematical function.
+ */
 export class Geometry3Factory
 {
     public static createBox(width = 1, height = 1, depth = 1): Mesh3
