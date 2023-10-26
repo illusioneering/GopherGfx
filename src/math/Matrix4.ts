@@ -394,7 +394,7 @@ export class Matrix4
      * @param referenceDir2 A vector to try to use as the Y-axis.
      * @returns A 4x4 transformation matrix.
      */
-    public makeBasis(referenceDir: Vector3, referenceDir2 = new Vector3(0,1,0)) : Matrix4 {
+    public static makeBasis(referenceDir: Vector3, referenceDir2 = new Vector3(0,1,0)) : Matrix4 {
         const x = Vector3.normalize(referenceDir);
         let y = Vector3.normalize(referenceDir2);
         let z = Vector3.normalize(Vector3.cross(x, y));
@@ -425,7 +425,7 @@ export class Matrix4
      * @param newDir2 The direction that the second reference direction should rotate into
      * @returns 
      */
-    public makeAlign(referenceDir: Vector3, newDir: Vector3,
+    public static makeAlign(referenceDir: Vector3, newDir: Vector3,
         referenceDir2 = new Vector3(0,1,0), newDir2 = new Vector3(0,1,0)) : Matrix4 {
         const refBasis = this.makeBasis(referenceDir, referenceDir2);
         const newBasis = this.makeBasis(newDir, newDir2);
