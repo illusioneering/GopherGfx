@@ -380,6 +380,58 @@ export class Matrix4
         return Matrix4.multiply(translation, rotation);
     }
 
+
+    /**
+     * Creates a matrix that represents a right-handed X,Y,Z coordinate frame (an orthonormal basis) 
+     * where: 1. the vector provided by the reference direction is aligned with the X axis, and 
+     * optionally 2. the vector provided by a second reference direction is aligned as closely
+     * as possible (subject to the requirements of a right-handed, orthonormal basis) with the Y
+     * axis.  This means the first column of the matrix will contain the normalized x, y, z values
+     * of the reference direction and the second and third columns can be interpreted as the directions
+     * of the Y and Z axes of the basis.
+     *  
+     * @param referenceDir A vector to use as the X-axis.
+     * @param referenceDir2 A vector to try to use as the Y-axis.
+     * @returns A 4x4 transformation matrix.
+     */
+    public makeBasis(referenceDir: Vector3, referenceDir2 = new Vector3(0,1,0)) : Matrix4 {
+        const x = Vector3.normalize(referenceDir);
+        let y = Vector3.normalize(referenceDir2);
+        let z = Vector3.normalize(Vector3.cross(x, y));
+        if (z.fuzzyEquals(new Vector3(0,0,0))) {
+            y = new Vector3(0, 0, 1);
+            z = Vector3.normalize(Vector3.cross(x, y));
+        }
+        y = Vector3.normalize(Vector3.cross(z, x));
+        return Matrix4.fromRowMajor(
+            x.x, y.x, z.x, 0,
+            x.y, y.y, z.y, 0,
+            x.z, y.z, z.z, 0, 
+            0, 0, 0, 1
+        );
+    }
+
+    /**
+     * Creates a rotation matrix that will align a reference direction to some new direction.  This is
+     * similar to a lookAt function but more flexible in that the reference direction does not need to
+     * be -Z.  The routine can optionally include a second reference direction and new direction.
+     * This is interpreted similarly to the Up parameter in a typical lookAt function.  (The rotation
+     * matrix will always align referenceDir with newDir and it will try to get referenceDir2 to align
+     * as closely as possible with newDir2.)
+     * 
+     * @param referenceDir A reference direction
+     * @param newDir The direction that referenceDir should rotate into
+     * @param referenceDir2 Optionally, a second reference direction
+     * @param newDir2 The direction that the second reference direction should rotate into
+     * @returns 
+     */
+    public makeAlign(referenceDir: Vector3, newDir: Vector3,
+        referenceDir2 = new Vector3(0,1,0), newDir2 = new Vector3(0,1,0)) : Matrix4 {
+        const refBasis = this.makeBasis(referenceDir, referenceDir2);
+        const newBasis = this.makeBasis(newDir, newDir2);
+        return Matrix4.multiplyAll(newBasis, refBasis.inverse());
+    }
+
     /**
      * Create an orthographic projection Matrix4 
      * 
