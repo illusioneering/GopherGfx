@@ -64,7 +64,8 @@ void main()
             vec3 h = normalize(l + e);
 
             // Specular component
-            illumination += pow(max(dot(h, n), 0.0), shininess) * kSpecular * specularIntensities[i];
+            float specularComponent = pow(max(dot(h, n), 0.0), shininess);
+            illumination += specularComponent * kSpecular * specularIntensities[i];
         }
         // Phong reflection model
         else
@@ -73,7 +74,8 @@ void main()
             vec3 r = reflect(-l, n);
 
             // Specular component
-            illumination += pow(max(dot(e, r), 0.0), shininess) * kSpecular * specularIntensities[i];
+            float specularComponent = pow(max(dot(e, r), 0.0), shininess);
+            illumination += specularComponent * kSpecular * specularIntensities[i];
         }
     }
 

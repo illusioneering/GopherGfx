@@ -8,7 +8,6 @@ import { ShaderProgram } from './ShaderProgram';
 import { MorphMesh3 } from '../geometry/3d/MorphMesh3';
 import { Mesh3 } from '../geometry/3d/Mesh3';
 import { Camera } from '../core/Camera';
-import { Node3 } from '../core/Node3';
 import { LightManager } from '../lights/LightManager';
 import { Texture } from './Texture';
 import { Vector3 } from '../math/Vector3'
@@ -24,11 +23,13 @@ export class MorphMaterial extends Material3
     public diffuseColor: Color;
     public specularColor: Color;
     public shininess: number;
+    public blinn: boolean;
 
     private kAmbientUniform: WebGLUniformLocation | null;
     private kDiffuseUniform: WebGLUniformLocation | null;
     private kSpecularUniform: WebGLUniformLocation | null;
     private shininessUniform: WebGLUniformLocation | null;
+    private blinnUniform: WebGLUniformLocation | null;
     
     private textureUniform: WebGLUniformLocation | null;
     private useTextureUniform: WebGLUniformLocation | null;
@@ -66,6 +67,7 @@ export class MorphMaterial extends Material3
         this.diffuseColor = new Color(1, 1, 1);
         this.specularColor = new Color(0, 0, 0);
         this.shininess = 30;
+        this.blinn = false;
 
         MorphMaterial.shader.initialize(this.gl);
 
@@ -73,6 +75,7 @@ export class MorphMaterial extends Material3
         this.kDiffuseUniform = MorphMaterial.shader.getUniform(this.gl, 'kDiffuse');
         this.kSpecularUniform = MorphMaterial.shader.getUniform(this.gl, 'kSpecular');
         this.shininessUniform = MorphMaterial.shader.getUniform(this.gl, 'shininess');
+        this.blinnUniform = MorphMaterial.shader.getUniform(this.gl, 'blinn');
 
         this.textureUniform = MorphMaterial.shader.getUniform(this.gl, 'textureImage');
         this.useTextureUniform = MorphMaterial.shader.getUniform(this.gl, 'useTexture');
@@ -128,6 +131,7 @@ export class MorphMaterial extends Material3
         this.gl.uniform3f(this.kDiffuseUniform, this.diffuseColor.r, this.diffuseColor.g, this.diffuseColor.b);
         this.gl.uniform3f(this.kSpecularUniform,this.specularColor.r, this.specularColor.g, this.specularColor.b);
         this.gl.uniform1f(this.shininessUniform, this.shininess);
+        this.gl.uniform1i(this.blinnUniform, Number(this.blinn));
 
         // Set the light uniforms
         this.gl.uniform1i(this.numLightsUniform, lightManager.getNumLights());

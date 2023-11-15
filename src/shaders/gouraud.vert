@@ -24,6 +24,7 @@ uniform vec3 kAmbient;
 uniform vec3 kDiffuse;
 uniform vec3 kSpecular;
 uniform float shininess;
+uniform int blinn;
 
 in vec3 position;
 in vec3 normal;
@@ -59,12 +60,25 @@ void main()
         // Compute the vector from the vertex to the eye
         vec3 e = normalize(eyePosition - worldPosition);
 
-        // Compute the light vector reflected about the normal
-        vec3 r = reflect(-l, worldNormal);
+        // Blinn-Phong reflection model
+        if(blinn != 0)
+        {
+            // Compute the halfway vector
+            vec3 h = normalize(l + e);
 
-        // Specular component
-        float specularComponent = pow(max(dot(e, r), 0.0), shininess);
-        illumination += specularComponent * kSpecular * specularIntensities[i];
+            // Specular component
+            float specularComponent = pow(max(dot(h, worldNormal), 0.0), shininess);
+            illumination += specularComponent * kSpecular * specularIntensities[i];
+        }
+        else
+        {
+            // Compute the light vector reflected about the normal
+            vec3 r = reflect(-l, worldNormal);
+
+            // Specular component
+            float specularComponent = pow(max(dot(e, r), 0.0), shininess);
+            illumination += specularComponent * kSpecular * specularIntensities[i];
+        }
     }
 
     vertColor = color;
