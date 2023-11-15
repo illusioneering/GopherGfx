@@ -20,6 +20,7 @@ uniform vec3 kAmbient;
 uniform vec3 kDiffuse;
 uniform vec3 kSpecular;
 uniform float shininess;
+uniform int blinn;
 
 uniform int useTexture;
 uniform sampler2D textureImage;
@@ -33,14 +34,14 @@ out vec4 fragColor;
 
 void main() 
 {
+    // Normalize the interpolated normal vector
+    vec3 n = normalize(vertNormal);
+
     vec3 illumination = vec3(0, 0, 0);
     for(int i=0; i < numLights; i++)
     {
         // Ambient component
         illumination += kAmbient * ambientIntensities[i];
-
-        // Normalize the interpolated normal vector
-        vec3 n = normalize(vertNormal);
 
         // Compute the vector from the vertex position to the light
         vec3 l;
@@ -56,12 +57,24 @@ void main()
         // Compute the vector from the vertex to the eye
         vec3 e = normalize(eyePosition - vertPosition);
 
-        // Compute the light vector reflected about the normal
-        vec3 r = reflect(-l, n);
+        // Blinn-Phong reflection model
+        if(blinn != 0)
+        {
+            // Compute the halfway vector
+            vec3 h = normalize(l + e);
 
-        // Specular component
-        float specularComponent = pow(max(dot(e, r), 0.0), shininess);
-        illumination += specularComponent * kSpecular * specularIntensities[i];
+            // Specular component
+            illumination += pow(max(dot(h, n), 0.0), shininess) * kSpecular * specularIntensities[i];
+        }
+        // Phong reflection model
+        else
+        {
+            // Compute the light vector reflected about the normal
+            vec3 r = reflect(-l, n);
+
+            // Specular component
+            illumination += pow(max(dot(e, r), 0.0), shininess) * kSpecular * specularIntensities[i];
+        }
     }
 
     fragColor = vertColor;
