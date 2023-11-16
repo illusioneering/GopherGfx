@@ -45,7 +45,18 @@ export class MeshWriter
 
         for(let i = 0; i < indices.length; i+=3)
         {
-            output += 'f ' + (indices[i]+1) + ' '  + (indices[i+1]+1) + ' '  + (indices[i+2]+1) + '\n';
+            if(uvs.length > 0)
+            {
+                output += 'f ' + (indices[i]+1) + '/' + (indices[i]+1) + '/' + (indices[i]+1) + 
+                    ' ' + (indices[i+1]+1) + '/' + (indices[i+1]+1) + '/' + (indices[i+1]+1) + 
+                    ' ' + (indices[i+2]+1) + '/' + (indices[i+2]+1) + '/' + (indices[i+2]+1) + '\n';
+            }
+            else
+            {
+                output += 'f ' + (indices[i]+1) + '//' + (indices[i]+1) + 
+                    ' ' + (indices[i+1]+1) + '//' + (indices[i+1]+1) + 
+                    ' ' + (indices[i+2]+1) + '//' + (indices[i+2]+1) + '\n';
+            }
         }
         
         FileWriter.saveAscii(filename, output);

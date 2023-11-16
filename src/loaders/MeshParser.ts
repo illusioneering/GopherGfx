@@ -39,6 +39,7 @@ export class MeshParser
                 parser.consumeLine();
         }
 
+        // We have per triangle UVs
         if(uvIndices.length > 0)
         {
             const texCoordIndexed: boolean[] = [];
@@ -87,6 +88,11 @@ export class MeshParser
             }
 
             mesh.setTextureCoordinates(texCoords);
+        }
+        // We have per vertex UVs
+        else if(uvs.length / 2 == vertices.length / 3)
+        {
+            mesh.setTextureCoordinates(uvs);
         }
 
         mesh.setVertices(vertices);
@@ -158,7 +164,7 @@ export class MeshParser
             indices.push(Number(index[0])-1);
 
              // texture coordinate
-             if(index.length > 0 && index[1] != '')
+             if(index.length > 1 && index[1] != '')
              {
                  uvIndices.push(Number(index[1])-1);
              }
