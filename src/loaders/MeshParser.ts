@@ -236,8 +236,10 @@ export class MeshParser
         const vertices: number[] = [];
         const colors: number[] = [];
         const normals: number[] = [];
-        const indices: number[] = [];
         const uvs: number[] = [];
+
+        const indices: number[] = [];
+        const faceUvs: number[] = [];
         
         while(!headerParser.done())
         {
@@ -334,6 +336,10 @@ export class MeshParser
                 {
                     numFaces = Number(line[1]);
 
+                    const INDICES = 0;
+                    const TEXCOORDS = 1;
+                    const elementOrder: number[] = [];
+
                     while(headerParser.peek() == 'property')
                     {
                         const propertyLine = headerParser.readLine();
@@ -342,11 +348,32 @@ export class MeshParser
                             (propertyLine[3] == 'int' || propertyLine[3] == 'uint') && 
                             (propertyLine[4] == 'vertex_indices' || propertyLine[4] == 'vertex_index'))
                         {
-                            for(let i=0; i < numFaces; i++)
+                            elementOrder.push(INDICES);
+                        }
+                        else if (propertyLine[1] == 'list' && 
+                                (propertyLine[2] == 'uchar' || propertyLine[2] == 'char') && 
+                                (propertyLine[3] == 'float' || propertyLine[3] == 'double') && 
+                                (propertyLine[4] == 'texcoord'))
+                        {
+                            elementOrder.push(TEXCOORDS);
+                        }
+                    }
+
+                    for(let i=0; i < numFaces; i++)
+                    {
+                        for(let j=0; j < elementOrder.length; j++)
+                        {
+                            if(elementOrder[j] == INDICES)
                             {
                                 const numFaceIndices = dataParser.readNumber();
-                                for(let j=0; j < numFaceIndices; j++)
+                                for(let k=0; k < numFaceIndices; k++)
                                     indices.push(dataParser.readNumber());
+                            }
+                            else if(elementOrder[j] == TEXCOORDS)
+                            {
+                                const numTexCoords = dataParser.readNumber();
+                                for(let k=0; k < numTexCoords; k++)
+                                    faceUvs.push(dataParser.readNumber());
                             }
                         }
                     }
@@ -363,14 +390,66 @@ export class MeshParser
             }
         }
 
+        // If we have per vertex UVs
+        if(uvs.length > 0)
+        {
+            mesh.setTextureCoordinates(uvs);
+        }
+        // If we have per triangle UVs
+        else if(faceUvs.length > 0)
+        {
+            const texCoordIndexed: boolean[] = [];
+            const texCoords: number[] = [];
+
+            const numVertices = vertices.length / 3;
+            for(let i=0; i < numVertices; i++)
+            {
+                texCoords.push(0, 0);
+                texCoordIndexed.push(false);
+            }
+
+            for(let i=0; i < indices.length; i++)
+            {   
+                // vertex has no texture coordinate yet
+                if(!texCoordIndexed[indices[i]])
+                {
+                    texCoords[indices[i]*2] = faceUvs[i*2];
+                    texCoords[indices[i]*2+1] = faceUvs[i*2+1];
+                    texCoordIndexed[indices[i]] = true;
+                }
+                // shared vertex has a different texture coordinate than the one already stored
+                // create a copy of the vertex with the new texture coordinate
+                else if(texCoords[indices[i]*2] != faceUvs[i*2] || texCoords[indices[i]*2+1] != faceUvs[i*2+1])
+                {
+                    vertices.push(vertices[indices[i]*3]);
+                    vertices.push(vertices[indices[i]*3+1]);
+                    vertices.push(vertices[indices[i]*3+2]);
+                    normals.push(normals[indices[i]*3]);
+                    normals.push(normals[indices[i]*3+1]);
+                    normals.push(normals[indices[i]*3+2]);
+
+                    if(colors.length > 0)
+                    {
+                        colors.push(colors[indices[i]*3]);
+                        colors.push(colors[indices[i]*3+1]);
+                        colors.push(colors[indices[i]*3+2]);
+                    }
+
+                    texCoords.push(faceUvs[i*2]);
+                    texCoords.push(faceUvs[i*2+1]);
+
+                    indices[i] = texCoordIndexed.length;
+                    texCoordIndexed.push(true);
+                }
+            }
+
+            mesh.setTextureCoordinates(texCoords);
+        }
+
         mesh.setVertices(vertices);
         mesh.setColors(colors);
         mesh.setNormals(normals);
         mesh.setIndices(indices);
-
-        // If we have per vertex UVs, asign them to the mesh
-        if(uvs.length / 2 == vertices.length / 3)
-            mesh.setTextureCoordinates(uvs);
     }
 
     private static parsePLYBinary(headerParser: StringParser, data: DataView, mesh: Mesh3, little_endian = true): void
@@ -380,8 +459,10 @@ export class MeshParser
         const vertices: number[] = [];
         const colors: number[] = [];
         const normals: number[] = [];
-        const indices: number[] = [];
         const uvs: number[] = [];
+
+        const indices: number[] = [];
+        const faceUvs: number[] = [];
 
         let totalBytes = 0;
         while(!headerParser.done())
@@ -506,6 +587,10 @@ export class MeshParser
                     numFaces = Number(line[1]);
                     let faceBytes = totalBytes;
 
+                    const INDICES = 0;
+                    const TEXCOORDS = 1;
+                    const elementOrder: number[] = [];
+
                     while(headerParser.peek() == 'property')
                     {
                         const propertyLine = headerParser.readLine();
@@ -514,33 +599,43 @@ export class MeshParser
                             (propertyLine[3] == 'int' || propertyLine[3] == 'uint') && 
                             (propertyLine[4] == 'vertex_indices' || propertyLine[4] == 'vertex_index'))
                         {
-                            for(let i=0; i < numFaces; i++)
+                            elementOrder.push(INDICES);
+                        }
+                        else if (propertyLine[1] == 'list' && 
+                                (propertyLine[2] == 'uchar' || propertyLine[2] == 'char') && 
+                                (propertyLine[3] == 'float') && 
+                                (propertyLine[4] == 'texcoord'))
+                        {
+                            elementOrder.push(TEXCOORDS);
+                        }
+                    }
+
+                    for(let i=0; i < numFaces; i++)
+                    {
+                        for(let j=0; j < elementOrder.length; j++)
+                        {
+                            if(elementOrder[j] == INDICES)
                             {
                                 const numFaceIndices = data.getUint8(faceBytes);
                                 faceBytes+=1;
 
-                                for(let j=0; j < numFaceIndices; j++)
+                                for(let k=0; k < numFaceIndices; k++)
                                 {
                                     indices.push(data.getUint32(faceBytes, little_endian));
                                     faceBytes+=4;
                                 }
                             }
-                        }
-                        else if(propertyLine[1] == 'uchar' || propertyLine[1] == 'char')
-                        {
-                            faceBytes+=1;
-                        }  
-                        else if(propertyLine[1] == 'short' || propertyLine[1] == 'ushort')
-                        {
-                            faceBytes+=2;
-                        }
-                        else if(propertyLine[1] == 'int' || propertyLine[1] == 'uint' || propertyLine[1] == 'float')
-                        {
-                            faceBytes+=4;
-                        }
-                        else if(propertyLine[1] == 'double')
-                        {
-                            faceBytes+=8;
+                            else if(elementOrder[j] == TEXCOORDS)
+                            {
+                                const numTexCoords = data.getUint8(faceBytes);
+                                faceBytes+=1;
+
+                                for(let k=0; k < numTexCoords; k++)
+                                {
+                                    faceUvs.push(data.getFloat32(faceBytes, little_endian));
+                                    faceBytes+=4;
+                                }
+                            }
                         }
                     }
                 }
@@ -556,17 +651,67 @@ export class MeshParser
             }
         }
 
+        // If we have per vertex UVs
+        if(uvs.length > 0)
+        {
+            mesh.setTextureCoordinates(uvs);
+        }
+        // If we have per triangle UVs
+        else if(faceUvs.length > 0)
+        {
+            const texCoordIndexed: boolean[] = [];
+            const texCoords: number[] = [];
+
+            const numVertices = vertices.length / 3;
+            for(let i=0; i < numVertices; i++)
+            {
+                texCoords.push(0, 0);
+                texCoordIndexed.push(false);
+            }
+
+            for(let i=0; i < indices.length; i++)
+            {   
+                // vertex has no texture coordinate yet
+                if(!texCoordIndexed[indices[i]])
+                {
+                    texCoords[indices[i]*2] = faceUvs[i*2];
+                    texCoords[indices[i]*2+1] = faceUvs[i*2+1];
+                    texCoordIndexed[indices[i]] = true;
+                }
+                // shared vertex has a different texture coordinate than the one already stored
+                // create a copy of the vertex with the new texture coordinate
+                else if(texCoords[indices[i]*2] != faceUvs[i*2] || texCoords[indices[i]*2+1] != faceUvs[i*2+1])
+                {
+                    vertices.push(vertices[indices[i]*3]);
+                    vertices.push(vertices[indices[i]*3+1]);
+                    vertices.push(vertices[indices[i]*3+2]);
+                    normals.push(normals[indices[i]*3]);
+                    normals.push(normals[indices[i]*3+1]);
+                    normals.push(normals[indices[i]*3+2]);
+
+                    if(colors.length > 0)
+                    {
+                        colors.push(colors[indices[i]*3]);
+                        colors.push(colors[indices[i]*3+1]);
+                        colors.push(colors[indices[i]*3+2]);
+                    }
+
+                    texCoords.push(faceUvs[i*2]);
+                    texCoords.push(faceUvs[i*2+1]);
+
+                    indices[i] = texCoordIndexed.length;
+                    texCoordIndexed.push(true);
+                }
+            }
+
+            mesh.setTextureCoordinates(texCoords);
+        }
+
         mesh.setVertices(vertices);
         mesh.setColors(colors);
         mesh.setNormals(normals);
         mesh.setIndices(indices);
-
-        // If we have per vertex UVs, asign them to the mesh
-        if(uvs.length / 2 == vertices.length / 3)
-            mesh.setTextureCoordinates(uvs);
     }
-
-
 
 
     /**
