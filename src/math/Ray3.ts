@@ -103,6 +103,7 @@ export class Ray3
      */
     intersectsSphere(sphere: BoundingSphere): Vector3 | null
     {
+        const EPSILON = 0.0000001;
 
         const l = Vector3.subtract(sphere.center, this.origin);
         const tca = l.dot(this.direction);
@@ -116,15 +117,23 @@ export class Ray3
         const t0 = tca - thc;
         const t1 = tca + thc;
 
-        if(t0 < 0 && t1 < 0)
+        if(t0 <= EPSILON && t1 <= EPSILON)
             return null;
         
         const intersection = this.direction.clone();
 
-        if(t0 < t1)
+        if (t0 > EPSILON && t1 > EPSILON) {
+            if (t0 < t1)
+                intersection.multiplyScalar(t0);
+            else
+                intersection.multiplyScalar(t1);
+        }
+        else if (t0 > EPSILON) {
             intersection.multiplyScalar(t0);
-        else
+        }
+        else {
             intersection.multiplyScalar(t1);
+        }
         
         intersection.add(this.origin);
 
