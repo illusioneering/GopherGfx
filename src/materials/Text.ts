@@ -25,8 +25,8 @@ export class Text extends Texture
  * types if that is more convenient for your application.
  * 
  * @param text - The text to be rendered
- * @param width - The width of the text canvas
- * @param height - The height of the text canvas
+ * @param width - The width of the text canvas (in pixels)
+ * @param height - The height of the text canvas (in pixels)
  * @param font - The font style of the text. Can be a gfx.Color or see additional options for
  * [canvas.font](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/font).
  * @param fillStyle - The fill style of the text. Can be a gfx.Color or see additional options for
