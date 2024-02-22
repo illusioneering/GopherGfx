@@ -175,7 +175,6 @@ export abstract class GfxApp
      */
     onTouchStart(event: TouchEvent): void
     {
-        event.preventDefault();
         if(event.touches.length == 1)
             this.simulateMouseEvent('mousedown', event);
     }
@@ -185,7 +184,10 @@ export abstract class GfxApp
      */
     onTouchMove(event: TouchEvent): void
     {
+        // This prevents the browser window from touch scrolling and zooming.
+        // These behaviors should be implemented within the graphics canvas.
         event.preventDefault();
+
         if(event.touches.length == 1)
             this.simulateMouseEvent('mousemove', event);
         else
@@ -197,7 +199,6 @@ export abstract class GfxApp
      */
     onTouchEnd(event: TouchEvent): void
     {
-        event.preventDefault();
         if(event.touches.length == 0)
             this.simulateMouseEvent('mouseup', event);
     }
