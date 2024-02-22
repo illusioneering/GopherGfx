@@ -27,6 +27,7 @@ uniform float shininess;
 uniform int blinn;
 
 uniform float morphAlpha;
+uniform float pointSize;
 
 in vec3 position;
 in vec3 normal;
@@ -102,5 +103,6 @@ void main()
 
     uv = texCoord.xy; 
 
+    gl_PointSize = pointSize;
     gl_Position = projectionMatrix * viewMatrix * vec4(worldPosition, 1);
 }

@@ -13,6 +13,12 @@ import { Texture } from './Texture';
 import { Vector3 } from '../math/Vector3'
 import { Color } from '../math/Color' 
 
+export enum MorphMaterialMode {
+    SHADED,
+    WIREFRAME,
+    VERTICES
+}
+
 export class MorphMaterial extends Material3
 {
     public static shader = new ShaderProgram(morphVertexShader, morphFragmentShader);
@@ -56,7 +62,9 @@ export class MorphMaterial extends Material3
     private morphTargetPositionAttribute: number;
     private morphTargetNormalAttribute: number;
 
-    public wireframe: boolean;
+    private pointSizeUniform: WebGLUniformLocation | null;
+    public pointSize: number;
+    public materialMode: MorphMaterialMode;
 
     constructor()
     {
@@ -102,7 +110,9 @@ export class MorphMaterial extends Material3
         this.morphTargetPositionAttribute = MorphMaterial.shader.getAttribute(this.gl, 'morphTargetPosition');
         this.morphTargetNormalAttribute = MorphMaterial.shader.getAttribute(this.gl, 'morphTargetNormal');   
 
-        this.wireframe = false;
+        this.pointSizeUniform = MorphMaterial.shader.getUniform(this.gl, 'pointSize');
+        this.pointSize = 1;
+        this.materialMode = MorphMaterialMode.SHADED;
     }
 
     draw(mesh: Mesh3, camera: Camera, lightManager: LightManager): void
@@ -133,13 +143,8 @@ export class MorphMaterial extends Material3
         this.gl.uniform1f(this.shininessUniform, this.shininess);
         this.gl.uniform1i(this.blinnUniform, Number(this.blinn));
 
-        // Set the light uniforms
-        this.gl.uniform1i(this.numLightsUniform, lightManager.getNumLights());
-        this.gl.uniform1iv(this.lightTypesUniform, lightManager.lightTypes);
-        this.gl.uniform3fv(this.lightPositionsUniform, lightManager.lightPositions);
-        this.gl.uniform3fv(this.ambientIntensitiesUniform, lightManager.ambientIntensities);
-        this.gl.uniform3fv(this.diffuseIntensitiesUniform, lightManager.diffuseIntensities);
-        this.gl.uniform3fv(this.specularIntensitiesUniform, lightManager.specularIntensities);
+        // Set the point size uniform for vertex rendering mode
+        this.gl.uniform1f(this.pointSizeUniform, this.pointSize);
 
         // Set the vertex positions
         this.gl.enableVertexAttribArray(this.positionAttribute);
@@ -184,22 +189,16 @@ export class MorphMaterial extends Material3
             this.gl.disableVertexAttribArray(this.morphTargetNormalAttribute);
         }
 
-        if(this.wireframe)
+        if(this.materialMode == MorphMaterialMode.SHADED)
         {
-            // Disable the texture in the shader
-            this.gl.uniform1i(this.useTextureUniform, 0);
-            this.gl.disableVertexAttribArray(this.texCoordAttribute);
-
-            if(!MorphMaterial.wireframeBuffers.get(mesh))
-            {
-                this.updateWireframeBuffer(mesh);
-            }
-
-            this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, MorphMaterial.wireframeBuffers.get(mesh) as WebGLBuffer);
-            this.gl.drawElements(this.gl.LINES, mesh.triangleCount * 6, this.gl.UNSIGNED_SHORT, 0);
-        }
-        else
-        {
+            // Set the light uniforms
+            this.gl.uniform1i(this.numLightsUniform, lightManager.getNumLights());
+            this.gl.uniform1iv(this.lightTypesUniform, lightManager.lightTypes);
+            this.gl.uniform3fv(this.lightPositionsUniform, lightManager.lightPositions);
+            this.gl.uniform3fv(this.ambientIntensitiesUniform, lightManager.ambientIntensities);
+            this.gl.uniform3fv(this.diffuseIntensitiesUniform, lightManager.diffuseIntensities);
+            this.gl.uniform3fv(this.specularIntensitiesUniform, lightManager.specularIntensities);
+            
             if(this.texture)
             {
                 // Activate the texture in the shader
@@ -225,6 +224,44 @@ export class MorphMaterial extends Material3
             // Draw the triangles
             this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, mesh.indexBuffer);
             this.gl.drawElements(this.gl.TRIANGLES, mesh.triangleCount*3, this.gl.UNSIGNED_SHORT, 0);
+        }
+        else if(this.materialMode == MorphMaterialMode.WIREFRAME)
+        {
+            // Override the lighting so that only the ambient component is used
+            this.gl.uniform1i(this.numLightsUniform, 1);
+            this.gl.uniform1i(this.lightTypesUniform, 0);
+            this.gl.uniform3f(this.lightPositionsUniform, 0, 0, 0);
+            this.gl.uniform3f(this.ambientIntensitiesUniform, 1, 1, 1);
+            this.gl.uniform3f(this.diffuseIntensitiesUniform, 1, 1, 1);
+            this.gl.uniform3f(this.specularIntensitiesUniform, 0, 0, 0);
+
+            // Disable the texture in the shader
+            this.gl.uniform1i(this.useTextureUniform, 0);
+            this.gl.disableVertexAttribArray(this.texCoordAttribute);
+
+            if(!MorphMaterial.wireframeBuffers.get(mesh))
+            {
+                this.updateWireframeBuffer(mesh);
+            }
+
+            this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, MorphMaterial.wireframeBuffers.get(mesh) as WebGLBuffer);
+            this.gl.drawElements(this.gl.LINES, mesh.triangleCount * 6, this.gl.UNSIGNED_SHORT, 0);
+        }
+        else if(this.materialMode == MorphMaterialMode.VERTICES)
+        {
+            // Override the lighting so that only the ambient component is used
+            this.gl.uniform1i(this.numLightsUniform, 1);
+            this.gl.uniform1i(this.lightTypesUniform, 0);
+            this.gl.uniform3f(this.lightPositionsUniform, 0, 0, 0);
+            this.gl.uniform3f(this.ambientIntensitiesUniform, 1, 1, 1);
+            this.gl.uniform3f(this.diffuseIntensitiesUniform, 0, 0, 0);
+            this.gl.uniform3f(this.specularIntensitiesUniform, 0, 0, 0);
+
+            // Disable the texture in the shader
+            this.gl.uniform1i(this.useTextureUniform, 0);
+            this.gl.disableVertexAttribArray(this.texCoordAttribute);
+
+            this.gl.drawArrays(this.gl.POINTS, 0, mesh.vertexCount);
         }
     }
 
