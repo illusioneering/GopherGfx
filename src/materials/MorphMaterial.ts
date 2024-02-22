@@ -117,8 +117,20 @@ export class MorphMaterial extends Material3
 
     draw(mesh: Mesh3, camera: Camera, lightManager: LightManager): void
     {
-        if(!(mesh instanceof MorphMesh3) || !this.visible || mesh.triangleCount == 0)
+        if(!(mesh instanceof MorphMesh3) || !this.visible)
+        {
             return;
+        }
+
+        if(this.materialMode == MorphMaterialMode.VERTICES)
+        {
+            if(mesh.vertexCount == 0)
+                return;
+        }
+        else if(mesh.triangleCount == 0)
+        {
+            return;
+        }
 
         // Initialize all the gl parameters for this shader
         this.initialize();
