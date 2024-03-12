@@ -330,7 +330,7 @@ export class Matrix4
      * @param scale - The Vector3 object representing the scale
      * @returns A new Matrix4 object representing the combined transform of position, rotation and scale
      */
-    public static compose(position = Vector3.ZERO, rotation = Quaternion.IDENTITY, scale = Vector3.UP): Matrix4
+    public static compose(position = Vector3.ZERO, rotation = Quaternion.IDENTITY, scale = Vector3.ONE): Matrix4
     {
         const m = Matrix4.makeScale(scale);
         m.premultiply(Matrix4.makeRotation(rotation));
