@@ -252,10 +252,12 @@ export class Vector2
      * @param x - The new x coordinate of the Vector2
      * @param y - The new y coordinate of the Vector2
      */
-    set(x: number, y: number): void
+    set(x: number, y: number)
     {
         this.x = x;
         this.y = y;
+
+        return this;
     }
 
     /**
@@ -263,10 +265,12 @@ export class Vector2
      * 
      * @param v - The Vector2 object to copy
      */
-    copy(v: Vector2): void
+    copy(v: Vector2)
     {
         this.x = v.x;
         this.y = v.y;
+
+        return this;
     }
 
     /**
@@ -295,10 +299,12 @@ export class Vector2
      * 
      * @param v - The Vector2 to add to this Vector2
      */
-    add(v: Vector2): void
+    add(v: Vector2)
     {
         this.x += v.x;
         this.y += v.y;
+
+        return this;
     }
 
     /**
@@ -306,10 +312,12 @@ export class Vector2
      * 
      * @param v - The Vector2 to subtract from this Vector2
      */
-    subtract(v: Vector2): void
+    subtract(v: Vector2)
     {
         this.x -= v.x;
         this.y -= v.y;
+
+        return this;
     }
 
     /**
@@ -317,10 +325,12 @@ export class Vector2
      * 
      * @param v - The Vector2 to multiply this Vector2 by
      */
-    multiply(v: Vector2): void
+    multiply(v: Vector2)
     {
         this.x *= v.x;
         this.y *= v.y;
+
+        return this;
     }
 
     /**
@@ -328,10 +338,12 @@ export class Vector2
      * 
      * @param v - The Vector2 to divide this Vector2 by
      */
-    divide(v: Vector2): void
+    divide(v: Vector2)
     {
         this.x /= v.x;
         this.y /= v.y;
+
+        return this;
     }
 
     /**
@@ -339,10 +351,12 @@ export class Vector2
      * 
      * @param n - The scalar value to multiply by
      */
-    multiplyScalar(n: number): void
+    multiplyScalar(n: number)
     {
         this.x *= n;
         this.y *= n;
+
+        return this;
     }
 
     /**
@@ -350,10 +364,12 @@ export class Vector2
      * 
      * @param n - The scalar value to divide by
      */
-    divideScalar(n: number): void
+    divideScalar(n: number)
     {
         this.x /= n;
         this.y /= n;
+
+        return this;
     }
 
     /**
@@ -375,10 +391,12 @@ export class Vector2
      * 
      * @param m - The Matrix3 to get the position from
      */
-    setPositionFromMatrix(m: Matrix3): void
+    setPositionFromMatrix(m: Matrix3)
     {
         this.x = m.mat[6];
         this.y = m.mat[7];
+
+        return this;
     }
 
     /**
@@ -386,10 +404,12 @@ export class Vector2
      * 
      * @param m - The Matrix3 to get the scale from
      */
-    setScaleFromMatrix(m: Matrix3): void
+    setScaleFromMatrix(m: Matrix3)
     {
         this.x = Math.sqrt(m.mat[0]*m.mat[0] + m.mat[1]*m.mat[1]);
         this.y = Math.sqrt(m.mat[3]*m.mat[3] + m.mat[4]*m.mat[4]);
+
+        return this;
     }
 
     /**
@@ -397,12 +417,14 @@ export class Vector2
      * 
      * @param m - The Matrix3 to transform this Vector2 with
      */
-    transformPoint(m: Matrix3): void
+    transformPoint(m: Matrix3)
     {
         const v = this.clone();
         const w = 1 / (m.mat[2]*v.x + m.mat[5]*v.y + m.mat[8]);
         this.x = w * (m.mat[0]*v.x + m.mat[3]*v.y + m.mat[6]);
         this.y = w * (m.mat[1]*v.x + m.mat[4]*v.y + m.mat[7]);
+
+        return this;
     }
 
     /**
@@ -410,12 +432,14 @@ export class Vector2
      * 
      * @param m - The Matrix3 to transform this Vector2 with
      */
-    transformVector(m: Matrix3): void
+    transformVector(m: Matrix3)
     {
         const v = this.clone();
         const w = 1 / (m.mat[2]*v.x + m.mat[5]*v.y + m.mat[8]);
         this.x = w * (m.mat[0]*v.x + m.mat[3]*v.y);
         this.y = w * (m.mat[1]*v.x + m.mat[4]*v.y);
+
+        return this;
     }
 
     /**
@@ -442,7 +466,7 @@ export class Vector2
     /**
      * Normalizes this Vector2
      */
-    normalize(): void
+    normalize()
     {
         const sizeSquared = this.x*this.x + this.y*this.y;
         
@@ -453,15 +477,19 @@ export class Vector2
         const scaleFactor = 1 / Math.sqrt(sizeSquared);
         this.x *= scaleFactor;
         this.y *= scaleFactor;
+
+        return this;
     }
 
     /**
      * Inverts this Vector2
      */
-    invert(): void
+    invert()
     {
         this.x = -this.x;
         this.y = -this.y;
+
+        return this;
     }
 
     /**
@@ -497,12 +525,14 @@ export class Vector2
      * 
      * @param angle - The angle to rotate by in radians
      */
-    rotate(angle: number): void
+    rotate(angle: number)
     {
         const x = this.x;
         const y = this.y;
         this.x = Math.cos(angle)*x - Math.sin(angle)*y;
         this.y = Math.sin(angle)*x + Math.cos(angle)*y; 
+
+        return this;
     }
 
     /**
@@ -512,9 +542,11 @@ export class Vector2
      * @param v2 - The second Vector2 object
      * @param alpha - The interpolation value between 0 and 1
      */
-    lerp(v1: Vector2, v2: Vector2, alpha: number): void
+    lerp(v1: Vector2, v2: Vector2, alpha: number)
     {
         this.x = v1.x * (1-alpha) + v2.x * alpha;
         this.y = v1.y * (1-alpha) + v2.y * alpha;
+
+        return this;
     }
 }

@@ -407,11 +407,13 @@ export class Vector3
      * @param y - The y value to set
      * @param z - The z value to set
      */
-    set(x: number, y: number, z: number): void
+    set(x: number, y: number, z: number)
     {
         this.x = x;
         this.y = y;
         this.z = z;
+
+        return this;
     }
 
     /**
@@ -419,11 +421,13 @@ export class Vector3
      *
      * @param v - The Vector3 object to copy
      */
-    copy(v: Vector3): void
+    copy(v: Vector3)
     {
         this.x = v.x;
         this.y = v.y;
         this.z = v.z;
+
+        return this;
     }
 
     /**
@@ -465,11 +469,13 @@ export class Vector3
      *
      * @param v - The Vector3 object to add
      */
-    add(v: Vector3): void
+    add(v: Vector3)
     {
         this.x += v.x;
         this.y += v.y;
         this.z += v.z;
+
+        return this;
     }
 
     /**
@@ -477,11 +483,13 @@ export class Vector3
      *
      * @param v - The Vector3 object to subtract
      */
-    subtract(v: Vector3): void
+    subtract(v: Vector3)
     {
         this.x -= v.x;
         this.y -= v.y;
         this.z -= v.z;
+
+        return this;
     }
 
     /**
@@ -489,11 +497,13 @@ export class Vector3
      *
      * @param v - The Vector3 object to multiply
      */
-    multiply(v: Vector3): void
+    multiply(v: Vector3)
     {
         this.x *= v.x;
         this.y *= v.y;
         this.z *= v.z;
+
+        return this;
     }
 
     /**
@@ -501,11 +511,13 @@ export class Vector3
      *
      * @param v - Vector to divide with
      */
-    divide(v: Vector3): void
+    divide(v: Vector3)
     {
         this.x /= v.x;
         this.y /= v.y;
         this.z /= v.z;
+
+        return this;
     }
 
     /**
@@ -524,7 +536,7 @@ export class Vector3
      *
      * @param v The Vector3 to compute the cross product with.
      */
-    cross(v: Vector3): void
+    cross(v: Vector3)
     {
         const crossProduct =  new Vector3(
             this.y * v.z - this.z * v.y,
@@ -532,6 +544,8 @@ export class Vector3
             this.x * v.y - this.y * v.x
         );
         this.copy(crossProduct);
+
+        return this;
     }
 
     /**
@@ -539,11 +553,13 @@ export class Vector3
      *
      * @param n - Scalar value to multiply with
      */
-    multiplyScalar(n: number): void
+    multiplyScalar(n: number)
     {
         this.x *= n;
         this.y *= n;
         this.z *= n;
+
+        return this;
     }
 
     /**
@@ -551,11 +567,13 @@ export class Vector3
      *
      * @param n - Scalar value to divide with
      */
-    divideScalar(n: number): void
+    divideScalar(n: number)
     {
         this.x /= n;
         this.y /= n;
         this.z /= n;
+
+        return this;
     }
 
     /**
@@ -572,7 +590,7 @@ export class Vector3
      * Normalizes a Vector3 object
      *
      */
-    normalize(): void
+    normalize()
     {
         const sizeSquared = this.x*this.x + this.y*this.y + this.z*this.z;
         
@@ -584,17 +602,21 @@ export class Vector3
         this.x *= scaleFactor;
         this.y *= scaleFactor;
         this.z *= scaleFactor;
+
+        return this;
     }
 
     /**
      * Inverts a Vector3 object
      *
      */
-    invert(): void
+    invert()
     {
         this.x = -this.x;
         this.y = -this.y;
         this.z = -this.z;
+
+        return this;
     }
 
     /**
@@ -612,13 +634,15 @@ export class Vector3
      *
      * @param m - The Matrix4 to transform this Vector3
      */
-    transformPoint(m: Matrix4): void
+    transformPoint(m: Matrix4)
     {
         const v = this.clone();
         const w = 1 / (m.mat[3]*v.x + m.mat[7]*v.y + m.mat[11]*v.z + m.mat[15]);
         this.x = w * (m.mat[0]*v.x + m.mat[4]*v.y + m.mat[8]*v.z + m.mat[12]);
         this.y = w * (m.mat[1]*v.x + m.mat[5]*v.y + m.mat[9]*v.z + m.mat[13]);
         this.z = w * (m.mat[2]*v.x + m.mat[6]*v.y + m.mat[10]*v.z + m.mat[14]);
+
+        return this;
     }
 
     /**
@@ -626,13 +650,15 @@ export class Vector3
      *
      * @param m - The Matrix4 to transform this Vector3
      */
-    transformVector(m: Matrix4): void
+    transformVector(m: Matrix4)
     {
         const v = this.clone();
         const w = 1 / (m.mat[3]*v.x + m.mat[7]*v.y + m.mat[11]*v.z + m.mat[15]);
         this.x = w * (m.mat[0]*v.x + m.mat[4]*v.y + m.mat[8]*v.z);
         this.y = w * (m.mat[1]*v.x + m.mat[5]*v.y + m.mat[9]*v.z);
         this.z = w * (m.mat[2]*v.x + m.mat[6]*v.y + m.mat[10]*v.z);
+
+        return this;
     }
 
     /**
@@ -640,7 +666,7 @@ export class Vector3
      *
      * @param q - The Quaternion to rotate this Vector3
      */
-    rotate(q: Quaternion): void
+    rotate(q: Quaternion)
     {
         // Extract the vector part of the quaternion
         const u = new Vector3(q.x, q.y, q.z);
@@ -656,6 +682,8 @@ export class Vector3
         result.add(crossUV);
 
         this.copy(result);
+
+        return this;
     }
 
     /**
@@ -692,11 +720,13 @@ export class Vector3
      *
      * @param m - The Matrix4 to get the position from
      */
-    setPositionFromMatrix(m: Matrix4): void
+    setPositionFromMatrix(m: Matrix4)
     {
         this.x = m.mat[12];
         this.y = m.mat[13];
         this.z = m.mat[14];
+
+        return this;
     }
 
     /**
@@ -704,11 +734,13 @@ export class Vector3
      *
      * @param m - The Matrix4 to get the scale from
      */
-    setScaleFromMatrix(m: Matrix4): void
+    setScaleFromMatrix(m: Matrix4)
     {
         this.x = Math.sqrt(m.mat[0]*m.mat[0] + m.mat[1]*m.mat[1] + m.mat[2]*m.mat[2]);
         this.y = Math.sqrt(m.mat[4]*m.mat[4] + m.mat[5]*m.mat[5] + m.mat[6]*m.mat[6]);
         this.z = Math.sqrt(m.mat[8]*m.mat[8] + m.mat[9]*m.mat[9] + m.mat[10]*m.mat[10]);
+
+        return this;
     }
 
     /**
@@ -718,11 +750,13 @@ export class Vector3
      * @param v2 - The ending Vector3
      * @param alpha - The interpolation amount (should be in the range [0, 1])
      */
-    lerp(v1: Vector3, v2: Vector3, alpha: number): void
+    lerp(v1: Vector3, v2: Vector3, alpha: number)
     {
         this.x = v1.x * (1-alpha) + v2.x * alpha;
         this.y = v1.y * (1-alpha) + v2.y * alpha;
         this.z = v1.z * (1-alpha) + v2.z * alpha;
+
+        return this;
     }
 
     /**
@@ -730,11 +764,13 @@ export class Vector3
      *
      * @param n - The normal to reflect about
      */
-    reflect(normal: Vector3): void
+    reflect(normal: Vector3)
     {
         const reflection = normal.clone();
         reflection.multiplyScalar(this.dot(normal) * -2);
         reflection.add(this);
         this.copy(reflection);
+
+        return this;
     }
 }
