@@ -472,7 +472,7 @@ export class Vector2
         
         // zero vectors
         if(sizeSquared < 1e-8)
-            return;
+            return this;
 
         const scaleFactor = 1 / Math.sqrt(sizeSquared);
         this.x *= scaleFactor;
