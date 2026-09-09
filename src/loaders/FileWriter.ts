@@ -14,7 +14,7 @@ export class FileWriter
         document.body.removeChild(element);
     }
 
-    static saveBinary(filename: string, data: ArrayBuffer) 
+    static saveBinary(filename: string, data: ArrayBuffer | Uint8Array<ArrayBuffer>)
     {
         const blob = new Blob([data], {type: "application/octet-stream"});
         const url = URL.createObjectURL(blob);

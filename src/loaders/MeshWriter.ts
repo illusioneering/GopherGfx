@@ -214,7 +214,7 @@ export class MeshWriter
     {
         const doc = MeshWriter.createGLTF(transform);
         const io = new WebIO();
-        io.writeBinary(doc).then((data: Uint8Array) => {
+        io.writeBinary(doc).then((data) => {
             FileWriter.saveBinary(filename, data);
         });
     }
