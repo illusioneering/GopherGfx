@@ -30,12 +30,12 @@ export class Plane3
 
 
 /**
- * Projects the given point onto the Plane 
+ * Returns the closest point on the plane to the point provided
  * 
- * @param point - The point to be projected onto the Plane
- * @returns The projected point on the Plane
+ * @param point - The input point
+ * @returns The closest point to the input that lies within the Plane
  */
-    project(point: Vector3): Vector3
+    closestPointOnPlane(point: Vector3): Vector3
     {
         const target = new Vector3(this.normal.x, this.normal.y, this.normal.z);
         target.multiplyScalar(-this.distanceTo(point));

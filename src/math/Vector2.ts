@@ -17,7 +17,7 @@ export class Vector2
      * @param v - The Vector2 object to copy
      * @returns A new Vector2 object with the same values as v
      */
-    public static copy(v: Vector2): Vector2
+    public static clone(v: Vector2): Vector2
     {
         return new Vector2(v.x, v.y);
     }

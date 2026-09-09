@@ -52,7 +52,7 @@ export class Quaternion
      * @param q - The Quaternion object to copy
      * @returns A new Quaternion object with the same values as q
      */
-    public static copy(q: Quaternion): Quaternion
+    public static clone(q: Quaternion): Quaternion
     {
         return new Quaternion(q.x, q.y, q.z, q.w);
     }

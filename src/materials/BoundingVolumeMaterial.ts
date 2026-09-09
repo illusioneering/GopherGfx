@@ -34,7 +34,7 @@ export class BoundingVolumeMaterial extends Material3
         super();
 
         this.mode = mode;
-        this.color = Color.copy(color);
+        this.color = color.clone();
 
         this.sphere = Geometry3Factory.createSphere(1, 1);
 

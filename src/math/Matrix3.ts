@@ -38,12 +38,12 @@ export class Matrix3
     }
 
     /**
-     * Creates a copy of a Matrix3 object
+     * Creates a new Matrix3 object with the same values as the one passed in
      * 
      * @param m - The Matrix3 object to be copied
      * @returns A new Matrix3 object representing a copy of the input Matrix3
      */
-    static copy(m: Matrix3): Matrix3
+    static clone(m: Matrix3): Matrix3
     {
         const mat = new Matrix3();
         mat.copy(m);
@@ -457,12 +457,17 @@ export class Matrix3
             this.mat[i] *= x;
     }
     
+    public static inverse(m: Matrix3): Matrix3
+    {
+        return m.getInverse();
+    }
+
     /**
      * Computes the inverse of this matrix.
      * 
      * @returns The inverse of this matrix
      */
-    inverse(): Matrix3
+    getInverse(): Matrix3
     {
         // Code from http://www.euclideanspace.com/maths/algebra/matrix/functions/inverse/threeD/index.htm
 
@@ -493,8 +498,14 @@ export class Matrix3
      */
     invert(): void
     {
-        const inverseMatrix = this.inverse();
+        const inverseMatrix = this.getInverse();
         this.copy(inverseMatrix);
+    }
+
+
+    public static transpose(m: Matrix3): Matrix3
+    {
+        return m.getTranspose();
     }
 
     /**
@@ -502,7 +513,7 @@ export class Matrix3
      * 
      * @returns The transposed matrix.
      */
-    transpose(): Matrix3
+    getTranspose(): Matrix3
     {
         return Matrix3.fromRowMajor(
             this.mat[0], this.mat[1], this.mat[2], 

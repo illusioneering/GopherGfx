@@ -1,6 +1,32 @@
 import { Texture } from './Texture'
 import { Color } from '../math/Color'
 
+/**
+ * The GopherGfx.Text class is a special type of texture that renders text generated
+ * by the text routines built into the browser's canvas into a computer graphics
+ * texture with a specified size in pixels.  Many options are available for the
+ * style of the text because everything that is supported by the browser's built-in
+ * text rendering can be used.  (See documentation on the constructor for links to
+ * relevant options.)  
+ * 
+ * To draw the text, the text texture is applied just like any other texture to a
+ * mesh added to the scene.  Just as when using any other texture, the mesh must
+ * have texture coordinates defined.  And, the Text object is simply applied to
+ * the mesh material's texture.
+ * ```
+ *       const helloWorldMesh = gfx.Geometry2Factory.createRect(0.4, 0.1);
+ *       this.scene.add(helloWorldMesh);
+ *       const helloWorldTexture = new gfx.Text("Hello World", 256, 32, '32px monospace', gfx.Color.WHITE);
+ *       helloWorldMesh.material.texture = helloWorldTexture;
+ *       helloWorldMesh.material.color = gfx.Color.RED;
+ * ```
+ * In the texture image that is generated, the pixels belonging to letters will colored 
+ * according to the fill style, and the other pixels will be transparent.
+ * 
+ * To get the best color mixing when letters overlap on the screen, set the fill style
+ * to gfx.Color.WHITE when creating the texture, and then adjust the color using the mesh
+ * material's color property, like in the example above, where material.color is set to red.
+ */
 export class Text extends Texture
 {
     public text: string;
@@ -114,10 +140,12 @@ export class Text extends Texture
                 this.textCanvas.strokeText(this.text, this.width / 2, this.height / 2);
             }
 
-            this.gl.activeTexture(this.gl.TEXTURE0 + this.id);
+            this.gl.activeTexture(this.gl.TEXTURE0);
             this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
             this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, this.textCanvas.canvas);
             this.gl.generateMipmap(this.gl.TEXTURE_2D);
+
+            this.gl.bindTexture(this.gl.TEXTURE_2D, null);
         }
     }
 }

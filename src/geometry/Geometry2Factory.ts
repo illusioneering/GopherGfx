@@ -11,7 +11,7 @@ import { BoundingBox2 } from "../math/BoundingBox2";
  */
 export class Geometry2Factory
 {
-    public static createBox(width = 1, height = 1): Mesh2
+    public static createRect(width = 1, height = 1): Mesh2
     {
         const mesh = new Mesh2();
         

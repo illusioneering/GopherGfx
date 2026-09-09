@@ -20,12 +20,12 @@ export class Color
     public static readonly CYAN = new Color(0, 1, 1);
 
 /**
- * Static method to create a copy of the given Color object
+ * Static method to create a clone of the given Color object
  * 
- * @param color - The Color object to copy
- * @returns A copy of the given Color object
+ * @param color - The Color object to clone
+ * @returns A clone of the given Color object
  */
-    public static copy(color: Color): Color
+    public static clone(color: Color): Color
     {
         const newColor = new Color();
         newColor.r = color.r;

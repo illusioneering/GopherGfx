@@ -25,22 +25,6 @@ export class Vector3
 {
     /**
      * A static property to provide quick access to a Vector3 with all of its x,y,z components equal to zero.
-     * (Note: Be careful not to change the value of this field!  It is marked readonly, but typescipt do not completely
-     * enforce this!)
-     * ```
-     * // Good use of ZERO:
-     * const p = new Vector3();
-     * if (p.equals(Vector3.ZERO)) {
-     *   console.log("p is (0,0,0)")
-     * }
-     * 
-     * // Dangerous use of ZERO!!!!
-     * const p = Vector3.ZERO;  // makes p a reference to Vector3.ZERO
-     * p.add(new Vector3(1, 0, 0)); // changes Vector3.ZERO!
-     * 
-     * // Do this instead:
-     * const p = Vector3.copy(Vector3.ZERO); // or "new Vector3();" or another function that returns a NEW Vector3 object
-     * p.add(new Vector3(1, 0, 0));
      */
     public static readonly ZERO = new Vector3(0, 0, 0);
 
@@ -97,12 +81,12 @@ export class Vector3
 
     
     /**
-     * Copies the values of a Vector3 object
+     * Creates a new Vector3 object that is a clone of the original
      * 
      * @param v - The Vector3 object to copy
      * @returns A new Vector3 object with the same x, y, and z values as the original
      */
-    public static copy(v: Vector3): Vector3
+    public static clone(v: Vector3): Vector3
     {
         return new Vector3(v.x, v.y, v.z);
     }

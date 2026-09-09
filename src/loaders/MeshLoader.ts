@@ -6,6 +6,15 @@ import { Document, WebIO } from '@gltf-transform/core';
 
 export class MeshLoader
 {
+    /**
+     * Loads a GLTF file asynchronously. 
+     * 
+     * @param filename - The relative path to the file
+     * @param callback - An optional callback that is called when the file has been loaded
+     * @returns A new Node3 object that will act as the root of the model
+     * once it is finished loading.  Note, it will only contain
+     * the model data AFTER the asynchronous loading is complete.
+     */  
     static loadGLTF(filename: string, callback: ((rootNode: Node3) => void) | null = null, recursive = true): Node3
     {
 
@@ -33,11 +42,12 @@ export class MeshLoader
     }
 
     /**
-     * Loads an OBJ file
+     * Loads an OBJ file asynchronously
      * 
      * @param filename - The relative path to the OBJ file
      * @param callback - An optional callback that is called when the file has been loaded
-     * @returns A Mesh object containing the data loaded from the file
+     * @returns The Mesh3 object created to hold the model. Note, it will only contain
+     * the model data AFTER the asynchronous loading is complete.
      */  
     static loadOBJ(filename: string, callback: ((loadedMesh: Mesh3) => void) | null = null): Mesh3
     {
@@ -71,11 +81,12 @@ export class MeshLoader
     }
 
     /**
-     * Loads a PLY file
+     * Loads a PLY file asynchronously
      * 
      * @param filename - The relative path to the PLY file
      * @param callback - An optional callback that is called when the file has been loaded
-     * @returns A Mesh object containing the data loaded from the file
+     * @returns The Mesh3 object created to hold the model. Note, it will only contain
+     * the model data AFTER the asynchronous loading is complete.
      */  
     static loadPLY(filename: string, callback: ((loadedMesh: Mesh3) => void) | null = null): Mesh3
     {

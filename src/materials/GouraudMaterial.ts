@@ -109,7 +109,7 @@ export class GouraudMaterial extends Material3
         this.gl.uniformMatrix4fv(this.modelUniform, false, worldMatrix.mat);
         this.gl.uniformMatrix4fv(this.viewUniform, false, camera.viewMatrix.mat);
         this.gl.uniformMatrix4fv(this.projectionUniform, false, camera.projectionMatrix.mat);
-        this.gl.uniformMatrix4fv(this.normalUniform, false, worldMatrix.inverse().transpose().mat);
+        this.gl.uniformMatrix4fv(this.normalUniform, false, worldMatrix.getInverse().getTranspose().mat);
 
         // Set the material property uniforms
         this.gl.uniform3f(this.kAmbientUniform, this.ambientColor.r, this.ambientColor.g, this.ambientColor.b);
@@ -155,9 +155,9 @@ export class GouraudMaterial extends Material3
             this.gl.uniform1i(this.useTextureUniform, 1);
 
             // Set the texture
-            this.gl.activeTexture(this.gl.TEXTURE0 + this.texture.id)
+            this.gl.activeTexture(this.gl.TEXTURE0)
             this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture.texture);
-            this.gl.uniform1i(this.textureUniform, this.texture.id);
+            this.gl.uniform1i(this.textureUniform, 0);
 
             // Set the texture coordinates
             this.gl.enableVertexAttribArray(this.texCoordAttribute);

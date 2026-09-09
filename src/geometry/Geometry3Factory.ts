@@ -512,7 +512,7 @@ export class Geometry3Factory
             {
                 if(this.isEndVertex(i+1, vertices, indices) && this.isEndVertex(i+2, vertices, indices))
                 {
-                    vertices.push(Vector3.copy(vertices[indices[i]]));
+                    vertices.push(Vector3.clone(vertices[indices[i]]));
                     normals.push(Vector3.normalize(vertices[indices[i]]));
                     texCoords.push(1, texCoords[indices[i]*2+1]);
 
@@ -520,11 +520,11 @@ export class Geometry3Factory
                 }
                 else if(this.isEndVertex(i+1, vertices, indices))
                 {
-                    vertices.push(Vector3.copy(vertices[indices[i]]));
+                    vertices.push(Vector3.clone(vertices[indices[i]]));
                     normals.push(Vector3.normalize(vertices[indices[i]]));
                     texCoords.push(1, texCoords[indices[i]*2+1]);
 
-                    vertices.push(Vector3.copy(vertices[indices[i+2]]));
+                    vertices.push(Vector3.clone(vertices[indices[i+2]]));
                     normals.push(Vector3.normalize(vertices[indices[i+2]]));
                     texCoords.push(1, texCoords[indices[i+2]*2+1]);
 
@@ -533,11 +533,11 @@ export class Geometry3Factory
                 }
                 else if(this.isEndVertex(i+2, vertices, indices))
                 {
-                    vertices.push(Vector3.copy(vertices[indices[i]]));
+                    vertices.push(Vector3.clone(vertices[indices[i]]));
                     normals.push(Vector3.normalize(vertices[indices[i]]));
                     texCoords.push(1, texCoords[indices[i]*2+1]);
 
-                    vertices.push(Vector3.copy(vertices[indices[i+1]]));
+                    vertices.push(Vector3.clone(vertices[indices[i+1]]));
                     normals.push(Vector3.normalize(vertices[indices[i+1]]));
                     texCoords.push(1, texCoords[indices[i+1]*2+1]);
 
@@ -549,7 +549,7 @@ export class Geometry3Factory
             { 
                 if(this.isEndVertex(i, vertices, indices) && this.isEndVertex(i+2, vertices, indices))
                 {
-                    vertices.push(Vector3.copy(vertices[indices[i+1]]));
+                    vertices.push(Vector3.clone(vertices[indices[i+1]]));
                     normals.push(Vector3.normalize(vertices[indices[i+1]]));
                     texCoords.push(1, texCoords[indices[i+1]*2+1]);
 
@@ -557,11 +557,11 @@ export class Geometry3Factory
                 }
                 else if(this.isEndVertex(i, vertices, indices))
                 {
-                    vertices.push(Vector3.copy(vertices[indices[i+1]]));
+                    vertices.push(Vector3.clone(vertices[indices[i+1]]));
                     normals.push(Vector3.normalize(vertices[indices[i+1]]));
                     texCoords.push(1, texCoords[indices[i+1]*2+1]);
 
-                    vertices.push(Vector3.copy(vertices[indices[i+2]]));
+                    vertices.push(Vector3.clone(vertices[indices[i+2]]));
                     normals.push(Vector3.normalize(vertices[indices[i+2]]));
                     texCoords.push(1, texCoords[indices[i+2]*2+1]);
 
@@ -570,11 +570,11 @@ export class Geometry3Factory
                 }
                 else if(this.isEndVertex(i+2, vertices, indices))
                 {
-                    vertices.push(Vector3.copy(vertices[indices[i]]));
+                    vertices.push(Vector3.clone(vertices[indices[i]]));
                     normals.push(Vector3.normalize(vertices[indices[i]]));
                     texCoords.push(1, texCoords[indices[i]*2+1]);
 
-                    vertices.push(Vector3.copy(vertices[indices[i+1]]));
+                    vertices.push(Vector3.clone(vertices[indices[i+1]]));
                     normals.push(Vector3.normalize(vertices[indices[i+1]]));
                     texCoords.push(1, texCoords[indices[i+1]*2+1]);
 
@@ -586,7 +586,7 @@ export class Geometry3Factory
             {
                 if(this.isEndVertex(i, vertices, indices) && this.isEndVertex(i+1, vertices, indices))
                 {
-                    vertices.push(Vector3.copy(vertices[indices[i+2]]));
+                    vertices.push(Vector3.clone(vertices[indices[i+2]]));
                     normals.push(Vector3.normalize(vertices[indices[i+2]]));
                     texCoords.push(1, texCoords[indices[i+2]*2+1]);
 
@@ -594,11 +594,11 @@ export class Geometry3Factory
                 }
                 else if(this.isEndVertex(i, vertices, indices))
                 {
-                    vertices.push(Vector3.copy(vertices[indices[i+1]]));
+                    vertices.push(Vector3.clone(vertices[indices[i+1]]));
                     normals.push(Vector3.normalize(vertices[indices[i+1]]));
                     texCoords.push(1, texCoords[indices[i+1]*2+1]);
 
-                    vertices.push(Vector3.copy(vertices[indices[i+2]]));
+                    vertices.push(Vector3.clone(vertices[indices[i+2]]));
                     normals.push(Vector3.normalize(vertices[indices[i+2]]));
                     texCoords.push(1, texCoords[indices[i+2]*2+1]);
 
@@ -607,11 +607,11 @@ export class Geometry3Factory
                 }
                 else if(this.isEndVertex(i+1, vertices, indices))
                 {
-                    vertices.push(Vector3.copy(vertices[indices[i]]));
+                    vertices.push(Vector3.clone(vertices[indices[i]]));
                     normals.push(Vector3.normalize(vertices[indices[i]]));
                     texCoords.push(1, texCoords[indices[i]*2+1]);
 
-                    vertices.push(Vector3.copy(vertices[indices[i+2]]));
+                    vertices.push(Vector3.clone(vertices[indices[i+2]]));
                     normals.push(Vector3.normalize(vertices[indices[i+2]]));
                     texCoords.push(1, texCoords[indices[i+2]*2+1]);
 

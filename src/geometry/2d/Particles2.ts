@@ -202,9 +202,9 @@ export class Particles2 extends Node2
              this.gl.uniform1i(this.useTextureUniform, 1);
  
              // Set the texture
-             this.gl.activeTexture(this.gl.TEXTURE0 + this.baseParticle.material.texture.id)
+             this.gl.activeTexture(this.gl.TEXTURE0);
              this.gl.bindTexture(this.gl.TEXTURE_2D, this.baseParticle.material.texture.texture);
-             this.gl.uniform1i(this.textureUniform, this.baseParticle.material.texture.id);
+             this.gl.uniform1i(this.textureUniform, 0);
  
              // Set the texture coordinates
              this.gl.enableVertexAttribArray(this.texCoordAttribute);

@@ -60,7 +60,7 @@ export class Ray3
         const worldMatrix = camera.localToWorldMatrix;
         this.origin.copy(worldMatrix.getTranslation());
         this.direction.set(deviceCoords.x, deviceCoords.y, -1);
-        this.direction.transformPoint(camera.projectionMatrix.inverse());
+        this.direction.transformPoint(camera.projectionMatrix.getInverse());
         this.direction.transformVector(worldMatrix);
         this.direction.normalize();
     }
@@ -391,7 +391,7 @@ export class Ray3
     createLocalRay(transform: Node3): Ray3
     {
         const localRay = this.clone();
-        const inverseWorldMatrix = transform.localToWorldMatrix.inverse();
+        const inverseWorldMatrix = transform.localToWorldMatrix.getInverse();
         localRay.origin.transformPoint(inverseWorldMatrix);
         localRay.direction.transformVector(inverseWorldMatrix);
         localRay.direction.normalize();

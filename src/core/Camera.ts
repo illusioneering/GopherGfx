@@ -92,7 +92,7 @@ export class Camera extends Node3
     public updateWorldMatrix(): void
     {
         super.updateWorldMatrix();
-        this.viewMatrix = this.localToWorldMatrix.inverse();
+        this.viewMatrix = this.localToWorldMatrix.getInverse();
     }
 
     /**

@@ -16,11 +16,12 @@ export class TextFile
 export class TextFileLoader
 {
 /**
- * Loads a text file located at the specified filename
+ * Loads a text file located at the specified filename asynchronously
  * 
  * @param filename - The path to the text file to be loaded
  * @param callback - An optional callback function to be invoked when the file is loaded
- * @returns The TextFile object containing the loaded file's data
+ * @returns The TextFile object that will contain the loaded file's data. Note, it will 
+ * only contain the data AFTER the asynchronous loading is complete.
  */
     static load(filename: string, callback: ((loadedFile: TextFile) => void) | null = null): TextFile
     {

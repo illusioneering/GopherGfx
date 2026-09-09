@@ -125,7 +125,7 @@ export class Matrix4
      * @param m - The input Matrix4 object
      * @returns A new Matrix4 object with the same values as the input matrix
      */
-    static copy(m: Matrix4): Matrix4
+    static clone(m: Matrix4): Matrix4
     {
         const mat = new Matrix4();
         mat.copy(m);
@@ -429,7 +429,7 @@ export class Matrix4
         referenceDir2 = new Vector3(0,1,0), newDir2 = new Vector3(0,1,0)) : Matrix4 {
         const refBasis = this.makeBasis(referenceDir, referenceDir2);
         const newBasis = this.makeBasis(newDir, newDir2);
-        return Matrix4.multiplyAll(newBasis, refBasis.inverse());
+        return Matrix4.multiplyAll(newBasis, refBasis.getInverse());
     }
 
     /**
@@ -1125,13 +1125,18 @@ export class Matrix4
         return determinant;
     }
 
+    public static inverse(m: Matrix4): Matrix4 {
+        return m.getInverse();
+    }
+
     /**
-     * Calculates the inverse of a Matrix4 object
+     * Returns a new object that is the inverse of this Matrix4 object, leaves
+     * the original unchanged.
      * 
      * @returns A Matrix4 object that is the inverse of the current Matrix4 object
      */
     // Code from http://www.euclideanspace.com/maths/algebra/matrix/functions/inverse/fourD/index.htm
-    inverse(): Matrix4
+    getInverse(): Matrix4
     {
         // Check for singular matrix
         const determinant = this.determinant();
@@ -1260,8 +1265,13 @@ export class Matrix4
      */
     invert(): void
     {
-        const inverseMatrix = this.inverse();
+        const inverseMatrix = this.getInverse();
         this.copy(inverseMatrix);
+    }
+
+    public static transpose(m: Matrix4): Matrix4
+    {
+        return m.getTranspose();
     }
 
     /**
@@ -1269,7 +1279,7 @@ export class Matrix4
      * 
      * @returns A new Matrix4 object which is the transposed version of the current object
      */
-    transpose(): Matrix4
+    getTranspose(): Matrix4
     {
         return Matrix4.fromRowMajor(
             this.mat[0], this.mat[1], this.mat[2], this.mat[3],
@@ -1549,7 +1559,7 @@ export class Matrix4
             let norm;
             do 
             {
-                const currentInverseTranspose = rotationMatrix.transpose();
+                const currentInverseTranspose = rotationMatrix.getTranspose();
                 currentInverseTranspose.invert();
 
                 // Go through every component in the matrices and find the next matrix
@@ -1578,7 +1588,7 @@ export class Matrix4
             rotation.setMatrix(rotationMatrix);
 
             // The scale is simply the removal of the rotation from the non-translated matrix
-            const scaleMatrix = Matrix4.multiply(rotationMatrix.inverse(), matrixCopy);
+            const scaleMatrix = Matrix4.multiply(rotationMatrix.getInverse(), matrixCopy);
             scale.set(scaleMatrix.mat[0], scaleMatrix.mat[5], scaleMatrix.mat[10]);
 
             // Special consideration: if there's a single negative scale (all other combinations of negative 

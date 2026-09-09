@@ -7,19 +7,13 @@ import { GfxApp } from '../core/GfxApp';
  */
 export class Texture
 {
-    private static numTextures = 0;
-
     protected readonly gl: WebGL2RenderingContext;
 
     /**
-     * The internal object used by WebGL to draw this texture
+     * The internal object used by WebGL to draw this texture -- provides each texture
+     * a unique id.
      */
     public texture: WebGLTexture | null;
-
-    /**
-     * The WebGL texture ID used to draw this texture
-     */
-    public id: number;
 
     /** 
      * The width of the original (non-mipmapped) texture image data or 'undefined' if
@@ -46,10 +40,8 @@ export class Texture
         this.gl  = GfxApp.getInstance().renderer.gl;
 
         this.texture = this.gl.createTexture();
-        this.id = Texture.numTextures;
-        Texture.numTextures++;
 
-        this.gl.activeTexture(this.gl.TEXTURE0 + this.id);
+        this.gl.activeTexture(this.gl.TEXTURE0);
         this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.REPEAT);
         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.REPEAT);
@@ -71,6 +63,8 @@ export class Texture
             this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.width, this.height, 0, this.gl.RGBA, 
                 this.gl.UNSIGNED_BYTE, new Uint8Array([255, 0, 255, 255]));  
         }
+
+        this.gl.bindTexture(this.gl.TEXTURE_2D, null);
     }
 
     /**
@@ -103,10 +97,11 @@ export class Texture
 
         this.width = image.width;
         this.height = image.height;
-        this.gl.activeTexture(this.gl.TEXTURE0 + this.id);
+        this.gl.activeTexture(this.gl.TEXTURE0);
         this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
         this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, image);
         this.gl.generateMipmap(this.gl.TEXTURE_2D);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, null);
     }
 
     /**
@@ -116,10 +111,11 @@ export class Texture
      */
     setFullImageData(imageData: ImageData): void
     {
-        this.gl.activeTexture(this.gl.TEXTURE0 + this.id);
+        this.gl.activeTexture(this.gl.TEXTURE0);
         this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
         this.gl.texSubImage2D(this.gl.TEXTURE_2D, 0, 0, 0, imageData.width, imageData.height, this.gl.RGBA, this.gl.UNSIGNED_BYTE, imageData.data);
         this.gl.generateMipmap(this.gl.TEXTURE_2D);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, null);
     }
 
     /**
@@ -131,10 +127,11 @@ export class Texture
      */
     setSubImageData(imageData: ImageData, xOffset: number, yOffset: number): void
     {
-        this.gl.activeTexture(this.gl.TEXTURE0 + this.id);
+        this.gl.activeTexture(this.gl.TEXTURE0);
         this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
         this.gl.texSubImage2D(this.gl.TEXTURE_2D, 0, xOffset, yOffset, imageData.width, imageData.height, this.gl.RGBA, this.gl.UNSIGNED_BYTE, imageData.data);
         this.gl.generateMipmap(this.gl.TEXTURE_2D);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, null);
     }
 
     /**
@@ -155,7 +152,8 @@ export class Texture
      */
     setMinFilter(linear: boolean, mipmap: boolean)
     {
-        this.gl.activeTexture(this.gl.TEXTURE0 + this.id);
+        this.gl.activeTexture(this.gl.TEXTURE0);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
 
         if(linear)
         {
@@ -171,6 +169,8 @@ export class Texture
             else
                 this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.NEAREST);
         }
+
+        this.gl.bindTexture(this.gl.TEXTURE_2D, null);
     }
 
     /**
@@ -180,12 +180,14 @@ export class Texture
      */
     setMagFilter(linear: boolean)
     {
-        this.gl.activeTexture(this.gl.TEXTURE0 + this.id);
+        this.gl.activeTexture(this.gl.TEXTURE0);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
 
         if(linear)
             this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
         else
             this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, null);
     }
 
     /**
@@ -195,8 +197,9 @@ export class Texture
      */
     setWrapping(repeat: boolean)
     {
-        this.gl.activeTexture(this.gl.TEXTURE0 + this.id);
-        
+        this.gl.activeTexture(this.gl.TEXTURE0);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
+
         if(repeat)
         {
             this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.REPEAT);
@@ -207,5 +210,6 @@ export class Texture
             this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE);
             this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
         }
+        this.gl.bindTexture(this.gl.TEXTURE_2D, null);
     }
 }

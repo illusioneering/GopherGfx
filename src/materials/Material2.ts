@@ -154,9 +154,9 @@ export class Material2
             this.gl.uniform1i(this.useTextureUniform, 1);
 
             // Set the texture
-            this.gl.activeTexture(this.gl.TEXTURE0 + this.texture.id)
+            this.gl.activeTexture(this.gl.TEXTURE0);
             this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture.texture);
-            this.gl.uniform1i(this.textureUniform, this.texture.id);
+            this.gl.uniform1i(this.textureUniform, 0);
 
             // Set the texture coordinates
             this.gl.enableVertexAttribArray(this.texCoordAttribute);
