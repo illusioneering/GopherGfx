@@ -24,15 +24,17 @@
     "type": "git",
     "url": "https://github.com/illusioneering/GopherGfx.git"
   },
+  "dependencies": {
+    "@gltf-transform/core": "^4.5.0"
+  },
   "devDependencies": {
-    "@gltf-transform/core": "^4.5.0",
     "@types/node": "^22.20.2",
-    "esbuild-plugin-glsl": "^1.4.2",
-    "tsup": "^8.5.1",
-    "typedoc": "^0.28.20"
+    "tsdown": "^0.23.0",
+    "typedoc": "^0.28.20",
+    "typescript": "6.0.3"
   },
   "scripts": {
-    "build": "tsup ./index.ts",
+    "build": "tsdown",
     "docs": "typedoc --out docs index.ts",
     "prepare": "npm run build"
   }
