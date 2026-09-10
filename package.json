@@ -37,6 +37,6 @@
   "scripts": {
     "build": "tsup ./index.ts",
     "docs": "typedoc --out docs index.ts",
-    "prepublishOnly": "npm run build"
+    "prepare": "npm run build"
   }
 }
