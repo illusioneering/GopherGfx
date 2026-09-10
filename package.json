@@ -4,6 +4,22 @@
   "description": "GopherGfx high-level scene graph library",
   "author": "Evan Suma Rosenberg <suma@umn.edu>",
   "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/illusioneering/GopherGfx.git"
@@ -20,6 +36,7 @@
   },
   "scripts": {
     "build": "tsup ./index.ts",
-    "docs": "typedoc --out docs index.ts"
+    "docs": "typedoc --out docs index.ts",
+    "prepublishOnly": "npm run build"
   }
 }
